@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  back-end:
+    container_name: back-end
+    hostname: back-end
+    build:
+      context: ./requirement/back-end
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    restart: unless-stopped
+    networks:
+      - back
+    volumes:
+      - shared_files:/home/ft_transcendence/back-end
+    command: ["/bin/bash"]
+
+volumes:
+  shared_files:
+    driver: local
+    driver_opts:
+      type: none
+      device: ~/42/ft_transcendence/back-end
+      o: bind
+
+networks:
+  front:
+    driver: bridge
+  back:
+    driver: bridge
