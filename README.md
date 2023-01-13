@@ -18,3 +18,5 @@
 
 - WaitingList (gerer toute les requetes)
     (user1 -> user2 | type)
+
+- How to manage CSS files in components

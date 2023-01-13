@@ -5,11 +5,6 @@
     margin: 0;
 }
 
-body{
-    background: rgb(139,80,179);
-    background: linear-gradient(90deg, rgba(139,80,179,1) 0%, rgba(255,111,111,1) 50%, rgba(251,191,105,1) 100%);
-}
-
 .App {
   height: 100vh;
   display: grid;

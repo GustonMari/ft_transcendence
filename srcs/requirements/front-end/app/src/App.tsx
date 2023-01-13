@@ -1,15 +1,19 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { RegisterForm } from './components/Forms/RegisterForm';
+import { Route, Routes } from 'react-router-dom';
+import Register from './pages/register';
+import Home from './pages/home';
+import SignIn from './pages/signin';
 
 function App() {
-    // const niquetoi = "niquetoi";
-
-
+    
   return (
     <div className="App">
-        <RegisterForm/>
+        <Routes>
+            <Route path='/register' element={<Register/>}/>
+            <Route path='/home' element={<Home/>}/>
+            <Route path='/signin' element={<SignIn/>}/>
+            {/* <Route path='/' element={<App/>}/> */}
+        </Routes>
     </div>
   );
 }

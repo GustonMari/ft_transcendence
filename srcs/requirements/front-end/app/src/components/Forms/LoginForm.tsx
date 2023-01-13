@@ -8,26 +8,22 @@ import { useNavigate } from 'react-router-dom';
 
 */
 
-export default function RegisterForm() {
+export default function LoginForm() {
 
     const [login, setLogin] = useState('')
-    const [mail, setMail] = useState('')
     const [pw, setPW] = useState('')
-    const [cpw, setCPW] = useState('')
-    const [error, setError] = useState('')
 
     const navigate = useNavigate();
 
     return (
         <section>
-            <div className="register_form">
+            <div className="login_form">
                 <div className="left">
-                    <h2>Sign Up</h2>
+                    <h2>Sign In</h2>
                     <form className='form' onSubmit= { async (e) => {
                         e.preventDefault();
-                        const data = await API.post('auth/register', {
+                        const data = await API.post('auth/login', {
                             login: login,
-                            email: mail,
                             password: pw,
                         }).catch(() => {
                             // setError(data.errorMessage);
@@ -35,23 +31,18 @@ export default function RegisterForm() {
                         });
                         navigate('/home');
                     }}>
-                        <input type="text" onChange={(e) => setMail(e.target.value)} name="email" placeholder='email' />
                         <input type="text" onChange={(e) => setLogin(e.target.value)} name="login" placeholder="login" />
                         <input type="password" onChange={(e) => {
                             setPW(e.target.value);
                         }} name="password" placeholder="password" />
-                        <input type="password" onChange={(e) => {
-                            e.preventDefault
-                            setCPW(e.target.value);
-                        }} name="confirmed_password" placeholder="confirm password" />
                         
                         <br></br>
-                        <button className='button_register' type="submit">Sign In</button>
+                        <button className='button_login' type="submit">Sign In</button>
                     </form>
                 </div>
                 <div className="right">
-                    <h2>You already have an account ?</h2>
-                    <button className='btn_redirect'>Login</button>
+                    <h2>You don't have an account ?</h2>
+                    <button className='btn_redirect'>Sign Up</button>
                 </div>
             </div>
         </section>

@@ -8,7 +8,7 @@ async function bootstrap() {
     // Remove every elements not defined in the DTO
     whitelist: true,
   }));
-
+  app.enableCors();
   app.setGlobalPrefix('api');
   await app.listen(3000);
 }
