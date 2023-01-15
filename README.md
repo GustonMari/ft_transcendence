@@ -20,3 +20,6 @@
     (user1 -> user2 | type)
 
 - How to manage CSS files in components
+- Rework on PrivateRoute
+- Put hashing code and other stuff into .env file
+- Use Session instead of cookies

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import '../../styles/Forms/RegisterForm.css';
 import API from '../../api/api';
 import { useNavigate } from 'react-router-dom';
+import bcrypt from 'bcryptjs'
 
 /*
 
@@ -17,14 +18,14 @@ export default function LoginForm() {
 
     return (
         <section>
-            <div className="login_form">
+            <div className="auth_form">
                 <div className="left">
                     <h2>Sign In</h2>
                     <form className='form' onSubmit= { async (e) => {
                         e.preventDefault();
                         const data = await API.post('auth/login', {
                             login: login,
-                            password: pw,
+                            password: bcrypt.hashSync(pw, '$2a$10$CwTycUXWue0Thq9StjUM0u'), // TODO: change hashing code and put it in .env
                         }).catch(() => {
                             // setError(data.errorMessage);
                             return;
@@ -42,7 +43,9 @@ export default function LoginForm() {
                 </div>
                 <div className="right">
                     <h2>You don't have an account ?</h2>
-                    <button className='btn_redirect'>Sign Up</button>
+                    <button onClick={() => {
+                        navigate('/register');
+                    }}className='btn_redirect'>Sign Up</button>
                 </div>
             </div>
         </section>

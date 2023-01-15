@@ -1,10 +1,13 @@
 import React from 'react';
+import API from '../api/api';
+import LogOutButton from '../components/Buttons/LogOutButton';
 import './../styles/home.css';
 
 export default function Home () {
     return (
-        <div>
+        <div className='HOME'>
             <h1>Home</h1>
+            <LogOutButton/>
         </div>
     );
 }

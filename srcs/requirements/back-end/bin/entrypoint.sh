@@ -12,7 +12,7 @@ if [ "$MODE" = 'development' ]; then
 fi
 
 npx prisma generate --schema='./app/prisma/schema.prisma'
-npx prisma migrate dev --schema='./app/prisma/schema.prisma'
+npx prisma migrate dev --name first-migration --schema='./app/prisma/schema.prisma'
 
 exec "$@"
 

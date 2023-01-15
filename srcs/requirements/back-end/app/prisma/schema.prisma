@@ -11,26 +11,18 @@ datasource db {
 }
 
 model User {
-    id Int @id @default(autoincrement())
-
+    
+    id Int @id @default(autoincrement()) @unique
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-
     login String @unique
-
-    first_name String
-    last_name String
-
-    avatarUrl String?
-
+    first_name String?
+    last_name String?
+    avatar_url String?
     email String @unique
-
-    firstName String?
-    lastName String?
-
     state Boolean @default(false) // true - inactive, false - active,
-
-    lastActivity DateTime? // last activity date
+    // lastActivity DateTime? // last activity date
+    password String
 
     @@map("users")
 }

@@ -4,7 +4,7 @@ import './../styles/register.css';
 
 export default function Register () {
     return (
-        <div>
+        <div className='REGISTER'>
             <RegisterForm/>
         </div>
     );
