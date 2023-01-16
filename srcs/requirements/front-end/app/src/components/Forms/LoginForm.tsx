@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import '../../styles/Forms/RegisterForm.css';
+import '../../styles/Forms/RegisterForm.module.css';
 import API from '../../api/api';
 import { useNavigate } from 'react-router-dom';
 import bcrypt from 'bcryptjs'
