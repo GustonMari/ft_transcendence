@@ -74,9 +74,9 @@ button:hover, button:focus {
 } */
 
 .register_form {
-    max-width: fit-content;
-    /* min-width: 50%;
-    min-height: 100%px; */
+    /* max-width: fit-content;
+    min-width: 50%;
+    min-height: 100%px;
     width: 40%;
     height: auto;
     background-color: rgb(248, 248, 248);
@@ -84,22 +84,30 @@ button:hover, button:focus {
     box-shadow: 1px 3px 10px #131313;
     position: absolute;
     top: 30%;
-    left: 30%;
+    left: 30%; */
 
+    position: absolute;
+    left: 33.82%;
+    right: 33.82%;
+    top: 24.71%;
+    bottom: 21.78%;
+
+    background: #F2F0E8;
+    border-radius: 10px;
 }
 
 .left_side {
-    width: 60%;
+    /* width: 60%;
     float: left;
 
     border-radius: 10px 0px 0px 10px;
     box-shadow: 10px 0 10px 1px #888;
-    z-index: 2;
+    z-index: 2; */
 
 }
 
 .right_side {
-    width: 40%;
+    /* width: 40%;
     float: right;
     align-items: center;
     text-align: center;
@@ -108,39 +116,38 @@ button:hover, button:focus {
     position: relative;
     top: 0;
     left: 0;
-    /* width: 100%; */
     height: 300px;
     z-index: 3; 
 
     background: linear-gradient(-120deg, #26E289 0, #1a5fa2 100%, red 200%);
-
+ */
 }
 
 .right_side > h2 {
-    margin: 0.5em;
-    margin-top: 2em;
+    /* margin: 0.5em;
+    margin-top: 2em; */
 }
 
 .go_to_signin > button {
-    width: 40%;
+    /* width: 40%;
     height: 2em;
     border-radius: 3px;
     border-color: blue;
     background-color: rgb(58, 58, 253);
-    color:rgb(248, 248, 248);
+    color:rgb(248, 248, 248); */
 }
 
 .form {
-    text-align: center;
+    /* text-align: center; */
 }
 
 .form > input {
-    padding: 1em;
-    margin: 1em 0;
+    /* padding: 1em;
+    margin: 1em 0; */
 }
 
 .form > button {
-    padding: 1em;
+    /* padding: 1em;
     margin: 1em 0;
     margin-bottom: 3em;
     width: 30%;
@@ -148,11 +155,11 @@ button:hover, button:focus {
     border-color: blue;
     background-color: rgb(58, 58, 253);
     color:rgb(248, 248, 248);
-    font-weight: bold;
+    font-weight: bold; */
 }
 
 .left_side > h2 {
-    margin: 1em;
+    /* margin: 1em;
     margin-top: 2em;
-    text-align: center;
+    text-align: center; */
 }
