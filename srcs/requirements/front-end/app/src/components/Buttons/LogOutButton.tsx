@@ -3,6 +3,7 @@ import { useCookies } from "react-cookie";
 import API from "../../api/api";
 
 import '../../styles/Buttons/LogOutButton.css'
+import { Http2ServerRequest } from "http2";
 
 export default function LogOutButton() {
     const navigate = useNavigate();
@@ -16,6 +17,7 @@ export default function LogOutButton() {
                 navigate('/signin');
             }).catch((err) => {
                 console.log(err); // Do something with the error
+                
             });
         }}
       >

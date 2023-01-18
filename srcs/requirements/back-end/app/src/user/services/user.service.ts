@@ -1,21 +1,18 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 import { RegisterDTO } from 'app/src/auth/dtos/register.dto';
 import { PrismaService } from 'app/src/prisma/prisma.service';
+import { Request } from 'express'
 
 @Injectable()
 export class UserService {
 
     constructor(
-        private readonly prisma: PrismaService
+        private readonly prisma: PrismaService,
+        private readonly jwtService: JwtService
     ) { }
-    /*
-        Create user
-    */
 
-    /*
-        Get user from AuthDTO
-    */
 
     async doesUserExist(
         login: string,
@@ -65,6 +62,20 @@ export class UserService {
             });
         } catch (e) {
             throw new NotFoundException('user not found'); 
+        }
+    }
+
+    async get_me (
+        req : Request
+    ) : Promise<Partial<User>> {
+        const token = await req.cookies.access_token;
+
+        try {
+            const payload = await this.jwtService.verify(token, {publicKey: 'secret'}); // TODO: fix this error
+            console.log(payload);
+            return (payload);
+        } catch (err) {
+            throw new NotFoundException('user inside jwt token does not exist');
         }
     }
 

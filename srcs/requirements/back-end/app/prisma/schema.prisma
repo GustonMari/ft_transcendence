@@ -10,6 +10,32 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Models
+
+model FriendRequest {
+    id Int @id @default(autoincrement()) @unique
+
+    createdAt DateTime @default(now())
+
+    origin_list FriendRequestList @relation(fields: [listId], references: [id])
+    listId Int @unique
+
+    id_user Int
+
+    @@map("friendRequest")
+} 
+
+model FriendRequestList {
+    id Int @id @default(autoincrement()) @unique
+    
+    author User @relation(fields: [authorId], references: [id])
+    authorId Int @unique
+
+    list FriendRequest[] 
+
+    @@map("friendRequestList")
+}
+
 model User {
     
     id Int @id @default(autoincrement()) @unique
@@ -24,6 +50,11 @@ model User {
     // lastActivity DateTime? // last activity date
     password String
 
+    friend_requests FriendRequestList? @relation(fields: [friend_req_id], references: [])
+    friend_req_id Int @unique
+
     @@map("users")
 }
+
+
 

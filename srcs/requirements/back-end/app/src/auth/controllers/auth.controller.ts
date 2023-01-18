@@ -61,8 +61,8 @@ export class AuthController {
         @Req() req: Request,
         @Res() res: Response
     ) {
-        console.log(req);
-        // await this.userService.setUserOnline(user.login, true);
+        const user = await this.userService.get_me(req)
+        await this.userService.setUserOnline(user.login, false);
         res.clearCookie('access_token');
         res.send({message: 'logged out'});
         // res.send({message: req});
