@@ -2,66 +2,55 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
 
 // Models
 
 model FriendRequest {
-  id Int @id @unique @default(autoincrement())
+    id Int @id @unique @default(autoincrement())
 
-  createdAt DateTime @default(now())
+    created_at DateTime @default(now())
 
-  origin_list FriendRequestList @relation(fields: [list_id], references: [id_frl])
-  list_id     Int               @unique
+    from User @relation("fri_req_outgoing", fields: [from_id], references: [id])
+    from_id Int
 
-  id_user Int
+    to User @relation("fri_req_incoming", fields: [to_id], references: [id])
+    to_id Int
 
-  @@map("friend_request")
-}
-
-model FriendRequestList {
-  id_frl Int @id @unique @default(autoincrement())
-
-  author    User @relation(fields: [author_id], references: [id])
-  author_id Int  @unique
-
-  list FriendRequest[]
-
-  @@map("friend_request_list")
+    @@map("friend_request")
 }
 
 model User {
-  id         Int      @id @unique @default(autoincrement())
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  login      String   @unique
-  first_name String?
-  last_name  String?
-  avatar_url String?
-  email      String   @unique
-  state      Boolean  @default(false) // true - inactive, false - active,
-  // lastActivity DateTime? // last activity date
-  password   String   @default(cuid())
+    id         Int      @id @unique @default(autoincrement())
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+    login      String   @unique
+    first_name String?
+    last_name  String?
+    avatar_url String?
+    email      String   @unique
+    state      Boolean  @default(false) // true - inactive, false - active,
+    // lastActivity DateTime? // last activity date
+    password   String   @default(cuid())
 
-  friend_requests FriendRequestList?
+    fri_req_incoming FriendRequest[]    @relation("fri_req_incoming")
+    fri_req_outgoing FriendRequest[]    @relation("fri_req_outgoing")
 
-  
-
-  @@map("users")
+    @@map("users")
 }
 
 enum Role {
-  ADMIN
-  USER
+    ADMIN
+    USER
 }
 
 enum State {
-  ONLINE
-  OFFLINE
+    ONLINE
+    OFFLINE
 }

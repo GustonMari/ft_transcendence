@@ -5,6 +5,7 @@ import { RegisterDTO } from 'app/src/auth/dtos/register.dto';
 import TokenPayloadDTO from 'app/src/auth/dtos/token_payload.dto';
 import { PrismaService } from 'app/src/prisma/prisma.service';
 import { Request } from 'express'
+import ResUserDTO from '../dtos/user.res.dto';
 
 @Injectable()
 export class UserService {
@@ -43,11 +44,11 @@ export class UserService {
                 login: dto.login,
                 email: dto.email,
                 password: dto.password,
-                friend_requests: {
-                    create: {
+                // friend_requests: {
+                //     create: {
 
-                    }
-                }
+                //     }
+                // }
             }, 
         });
         console.log(user);
@@ -89,4 +90,31 @@ export class UserService {
         }
     }
 
+    async get_USER_by_USER_id (
+        id: number
+    ) : Promise<ResUserDTO | undefined> {
+        const user = await this.prisma.user.findUnique({
+            where: {
+                id: id
+            }
+        });
+        if (!user) {
+            throw new NotFoundException('user not found');
+        }
+        return (user);
+    }
+
+    async get_USER_by_USER_login (
+        login: string
+    ) : Promise<ResUserDTO | undefined> {
+        const user = await this.prisma.user.findUnique({
+            where: {
+                login: login
+            }
+        });
+        if (!user) {
+            throw new NotFoundException('user not found');
+        }
+        return (user);
+    }
 }
