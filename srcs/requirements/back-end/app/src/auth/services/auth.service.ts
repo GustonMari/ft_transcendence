@@ -1,9 +1,10 @@
 import { UserService } from './../../user/services/user.service';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, NotFoundException } from '@nestjs/common';
 import { RegisterDTO } from '../dtos/register.dto';
 import { User } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 import LoginDTO from './../dtos/login.dto';
+import TokenPayloadDTO from '../dtos/token_payload.dto';
 
 @Injectable()
 export class AuthService {
@@ -12,10 +13,9 @@ export class AuthService {
         private readonly jwtService: JwtService,
     ) { }
 
-    async register (
+    async register(
         dto: RegisterDTO
-    ) : Promise< User > {
-
+    ): Promise<TokenPayloadDTO> {
         const alreadyRegistered = await this.userService.doesUserExist(
             dto.login,
             dto.email
@@ -28,20 +28,20 @@ export class AuthService {
         }
     }
 
-    async login (
+    async login(
         dto: LoginDTO
-    ) : Promise< User > {
+    ): Promise<TokenPayloadDTO> {
         const user = await this.userService.doesUserExist(
             dto.login,
         );
-        if (!user) { throw new UnauthorizedException('invalid login'); }
+        if (!user) { throw new NotFoundException('invalid login'); }
         if (user.password !== dto.password) { throw new UnauthorizedException('invalid password'); }
         else { return (user); }
     }
 
-    sign_token (
-        user: User
-    ) : string {
+    sign_token(
+        user: TokenPayloadDTO
+    ): string {
         return this.jwtService.sign(user);
     }
 

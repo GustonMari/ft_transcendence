@@ -20,5 +20,8 @@ RUN apt-get update -y
 RUN npm install -g npm@latest
 RUN npm install -g react-app-rewired
 
-ENTRYPOINT [ "/bin/bash", "/usr/bin/entrypoint.sh" ]
+RUN rm -f ./package.json 
+RUN ln -s ./app/package.json ./package.json
+
+RUN npm install
 

@@ -4,68 +4,92 @@ import LoginDTO from './../dtos/login.dto';
 import {
     Body,
     Controller,
-    Delete,
     Get,
     Logger,
     Post,
-    Req,
     Res,
-    UnauthorizedException
+    UseGuards,
 } from '@nestjs/common';
 import {
     Response,
-    Request    
 } from 'express';
 import { AuthService } from '../services/auth.service';
+import TokenPayloadDTO from '../dtos/token_payload.dto';
+import { GetUser } from '../decorators/get_user.decorator';
+import {
+    ApiBadRequestResponse,
+    ApiBearerAuth,
+    ApiBody,
+    ApiNotFoundResponse,
+    ApiOkResponse,
+    ApiUnauthorizedResponse
+} from '@nestjs/swagger';
+import { LocalGuard } from '../guards/auth.guard';
 
 @Controller('auth')
 export class AuthController {
-    constructor (
+    constructor(
         private authService: AuthService,
         private userService: UserService
     ) { }
 
+    @ApiOkResponse({ status: 200, description: 'User has been registered' })
+    @ApiUnauthorizedResponse({ status: 401, description: 'Login value has already been found in the DB' })
+    @ApiBadRequestResponse({ status: 400, description: 'Body does not have the values expected by the DTO' })
+    @ApiBody({ type: RegisterDTO })
+
     @Post('/register')
-    async register (
+    async register(
         @Body() dto: RegisterDTO,
         @Res() res: Response
     ) {
-        const user = await this.authService.register(dto);
+        const payload: TokenPayloadDTO = await this.authService.register(dto);
+
         Logger.log(dto.login + ' is registered');
-        delete user.password;
-        const access_token = await this.authService.sign_token(user);
-        this.userService.setUserOnline(user.login, true);
+        const access_token = this.authService.sign_token(payload);
+        this.userService.setUserOnline(payload.login, true);
 
         res.cookie('access_token', access_token);
-        res.send({access_token: access_token});
-        
+        res.send({ access_token: access_token });
     }
 
-    @Post('/login')
-    async login (
+
+    @ApiOkResponse({ status: 200, description: 'User logged in' })
+    @ApiNotFoundResponse({ status: 404, description: 'Login value does not exist in the DB' })
+    @ApiUnauthorizedResponse({ status: 401, description: 'Password value does not match the one in the DB' })
+    @ApiBadRequestResponse({ status: 400, description: 'Body does not have the values expected by the DTO' })
+    @ApiBody({ type: LoginDTO })
+
+    @Post('/login') // TODO: change the path with signin
+    async login(
         @Body() dto: LoginDTO,
         @Res() res: Response
     ) {
-        const user = await this.authService.login(dto);
-        delete user.password;
+        const payload: TokenPayloadDTO = await this.authService.login(dto);
+
         Logger.log(dto.login + ' is logged in');
-        const access_token = await this.authService.sign_token(user);
-        this.userService.setUserOnline(user.login, true);
-        
+        const access_token = this.authService.sign_token(payload);
+        this.userService.setUserOnline(payload.login, true);
+
         res.cookie('access_token', access_token);
-        res.send({access_token: access_token});
+        res.send({ access_token: access_token });
     }
 
-    @Delete('/logout')
-    async logout (
-        @Req() req: Request,
+
+    @ApiOkResponse({ status: 200, description: 'User logged out' })
+    @ApiNotFoundResponse({ status: 404, description: 'User store in jwt token does not exist' })
+    @ApiBearerAuth()
+    @ApiBody({ type: TokenPayloadDTO })
+
+    @Get('/logout')
+    @UseGuards(LocalGuard)
+    async logout(
+        @GetUser() user: TokenPayloadDTO,
         @Res() res: Response
     ) {
-        const user = await this.userService.get_me(req)
         await this.userService.setUserOnline(user.login, false);
         res.clearCookie('access_token');
-        res.send({message: 'logged out'});
-        // res.send({message: req});
+        res.send({ message: 'logged out' });
     }
 
 }

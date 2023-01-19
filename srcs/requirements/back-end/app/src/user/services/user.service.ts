@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 import { RegisterDTO } from 'app/src/auth/dtos/register.dto';
+import TokenPayloadDTO from 'app/src/auth/dtos/token_payload.dto';
 import { PrismaService } from 'app/src/prisma/prisma.service';
 import { Request } from 'express'
 
@@ -28,7 +29,7 @@ export class UserService {
                         email: mail,
                     }
                 ]
-            }
+            },
         });
         if (found) { return (found); }
         return (undefined);
@@ -41,9 +42,15 @@ export class UserService {
             data: {
                 login: dto.login,
                 email: dto.email,
-                password: dto.password
-            }
+                password: dto.password,
+                friend_requests: {
+                    create: {
+
+                    }
+                }
+            }, 
         });
+        console.log(user);
         return user;
     }
 
@@ -67,9 +74,12 @@ export class UserService {
 
     async get_me (
         req : Request
-    ) : Promise<Partial<User>> {
+    ) : Promise<TokenPayloadDTO | undefined> {
         const token = await req.cookies.access_token;
 
+        if (!token) {
+            return (undefined);
+        }
         try {
             const payload = await this.jwtService.verify(token, {publicKey: 'secret'}); // TODO: fix this error
             console.log(payload);
