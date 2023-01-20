@@ -18,6 +18,7 @@ import {
     ApiUnauthorizedResponse
 } from "@nestjs/swagger";
 import TokenPayloadDTO from "app/src/auth/dtos/token_payload.dto";
+import UserRO from "../ros/user.full.ro";
 
 @ApiBearerAuth()
 @ApiUnauthorizedResponse({ status: 401, description: "Client does not have access_token or the access_token is invalid" })
@@ -35,12 +36,12 @@ export class UserController {
     @ApiNotFoundResponse({ status: 404, description: "Access token sent by client does not match to any user in the DB" })
     @ApiOkResponse({ status: 200, description: "Return the current user" })
 
-    @Get("me")
-    async get_me(
-        @GetUser() user: TokenPayloadDTO,
-    ) {
-        return (user);
-    }
+    // @Get("me")
+    // async get_me(
+    //     @GetUser() user: TokenPayloadDTO,
+    // ) : Promise <UserRO>{
+    //     return (new UserRO(user));
+    // }
 
 
     @ApiBadRequestResponse({ status: 400, description: "Invalid ID parameter" })

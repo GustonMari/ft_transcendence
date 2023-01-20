@@ -33,7 +33,9 @@ export class FriendRequestService {
                 to: true,
             }
         });
-        console.log(requests);
-        return requests;
+
+        const resp: RelationDTO[] = requests;
+        return resp;
+        // return requests;
     }
 }

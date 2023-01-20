@@ -23,7 +23,7 @@ export default function LoginForm() {
                     <h2>Sign In</h2>
                     <form className='form' onSubmit= { async (e) => {
                         e.preventDefault();
-                        const data = await API.post('auth/login', {
+                        const data = await API.post('auth/signin', {
                             login: login,
                             password: bcrypt.hashSync(pw, '$2a$10$CwTycUXWue0Thq9StjUM0u'), // TODO: change hashing code and put it in .env
                         }).catch(() => {

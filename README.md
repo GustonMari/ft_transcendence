@@ -73,3 +73,8 @@ $gradient-radial: radial-gradient(#8d6b94ff, #b185a7ff, #c3a29eff, #e8dbc5ff, #f
 - Rework on PrivateRoute
 - Put hashing code and other stuff into .env file
 - Use Session instead of cookies
+
+## TODO List
+
+[ ] rework get_user
+[ ] use ro for response obj

@@ -12,8 +12,6 @@ export class GetUserMiddleware implements NestMiddleware {
     async use(req: Request, res: Response, next: NextFunction) {
         const payload : TokenPayloadDTO = await this.userService.get_me(req);
         req.body.ft_authentification_payload = payload;
-        if (payload === undefined)
-            return (res.status(401).send({ error: 'Unauthorized' }));
         next();
     }
 }

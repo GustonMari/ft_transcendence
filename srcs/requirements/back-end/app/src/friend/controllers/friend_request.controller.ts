@@ -30,6 +30,7 @@ export class FriendRequestController {
     @ApiOkResponse({ status: 200, description: "Friend request sent" })
     @ApiNotAcceptableResponse({ status: 406, description: "The IDs are similaires" })
     
+    //TODO: Check if the request does not already exist
     @Put('add/:id')
     async make_friend_request_by_USER_id(
         @Param("id", ParseIntPipe) id: number,
@@ -45,7 +46,7 @@ export class FriendRequestController {
     async get_outgoing_friend_requests(
         @GetUser("id") my_id: number,
     ) {
-        const requests: RelationDTO[] = await this.friendRequestService.get_outgoing(my_id);
+        const requests = await this.friendRequestService.get_outgoing(my_id);
         return requests;
     }
 }

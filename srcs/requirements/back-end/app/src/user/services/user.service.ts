@@ -44,14 +44,9 @@ export class UserService {
                 login: dto.login,
                 email: dto.email,
                 password: dto.password,
-                // friend_requests: {
-                //     create: {
-
-                //     }
-                // }
             }, 
         });
-        console.log(user);
+        // console.log(user);
         return user;
     }
 
@@ -60,7 +55,7 @@ export class UserService {
         online: boolean
     ) {
         try {
-            const user = await this.prisma.user.update({
+            await this.prisma.user.update({
                 where: {
                     login: login
                 },
@@ -68,7 +63,7 @@ export class UserService {
                     state: online
                 }
             });
-        } catch (e) {
+        } catch (err) {
             throw new NotFoundException('user not found'); 
         }
     }
@@ -83,7 +78,7 @@ export class UserService {
         }
         try {
             const payload = await this.jwtService.verify(token, {publicKey: 'secret'}); // TODO: fix this error
-            console.log(payload);
+            // console.log(payload);
             return (payload);
         } catch (err) {
             throw new NotFoundException('user inside jwt token does not exist');

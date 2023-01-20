@@ -9,6 +9,8 @@ import {
     Post,
     Res,
     UseGuards,
+    UsePipes,
+    ValidationPipe,
 } from '@nestjs/common';
 import {
     Response,
@@ -25,6 +27,7 @@ import {
     ApiUnauthorizedResponse
 } from '@nestjs/swagger';
 import { LocalGuard } from '../guards/auth.guard';
+import { LoginROPipe } from '../validators/token.validator';
 
 @Controller('auth')
 export class AuthController {
@@ -43,7 +46,7 @@ export class AuthController {
         @Body() dto: RegisterDTO,
         @Res() res: Response
     ) {
-        const payload: TokenPayloadDTO = await this.authService.register(dto);
+        const payload: TokenPayloadDTO = new TokenPayloadDTO(await this.authService.register(dto));
 
         Logger.log(dto.login + ' is registered');
         const access_token = this.authService.sign_token(payload);
@@ -60,13 +63,14 @@ export class AuthController {
     @ApiBadRequestResponse({ status: 400, description: 'Body does not have the values expected by the DTO' })
     @ApiBody({ type: LoginDTO })
 
-    @Post('/login') // TODO: change the path with signin
+    @Post('/signin')
     async login(
         @Body() dto: LoginDTO,
         @Res() res: Response
     ) {
-        const payload: TokenPayloadDTO = await this.authService.login(dto);
+        const payload: TokenPayloadDTO = new TokenPayloadDTO(await this.authService.login(dto));
 
+        console.log(payload);
         Logger.log(dto.login + ' is logged in');
         const access_token = this.authService.sign_token(payload);
         this.userService.setUserOnline(payload.login, true);
