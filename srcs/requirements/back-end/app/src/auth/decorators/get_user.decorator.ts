@@ -1,8 +1,8 @@
-import TokenPayloadDTO from 'app/src/auth/dtos/token_payload.dto';
+import TokenPayloadRO from 'app/src/auth/ros/token_payload.ro';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
-export const GetUser = createParamDecorator(
-  (data: string | null, ctx: ExecutionContext) : TokenPayloadDTO => {
+export const GetMe = createParamDecorator(
+  (data: string | null, ctx: ExecutionContext) : TokenPayloadRO => {
     const request = ctx.switchToHttp().getRequest();
 
     if (data) {

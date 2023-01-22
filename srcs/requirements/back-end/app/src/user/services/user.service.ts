@@ -2,14 +2,13 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 import { RegisterDTO } from 'app/src/auth/dtos/register.dto';
-import TokenPayloadDTO from 'app/src/auth/dtos/token_payload.dto';
+import TokenPayloadRO from 'app/src/auth/ros/token_payload.ro';
 import { PrismaService } from 'app/src/prisma/prisma.service';
 import { Request } from 'express'
 import ResUserDTO from '../dtos/user.res.dto';
 
 @Injectable()
 export class UserService {
-
     constructor(
         private readonly prisma: PrismaService,
         private readonly jwtService: JwtService
@@ -32,7 +31,9 @@ export class UserService {
                 ]
             },
         });
-        if (found) { return (found); }
+        if (found) {
+            return (found);
+        }
         return (undefined);
     }
 
@@ -44,50 +45,32 @@ export class UserService {
                 login: dto.login,
                 email: dto.email,
                 password: dto.password,
-            }, 
+            },
         });
-        // console.log(user);
         return user;
     }
 
     async setUserOnline(
-        login: string,
+        id: number,
         online: boolean
     ) {
         try {
             await this.prisma.user.update({
                 where: {
-                    login: login
+                    id: id
                 },
                 data: {
                     state: online
                 }
             });
         } catch (err) {
-            throw new NotFoundException('user not found'); 
+            throw new NotFoundException('user not found');
         }
     }
 
-    async get_me (
-        req : Request
-    ) : Promise<TokenPayloadDTO | undefined> {
-        const token = await req.cookies.access_token;
-
-        if (!token) {
-            return (undefined);
-        }
-        try {
-            const payload = await this.jwtService.verify(token, {publicKey: 'secret'}); // TODO: fix this error
-            // console.log(payload);
-            return (payload);
-        } catch (err) {
-            throw new NotFoundException('user inside jwt token does not exist');
-        }
-    }
-
-    async get_USER_by_USER_id (
+    async get_USER_by_USER_id(
         id: number
-    ) : Promise<ResUserDTO | undefined> {
+    ): Promise<User> {
         const user = await this.prisma.user.findUnique({
             where: {
                 id: id
@@ -99,9 +82,9 @@ export class UserService {
         return (user);
     }
 
-    async get_USER_by_USER_login (
+    async get_USER_by_USER_login(
         login: string
-    ) : Promise<ResUserDTO | undefined> {
+    ): Promise<User> {
         const user = await this.prisma.user.findUnique({
             where: {
                 login: login

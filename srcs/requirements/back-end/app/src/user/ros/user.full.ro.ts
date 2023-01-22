@@ -1,25 +1,43 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { User } from "@prisma/client";
+import { Expose } from "class-transformer";
 
-export default class UserRO {
+
+export class UserRO {
+    
+    @Expose()
+    @ApiProperty({ description: 'User id', type: 'number' })
     id: number;
-    created_at: Date;
-    updated_at: Date;
-    login: string;
-    first_name: string;
-    last_name: string;
-    avatar_url: string;
-    email: string;
-    state: boolean;
 
-    constructor(obj: User) {
-        this.id = obj.id;
-        this.created_at = obj.created_at;
-        this.updated_at = obj.updated_at;
-        this.login = obj.login;
-        this.first_name = obj.first_name;
-        this.last_name = obj.last_name;
-        this.avatar_url = obj.avatar_url;
-        this.email = obj.email;
-        this.state = obj.state;
-    }
+    @Expose()
+    @ApiProperty({ description: 'Account creation date', type: 'date' })
+    created_at: Date;
+
+    @Expose()
+    @ApiProperty({ description: 'Account last update date', type: 'date' })
+    updated_at: Date;
+    
+    @Expose()
+    @ApiProperty({ description: 'User login', type: 'string' })
+    login: string;
+
+    @Expose()
+    @ApiProperty({ description: 'User first name', type: 'string' })
+    first_name: string;
+
+    @Expose()
+    @ApiProperty({ description: 'User last name', type: 'string' })
+    last_name: string;
+
+    @Expose()
+    @ApiProperty({ description: 'User avatar url', type: 'string' })
+    avatar_url: string;
+
+    @Expose()
+    @ApiProperty({ description: 'User email', type: 'string' })
+    email: string;
+
+    @Expose()
+    @ApiProperty({ description: 'User password', type: 'string' })
+    state: boolean;
 }

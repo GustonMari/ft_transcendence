@@ -4,7 +4,8 @@ import { RegisterDTO } from '../dtos/register.dto';
 import { User } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 import LoginDTO from './../dtos/login.dto';
-import TokenPayloadDTO from '../dtos/token_payload.dto';
+import TokenPayloadRO from '../ros/token_payload.ro';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class AuthService {
@@ -15,7 +16,7 @@ export class AuthService {
 
     async register(
         dto: RegisterDTO
-    ): Promise<TokenPayloadDTO> {
+    ): Promise<User> {
         const alreadyRegistered = await this.userService.doesUserExist(
             dto.login,
             dto.email
@@ -30,7 +31,7 @@ export class AuthService {
 
     async login(
         dto: LoginDTO
-    ): Promise<TokenPayloadDTO> {
+    ): Promise<TokenPayloadRO> {
         const user = await this.userService.doesUserExist(
             dto.login,
         );
@@ -40,9 +41,22 @@ export class AuthService {
     }
 
     sign_token(
-        user: TokenPayloadDTO
+        user: TokenPayloadRO
     ): string {
-        return this.jwtService.sign(user);
+        const plain_user = JSON.parse(JSON.stringify(user));
+        return this.jwtService.sign(plain_user);
+    }
+
+    verify_token (
+        token: string
+    ) : TokenPayloadRO {
+        const payload_raw = this.jwtService.verify(token, {
+            secret: 'secret',
+        });
+        const payload: TokenPayloadRO = plainToClass(TokenPayloadRO, payload_raw, {
+            excludeExtraneousValues: true,
+        });
+        return (payload);
     }
 
 }

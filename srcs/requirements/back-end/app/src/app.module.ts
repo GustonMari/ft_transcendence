@@ -6,18 +6,25 @@ import { AuthController } from './auth/controllers/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { FriendModule } from './friend/friend.module';
-import { GetUserMiddleware } from './auth/middlewares/get_user.middleware';
+import { GetMeMiddleware } from './auth/middlewares/get_user.middleware';
 
 @Module({
-  imports: [PrismaModule, AuthModule, UserModule, FriendModule],
-  providers: [PrismaService],
+    imports: [
+        PrismaModule,
+        AuthModule,
+        UserModule,
+        FriendModule
+    ],
+    providers: [
+        PrismaService
+    ],
 })
 
 export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
         consumer
-            .apply(GetUserMiddleware)
+            .apply(GetMeMiddleware)
             .forRoutes("*")
     }
-    
+
 }

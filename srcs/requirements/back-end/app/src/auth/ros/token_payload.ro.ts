@@ -1,25 +1,21 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiExtraModels, ApiProperty, ApiResponse, ApiTags, getSchemaPath } from "@nestjs/swagger";
+import { Expose } from "class-transformer";
 import { IsNotEmpty } from "class-validator";
 
-export default class TokenPayloadDTO {
+export default class TokenPayloadRO {
 
     @IsNotEmpty()
+    @Expose()
     @ApiProperty({ description: 'User id', type: 'string' })
     id: number;
 
     @IsNotEmpty()
+    @Expose()
     @ApiProperty({ description: 'User login', type: 'string' })
     login: string;
 
     @IsNotEmpty()
+    @Expose()
     @ApiProperty({ description: 'User password', type: 'string' })
     email: string;
-
-    constructor(
-        obj: any
-    ) {
-        this.id = obj.id;
-        this.email = obj.email;
-        this.login = obj.login;
-    }
 }

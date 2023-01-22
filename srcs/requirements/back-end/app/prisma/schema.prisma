@@ -12,15 +12,17 @@ datasource db {
 
 // Models
 
-model FriendRequest {
+model Relation {
     id Int @id @unique @default(autoincrement())
 
     created_at DateTime @default(now())
 
-    from User @relation("fri_req_outgoing", fields: [from_id], references: [id])
+    state RELATION_STATE 
+
+    from User @relation("outgoing", fields: [from_id], references: [id])
     from_id Int
 
-    to User @relation("fri_req_incoming", fields: [to_id], references: [id])
+    to User @relation("incoming", fields: [to_id], references: [id])
     to_id Int
 
     @@map("friend_request")
@@ -39,8 +41,8 @@ model User {
     // lastActivity DateTime? // last activity date
     password   String   @default(cuid())
 
-    fri_req_incoming FriendRequest[]    @relation("fri_req_incoming")
-    fri_req_outgoing FriendRequest[]    @relation("fri_req_outgoing")
+    incoming Relation[]    @relation("incoming")
+    outgoing Relation[]    @relation("outgoing")
 
     @@map("users")
 }
@@ -50,7 +52,8 @@ enum Role {
     USER
 }
 
-enum State {
-    ONLINE
-    OFFLINE
+enum RELATION_STATE {
+    PENDING
+    ACCEPTED
+    BLOCKED
 }
