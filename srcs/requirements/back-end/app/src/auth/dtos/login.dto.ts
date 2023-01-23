@@ -11,6 +11,5 @@ export default class LoginDTO {
 
     @IsNotEmpty()
     @ApiProperty({ type: String, description: 'User password' })
-    @Exclude()
     password: string;
 }

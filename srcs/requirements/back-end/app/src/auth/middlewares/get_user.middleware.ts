@@ -16,7 +16,7 @@ export class GetMeMiddleware implements NestMiddleware {
         const token: string = await req.cookies.access_token;
 
         if (token) {
-            const payload : TokenPayloadRO = await this.authService.verify_token(token)
+            const payload : TokenPayloadRO = await this.authService.verifyToken(token)
             req.body.ft_authentification_payload = payload;
         }
         next();

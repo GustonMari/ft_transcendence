@@ -2,6 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 import { RegisterDTO } from 'app/src/auth/dtos/register.dto';
+import {
+    CreateUserOptions,
+    FindUserOptions
+} from 'app/src/auth/interfaces';
 import TokenPayloadRO from 'app/src/auth/ros/token_payload.ro';
 import { PrismaService } from 'app/src/prisma/prisma.service';
 import { Request } from 'express'
@@ -45,14 +49,27 @@ export class UserService {
         return (undefined);
     }
 
+    async findUniqueUser (
+        opt: FindUserOptions
+    ): Promise<User | undefined> {
+        const found = await this.prisma.user.findUnique({
+            where: {
+                login: opt.login,
+                email: opt.email,
+                id: opt.id
+            },
+        });
+        return (found ? found : undefined);
+    }
+
     async createUser(
-        dto: RegisterDTO
+        opt: CreateUserOptions
     ): Promise<User> {
         const user = await this.prisma.user.create({
             data: {
-                login: dto.login,
-                email: dto.email,
-                password: dto.password,
+                login: opt.login,
+                email: opt.email,
+                password: opt.password,
             },
         });
         return user;
