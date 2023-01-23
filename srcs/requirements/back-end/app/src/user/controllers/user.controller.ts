@@ -113,5 +113,4 @@ export class UserController {
         }
         return (await this.userService.get_USER_by_USER_login(login));
     }
-
 }

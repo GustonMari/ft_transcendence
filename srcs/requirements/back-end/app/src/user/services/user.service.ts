@@ -14,6 +14,14 @@ export class UserService {
         private readonly jwtService: JwtService
     ) { }
 
+    
+    /*
+
+        TODO: things to do here ->
+        - rework all function with interfaces
+
+    */
+
 
     async doesUserExist(
         login: string,

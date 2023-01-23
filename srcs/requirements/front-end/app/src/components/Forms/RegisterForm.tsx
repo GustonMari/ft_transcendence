@@ -5,10 +5,6 @@ import API from "../../api/api";
 import { useNavigate } from "react-router-dom";
 import bcrypt from "bcryptjs";
 
-/*
-
-*/
-
 export default function RegisterForm() {
   const [login, setLogin] = useState("");
   const [mail, setMail] = useState("");

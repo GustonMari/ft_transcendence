@@ -130,5 +130,4 @@ export class AuthController {
         res.clearCookie('access_token');
         res.send({ message: 'logged out' });
     }
-
 }

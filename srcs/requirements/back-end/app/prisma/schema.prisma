@@ -54,6 +54,6 @@ enum Role {
 
 enum RELATION_STATE {
     PENDING
-    ACCEPTED
+    FRIEND
     BLOCKED
 }
