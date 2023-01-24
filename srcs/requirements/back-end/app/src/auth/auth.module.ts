@@ -1,10 +1,9 @@
-import { AuthStrategy } from './strategies/auth.strategy';
+import { AuthStrategy } from './strategies/access.strategy';
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from '../user/user.module';
 import { AuthController } from './controllers/auth.controller';
 import { AuthService } from './services/auth.service';
-import { GetMeMiddleware } from './middlewares/get_user.middleware';
 
 @Module({
     providers: [

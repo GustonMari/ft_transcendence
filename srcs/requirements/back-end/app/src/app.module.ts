@@ -6,7 +6,6 @@ import { AuthController } from './auth/controllers/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { FriendModule } from './relation/relation.module';
-import { GetMeMiddleware } from './auth/middlewares/get_user.middleware';
 
 @Module({
     imports: [
@@ -20,11 +19,4 @@ import { GetMeMiddleware } from './auth/middlewares/get_user.middleware';
     ],
 })
 
-export class AppModule implements NestModule {
-    configure(consumer: MiddlewareConsumer) {
-        consumer
-            .apply(GetMeMiddleware)
-            .forRoutes("*")
-    }
-
-}
+export class AppModule { }

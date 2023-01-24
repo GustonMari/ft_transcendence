@@ -10,7 +10,7 @@ import {
     ApiUnauthorizedResponse
 } from '@nestjs/swagger';
 import { GetMe } from 'app/src/auth/decorators/get_user.decorator';
-import { LocalGuard } from 'app/src/auth/guards/auth.guard';
+import { AccessGuard } from 'app/src/auth/guards/access.guard';
 import { TransformPlainToInstance } from 'class-transformer';
 import { RelationRO } from '../ros/relation.ro';
 import { RelationService } from '../services/relation.service';
@@ -19,7 +19,7 @@ import { RelationService } from '../services/relation.service';
 @ApiUnauthorizedResponse({ status: 401, description: "Client does not have access_token or the access_token is invalid" })
 
 @Controller('relation/friend')
-@UseGuards(LocalGuard)
+@UseGuards(AccessGuard)
 export class FriendRelationController {
 
     constructor(

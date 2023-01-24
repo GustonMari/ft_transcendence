@@ -1,15 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
-import { RegisterDTO } from 'app/src/auth/dtos/register.dto';
 import {
     CreateUserOptions,
-    FindUserOptions
+    FindUserOptions,
+    UpdateUserOptions
 } from 'app/src/auth/interfaces';
-import TokenPayloadRO from 'app/src/auth/ros/token_payload.ro';
 import { PrismaService } from 'app/src/prisma/prisma.service';
-import { Request } from 'express'
-import ResUserDTO from '../dtos/user.res.dto';
 
 @Injectable()
 export class UserService {
@@ -60,6 +57,25 @@ export class UserService {
             },
         });
         return (found ? found : undefined);
+    }
+
+    async updateUser (
+        opt: FindUserOptions,
+        data: UpdateUserOptions,
+    ) {
+        await this.prisma.user.update({
+            where: {
+                login: opt.login,
+                email: opt.email,
+                id: opt.id
+            },
+            data: {
+                avatar_url: data.avatar_url,
+                email: data.email,
+                password: data.password,
+                rt: data.rt,
+            },
+        });
     }
 
     async createUser(

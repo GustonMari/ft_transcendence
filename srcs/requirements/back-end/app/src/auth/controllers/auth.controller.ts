@@ -1,5 +1,5 @@
-import { HttpStatus } from '@nestjs/common';
-import { UserService } from 'app/src/user/services/user.service';
+import { UserRO } from './../../user/ros/user.full.ro';
+import { HttpStatus, Req } from '@nestjs/common';
 import { RegisterDTO } from './../dtos/register.dto';
 import LoginDTO from './../dtos/login.dto';
 import {
@@ -14,9 +14,9 @@ import {
 } from '@nestjs/common';
 import {
     Response,
+    Request,
 } from 'express';
 import { AuthService } from '../services/auth.service';
-import { GetMe } from '../decorators/get_user.decorator';
 import {
     ApiBadRequestResponse,
     ApiBearerAuth,
@@ -27,7 +27,12 @@ import {
     ApiOperation,
     ApiUnauthorizedResponse
 } from '@nestjs/swagger';
-import { LocalGuard } from '../guards/auth.guard';
+import { AccessGuard } from '../guards/access.guard';
+import {
+    GetCredentials,
+    GetMe
+} from '../decorators';
+import { Tokens } from '../interfaces';
 
 @Controller('auth')
 export class AuthController {
@@ -38,7 +43,7 @@ export class AuthController {
     /* ------------------------------------------------------------------------------ */
 
     @ApiOkResponse({
-        status: 200,
+        status: 201,
         description: 'User has been registered'
     })
     @ApiUnauthorizedResponse({
@@ -89,6 +94,7 @@ export class AuthController {
     @ApiBody({ type: LoginDTO })
 
     @Post('/signin')
+    @HttpCode(HttpStatus.OK)
     async login(
         @Body() dto: LoginDTO,
         @Res() res: Response
@@ -100,6 +106,7 @@ export class AuthController {
         res.send({ access_token: access_token });
     }
 
+    /* ------------------------------------------------------------------------------ */
 
     @ApiOkResponse({
         status: 200,
@@ -116,7 +123,7 @@ export class AuthController {
     @ApiBearerAuth()
 
     @Get('/logout')
-    @UseGuards(LocalGuard)
+    @UseGuards(AccessGuard)
     async logout(
         @GetMe() id: number,
         @Res() res: Response
@@ -125,5 +132,21 @@ export class AuthController {
         res.clearCookie('access_token');
         res.clearCookie('refresh_token');
         res.send({ message: 'logged out' });
+    }
+
+    /* ------------------------------------------------------------------------------ */
+
+    @Get('/refresh')
+    @UseGuards(AccessGuard)
+    async refresh(
+        @GetMe() user: UserRO,
+        @GetCredentials() credentials: Tokens,
+        @Res() res: Response
+    ) {
+        console.log(user);
+        const {access_token, refresh_token} = await this.authService.refresh(user, credentials);
+        res.cookie('access_token', access_token);
+        res.cookie('refresh_token', refresh_token);
+        res.send({ access_token: access_token });
     }
 }

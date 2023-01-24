@@ -6,9 +6,9 @@ export const GetMe = createParamDecorator(
     const request = ctx.switchToHttp().getRequest();
 
     if (data) {
-        return request?.body?.ft_authentification_payload[data];
+        return request?.user[data];
     } else {
-        return request?.body?.ft_authentification_payload;
+        return request?.user;
     }
   },
 );

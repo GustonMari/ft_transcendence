@@ -1,3 +1,4 @@
+import { UserRO } from './../../user/ros/user.full.ro';
 import { UserService } from './../../user/services/user.service';
 import {
     Injectable,
@@ -45,6 +46,12 @@ export class AuthService {
                 excludeExtraneousValues: true
             });
         const tokens: Tokens = await this.signTokens(user_token);
+        await this.userService.updateUser({
+            id: user_raw.id,
+        },
+        {
+            rt: await argon.hash(tokens.refresh_token),
+        });
         this.userService.setUserOnline(user_raw.id, true);
         return (tokens);
     }
@@ -67,6 +74,12 @@ export class AuthService {
                 excludeExtraneousValues: true
             });
         const tokens: Tokens = await this.signTokens(user_token);
+        await this.userService.updateUser({
+            id: user_raw.id,
+        },
+        {
+            rt: await argon.hash(tokens.refresh_token),
+        });
         this.userService.setUserOnline(user_raw.id, true);
         return (tokens);
     }
@@ -74,7 +87,32 @@ export class AuthService {
     async logout(
         id: number,
     ): Promise<void> {
-        await this.userService.setUserOnline(id, false); 
+        await this.userService.setUserOnline(id, false);
+    }
+
+    async refresh(
+        user: UserRO,
+        cred: Tokens,
+    ): Promise<Tokens> {
+
+        if (!cred.refresh_token) throw new UnauthorizedException('Invalid token');
+
+        const f = await this.userService.findUniqueUser({
+            id: user.id,
+        })
+        if (!f) throw new NotFoundException('User not found');
+
+        const m = await argon.verify(f.rt, cred.refresh_token);
+        if (!m) throw new UnauthorizedException('Invalid token');
+
+        const tokens: Tokens = await this.signTokens(user);
+        await this.userService.updateUser({
+            id: user.id,
+        },
+        {
+            rt: await argon.hash(tokens.refresh_token),
+        });
+        return (tokens);
     }
 
     async signTokens(

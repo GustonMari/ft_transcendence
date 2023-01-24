@@ -1,5 +1,5 @@
 import { UserService } from 'app/src/user/services/user.service';
-import { LocalGuard } from '../../auth/guards/auth.guard';
+import { AccessGuard } from '../../auth/guards/access.guard';
 import {
     BadRequestException,
     Controller,
@@ -35,7 +35,7 @@ import TokenPayloadRO from 'app/src/auth/ros/token_payload.ro';
 @ApiUnauthorizedResponse({ status: 401, description: "Client does not have access_token or the access_token is invalid" })
 
 @Controller('relation/friend/request')
-@UseGuards(LocalGuard)
+@UseGuards(AccessGuard)
 export class RelationFRController {
 
     constructor(

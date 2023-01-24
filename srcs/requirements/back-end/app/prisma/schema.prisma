@@ -40,6 +40,7 @@ model User {
     state      Boolean  @default(false) // true - inactive, false - active,
     // lastActivity DateTime? // last activity date
     password   String   @default(cuid())
+    rt         String?
 
     incoming Relation[]    @relation("incoming")
     outgoing Relation[]    @relation("outgoing")

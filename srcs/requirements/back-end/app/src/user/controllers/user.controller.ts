@@ -10,7 +10,7 @@ import {
     Query,
     UseGuards,
 } from "@nestjs/common";
-import { LocalGuard } from "app/src/auth/guards/auth.guard";
+import { AccessGuard } from "app/src/auth/guards/access.guard";
 import { UserService } from "../services/user.service";
 import { GetMe } from "app/src/auth/decorators/get_user.decorator";
 import {
@@ -30,7 +30,7 @@ import { UserRO } from "../ros/user.full.ro";
 })
 
 @Controller("user")
-@UseGuards(LocalGuard)
+@UseGuards(AccessGuard)
 export class UserController {
 
     constructor(
