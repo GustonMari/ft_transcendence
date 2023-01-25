@@ -33,6 +33,7 @@ import {
     GetMe
 } from '../decorators';
 import { Tokens } from '../interfaces';
+import { RefreshGuard } from '../guards/refresh.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -138,7 +139,7 @@ export class AuthController {
     /* ------------------------------------------------------------------------------ */
 
     @Get('/refresh')
-    @UseGuards(AccessGuard)
+    @UseGuards(RefreshGuard)
     async refresh(
         @GetMe() user: UserRO,
         @GetCredentials() credentials: Tokens,

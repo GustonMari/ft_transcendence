@@ -11,7 +11,9 @@ import {
 } from '@nestjs/swagger';
 import { GetMe } from 'app/src/auth/decorators/get_user.decorator';
 import { AccessGuard } from 'app/src/auth/guards/access.guard';
-import { TransformPlainToInstance } from 'class-transformer';
+import { instanceToInstance, TransformPlainToInstance } from 'class-transformer';
+import { RelationToFriendROConvertor } from '../convertors/relation_to_friendro.convertor';
+import { FriendRO } from '../ros/friend.ro';
 import { RelationRO } from '../ros/relation.ro';
 import { RelationService } from '../services/relation.service';
 
@@ -38,13 +40,13 @@ export class FriendRelationController {
     })
 
     @Get('get/list')
-    @TransformPlainToInstance(RelationRO, {
+    @TransformPlainToInstance(FriendRO, {
         excludeExtraneousValues: true,
     })
     async get_friend_list(
         @GetMe("id") id: number,
-    ): Promise<RelationRO[] | undefined> {
-        const ret = [
+    ): Promise<FriendRO[] | undefined> {
+        return [
             ...await this.relation.get_many_relations({
                 from_id: id,
                 state: "FRIEND",
@@ -61,9 +63,13 @@ export class FriendRelationController {
                     to: false
                 }
             })
-        ];
-
-        return ret;
+        ].map((relation: any) => {
+            return {
+                id: relation.id,
+                created_at: relation.created_at,
+                user: (relation.from_id === id ? relation.to : relation.from),
+            };
+        });
     }
 
 

@@ -28,7 +28,6 @@ export default function RegisterForm() {
                 password: pw,
             }, () => {
                 navigate("/home");
-                // successFunc();
             }, (err: any) => {
                 console.log(err);
             });

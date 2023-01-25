@@ -29,12 +29,7 @@ export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
     @TransformPlainToInstance(UserRO, {
         excludeExtraneousValues: true,
     })
-    async validate(payload: RegisterDTO): Promise<UserRO> {
-        
-        const user_raw = await this.userService.findUniqueUser({
-            login: payload.login,
-        });
-        if (!user_raw) throw new UnauthorizedException("Invalid credentials");
-        return user_raw;
+    async validate(payload: any): Promise<UserRO> {
+        return payload;
     }
 }

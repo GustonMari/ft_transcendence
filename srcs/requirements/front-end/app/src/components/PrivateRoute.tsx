@@ -4,7 +4,8 @@ import API from "../api/api";
 
 export default function PrivateRoute ({children} : any) {
 
-    const [logged, setLogged] = React.useState(true);
+    const [logged, setLogged] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(true);
 
     useLayoutEffect(() => {
         API.checkAuth(
@@ -12,11 +13,13 @@ export default function PrivateRoute ({children} : any) {
                 setLogged(true);
             },
             () => {
-                setLogged(false);
+                setIsLoading(false);
             }   
         );
     }, []);
 
-    return logged ? children : <Navigate to={'/signin'}></Navigate>;
+    return (
+        (logged ? children : (isLoading ? 'loading...' : <Navigate to={'/signin'}></Navigate>))
+    );
 
 }; 

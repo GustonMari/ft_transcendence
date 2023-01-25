@@ -9,7 +9,7 @@ import { Request } from 'express';
 import { TransformPlainToInstance } from 'class-transformer';
 
 @Injectable()
-export class AuthStrategy extends PassportStrategy(Strategy, 'access') {
+export class AccessStrategy extends PassportStrategy(Strategy, 'access') {
 
     constructor(
         private readonly userService: UserService
