@@ -7,11 +7,14 @@ export default function PrivateRoute ({children} : any) {
     const [logged, setLogged] = React.useState(true);
 
     useLayoutEffect(() => {
-        API.get("user/me").then((res) => {
-            setLogged(true);
-        }).catch((err) => {
-            setLogged(false);
-        });
+        API.checkAuth(
+            () => {
+                setLogged(true);
+            },
+            () => {
+                setLogged(false);
+            }   
+        );
     }, []);
 
     return logged ? children : <Navigate to={'/signin'}></Navigate>;

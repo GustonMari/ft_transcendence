@@ -13,12 +13,14 @@ export default function LogOutButton() {
       <button
         className="log-out-button"
         onClick={() => {
-            API.delete('/auth/logout').then((res) => {
-                navigate('/signin');
-            }).catch((err) => {
-                console.log(err); // Do something with the error
-                
-            });
+            API.logOut(
+                () => {
+                    navigate('/signin');
+                },
+                () => {
+                    console.log('error');
+                }
+            );
         }}
       >
         Log out

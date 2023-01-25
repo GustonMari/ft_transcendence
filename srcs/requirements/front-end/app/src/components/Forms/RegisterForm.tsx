@@ -22,15 +22,16 @@ export default function RegisterForm() {
           className={styles.form}
           onSubmit={async (e) => {
             e.preventDefault();
-            const data = await API.post("auth/register", {
-              login: login,
-              email: mail,
-              password: bcrypt.hashSync(pw, "$2a$10$CwTycUXWue0Thq9StjUM0u"), // TODO: change hashing code and put it in .env
-            }).catch(() => {
-              // setError(data.errorMessage);
-              return;
+            const data = await API.register({
+                login: login,
+                email: mail,
+                password: pw,
+            }, () => {
+                navigate("/home");
+                // successFunc();
+            }, (err: any) => {
+                console.log(err);
             });
-            navigate("/home");
           }}
         >
           <input

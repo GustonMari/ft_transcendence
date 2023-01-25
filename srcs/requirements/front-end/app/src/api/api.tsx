@@ -1,13 +1,56 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from "axios";
+import { RegisterOptions, SignInOptions } from "../interfaces";
+import APP from "./app";
 
-export default axios.create({
-    baseURL: 'http://localhost:3000/api/',
-    
-    // BUG Why is this not working if the value is true ?
-    withCredentials: true,
-    headers: {
-        'Access-Control-Allow-Origin': 'http://localhost:3000/api/',
-        'Access-Control-Allow-Credentials': 'true',
+export default class API {
+
+  static async signIn(
+    opt: SignInOptions,
+    successFunc: () => void,
+    errorFunc: (err: any) => void
+  ) {
+    try {
+      await APP.post("/auth/signin", opt);
+      successFunc();
+    } catch (err) {
+      errorFunc(err);
     }
-    
-});
+  }
+
+  static async register(
+    opt: RegisterOptions,
+    successFunc: () => void,
+    errorFunc: (err: any) => void
+  ) {
+    try {
+      await APP.post("/auth/register", opt);
+      successFunc();
+    } catch (err) {
+      errorFunc(err);
+    }
+  }
+
+    static async checkAuth(
+        successFunc: () => void,
+        errorFunc: (err: any) => void
+    ) {
+        try {
+            await APP.get("/user/me");
+            successFunc();
+        } catch (err) {
+            errorFunc(err);
+        }
+    }
+
+    static async logOut(
+        successFunc: () => void,
+        errorFunc: (err: any) => void
+    ) {
+        try {
+            await APP.delete("/auth/logout");
+            successFunc();
+        } catch (err) {
+            errorFunc(err);
+        }
+    }
+}

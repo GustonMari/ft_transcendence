@@ -1,5 +1,5 @@
 import { UserRO } from './../../user/ros/user.full.ro';
-import { HttpStatus, Req } from '@nestjs/common';
+import { Delete, HttpStatus, Req } from '@nestjs/common';
 import { RegisterDTO } from './../dtos/register.dto';
 import LoginDTO from './../dtos/login.dto';
 import {
@@ -109,8 +109,8 @@ export class AuthController {
     /* ------------------------------------------------------------------------------ */
 
     @ApiOkResponse({
-        status: 200,
-        description: 'User logged out'
+        status: 205,
+        description: 'User logged out and cookies deleted'
     })
     @ApiNotFoundResponse({
         status: 404,
@@ -120,9 +120,10 @@ export class AuthController {
         summary: 'Sign out a user',
     })
     @ApiCookieAuth("access_token")
+    @HttpCode(HttpStatus.RESET_CONTENT)
     @ApiBearerAuth()
 
-    @Get('/logout')
+    @Delete('/logout')
     @UseGuards(AccessGuard)
     async logout(
         @GetMe() id: number,
