@@ -1,5 +1,8 @@
 import { UserRO } from './../../user/ros/user.full.ro';
-import { Delete, HttpStatus, Req } from '@nestjs/common';
+import {
+    Delete,
+    HttpStatus
+} from '@nestjs/common';
 import { RegisterDTO } from './../dtos/register.dto';
 import LoginDTO from './../dtos/login.dto';
 import {
@@ -70,8 +73,16 @@ export class AuthController {
     ) {
         const { access_token, refresh_token } = await this.authService.register(dto);
         Logger.log(dto.login + ' is registered');
-        res.cookie('access_token', access_token);
-        res.cookie('refresh_token', refresh_token);
+        res.cookie('access_token', access_token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none'
+        });
+        res.cookie('refresh_token', refresh_token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none'
+        });
         res.send({ access_token: access_token });
     }
 
@@ -102,8 +113,16 @@ export class AuthController {
     ) {
         const { access_token, refresh_token } = await this.authService.login(dto);
         Logger.log(dto.login + ' is logged in');
-        res.cookie('access_token', access_token);
-        res.cookie('refresh_token', refresh_token);
+        res.cookie('access_token', access_token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none'
+        });
+        res.cookie('refresh_token', refresh_token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none'
+        });
         res.send({ access_token: access_token });
     }
 
@@ -127,7 +146,7 @@ export class AuthController {
     @Delete('/logout')
     @UseGuards(AccessGuard)
     async logout(
-        @GetMe() id: number,
+        @GetMe("id") id: number,
         @Res() res: Response
     ) {
         await this.authService.logout(id);
@@ -147,8 +166,16 @@ export class AuthController {
     ) {
         console.log(user);
         const {access_token, refresh_token} = await this.authService.refresh(user, credentials);
-        res.cookie('access_token', access_token);
-        res.cookie('refresh_token', refresh_token);
+        res.cookie('access_token', access_token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none'
+        });
+        res.cookie('refresh_token', refresh_token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none'
+        });
         res.send({ access_token: access_token });
     }
 }

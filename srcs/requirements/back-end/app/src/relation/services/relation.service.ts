@@ -103,9 +103,14 @@ export class RelationService {
         const relations = {...await this.get_unique_relation({
             id: relation_id,
             from_id: user_id,
+            include: {
+                from: false,
+                to: false,
+            }
         }), ...await this.get_unique_relation({
             id: relation_id,
             to_id: user_id,
+            
         })};
         return (!!relations[0]);
     }

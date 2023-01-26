@@ -1,5 +1,4 @@
 import { UserRO } from '../../user/ros/user.full.ro';
-import { User } from '@prisma/client';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from "@nestjs/passport";
 import { UserService } from 'app/src/user/services/user.service';
@@ -24,6 +23,8 @@ export class AccessStrategy extends PassportStrategy(Strategy, 'access') {
             ]),
         });
     }
+
+    
 
     @TransformPlainToInstance(UserRO, {
         excludeExtraneousValues: true,

@@ -95,7 +95,7 @@ export class UserService {
         id: number,
         online: boolean
     ) {
-        try {
+        // try {
             await this.prisma.user.update({
                 where: {
                     id: id
@@ -104,9 +104,9 @@ export class UserService {
                     state: online
                 }
             });
-        } catch (err) {
-            throw new NotFoundException('user not found');
-        }
+        // } catch (err) {
+        //     throw new NotFoundException('user not found');
+        // }
     }
 
     async get_USER_by_USER_id(

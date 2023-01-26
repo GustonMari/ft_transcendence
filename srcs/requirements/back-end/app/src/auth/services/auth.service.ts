@@ -87,6 +87,7 @@ export class AuthService {
     async logout(
         id: number,
     ): Promise<void> {
+        console.log(id);
         await this.userService.setUserOnline(id, false);
     }
 
@@ -103,7 +104,7 @@ export class AuthService {
         if (!f) throw new NotFoundException('User not found');
 
         const m = await argon.verify(f.rt, cred.refresh_token);
-        if (!m) throw new UnauthorizedException('Invalid token');
+        if (!m) throw new UnauthorizedException('Invalid token, value mismatch');
 
         const tokens: Tokens = await this.signTokens(user);
         await this.userService.updateUser({
@@ -124,7 +125,7 @@ export class AuthService {
         const [at, rt] = [
             this.jwtService.sign(plain_user, {
                 secret: 'secret',
-                expiresIn: '60s',
+                expiresIn: '10s',
             }),
             this.jwtService.sign(plain_user, {
                 secret: 'secret',

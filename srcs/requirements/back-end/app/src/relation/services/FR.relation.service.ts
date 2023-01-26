@@ -1,7 +1,9 @@
-import { BadRequestException, HttpCode, HttpException, Injectable, Logger } from "@nestjs/common";
+import { RelationRO } from './../ros/relation.ro';
+import { BadRequestException, Get, HttpCode, HttpException, Injectable, Logger } from "@nestjs/common";
 import { Relation } from "@prisma/client";
 import { PrismaService } from "app/src/prisma/prisma.service";
 import { RelationService } from "./relation.service";
+import { TransformPlainToInstance } from 'class-transformer';
 
 @Injectable()
 export class RelationRequestService {
@@ -74,6 +76,7 @@ export class RelationRequestService {
         from: number,
         req_id: number
     ) {
+        console.log("here");
         if (await this.relation.check_relation_match_id(from, req_id)) {
             await this.relation.update_relation(
                 req_id,
@@ -84,22 +87,52 @@ export class RelationRequestService {
         }
     }
 
+    @TransformPlainToInstance(RelationRO, {
+        excludeExtraneousValues: true,
+    })
     async get_incoming (
         user_id: number
-    ) : Promise<Relation[] | undefined>{
-        return (await this.relation.get_many_relations({
-            to_id: user_id,
-            state: "PENDING"
-        }));
+    ) : Promise<RelationRO[] | undefined>{
+        return [
+            ...await this.relation.get_many_relations({
+                to_id: user_id,
+                state: "PENDING",
+                include: {
+                    from: true,
+                    to: false,
+                }
+            })
+        ].map((relation: any) => {
+            return {
+                id: relation.id,
+                created_at: relation.created_at,
+                user: relation.from,
+            }
+        });
     }
 
+    @TransformPlainToInstance(RelationRO, {
+        excludeExtraneousValues: true,
+    })
     async get_outgoing (
         user_id: number
-    ) : Promise<Relation[] | undefined>{
-        return (await this.relation.get_many_relations({
-            from_id: user_id,
-            state: "PENDING"
-        }));
+    ) : Promise<RelationRO[] | undefined>{
+        return [
+            ...await this.relation.get_many_relations({
+                from_id: user_id,
+                state: "PENDING",
+                include: {
+                    from: true,
+                    to: false,
+                }
+            })
+        ].map((relation: any) => {
+            return {
+                id: relation.id,
+                created_at: relation.created_at,
+                user: relation.from,
+            }
+        });
     }
 
 }

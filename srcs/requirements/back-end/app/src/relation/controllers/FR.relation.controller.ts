@@ -174,9 +174,9 @@ export class RelationFRController {
     @TransformPlainToInstance(RelationRO, {
         excludeExtraneousValues: true,
     })
-    async get_incoming (
+    async get_incoming(
         @GetMe("id") id: number,
-    ) {
+    ): Promise<RelationRO[]> {
         return await this.requestService.get_incoming(id);
     }
 
@@ -195,145 +195,11 @@ export class RelationFRController {
     @TransformPlainToInstance(RelationRO, {
         excludeExtraneousValues: true,
     })
-    async get_outgoing (
+    async get_outgoing(
         @GetMe("id") id: number,
-    ) {
+    ): Promise<RelationRO[]>{
         return await this.requestService.get_outgoing(id);
     }
 
-    /* ------------------------------------------------------------------------------ */
-
-    // @ApiOkResponse({
-    //     status: 200,
-    //     description: "Friend request list",
-    //     type: [RelationRO]
-    // })
-    // @ApiOperation({
-    //     summary: "Return every friend request outgoing"
-    // })
-
-    // @Get('get/outgoing')
-    // @TransformPlainToInstance(RelationRO, {
-    //     excludeExtraneousValues: true,
-    // })
-    // async get_outgoing_friend_requests(
-    //     @GetMe("id") my_id: number,
-    // ): Promise<RelationRO[]> {
-    //     const requests_raw = await this.friendRequestService.get_request_outgoing(my_id);
-    //     return requests_raw;
-    // }
-
-
-    // @ApiOkResponse({
-    //     status: 200,
-    //     description: "Friend request list",
-    //     type: [RelationRO]
-    // })
-    // @ApiOperation({
-    //     summary: "Return every friend request outgoing matching with the id"
-    // })
-
-    // @Get('get/outgoing/:id')
-    // @TransformPlainToInstance(RelationRO, {
-    //     excludeExtraneousValues: true,
-    // })
-    // async get_outgoing_friend_requests_with_id(
-    //     @GetMe("id") my_id: number,
-    //     @Param("id", ParseIntPipe) to: number,
-    // ): Promise<RelationRO[]> {
-    //     const requests_raw = await this.friendRequestService.get_request_outgoing(my_id, to);
-    //     return requests_raw;
-    // }
-
-
-    // @ApiOkResponse({
-    //     status: 200,
-    //     description: "Friend request list",
-    //     type: [RelationRO]
-    // })
-    // @ApiOperation({
-    //     summary: "Return every friend request outgoing matching with the username"
-    // })
-
-    // @Get('get/outgoing/:username')
-    // @TransformPlainToInstance(RelationRO, {
-    //     excludeExtraneousValues: true,
-    // })
-    // async get_outgoing_friend_requests_with_login(
-    //     @GetMe("id") my_id: number,
-    //     @Param("username") username: string,
-    // ): Promise<RelationRO[]> {
-    //     const { id } = await this.userService.get_USER_by_USER_login(username);
-    //     const requests_raw = await this.friendRequestService.get_request_outgoing(my_id, id);
-    //     return requests_raw;
-    // }
-
-
-    // @ApiOkResponse({
-    //     status: 200,
-    //     description: "Friend request list",
-    //     type: [RelationRO]
-    // })
-    // @ApiOperation({
-    //     summary: "Return every friend request incoming"
-    // })
-
-    // @Get('get/incoming')
-    // @TransformPlainToInstance(RelationRO, {
-    //     excludeExtraneousValues: true,
-    // })
-    // async get_incoming_friend_requests(
-    //     @GetMe("id") my_id: number,
-    // ): Promise<RelationRO[]> {
-    //     const requests_raw = await this.friendRequestService.get_request_incoming(my_id);
-    //     return requests_raw;
-    // }
-
-
-    // @ApiOkResponse({
-    //     status: 200,
-    //     description: "Friend request list",
-    //     type: [RelationRO]
-    // })
-    // @ApiOperation({
-    //     summary: "Return every friend request incomming matching with the id"
-    // })
-
-    // @Get('get/incoming/:id')
-    // @TransformPlainToInstance(RelationRO, {
-    //     excludeExtraneousValues: true,
-    // })
-    // async get_incoming_friend_requests_with_id(
-    //     @GetMe("id") my_id: number,
-    //     @Param("id", ParseIntPipe) to: number,
-    // ): Promise<RelationRO[]> {
-    //     const requests_raw = await this.friendRequestService.get_request_incoming(my_id, to);
-    //     return requests_raw;
-    // }
-
-
-    // @ApiOkResponse({
-    //     status: 200,
-    //     description: "Friend request list",
-    //     type: [RelationRO]
-    // })
-    // @ApiOperation({
-    //     summary: "Return every friend request outgoing matching with the username"
-    // })
-
-    // @Get('get/incoming/:username')
-    // @TransformPlainToInstance(RelationRO, {
-    //     excludeExtraneousValues: true,
-    // })
-    // async get_incoming_friend_requests_with_login(
-    //     @GetMe("id") my_id: number,
-    //     @Param("username") username: string,
-    // ): Promise<RelationRO[]> {
-    //     const { id } = await this.userService.get_USER_by_USER_login(username);
-    //     const requests_raw = await this.friendRequestService.get_request_incoming(my_id, id);
-    //     return requests_raw;
-    // }
-
-
-
+  
 }

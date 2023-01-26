@@ -1,36 +1,25 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { UserRO } from '../../user/ros/user.full.ro';
+import { ApiProperty } from "@nestjs/swagger";
+import { UserRO } from "app/src/user/ros/user.full.ro";
 
 export class RelationRO {
 
     @Expose()
     @ApiProperty({
-        description: 'Relation id', type: 'number'
+        description: 'friend id', type: 'number'
     })
     id: number;
 
     @Expose()
-    @ApiProperty({ description: 'Relation state', type: 'enum' })
-    state: string;
-
-    @Expose()
     @ApiProperty({
-        description: 'Relation creation date', type: 'number'
+        description: 'creation date', type: 'Date'
     })
     created_at: Date;
 
     @Expose()
-    @Type(() => UserRO)
     @ApiProperty({
-        description: 'User who created the relation', type: 'UserRO'
+        description: 'friend', type: 'UserRO'
     })
-    from?: UserRO;
-
-    @Expose()
     @Type(() => UserRO)
-    @ApiProperty({
-        description: 'User who received the relation', type: 'UserRO'
-    })
-    to?: UserRO;
+    user: UserRO;
 }
