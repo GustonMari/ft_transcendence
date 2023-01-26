@@ -1,4 +1,3 @@
-import { UserRO } from './../../user/ros/user.full.ro';
 import {
     Delete,
     HttpStatus
@@ -153,29 +152,5 @@ export class AuthController {
         res.clearCookie('access_token');
         res.clearCookie('refresh_token');
         res.send({ message: 'logged out' });
-    }
-
-    /* ------------------------------------------------------------------------------ */
-
-    @Get('/refresh')
-    @UseGuards(RefreshGuard)
-    async refresh(
-        @GetMe() user: UserRO,
-        @GetCredentials() credentials: Tokens,
-        @Res() res: Response
-    ) {
-        console.log(user);
-        const {access_token, refresh_token} = await this.authService.refresh(user, credentials);
-        res.cookie('access_token', access_token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'none'
-        });
-        res.cookie('refresh_token', refresh_token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'none'
-        });
-        res.send({ access_token: access_token });
     }
 }

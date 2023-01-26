@@ -91,31 +91,6 @@ export class AuthService {
         await this.userService.setUserOnline(id, false);
     }
 
-    async refresh(
-        user: UserRO,
-        cred: Tokens,
-    ): Promise<Tokens> {
-
-        if (!cred.refresh_token) throw new UnauthorizedException('Invalid token');
-
-        const f = await this.userService.findUniqueUser({
-            id: user.id,
-        })
-        if (!f) throw new NotFoundException('User not found');
-
-        const m = await argon.verify(f.rt, cred.refresh_token);
-        if (!m) throw new UnauthorizedException('Invalid token, value mismatch');
-
-        const tokens: Tokens = await this.signTokens(user);
-        await this.userService.updateUser({
-            id: user.id,
-        },
-        {
-            rt: await argon.hash(tokens.refresh_token),
-        });
-        return (tokens);
-    }
-
     async signTokens(
         user: TokenPayloadRO
     ): Promise<Tokens> {
@@ -125,7 +100,7 @@ export class AuthService {
         const [at, rt] = [
             this.jwtService.sign(plain_user, {
                 secret: 'secret',
-                expiresIn: '10s',
+                expiresIn: '239d',
             }),
             this.jwtService.sign(plain_user, {
                 secret: 'secret',
