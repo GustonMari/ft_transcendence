@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { JwtModule } from '@nestjs/jwt';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { PrismaService } from './prisma/prisma.service';
@@ -6,6 +7,7 @@ import { AuthController } from './auth/controllers/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { FriendModule } from './relation/relation.module';
+import { ChatGateway } from './chat/gateways/chat.gateway';
 
 @Module({
     imports: [
@@ -15,7 +17,8 @@ import { FriendModule } from './relation/relation.module';
         FriendModule
     ],
     providers: [
-        PrismaService
+        PrismaService,
+		ChatGateway
     ],
 })
 

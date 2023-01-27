@@ -24,13 +24,16 @@
     "test:e2e": "jest --watch --no-cache --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@nest-middlewares/cors": "^7.0.1",
     "@nestjs/axios": "^1.0.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/jwt": "^10.0.1",
     "@nestjs/passport": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/platform-socket.io": "^9.2.1",
     "@nestjs/swagger": "^6.1.4",
+    "@nestjs/websockets": "^9.2.1",
     "@prisma/client": "^4.8.1",
     "@types/passport-jwt": "^3.0.7",
     "argon": "^2.0.21",
