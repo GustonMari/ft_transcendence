@@ -26,7 +26,7 @@ import {
     ApiUnauthorizedResponse
 } from '@nestjs/swagger';
 import { GetMe } from 'app/src/auth/decorators/get_user.decorator';
-import { RelationRequestService } from '../services/FR.relation.service';
+import { RelationRequestService } from '../services/request.relation.service';
 import { RelationRO } from '../ros/relation.ro';
 import { TransformPlainToInstance } from 'class-transformer';
 import TokenPayloadRO from 'app/src/auth/ros/token_payload.ro';
@@ -47,9 +47,7 @@ export class RelationFRController {
         TODO: Function to create ->
         - return incoming friend request (all, id, username)
         - return outgoing friend request (all, id, username)
-
     */
-
 
     @ApiOkResponse({
         status: 200,
@@ -69,11 +67,11 @@ export class RelationFRController {
     })
 
     @Put('add/id/:id')
-    async make_request_id(
+    async AddRequestId(
         @Param("id", ParseIntPipe) id: number,
         @GetMe("id") my_id: number,
     ) {
-        await this.requestService.make_request_id(my_id, id);
+        await this.requestService.addRequestId(my_id, id);
         Logger.log("New request from " + my_id + " to " + id);
     }
 
@@ -97,11 +95,11 @@ export class RelationFRController {
     })
 
     @Put('add/username/:username')
-    async make_request_username(
+    async AddRequestUsername(
         @Param("username") username: string,
         @GetMe() user: TokenPayloadRO,
     ) {
-        await this.requestService.make_request_username(user.id, username);
+        await this.requestService.AddRequestUsername(user.id, username);
         Logger.log("New request from " + user.login + " to " + username);
     }
 
@@ -125,11 +123,11 @@ export class RelationFRController {
     })
 
     @Delete('remove/id/:id')
-    async remove_request_id(
+    async RemoveId(
         @Param("id", ParseIntPipe) req_id: number,
         @GetMe("id") id: number,
     ) {
-        await this.requestService.remove_request_id(id, req_id);
+        await this.requestService.removeId(id, req_id);
     }
 
     /* ------------------------------------------------------------------------------ */
@@ -152,11 +150,11 @@ export class RelationFRController {
     })
 
     @Patch('accept/id/:id')
-    async accept_request_id(
+    async AcceptId(
         @Param("id", ParseIntPipe) req_id: number,
         @GetMe("id") id: number,
     ) {
-        await this.requestService.accept_request_id(id, req_id);
+        await this.requestService.AcceptId(id, req_id);
     }
 
     /* ------------------------------------------------------------------------------ */
@@ -174,10 +172,10 @@ export class RelationFRController {
     @TransformPlainToInstance(RelationRO, {
         excludeExtraneousValues: true,
     })
-    async get_incoming(
+    async getIncoming(
         @GetMe("id") id: number,
     ): Promise<RelationRO[]> {
-        return await this.requestService.get_incoming(id);
+        return await this.requestService.getIncoming(id);
     }
 
     /* ------------------------------------------------------------------------------ */
@@ -195,10 +193,10 @@ export class RelationFRController {
     @TransformPlainToInstance(RelationRO, {
         excludeExtraneousValues: true,
     })
-    async get_outgoing(
+    async getOutgoing(
         @GetMe("id") id: number,
     ): Promise<RelationRO[]>{
-        return await this.requestService.get_outgoing(id);
+        return await this.requestService.getOutgoing(id);
     }
 
   

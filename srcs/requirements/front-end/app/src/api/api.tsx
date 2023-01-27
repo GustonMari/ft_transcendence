@@ -53,24 +53,12 @@ export default class API {
             successFunc();
         } catch (err) {
             const error = err as AxiosError;
-            if (axios.isAxiosError(err) && error.code !== "401") {
-                try {
-                    await APP.get("/auth/refresh")
-                    successFunc();
-                } catch (err2) {
-                    const error_2 = err2 as AxiosError;
-                    if (axios.isAxiosError(err)) {
-                        errorFunc({
-                            code: error_2.code,
-                            message: error_2.message,           
-                        });
-                    };
-                }
+            if (axios.isAxiosError(err)) {
+                errorFunc({
+                    code: error.code,
+                    message: error.message,           
+                });
             };
-            errorFunc({
-                code: error.code,
-                message: error.message,           
-            });
         }
     }
 
@@ -153,6 +141,25 @@ export default class API {
     ) {
         try {
             const res = await APP.patch("/relation/friend/request/accept/id/" + rid);
+            successFunc(res.data);
+        } catch (err) {
+            const error = err as AxiosError;
+            if (axios.isAxiosError(err)) {
+                errorFunc({
+                    code: error.code,
+                    message: error.message,           
+                });
+            };
+        }
+    }
+
+    static async removeRequest(
+        rid: number,
+        successFunc: (list: any) => void,
+        errorFunc: (err: ApiError) => void
+    ) {
+        try {
+            const res = await APP.delete("/relation/friend/request/remove/id/" + rid);
             successFunc(res.data);
         } catch (err) {
             const error = err as AxiosError;

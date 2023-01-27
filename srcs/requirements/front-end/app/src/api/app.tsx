@@ -9,26 +9,35 @@ export const APP = axios.create({
   },
 });
 
+const unrefreshable = [
+    "/auth/signin",
+    "/auth/register",
+    "/auth/refresh"
+];
+
 APP.interceptors.response.use(
-    (res) => {
-      return res;
-    },
-    async (err) => {
-      const originalConfig = err.config;
-  
-      if ((originalConfig.url !== "/auth/signin" && originalConfig.url !== "/auth/register") && err.response) {
-        if (err.response.status === 401 && !originalConfig._retry) {
-          originalConfig._retry = true;
-  
-          try {
-            const rs = await APP.get("/auth/refresh");  
-            return APP(originalConfig);
-          } catch (_error) {
-            return Promise.reject(_error);
-          }
+  (res) => {
+    return res;
+  },
+  async (err) => {
+    const originalConfig = err.config;
+
+    if (
+      !unrefreshable.includes(originalConfig.url) &&
+      err.response
+    ) {
+      if (err.response.status === 401 && !originalConfig._retry) {
+        originalConfig._retry = true;
+
+        try {
+          const rs = await APP.get("/auth/refresh");
+          return APP(originalConfig);
+        } catch (_error) {
+          return Promise.reject(_error);
         }
       }
-  
-      return Promise.reject(err);
     }
-  );
+
+    return Promise.reject(err);
+  }
+);

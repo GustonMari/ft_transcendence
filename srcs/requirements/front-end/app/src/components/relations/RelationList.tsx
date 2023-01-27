@@ -1,4 +1,4 @@
-export const List = (props: any) => {
+export const RelationList = (props: any) => {
   return (
     <>
       <div className="container">
@@ -7,7 +7,7 @@ export const List = (props: any) => {
         </div>
         <div className="list">
           <ul>
-            {props.relations.map((friend: any) => {
+            {/* {props.relations.map((friend: any) => {
               console.log("friend", friend);
               // if (friend.user === undefined) return ;
               return (
@@ -21,7 +21,7 @@ export const List = (props: any) => {
                   }
                 </div>
               );
-            })}
+            })} */}
           </ul>
         </div>
       </div>

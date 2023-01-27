@@ -1,0 +1,9 @@
+.home {
+    background-image: url("../../static/wave.svg");
+    width: 120%;
+    height: 120%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* z-index: -1; */
+}

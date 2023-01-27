@@ -18,7 +18,16 @@ export const RequestElem = (props: any) => {
                 });
             }
             }>Accept</button>
-            <button className="refuse_relation">Refuse</button>
+            <button className="refuse_relation" onClick={(e) => {
+                console.log("accept");
+                e.preventDefault();
+                API.removeRequest(props.id, () => {
+                    console.log("accepted");
+                }, (err: any) => {
+                    console.log(err);
+                });
+            }
+            }>Refuse</button>
 
 
           </li>

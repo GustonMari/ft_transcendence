@@ -1,15 +1,12 @@
-import React from 'react';
-import API from '../api/api';
-import LogOutButton from '../components/buttons/LogOutButton';
-import FriendList from '../components/friends/FriendList';
-import './../styles/home.css';
+import { NavBar } from '../components/NavBar';
+import styles from './../styles/home.module.css';
+import { ProfileComponent } from '../components/ProfileComponent';
 
 export default function Home () {
     return (
-        <div className='HOME'>
-            <h1>Home</h1>
-            <LogOutButton/>
-            <FriendList/>
+        <div className={styles.home}>
+            <NavBar img="../../static/logo192.png"/>
+            <ProfileComponent/>
         </div>
     );
 }

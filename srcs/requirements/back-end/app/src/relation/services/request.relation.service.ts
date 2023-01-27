@@ -1,4 +1,4 @@
-import { RelationRO } from './../ros/relation.ro';
+import { RelationRO } from '../ros/relation.ro';
 import { BadRequestException, Get, HttpCode, HttpException, Injectable, Logger } from "@nestjs/common";
 import { Relation } from "@prisma/client";
 import { PrismaService } from "app/src/prisma/prisma.service";
@@ -13,7 +13,7 @@ export class RelationRequestService {
     ) { }
 
 
-    async make_request_id(
+    async addRequestId(
         from: number,
         to: number
     ) {
@@ -44,7 +44,7 @@ export class RelationRequestService {
         }
     }
 
-    async make_request_username (
+    async AddRequestUsername (
         from: number,
         to: string
     ) {
@@ -56,14 +56,14 @@ export class RelationRequestService {
         if (!user) {
             throw new BadRequestException("User not found");
         }
-        await this.make_request_id(from, user.id);
+        await this.addRequestId(from, user.id);
     }
 
-    async remove_request_id (
+    async removeId (
         from: number,
         req_id: number
     ) {
-        if (await this.relation.check_relation_match_id(from, req_id)) {
+        if (await this.relation.validateRelation(from, req_id)) {
             await this.relation.delete_relation({
                 id: req_id
             })
@@ -72,12 +72,13 @@ export class RelationRequestService {
         }
     }
 
-    async accept_request_id (
+    async AcceptId (
         from: number,
         req_id: number
     ) {
         console.log("here");
-        if (await this.relation.check_relation_match_id(from, req_id)) {
+        const check = await this.relation.validateRelation(from, req_id)
+        if (check) {
             await this.relation.update_relation(
                 req_id,
                 'FRIEND',
@@ -90,7 +91,7 @@ export class RelationRequestService {
     @TransformPlainToInstance(RelationRO, {
         excludeExtraneousValues: true,
     })
-    async get_incoming (
+    async getIncoming (
         user_id: number
     ) : Promise<RelationRO[] | undefined>{
         return [
@@ -114,7 +115,7 @@ export class RelationRequestService {
     @TransformPlainToInstance(RelationRO, {
         excludeExtraneousValues: true,
     })
-    async get_outgoing (
+    async getOutgoing (
         user_id: number
     ) : Promise<RelationRO[] | undefined>{
         return [
