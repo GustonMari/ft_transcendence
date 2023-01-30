@@ -17,6 +17,12 @@ export default function Chat() {
 	useEffect(() => {
 		const new_socket = io("http://localhost:3000"/* , {
 			withCredentials: true,
+			extraHeaders: {
+				'Access-Control-Allow-Origin': 'http://localhost:3000/',
+				"Access-Control-Allow-Methods": "GET",
+				"Access-Control-Allow-Headers": "my-custom-header",
+				"Access-Control-Allow-Credentials": "true"
+			}
 
 		} */);
 		setSocket(new_socket);
@@ -26,7 +32,15 @@ export default function Chat() {
 		setMessage([...messages, message]);
 	}
 
-	useEffect(() => {
+
+	////! A la connexion
+	// socket?.on("connect", () => {
+	// 	// ...
+	// 	console.log("connected")
+	// 	alert("connected");
+	//   });
+	
+	  useEffect(() => {
 		socket?.on("message", message_listener);
 		return () => {
 			socket?.off("message", message_listener);

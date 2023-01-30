@@ -44,7 +44,7 @@ import { Socket, Server } from 'socket.io';
 // })
 @WebSocketGateway({
 	cors: {
-		// origin: "http://localhost:4200/",
+		// origin: "http://localhost:3000/",
 		origin: '*',
 		credentials: true,
 		methods: ['GET'],
@@ -64,6 +64,9 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 
 	handleConnection(client: Socket, ...args: any[]) {
+		console.log('C est la connection : ', client.id);
+		//ajouter check si all existe deja
+		client.join('all');
 		this.logger.log(`Client connected: ${client.id}`);
 	}
 
@@ -73,7 +76,9 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 	@SubscribeMessage('message') // Subscribe to the message event send by the client (front end) called 'message'
 	handleMessage(@MessageBody() message: string): void {
-		console.log(message);
+		console.log('C est le message : ', message);
 		this.myserver.emit('message', message); // Emit the message event to the client, for every user
 	}
+
+
 }
