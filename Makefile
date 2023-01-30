@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ndormoy <ndormoy@student.42.fr>            +#+  +:+       +#+         #
+#    By: gmary <gmary@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/02 10:42:00 by mamaurai          #+#    #+#              #
-#    Updated: 2023/01/27 14:02:11 by ndormoy          ###   ########.fr        #
+#    Updated: 2023/01/30 09:56:28 by gmary            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ else
 endif
 
 DOCKER_ENV_FILE = ./srcs/.dev/.env
-DOCKER_COMPOSE = docker compose
+DOCKER_COMPOSE = docker-compose
 BASH = /bin/bash
 CLEAR_FILE = ./srcs/.dev/docker-cleaner.sh
 DOCKER_EXEC = docker exec -it

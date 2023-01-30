@@ -35,10 +35,11 @@ import { Socket, Server } from 'socket.io';
 
 @WebSocketGateway(3001, {
 	cors: {
-		// origin: "http://localhost:4200",
-		origin: '*',
+		origin: "http://localhost:4200/",
+		// origin: '*',
 		credentials: true,
-		// methods: ['GET'],
+		methods: ['GET'],
+		
 	}
 })
 export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
@@ -64,6 +65,6 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	@SubscribeMessage('message') // Subscribe to the message event send by the client (front end) called 'message'
 	handleMessage(@MessageBody() message: string): void {
 		console.log(message);
-		this.myserver.emit('message', message); // Emit the message event to the client
+		this.myserver.emit('message', message); // Emit the message event to the client, for every user
 	}
 }
