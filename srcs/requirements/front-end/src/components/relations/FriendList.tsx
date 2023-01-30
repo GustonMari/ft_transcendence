@@ -1,6 +1,6 @@
 import { useLayoutEffect, useState } from "react";
 import API from "../../api/api";
-import {List} from "./RelationList";
+import {RelationList} from "./RelationList";
 import { FriendElem } from "./FriendElem";
 import { RequestElem } from "./RequestElem";
 
@@ -30,8 +30,8 @@ export default function FriendList() {
   return (
     <>
       <div className="all_list">
-        <List relations={friends} title="friend" comp={FriendElem}/>
-        <List relations={pending} title="pending" comp={RequestElem}/>
+        <RelationList relations={friends} title="friend" comp={FriendElem}/>
+        <RelationList relations={pending} title="pending" comp={RequestElem}/>
         {/* <List relations={pending} title="pending"/> */}
       </div>
     </>

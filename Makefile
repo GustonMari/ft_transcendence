@@ -6,21 +6,17 @@
 #    By: mamaurai <mamaurai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/02 10:42:00 by mamaurai          #+#    #+#              #
-#    Updated: 2023/01/19 22:31:30 by mamaurai         ###   ########.fr        #
+#    Updated: 2023/01/27 16:12:09 by mamaurai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# Only three modes are available: development, production and workspace-42 
+# Only three modes are available: development and production 
 MODE = development
 
 ifeq ($(MODE), development)
 	DOCKER_COMPOSE_FILE = ./srcs/.dev/docker-compose-dev.yml
 else
-	ifeq ($(MODE), workspace-42)
-		DOCKER_COMPOSE_FILE = srcs/.dev/docker-compose-workspace-42.yml
-	else
-		DOCKER_COMPOSE_FILE = srcs/docker-compose.yml
-	endif
+	DOCKER_COMPOSE_FILE = srcs/docker-compose.yml
 endif
 
 DOCKER_ENV_FILE = ./srcs/.dev/.env
@@ -34,14 +30,14 @@ SCRIPT_TO_RUN = /bin/bash
 PRISMA_STUDIO_CMD = npx prisma studio --schema='app/prisma/schema.prisma'
 MIGRATE_CMD = npx prisma migrate dev --schema='./app/prisma/schema.prisma'
 
-ifeq ($(MODE),$(filter $(MODE),development production workspace-42))
+ifeq ($(MODE),$(filter $(MODE),development production ))
 all:	up
 else
 all:
 		@echo "Invalid mode, please use 'make MODE=development' or 'make MODE=prod' to run the project."
 endif
 
-ifeq ($(MODE),$(filter $(MODE),development production workspace-42))
+ifeq ($(MODE),$(filter $(MODE),development production ))
 re:		restart
 
 up:		up-back
@@ -64,7 +60,7 @@ status:
 		@${DOCKER_COMPOSE} --env-file ${DOCKER_ENV_FILE} -f ${DOCKER_COMPOSE_FILE} ps
 endif
 
-ifeq ($(MODE),$(filter $(MODE),development workspace-42))
+ifeq ($(MODE),$(filter $(MODE),development))
 up-front:
 		@${DOCKER_COMPOSE} --env-file ${DOCKER_ENV_FILE} -f ${DOCKER_COMPOSE_FILE} up --build
 
@@ -93,14 +89,11 @@ studio:
 
 migrate:
 		@${DOCKER_EXEC} -d ${BACK_NAME} ${MIGRATE_CMD}
+
+remove-modules:
+		@rm -rf srcs/requirements/back-end/node_modules srcs/requirements/back-end/dist &> /dev/null || true
+		@rm -rf srcs/requirements/front-end/node_modules srcs/requirements/front-end/dist &> /dev/null
 	
-endif
-
-ifeq ($(MODE), workspace-42)
-
-ssh-keygen:
-		@ssh-keygen -R localhost
-
 endif
 
 .PHONY: all re up up-back stop clean dclean restart drestart status logs

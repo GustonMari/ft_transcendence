@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import styles from "../../styles/Forms/RegisterForm.module.css";
 import API from "../../api/api";
 import { useNavigate } from "react-router-dom";
-import bcrypt from "bcryptjs";
 
 export default function RegisterForm() {
   const [login, setLogin] = useState("");
@@ -56,7 +55,7 @@ export default function RegisterForm() {
           <input
             type="password"
             onChange={(e) => {
-              e.preventDefault;
+            //   e.preventDefault;
               setCPW(e.target.value);
             }}
             name="confirmed_password"
