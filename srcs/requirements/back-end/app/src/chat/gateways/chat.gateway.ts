@@ -33,10 +33,19 @@ import { SubscribeMessage,
 import { Logger } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
 
-@WebSocketGateway(3001, {
+// @WebSocketGateway(3001, {
+// 	cors: {
+// 		origin: "http://localhost:4200/",
+// 		// origin: '*',
+// 		credentials: true,
+// 		methods: ['GET'],
+		
+// 	}
+// })
+@WebSocketGateway({
 	cors: {
-		origin: "http://localhost:4200/",
-		// origin: '*',
+		// origin: "http://localhost:4200/",
+		origin: '*',
 		credentials: true,
 		methods: ['GET'],
 		

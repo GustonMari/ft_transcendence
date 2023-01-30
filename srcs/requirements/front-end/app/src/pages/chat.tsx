@@ -15,10 +15,10 @@ export default function Chat() {
 	}
 
 	useEffect(() => {
-		const new_socket = io("http://localhost:3001", {
+		const new_socket = io("http://localhost:3000"/* , {
 			withCredentials: true,
 
-		});
+		} */);
 		setSocket(new_socket);
 	}, [setSocket]);
 
