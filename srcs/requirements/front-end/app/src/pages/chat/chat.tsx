@@ -1,14 +1,16 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import io, { Socket } from "socket.io-client";
-import MessageInput from "../Messageinput";
-import Messages from "../Message";
+import MessageInput from "./Messageinput";
+import Messages from "./Message";
 import axios from "axios";
 
 export default function Chat() {
 
 	const [socket, setSocket] = useState<Socket>();
 	const [messages, setMessage] = useState<string[]>([]);
+	
+	const [room, setRoom] = useState<string[]>([]);
 
 	const send = (value: string) => {
 		socket?.emit("message", value);
@@ -24,7 +26,6 @@ export default function Chat() {
 				"Access-Control-Allow-Headers": "my-custom-header",
 				"Access-Control-Allow-Credentials": "true"
 			}
-
 		});
 		setSocket(new_socket);
 	}, [setSocket]);
@@ -54,7 +55,7 @@ export default function Chat() {
 	<div>
 		<h1>Chat</h1>
 		<MessageInput send={send}/>
-		<Messages messages={messages}/>
+		<Messages messages={messages} room={"room1"}/>
 	</div>
 	);
 }
