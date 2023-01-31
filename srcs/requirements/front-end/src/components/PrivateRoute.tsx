@@ -4,8 +4,8 @@ import API from "../api/api";
 
 export default function PrivateRoute ({children} : any) {
 
-    // const [logged, setLogged] = React.useState(false);
-    const [logged, setLogged] = React.useState(true);
+    const [logged, setLogged] = React.useState(false);
+    // const [logged, setLogged] = React.useState(true);
     const [isLoading, setIsLoading] = React.useState(true);
 
     useLayoutEffect(() => {

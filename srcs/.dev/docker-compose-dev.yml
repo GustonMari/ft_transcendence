@@ -64,7 +64,7 @@ services:
     depends_on:
       - api
       - postgres      
-    command: ["npm", "run", "start"]
+    command: sh -c "yarn install ; yarn run start"
 
 networks:
   back:

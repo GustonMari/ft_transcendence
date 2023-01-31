@@ -43,15 +43,16 @@ export const RequestList = (props: any) => {
                             </tr>
                         </thead>
                         <tbody className="w-full">
-                            {user.map((elem, index) => {
+                            {props.relations.map((relation: any) => {
+                                const user = relation.user
                                 return (
-                                    <tr className="w-full hover:bg-gray-50 h-14 p-2 relative" key={index}>
+                                    <tr className="w-full hover:bg-gray-50 h-14 p-2 relative" key={relation.id}>
 
                                         <td className="flex flex-row px-6 py-3 text-sm items-center">
                                             <img className="h-8 w-8 rounded-full mr-4" src="https://placehold.co/150x150"></img>
                                             <div className="flex flex-col">
-                                                <p>{elem.username}</p>
-                                                <p className="text-xs font-normal capitalize text-gray-500">{elem.first_name + " " + elem.last_name}</p>
+                                                <p>{user.login}</p>
+                                                <p className="text-xs font-normal capitalize text-gray-500">{user.first_name + " " + user.last_name}</p>
                                             </div>
                                         </td>
                                         <td className="px-6 py-3 flex flex-row absolute right-0 top-0">

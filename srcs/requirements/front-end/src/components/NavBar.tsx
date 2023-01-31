@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BiGroup, BiUser, BiMessage, BiSearch, BiLogOut } from "react-icons/bi";
+import { BiGroup, BiUser, BiMessage, BiSearch, BiLogOut, BiHome } from "react-icons/bi";
 import s from "../styles/Nav/NavBar.module.css";
 import sa from "../styles/Nav/NavBar.hidden.module.css";
 import API from "../api/api";
@@ -36,6 +36,12 @@ export const NavBar = (props: any) => {
                 <BiSearch className={styles.icons} />
               </div>
               <input type="text" placeholder="Search" />
+            </li>
+            <li>
+              <a href="/home">
+                <BiHome className={styles.icons} />
+                <span>Home</span>
+              </a>
             </li>
             <li>
               <a href="/friends">

@@ -45,20 +45,22 @@ export const FriendList = (props: any) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {user.map((elem, index) => {
+                            {props.relations.map((relation: any) => {
+                                console.log("relations", relation);
+                                const user = relation.user;
                                 return (
-                                    <tr className="hover:bg-gray-50 h-14 relative p-2" key={index}>
+                                    <tr className="hover:bg-gray-50 h-14 relative p-2" key={relation.id}>
 
                                         <td className="flex flex-row px-6 py-3 text-sm items-center">
                                             <img className="h-8 w-8 rounded-full mr-4" src="https://placehold.co/150x150"></img>
                                             <div className="flex flex-col">
-                                                <p>{elem.username}</p>
-                                                <p className="text-xs font-normal capitalize text-gray-500">{elem.first_name + " " + elem.last_name}</p>
+                                                <p>{user.login}</p>
+                                                <p className="text-xs font-normal capitalize text-gray-500">{user.first_name + " " + user.last_name}</p>
                                             </div>
                                         </td>
                                         <td className="px-6 py-3">
                                             {
-                                            elem.state ?
+                                            user.state ?
                                             <div className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs">
                                                 <span className="h-1.5 w-1.5 bg-green-600 rounded-full"></span>
                                                 <span className="font-semibold text-green-600">Online</span>
@@ -72,7 +74,8 @@ export const FriendList = (props: any) => {
                                         </td>
                                         <td className="px-6 py-3 text-gray-600 whitespace-nowrap overflow-hidden w-32"
                                         >
-                                            {elem.description}
+                                            {/* {user.description} */}
+                                            <p>je suis une description</p>
                                         </td>
                                         <td className="px-6 py-3 flex flex-row justify-center">
                                             <a className="hover:bg-red-500 rounded-full text-gray-600 hover:text-white">
