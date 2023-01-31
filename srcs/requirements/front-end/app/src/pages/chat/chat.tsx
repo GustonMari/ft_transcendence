@@ -4,10 +4,11 @@ import io, { Socket } from "socket.io-client";
 import MessageInput from "./Messageinput";
 import Messages from "./Message";
 import axios from "axios";
+import Create_socket from "./socket";
 
 export default function Chat() {
 
-	const [socket, setSocket] = useState<Socket>();
+	const socket = Create_socket();
 	const [messages, setMessage] = useState<string[]>([]);
 	
 	const [room, setRoom] = useState<string[]>([]);
@@ -16,26 +17,10 @@ export default function Chat() {
 		socket?.emit("message", value);
 	}
 
-	useEffect(() => {
-		const new_socket = io("http://localhost:3000", {
-			transports : ['websocket', 'polling', 'flashsocket'],
-			withCredentials: true,
-			extraHeaders: {
-				'Access-Control-Allow-Origin': 'http://localhost:3000/',
-				"Access-Control-Allow-Methods": "GET",
-				"Access-Control-Allow-Headers": "my-custom-header",
-				"Access-Control-Allow-Credentials": "true"
-			}
-		});
-		setSocket(new_socket);
-	}, [setSocket]);
-
 	const message_listener = (message: string) => {
 		setMessage([...messages, message]);
 	}
 
-
-	
 	////! A la connexion
 	// socket?.on("connect", () => {
 	// 	// ...
@@ -49,7 +34,6 @@ export default function Chat() {
 			socket?.off("message", message_listener);
 		}
 	}, [message_listener]);
-
 
 	return (
 	<div>
