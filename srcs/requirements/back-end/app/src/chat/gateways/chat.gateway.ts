@@ -44,10 +44,11 @@ import { Socket, Server } from 'socket.io';
 // })
 @WebSocketGateway({
 	cors: {
-		// origin: "http://localhost:3000/",
-		origin: '*',
+		// origin: [ "http://localhost:3000/", "http://localhost:3000/socket.io/" ],
+		origin: "http://localhost:3000/",
+		// origin: '*',
 		credentials: true,
-		methods: ['GET'],
+		methods: ['GET', 'POST'],
 		
 	}
 })
@@ -62,6 +63,8 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	afterInit(server: Server) {
 		this.logger.log('Initialized!');
 	}
+
+
 
 	handleConnection(client: Socket, ...args: any[]) {
 		console.log('C est la connection : ', client.id);

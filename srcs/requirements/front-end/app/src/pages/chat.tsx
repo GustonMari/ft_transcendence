@@ -15,7 +15,8 @@ export default function Chat() {
 	}
 
 	useEffect(() => {
-		const new_socket = io("http://localhost:3000"/* , {
+		const new_socket = io("http://localhost:3000", {
+			transports : ['websocket', 'polling', 'flashsocket'],
 			withCredentials: true,
 			extraHeaders: {
 				'Access-Control-Allow-Origin': 'http://localhost:3000/',
@@ -24,7 +25,7 @@ export default function Chat() {
 				"Access-Control-Allow-Credentials": "true"
 			}
 
-		} */);
+		});
 		setSocket(new_socket);
 	}, [setSocket]);
 
@@ -33,6 +34,7 @@ export default function Chat() {
 	}
 
 
+	
 	////! A la connexion
 	// socket?.on("connect", () => {
 	// 	// ...
