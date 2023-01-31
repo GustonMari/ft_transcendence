@@ -1,14 +1,22 @@
+import React from "react"
 import { NavBar } from "../components/NavBar"
-import { UserList } from "../components/user/UserList"
+import { FriendList } from "../components/relations/FriendList"
+import { RequestList } from "../components/relations/RequestList"
+
 
 export const Friends = (props: any) => {
 
     return (
         <>
-
-            {/* <NavBar img=""/> */}
-            <UserList></UserList>
-
+        <div className="absolute flex flex-row">
+            <div className="relative w-auto">
+                <RequestList/>
+            </div>
+            <div className="relative w-auto">
+                <NavBar />
+                {/* <FriendList></FriendList> */}
+            </div>
+        </div>
         </>
     )
 }

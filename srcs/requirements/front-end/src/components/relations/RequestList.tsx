@@ -1,6 +1,6 @@
 import { MdOutlineRemoveCircleOutline } from "react-icons/md";
 
-export const FriendList = (props: any) => {
+export const RequestList = (props: any) => {
 
     const user: any[] = [{
         username: "mamaura",
@@ -38,16 +38,14 @@ export const FriendList = (props: any) => {
                     <table className="w-full bg-white text-left border-collapse table-fixed">
                         <thead className="bg-gray-50">
                             <tr className="">
-                                <th className="px-6 py-3 font-bold text-sm w-80">Username</th>
-                                <th className="px-6 py-3 font-bold text-sm w-28">State</th>
-                                <th className="px-6 py-3 font-bold text-sm w-36 sm:w-auto">Description</th>
-                                <th className="px-6 py-3 font-bold text-sm w-20"></th>
+                                <th className="px-6 py-3 font-bold text-sm">Username</th>
+                                <th className="px-6 py-3 font-bold text-sm w-28 "></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="w-full">
                             {user.map((elem, index) => {
                                 return (
-                                    <tr className="hover:bg-gray-50 h-14 relative p-2" key={index}>
+                                    <tr className="w-full hover:bg-gray-50 h-14 p-2 relative" key={index}>
 
                                         <td className="flex flex-row px-6 py-3 text-sm items-center">
                                             <img className="h-8 w-8 rounded-full mr-4" src="https://placehold.co/150x150"></img>
@@ -56,29 +54,16 @@ export const FriendList = (props: any) => {
                                                 <p className="text-xs font-normal capitalize text-gray-500">{elem.first_name + " " + elem.last_name}</p>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-3">
-                                            {
-                                            elem.state ?
-                                            <div className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs">
-                                                <span className="h-1.5 w-1.5 bg-green-600 rounded-full"></span>
-                                                <span className="font-semibold text-green-600">Online</span>
-                                            </div>
-                                            :
-                                            <div className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs">
-                                                <span className="h-1.5 w-1.5 bg-red-600 rounded-full"></span>
-                                                <span className="font-semibold text-red-600">Offline</span>
-                                            </div>
-                                            }
-                                        </td>
-                                        <td className="px-6 py-3 text-gray-600 whitespace-nowrap overflow-hidden w-32"
-                                        >
-                                            {elem.description}
-                                        </td>
-                                        <td className="px-6 py-3 flex flex-row justify-center">
+                                        <td className="px-6 py-3 flex flex-row absolute right-0 top-0">
+                                            <a className="hover:bg-red-500 rounded-full text-gray-600 hover:text-white">
+                                                <MdOutlineRemoveCircleOutline className="w-6 h-6"/>
+                                            </a>
                                             <a className="hover:bg-red-500 rounded-full text-gray-600 hover:text-white">
                                                 <MdOutlineRemoveCircleOutline className="w-6 h-6"/>
                                             </a>
                                         </td>
+
+
                                     </tr>
                                 )
                             })}
