@@ -8,6 +8,8 @@ import Create_socket from "./socket";
 
 export default function Chat() {
 
+	//
+
 	const socket = Create_socket();
 	const [messages, setMessage] = useState<string[]>([]);
 	
