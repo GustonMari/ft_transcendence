@@ -21,12 +21,14 @@ export default function Chat(): any {
 		socket?.emit("message", {room: room, message: value});
 	}
 
-	const define_room = (room: string) => {
+	const define_room = async (room: string) => {
 		console.log("define room");
 		setRoom(room);
+		await socket?.emit("joinRoom", room);
 	}
 
 	const message_listener = (message: string) => {
+		console.log("MESSAGE ", message);
 		setMessage([...messages, message]);
 	}
 
@@ -49,17 +51,18 @@ export default function Chat(): any {
 		}
 	}, [message_listener]);
 
-
+	// socket?.on("message", message_listener);
 
 	return (
 	<div>
 		<h1>Chat</h1>
 		<RoomForm define_room={define_room}/>
+		{console.log("SEND ", send)}
 		<MessageInput send={send}/>
 		<Messages messages={messages} room={room} socket={socket}/>
 		{/* <h1>===============================================</h1>
 		<MessageInput send={send}/>
-		<Messages messages={messages} room={"room2"} socket={socket}/> */}
+		<Messag<RoomForm define_room={define_room}/>es messages={messages} room={"room2"} socket={socket}/> */}
 	</div>
 	);
 }
