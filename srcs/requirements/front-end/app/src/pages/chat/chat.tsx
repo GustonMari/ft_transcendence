@@ -5,7 +5,7 @@ import MessageInput from "./Messageinput";
 import Messages from "./Message";
 import axios from "axios";
 import Create_socket from "./socket";
-import RoomForm from "./room";
+import {RoomForm, LeaveRoom} from "./room";
 
 export default function Chat(): any {
 
@@ -13,22 +13,18 @@ export default function Chat(): any {
 
 	const socket = Create_socket();
 	const [messages, setMessage] = useState<string[]>([]);
-	
 	const [room, setRoom] = useState<string>('');
 
 	const send = (value: string) => {
-		console.log("send = " + socket?.id);
 		socket?.emit("message", {room: room, message: value});
 	}
 
 	const define_room = async (room: string) => {
-		console.log("define room");
 		setRoom(room);
 		await socket?.emit("joinRoom", room);
 	}
 
 	const message_listener = (message: string) => {
-		console.log("MESSAGE ", message);
 		setMessage([...messages, message]);
 	}
 
@@ -39,30 +35,26 @@ export default function Chat(): any {
 	// 	alert("connected");
 	//   });
 	
-	  useEffect(() => {
-		socket?.onAny((event, ...args) => {
-			console.log("socket id in any = " + socket.id);
-			console.log(event, args);
+	//   useEffect(() => {
+	// 	socket?.onAny((event, ...args) => {
+	// 		console.log(event, args);
 			
-		  });
-		socket?.on("message", message_listener);
-		return () => {
-			socket?.off("message", message_listener);
-		}
-	}, [message_listener]);
+	// 	  });
+	// 	socket?.on("message", message_listener);
+	// 	return () => {
+	// 		socket?.off("message", message_listener);
+	// 	}
+	// }, [message_listener]);
 
-	// socket?.on("message", message_listener);
+	socket?.on("message", message_listener);
 
 	return (
 	<div>
 		<h1>Chat</h1>
 		<RoomForm define_room={define_room}/>
-		{console.log("SEND ", send)}
+		<LeaveRoom room_name={room} socket={socket}/>
 		<MessageInput send={send}/>
 		<Messages messages={messages} room={room} socket={socket}/>
-		{/* <h1>===============================================</h1>
-		<MessageInput send={send}/>
-		<Messag<RoomForm define_room={define_room}/>es messages={messages} room={"room2"} socket={socket}/> */}
 	</div>
 	);
 }

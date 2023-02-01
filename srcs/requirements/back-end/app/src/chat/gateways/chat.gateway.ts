@@ -50,20 +50,17 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	handleJoinRoom(@MessageBody() data: any, @ConnectedSocket() socket: Socket): void {
 		//! ici on va ajouter a prisma la room dans la table user
 		//? on peut peut etre emit un petit message pour dire quon a join la room
-		console.log('BACK JOIN ROOM data : ' + data + ' socket.id = ' + socket.id );
 		socket.join(data);
-		// this.myserver.to(data.room).emit('message', 'new user joined the room');
-		console.log('socket id: ' + socket.id + ' joined room: ' + new Array(...socket.rooms).join(' '));
-		// return { event: 'joinRoom', data: room};
+		this.myserver.to(data.room).emit('message', 'new user joined the room');
 	}
 
-	// @SubscribeMessage('leaveRoom')
-	// handleLeaveRoom(socket: Socket, room: string): WsResponse<unknown> {
-	// 	//? emit un  petit message pour dire que tel user a quitte la room
-	// 	//! ici on va ajouter a prisma la room dans la table user
-	// 	socket.leave(room);
-	// 	return { event: 'joinRoom', data: room};
-	// }
+	@SubscribeMessage('leaveRoom')
+	handleLeaveRoom(socket: Socket, room: string): WsResponse<unknown> {
+		//? emit un  petit message pour dire que tel user a quitte la room
+		//! ici on va ajouter a prisma la room dans la table user
+		socket.leave(room);
+		return { event: 'joinRoom', data: room};
+	}
 
 	// @SubscribeMessage('createRoom')
 	// handleCreateRoom(socket: Socket, room: string): WsResponse<unknown> {
@@ -127,25 +124,14 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	// 	//! changer prisma pour que le user soit plus admin
 	// 	//? emit un petit message pour dire que tel user n'est plus admin
 	// }
-		
-
-
-
-	// this.myserver.on('message', (socket) => {
-	// 	console.log('C est la connection : ', socket.id);
-	// 	socket.join('all');
-	// });
-
 
 
 	@SubscribeMessage('message') // Subscribe to the message event send by the client (front end) called 'message'
 	handleMessage(@MessageBody() data: any, @ConnectedSocket() socket: Socket): void {
 
-		console.log('C est le message : ', data.room);
-
 		// socket.join(data.room);
-		console.log('=== data room = ' + data.room);
-		console.log('=== socket id: ' + socket.id + ' joined room: ' + new Array(...socket.rooms).join(' '));
+		// console.log('=== data room = ' + data.room);
+		// console.log('=== socket id: ' + socket.id + ' joined room: ' + new Array(...socket.rooms).join(' '));
 		this.myserver.to(data.room).emit('message', data.message); // Emit the message event to the client, for every user
 
 	}
