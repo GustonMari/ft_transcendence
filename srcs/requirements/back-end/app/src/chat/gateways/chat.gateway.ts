@@ -50,6 +50,15 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	handleJoinRoom(@MessageBody() data: any, @ConnectedSocket() socket: Socket): void {
 		//! ici on va ajouter a prisma la room dans la table user
 		//? on peut peut etre emit un petit message pour dire quon a join la room
+
+		const roomExists = this.myserver.sockets.adapter.rooms.has(data);
+		if (roomExists) {
+			console.log(`The room "${data}" exist, you join the room`);
+		}
+		else {
+			console.log(`The room "${data}" does not exist, you create the room, you are admin`);
+		}
+		// 	//* usr devient admin
 		socket.join(data);
 		this.myserver.to(data.room).emit('message', 'new user joined the room');
 	}
@@ -61,14 +70,6 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		socket.leave(room);
 		return { event: 'joinRoom', data: room};
 	}
-
-	// @SubscribeMessage('createRoom')
-	// handleCreateRoom(socket: Socket, room: string): WsResponse<unknown> {
-	// 	//* usr devient admin
-	// 	//! ici on va ajouter a prisma la room dans la table user
-	// 	socket.join(room);
-	// 	return { event: 'createRoom', data: room};
-	// }
 
 	// @SubscribeMessage('deleteRoom')
 	// handleDeleteRoom(socket: Socket, room: string): void {
@@ -130,9 +131,38 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	handleMessage(@MessageBody() data: any, @ConnectedSocket() socket: Socket): void {
 
 		// socket.join(data.room);
-		// console.log('=== data room = ' + data.room);
 		// console.log('=== socket id: ' + socket.id + ' joined room: ' + new Array(...socket.rooms).join(' '));
 		this.myserver.to(data.room).emit('message', data.message); // Emit the message event to the client, for every user
 
 	}
+}
+
+
+@WebSocketGateway({
+	namespace: 'admin',
+	cors: {
+		origin: "http://localhost:3000/",
+		credentials: true,
+		methods: ['GET', 'POST'],
+	}
+})
+export class AdminChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+	@WebSocketServer()
+	myserver: Server;
+
+
+
+	private logger: Logger = new Logger('AppGateway');
+
+	afterInit(server: Server) {
+		this.logger.log('Initialized!');
+	}
+
+	handleConnection(client: Socket, ...args: any[]) {
+		client.join('all');
+	}
+
+	handleDisconnect(client: Socket) {
+	}
+
 }

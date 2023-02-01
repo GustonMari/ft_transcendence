@@ -28,24 +28,6 @@ export default function Chat(): any {
 		setMessage([...messages, message]);
 	}
 
-	////! A la connexion
-	// socket?.on("connect", () => {
-	// 	// ...
-	// 	console.log("connected")
-	// 	alert("connected");
-	//   });
-	
-	//   useEffect(() => {
-	// 	socket?.onAny((event, ...args) => {
-	// 		console.log(event, args);
-			
-	// 	  });
-	// 	socket?.on("message", message_listener);
-	// 	return () => {
-	// 		socket?.off("message", message_listener);
-	// 	}
-	// }, [message_listener]);
-
 	socket?.on("message", message_listener);
 
 	return (

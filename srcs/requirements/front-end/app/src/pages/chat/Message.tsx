@@ -16,9 +16,3 @@ export default function Messages(props: any) {
 	);
 }
 
-// export function Send_message (props: any) {
-
-// 	const {value, room, socket} = props;
-
-// 	socket?.to(room).emit("message", value);
-// }
