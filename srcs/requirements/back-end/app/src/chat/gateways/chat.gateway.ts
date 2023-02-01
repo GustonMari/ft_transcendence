@@ -147,7 +147,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	handleMessage(@MessageBody() data: any): void {
 
 		console.log('C est le message : ', data.room);
-		this.to(data.room).myserver.emit('message', data.message); // Emit the message event to the client, for every user
+		this.myserver.to(data.room).emit('message', data.message); // Emit the message event to the client, for every user
 
 	}
 
