@@ -3,7 +3,7 @@ import io, { Socket } from "socket.io-client";
 
 // Create a socket and return it, using socket.io
 
-export default function Create_socket (): Socket | undefined {
+export default function  Create_socket (): Socket | undefined {
 	const [socket, setSocket] = useState<Socket>();
 
 	useEffect(() => {

@@ -6,7 +6,7 @@ import Messages from "./Message";
 import axios from "axios";
 import Create_socket from "./socket";
 
-export default function Chat() {
+export default function Chat(): any {
 
 	//
 
@@ -16,10 +16,12 @@ export default function Chat() {
 	const [room, setRoom] = useState<string[]>([]);
 
 	const send = (value: string) => {
+		console.log("send = " + socket?.id);
 		socket?.emit("message", {room:  "room1", message: value});
 	}
 
 	const message_listener = (message: string) => {
+		console.log("message_listener = ");
 		setMessage([...messages, message]);
 	}
 
@@ -31,11 +33,18 @@ export default function Chat() {
 	//   });
 	
 	  useEffect(() => {
+		console.log("useEffect =");
+		socket?.onAny((event, ...args) => {
+			console.log("all =");
+			console.log(event, args);
+		  });
 		socket?.on("message", message_listener);
 		return () => {
 			socket?.off("message", message_listener);
 		}
 	}, [message_listener]);
+
+
 
 	return (
 	<div>

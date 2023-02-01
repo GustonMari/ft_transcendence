@@ -1,25 +1,4 @@
 /* eslint-disable prettier/prettier */
-// import { SubscribeMessage,
-// 	WebSocketGateway,
-// 	MessageBody,
-// 	WebSocketServer
-// } from '@nestjs/websockets';
-
-// @WebSocketGateway(3001, {cors: {
-// 	origin: "*",
-// 	// credentials: true,
-// 	// methods: ['GET'],
-
-//   }})
-// export class ChatGateway {
-// 	@WebSocketServer() // Create a instance of the server
-// 	server;
-//   @SubscribeMessage('message') // Subscribe to the message event send by the client (front end) called 'message'
-//   handleMessage(@MessageBody() message: string): void {
-// 	console.log(message);
-//     this.server.emit('message', message); // Emit the message event to the client
-//   }
-// }
 
 import { SubscribeMessage,
 	WebSocketGateway,
@@ -29,6 +8,7 @@ import { SubscribeMessage,
 	OnGatewayConnection,
 	OnGatewayDisconnect,
 	WsResponse,
+	ConnectedSocket,
 } from '@nestjs/websockets';
 
 import { Logger } from '@nestjs/common';
@@ -44,6 +24,8 @@ import { Socket, Server } from 'socket.io';
 export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 	@WebSocketServer() // Create a instance of the server
 	myserver: Server;
+
+	// const server = require('http').createServer();
 
 	//create code who enable cors for the server
 
@@ -143,13 +125,41 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 		
 
+
+
+	// this.myserver.on('message', (socket) => {
+	// 	console.log('C est la connection : ', socket.id);
+	// 	socket.join('all');
+	// });
+
+
+
 	@SubscribeMessage('message') // Subscribe to the message event send by the client (front end) called 'message'
-	handleMessage(@MessageBody() data: any): void {
+	handleMessage(@MessageBody() data: any, @ConnectedSocket() socket: Socket): void {
 
 		console.log('C est le message : ', data.room);
+
+		// data.socket.join(data.room);
+		socket.join(data.room);
+		// this.myserver.socketsJoin(data.room);
+		console.log('socket id: ' + socket.id + ' joined room: ' + new Array(...socket.rooms).join(' '));
+		// socket.to(data.room).emit('message', data.message); // Emit the message event to the client, for every user
 		this.myserver.to(data.room).emit('message', data.message); // Emit the message event to the client, for every user
 
 	}
 
+
+
+
+	// @SubscribeMessage('message') // Subscribe to the message event send by the client (front end) called 'message'
+	// handleMessage(@MessageBody() data: any): void {
+
+	// 	console.log('C est le message : ', data.room);
+
+	// 	this.myserver.socketsJoin(data.room);
+
+	// 	this.myserver.to(data.room).emit('message', data.message); // Emit the message event to the client, for every user
+
+	// }
 
 }
