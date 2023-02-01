@@ -27,7 +27,8 @@ import { SubscribeMessage,
 	WebSocketServer,
 	OnGatewayInit,
 	OnGatewayConnection,
-	OnGatewayDisconnect
+	OnGatewayDisconnect,
+	WsResponse,
 } from '@nestjs/websockets';
 
 import { Logger } from '@nestjs/common';
@@ -36,10 +37,8 @@ import { Socket, Server } from 'socket.io';
 @WebSocketGateway({
 	cors: {
 		origin: "http://localhost:3000/",
-		// origin: '*',
 		credentials: true,
 		methods: ['GET', 'POST'],
-		
 	}
 })
 export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
@@ -65,10 +64,28 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		// this.logger.log(`Client disconnected: ${client.id}`);
 	}
 
+	@SubscribeMessage('joinRoom')
+	handleJoinRoom(socket: Socket, data: string): WsResponse<unknown> {
+		socket.join(data);
+		
+	}
+
+	@SubscribeMessage('leaveRoom')
+	handleLeaveRoom(socket: Socket, data: string): WsResponse<unknown> {
+		socket.leave(data);
+	}
+
+	@SubscribeMessage('createRoom')
+	handleCreateRoom(socket: Socket, data: string): WsResponse<unknown> {
+	}
+
 	@SubscribeMessage('message') // Subscribe to the message event send by the client (front end) called 'message'
-	handleMessage(@MessageBody() message: string): void {
+	handleMessage(@MessageBody() message: unknown): WsResponse<unknown> {
+		// handleMessage(@MessageBody() message: string): void {
 		// console.log('C est le message : ', message);
 		message = message + ' parasite';
+		// this.myserver.to
+		
 		this.myserver.emit('message', message); // Emit the message event to the client, for every user
 		// this.myserver.on('message', (message) => {
 		// 	message.broadcast.emit('message', message);

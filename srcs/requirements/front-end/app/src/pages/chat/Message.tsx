@@ -3,7 +3,7 @@ import React from "react";
 export default function Messages(props: any) {
 
 	//! faire interface pour les props
-	let {messages, room} = props;
+	let {messages, room, socket} = props;
 
 	return (
 	<div>
@@ -14,4 +14,11 @@ export default function Messages(props: any) {
 		))}
 	</div>
 	);
+}
+
+export function Send_message (props: any) {
+
+	const {value, room, socket} = props;
+
+	socket?.to(room).emit("message", value);
 }

@@ -39,7 +39,7 @@ export default function Chat() {
 	<div>
 		<h1>Chat</h1>
 		<MessageInput send={send}/>
-		<Messages messages={messages} room={"room1"}/>
+		<Messages messages={messages} room={"room1"} socket={socket}/>
 	</div>
 	);
 }
