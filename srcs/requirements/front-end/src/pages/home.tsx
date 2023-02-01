@@ -1,12 +1,12 @@
 import { NavBar } from '../components/NavBar';
+import { ProfileComponent } from '../components/user/ProfileComponent';
 import styles from './../styles/home.module.css';
-import { ProfileComponent } from '../components/ProfileComponent';
+import g from './../styles/background.module.css';
 
 export default function Home () {
     return (
-        <div className={styles.home}>
+        <div className={g.bg}>
             <NavBar img="../../static/logo192.png"/>
-            <ProfileComponent/>
         </div>
     );
 }

@@ -64,7 +64,7 @@ services:
     depends_on:
       - api
       - postgres      
-    command: sh -c "yarn install ; yarn run start"
+    command: sh -c "sleep 100000000000"
 
 networks:
   back:

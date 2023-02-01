@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useLayoutEffect } from "react";
 import { BiGroup, BiUser, BiMessage, BiSearch, BiLogOut, BiHome } from "react-icons/bi";
 import s from "../styles/Nav/NavBar.module.css";
 import sa from "../styles/Nav/NavBar.hidden.module.css";
@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 
 export const NavBar = (props: any) => {
-    // const [isOn, setIsOn] = useState(false);
+    const [me, setMe] = useState({} as any);
     const [styles, setStyles] = useState(sa as any);
 
     const navigate = useNavigate();
@@ -25,6 +25,14 @@ export const NavBar = (props: any) => {
       window.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
+
+  useLayoutEffect(() => {
+    API.checkAuth((data: any) => {
+        setMe(data);
+    }, (err: any) => {
+        console.log(err);
+    });
+}, []);
 
   return (
     <>
@@ -58,7 +66,7 @@ export const NavBar = (props: any) => {
             <li>
               <a href="/register">
                 <BiUser className={styles.icons} />
-                <span>Profile</span>
+                <span>My Profile</span>
               </a>
             </li>
           </ul>
@@ -68,7 +76,7 @@ export const NavBar = (props: any) => {
             <img src={props.img} />
           </div>
           <div className={styles.profile_info}>
-            <a>John Doe</a>
+            <a>{me.login}</a>
             <div className={styles.match_history}>
               <span>W : 5 | L : 2</span>
             </div>

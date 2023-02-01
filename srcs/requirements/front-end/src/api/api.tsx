@@ -45,12 +45,12 @@ export default class API {
   }
 
     static async checkAuth(
-        successFunc: () => void,
+        successFunc: (data: any) => void,
         errorFunc: (err: ApiError) => void
     ) {
         try {
-            await APP.get("/user/me");
-            successFunc();
+            const r = await APP.get("/user/me");
+            successFunc(r.data);
         } catch (err) {
             const error = err as AxiosError;
             if (axios.isAxiosError(err)) {

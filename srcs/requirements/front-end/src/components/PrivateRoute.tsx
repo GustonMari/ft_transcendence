@@ -1,6 +1,7 @@
 import React, { useLayoutEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import API from "../api/api";
+import { Loading } from './Loading';
 
 export default function PrivateRoute ({children} : any) {
 
@@ -20,7 +21,7 @@ export default function PrivateRoute ({children} : any) {
     }, []);
 
     return (
-        (logged ? children : (isLoading ? 'loading...' : <Navigate to={'/signin'}></Navigate>))
+        (logged ? children : (isLoading ? <Loading/> : <Navigate to={'/signin'}></Navigate>))
     );
 
 }; 
