@@ -14,7 +14,7 @@ export default function Chat() {
 	const [room, setRoom] = useState<string[]>([]);
 
 	const send = (value: string) => {
-		socket?.emit("message", value);
+		socket?.emit("message", {room:  "room1", message: value});
 	}
 
 	const message_listener = (message: string) => {

@@ -144,13 +144,13 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		
 
 	@SubscribeMessage('message') // Subscribe to the message event send by the client (front end) called 'message'
-	handleMessage(@MessageBody() message: unknown): void {
+	handleMessage(@MessageBody() message: any): void {
 		// handleMessage(@MessageBody() message: string): void {
 		// console.log('C est le message : ', message);
 		// message = message + ' parasite';
 		// this.myserver.to
-		
-		this.myserver.emit('message', message); // Emit the message event to the client, for every user
+		console.log('C est le message : ', message.room);
+		this.myserver.emit('message', message.message); // Emit the message event to the client, for every user
 		// this.myserver.on('message', (message) => {
 		// 	message.broadcast.emit('message', message);
 	}
