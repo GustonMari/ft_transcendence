@@ -142,6 +142,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		// data.socket.join(data.room);
 		socket.join(data.room);
 		// this.myserver.socketsJoin(data.room);
+		console.log('data room = ' + data.room);
 		console.log('socket id: ' + socket.id + ' joined room: ' + new Array(...socket.rooms).join(' '));
 		// socket.to(data.room).emit('message', data.message); // Emit the message event to the client, for every user
 		this.myserver.to(data.room).emit('message', data.message); // Emit the message event to the client, for every user

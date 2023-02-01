@@ -5,6 +5,7 @@ import MessageInput from "./Messageinput";
 import Messages from "./Message";
 import axios from "axios";
 import Create_socket from "./socket";
+import RoomForm from "./room";
 
 export default function Chat(): any {
 
@@ -13,15 +14,19 @@ export default function Chat(): any {
 	const socket = Create_socket();
 	const [messages, setMessage] = useState<string[]>([]);
 	
-	const [room, setRoom] = useState<string[]>([]);
+	const [room, setRoom] = useState<string>('');
 
 	const send = (value: string) => {
 		console.log("send = " + socket?.id);
-		socket?.emit("message", {room:  "room1", message: value});
+		socket?.emit("message", {room: room, message: value});
+	}
+
+	const define_room = (room: string) => {
+		console.log("define room");
+		setRoom(room);
 	}
 
 	const message_listener = (message: string) => {
-		console.log("message_listener = ");
 		setMessage([...messages, message]);
 	}
 
@@ -33,10 +38,10 @@ export default function Chat(): any {
 	//   });
 	
 	  useEffect(() => {
-		console.log("useEffect =");
 		socket?.onAny((event, ...args) => {
-			console.log("all =");
+			console.log("socket id in any = " + socket.id);
 			console.log(event, args);
+			
 		  });
 		socket?.on("message", message_listener);
 		return () => {
@@ -49,8 +54,12 @@ export default function Chat(): any {
 	return (
 	<div>
 		<h1>Chat</h1>
+		<RoomForm define_room={define_room}/>
 		<MessageInput send={send}/>
-		<Messages messages={messages} room={"room1"} socket={socket}/>
+		<Messages messages={messages} room={room} socket={socket}/>
+		{/* <h1>===============================================</h1>
+		<MessageInput send={send}/>
+		<Messages messages={messages} room={"room2"} socket={socket}/> */}
 	</div>
 	);
 }
