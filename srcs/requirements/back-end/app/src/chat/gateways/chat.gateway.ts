@@ -16,7 +16,10 @@ import { UseGuards } from '@nestjs/common';
 
 import { Logger } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
-import { AccessGuard } from 'app/src/auth/guards/access.guard'
+import { AccessGuard } from 'app/src/auth/guards/access.guard';
+import { User } from '@prisma/client';
+import { UserController } from 'app/src/user/controllers/user.controller';
+
 
 // @UseGuards(AccessGuard)
 @WebSocketGateway({
@@ -30,6 +33,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	@WebSocketServer() // Create a instance of the server
 	myserver: Server;
 
+	// usrcontroller: UserController = new UserController();
 	// const server = require('http').createServer();
 
 	//create code who enable cors for the server
@@ -41,8 +45,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 
 	handleConnection(client: Socket, ...args: any[]) {
-		// console.log('C est la connection : ', client.id);
-		//ajouter check si all existe deja
+		
 		client.join('all');
 		// this.logger.log(`Client connected: ${client.id}`);
 	}
