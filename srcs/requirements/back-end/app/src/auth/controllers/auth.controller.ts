@@ -73,12 +73,13 @@ export class AuthController {
         const { access_token, refresh_token } = await this.authService.register(dto);
         Logger.log(dto.login + ' is registered');
         res.cookie('access_token', access_token, {
-            httpOnly: true,
+            // httpOnly: true,
             secure: true,
             sameSite: 'none'
         });
         res.cookie('refresh_token', refresh_token, {
-            httpOnly: true,
+            // httpOnly: true,
+            
             secure: true,
             sameSite: 'none'
         });
@@ -113,12 +114,12 @@ export class AuthController {
         const { access_token, refresh_token } = await this.authService.login(dto);
         Logger.log(dto.login + ' is logged in');
         res.cookie('access_token', access_token, {
-            httpOnly: true,
+            // httpOnly: true,
             secure: true,
             sameSite: 'none'
         });
         res.cookie('refresh_token', refresh_token, {
-            httpOnly: true,
+            // httpOnly: true,
             secure: true,
             sameSite: 'none'
         });

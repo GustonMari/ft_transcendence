@@ -11,9 +11,14 @@ import { SubscribeMessage,
 	ConnectedSocket,
 } from '@nestjs/websockets';
 
+import { UseGuards } from '@nestjs/common';
+
+
 import { Logger } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
+import { AccessGuard } from 'app/src/auth/guards/access.guard'
 
+// @UseGuards(AccessGuard)
 @WebSocketGateway({
 	cors: {
 		origin: "http://localhost:3000/",

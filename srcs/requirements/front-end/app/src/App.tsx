@@ -6,15 +6,39 @@ import SignIn from "./pages/signin";
 import Chat from "./pages/chat/chat";
 import PrivateRoute from "./components/PrivateRoute";
 
+// function App() {
+//   return (
+//     <div className="App">
+//       <Routes>
+// 		<Route path="/chat" element={<Chat />} />
+//         <Route path="/register" element={<Register />} />
+//         <Route path="/home" element={
+//             <PrivateRoute>
+//                 <Home/>
+//             </PrivateRoute>
+//         } />
+//         <Route path="/signin" element={<SignIn />} />
+//         {/* <Route path='/' element={<App/>}/> */}
+//       </Routes>
+//     </div>
+//   );
+// }
+
+
 function App() {
   return (
     <div className="App">
       <Routes>
-		<Route path="/chat" element={<Chat />} />
         <Route path="/register" element={<Register />} />
         <Route path="/home" element={
-            <PrivateRoute>
+          <PrivateRoute>
                 <Home/>
+            </PrivateRoute>
+        } />
+          <Route path="/chat" element={
+            <PrivateRoute>
+                <Chat />
+                {/* <Route path="/chat" element={<Chat />} /> */}
             </PrivateRoute>
         } />
         <Route path="/signin" element={<SignIn />} />

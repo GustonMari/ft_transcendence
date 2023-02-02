@@ -10,7 +10,8 @@ import {RoomForm, LeaveRoom} from "./room";
 export default function Chat(): any {
 
 	//
-
+	console.log("COUCOU");
+	console.log("ZOUBI");
 	const socket = Create_socket();
 	const [messages, setMessage] = useState<string[]>([]);
 	const [room, setRoom] = useState<string>('');
