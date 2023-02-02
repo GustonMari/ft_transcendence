@@ -33,9 +33,8 @@ export default function Chat() {
 		getCurrentUser();
 	}, []);
 
-console.log("POULET = ", currentUser);
-	if (currentUser !== null)
-		socket?.emit("message", {room: room, message:  JSON.stringify(currentUser.login)  });
+	// if (currentUser !== null)
+	// 	socket?.emit("message", {room: room, message:  JSON.stringify(currentUser.login)  });
 
 	const send = (value: string) => {
 		socket?.emit("message", {room: room, message: value});
@@ -55,7 +54,7 @@ console.log("POULET = ", currentUser);
 	return (
 	<div>
 		<h1>Chat</h1>
-		<RoomForm define_room={define_room}/>
+		<RoomForm define_room={define_room} current_user={currentUser} socket={socket}/>
 		<LeaveRoom room_name={room} socket={socket}/>
 		<MessageInput send={send}/>
 		<Messages messages={messages} room={room} socket={socket}/>
