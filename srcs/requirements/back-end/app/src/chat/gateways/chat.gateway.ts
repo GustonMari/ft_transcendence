@@ -20,6 +20,7 @@ import { AccessGuard } from 'app/src/auth/guards/access.guard';
 import { User } from '@prisma/client';
 import { UserController } from 'app/src/user/controllers/user.controller';
 import { ChatService } from '../chat.service';
+import { InfoMessage, InfoRoom } from './chat.interface';
 
 
 // @UseGuards(AccessGuard)
@@ -59,22 +60,23 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 
 	@SubscribeMessage('joinRoom')
-	handleJoinRoom(@MessageBody() data: any, @ConnectedSocket() socket: Socket): void {
+	handleJoinRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket): void {
 		
 		//! ici on va ajouter a prisma la room dans la table user
 		//? on peut peut etre emit un petit message pour dire quon a join la room
 		
-		const roomExists = this.myserver.sockets.adapter.rooms.has(data);
+		const roomExists = this.myserver.sockets.adapter.rooms.has(data.room_name);
 		if (roomExists) {
-			console.log(`The room "${data}" exist, you join the room`);
+			console.log(`The room "${data.room_name}" exist, you join the room`);
+
 		}
 		else {
-			this.chatService.createChatRoom(data, 'mettre id');
-			console.log(`The room "${data}" does not exist, you create the room, you are admin`);
+			this.chatService.createChatRoom(data.room_name, data.id_user);
+			console.log(`The room "${data.room_name}" does not exist, you create the room, you are admin`);
 		}
 		// 	//* usr devient admin
-		socket.join(data);
-		this.myserver.to(data.room).emit('message', 'new user joined the room');
+		socket.join(data.room_name);
+		this.myserver.to(data.room_name).emit('message', `new user (${data.id_user}) joined the room`);
 	}
 
 	@SubscribeMessage('leaveRoom')
@@ -142,7 +144,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 
 	@SubscribeMessage('message') // Subscribe to the message event send by the client (front end) called 'message'
-	handleMessage(@MessageBody() data: any, @ConnectedSocket() socket: Socket): void {
+	handleMessage(@MessageBody() data: InfoMessage, @ConnectedSocket() socket: Socket): void {
 
 		// socket.join(data.room);
 		// console.log('=== socket id: ' + socket.id + ' joined room: ' + new Array(...socket.rooms).join(' '));

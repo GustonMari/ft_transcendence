@@ -42,7 +42,7 @@ export default function Chat() {
 
 	const define_room = async (room: string) => {
 		setRoom(room);
-		await socket?.emit("joinRoom", room);
+		await socket?.emit("joinRoom", { room_name: room, id_user: currentUser.id} );
 	}
 
 	const message_listener = (message: string) => {

@@ -29,19 +29,20 @@ export class ChatService {
 				}
 			}
 		});
-		
-		// .create({
-		// 	data: {
-		// 		name: room_name,
-		// 		users: {
-		// 			connect: {
-		// 				id: current_user.id,
-		// 			}
-
-		// 		}
-		// 	}
-		// });
-		
-		// return room;
 	}
+
+	// async joinChatRoom(room_name: string, user_id: number )/*  : Promise<Room> */
+	// {
+	// 	const current_user = await this.prisma.user.findUnique({ where: { id: user_id } });
+	// 	if (!current_user) {
+	// 		throw new Error('User not found');
+	// 	}
+	// 	const current_room = await this.prisma.room.findUnique({ where: { name: room_name } });
+	// 	if (!current_room) {
+	// 		throw new Error('Room not found');
+	// 	}
+	// 	await this.prisma
+	
+		
+	// }
 }

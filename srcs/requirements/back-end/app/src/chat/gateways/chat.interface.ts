@@ -1,8 +1,8 @@
 
 
 export interface InfoRoom {
-	room: string;
-	id: number;
+	room_name: string;
+	id_user: number;
 }
 
 export interface InfoMessage {
