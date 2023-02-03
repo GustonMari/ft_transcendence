@@ -28,6 +28,18 @@ model Relation {
     @@map("friend_request")
 }
 
+model Chat_Relation {
+    id Int @id @unique @default(autoincrement())
+
+    created_at DateTime @default(now())
+
+    state RELATION_STATE 
+
+   
+
+    @@map("chat_request")
+}
+
 model User {
     id         Int      @id @unique @default(autoincrement())
     created_at DateTime @default(now())
@@ -45,7 +57,50 @@ model User {
     incoming Relation[]    @relation("incoming")
     outgoing Relation[]    @relation("outgoing")
 
+    rooms UsersOnRooms[]
+    // roles Role[]
     @@map("users")
+}
+
+// model Message {
+//     id         Int      @id @unique @default(autoincrement())
+//     // created_at DateTime @default(now())
+//     // updated_at DateTime @updatedAt
+//     // text       String
+//     // from       User     @relation(fields: [from_id], references: [id])
+//     // from_id    Int
+//     // to         User     @relation(fields: [to_id], references: [id])
+//     // to_id      Int
+
+//     // @@map("messages")
+// }
+
+model Room {
+    id         Int      @id @unique @default(autoincrement())
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+    name       String
+
+    users UsersOnRooms[]
+    // @@map("rooms")
+}
+
+//! this is the model for the many to many relationship between users and rooms
+
+model UsersOnRooms {
+    // id         Int      @id @unique @default(autoincrement())
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    user User @relation(fields: [user_id], references: [id])
+    user_id Int
+    room Room @relation(fields: [room_id], references: [id])
+    room_id Int
+
+
+    @@id([user_id, room_id])
+
+    // @@map("users_on_rooms")
 }
 
 enum Role {
