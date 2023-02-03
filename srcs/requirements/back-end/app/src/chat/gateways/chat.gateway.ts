@@ -67,6 +67,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		
 		const roomExists = this.myserver.sockets.adapter.rooms.has(data.room_name);
 		if (roomExists) {
+			this.chatService.joinChatRoom(data.room_name, data.id_user);
 			console.log(`The room "${data.room_name}" exist, you join the room`);
 
 		}

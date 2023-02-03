@@ -79,6 +79,9 @@ CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 -- CreateIndex
 CREATE UNIQUE INDEX "Room_id_key" ON "Room"("id");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "Room_name_key" ON "Room"("name");
+
 -- AddForeignKey
 ALTER TABLE "friend_request" ADD CONSTRAINT "friend_request_from_id_fkey" FOREIGN KEY ("from_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
