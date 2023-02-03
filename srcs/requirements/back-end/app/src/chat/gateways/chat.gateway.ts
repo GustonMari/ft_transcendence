@@ -19,6 +19,7 @@ import { Socket, Server } from 'socket.io';
 import { AccessGuard } from 'app/src/auth/guards/access.guard';
 import { User } from '@prisma/client';
 import { UserController } from 'app/src/user/controllers/user.controller';
+import { ChatService } from '../chat.service';
 
 
 // @UseGuards(AccessGuard)
@@ -30,6 +31,9 @@ import { UserController } from 'app/src/user/controllers/user.controller';
 	}
 })
 export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+
+	constructor(private chatService: ChatService) {}
+
 	@WebSocketServer() // Create a instance of the server
 	myserver: Server;
 
@@ -56,14 +60,16 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 	@SubscribeMessage('joinRoom')
 	handleJoinRoom(@MessageBody() data: any, @ConnectedSocket() socket: Socket): void {
+		
 		//! ici on va ajouter a prisma la room dans la table user
 		//? on peut peut etre emit un petit message pour dire quon a join la room
-
+		
 		const roomExists = this.myserver.sockets.adapter.rooms.has(data);
 		if (roomExists) {
 			console.log(`The room "${data}" exist, you join the room`);
 		}
 		else {
+			this.chatService.createChatRoom(data, 'mettre id');
 			console.log(`The room "${data}" does not exist, you create the room, you are admin`);
 		}
 		// 	//* usr devient admin
