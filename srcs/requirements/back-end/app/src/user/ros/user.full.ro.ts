@@ -38,6 +38,20 @@ export class UserRO {
     email: string;
 
     @Expose()
-    @ApiProperty({ description: 'User password', type: 'string' })
+    @ApiProperty({ description: 'User password', type: 'boolean' })
     state: boolean;
+
+    @Expose()
+    @ApiProperty({ description: 'User description', type: 'string' })
+    description: string;
+
+    @Expose()
+    @ApiProperty({ description: 'User win number', type: 'number' })
+    wins: number;
+
+    @Expose()
+    @ApiProperty({ description: 'User lose number', type: 'number' })
+    loses: number;
 }
+
+

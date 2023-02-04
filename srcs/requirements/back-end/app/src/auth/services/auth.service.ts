@@ -100,7 +100,7 @@ export class AuthService {
         const [at, rt] = [
             this.jwtService.sign(plain_user, {
                 secret: 'secret',
-                expiresIn: '239d',
+                expiresIn: '60s',
             }),
             this.jwtService.sign(plain_user, {
                 secret: 'secret',

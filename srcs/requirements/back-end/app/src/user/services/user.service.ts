@@ -15,13 +15,93 @@ export class UserService {
         private readonly jwtService: JwtService
     ) { }
 
-    
-    /*
+    async updateUser(
+        opt: FindUserOptions,
+        data: UpdateUserOptions,
+    ) {
+        await this.prisma.user.update({
+            where: {
+                login: opt.login,
+                email: opt.email,
+                id: opt.id
+            },
+            data: {
+                avatar_url: data.avatar_url,
+                password: data.password,
+                rt: data.rt,
+                first_name: data.first_name,
+                last_name: data.last_name,
+                description: data.description,
+            },
+        });
+    }
 
-        TODO: things to do here ->
-        - rework all function with interfaces
+    async createUser(
+        opt: CreateUserOptions
+    ): Promise<User> {
+        const user = await this.prisma.user.create({
+            data: {
+                login: opt.login,
+                email: opt.email,
+                password: opt.password,
+            },
+        });
+        return user;
+    }
 
-    */
+
+    async findUniqueUser(
+        opt: FindUserOptions
+    ): Promise<User | undefined> {
+        const found = await this.prisma.user.findUnique({
+            where: {
+                login: opt.login,
+                email: opt.email,
+                id: opt.id
+            },
+        });
+        return (found ? found : undefined);
+    }
+
+
+    async getUserWithId(
+        id: number
+    ): Promise<User> {
+
+        const u: User = await this.findUniqueUser({
+            id: id,
+        });
+        if (!u) { throw new NotFoundException('user not found'); }
+        return (u);
+    }
+
+    async getUserWithUsername(
+        login: string
+    ): Promise<User> {
+        const u: User = await this.findUniqueUser({
+            login: login,
+        });
+        if (!u) { throw new NotFoundException('user not found'); }
+        return (u);
+    }
+
+    async setUserOnline(
+        id: number,
+        online: boolean
+    ) {
+        try {
+            await this.prisma.user.update({
+                where: {
+                    id: id
+                },
+                data: {
+                    state: online
+                }
+        });
+        } catch (err) {
+            throw new NotFoundException('user not found');
+        }
+    }
 
 
     async doesUserExist(
@@ -40,100 +120,20 @@ export class UserService {
                 ]
             },
         });
-        if (found) {
-            return (found);
-        }
+        if (found) { return (found);}
         return (undefined);
     }
 
-    async findUniqueUser (
-        opt: FindUserOptions
-    ): Promise<User | undefined> {
-        const found = await this.prisma.user.findUnique({
+    async findMatchingUsers(
+        login: string,
+    ) : Promise<User[] | undefined> {
+        const found = await this.prisma.user.findMany({
             where: {
-                login: opt.login,
-                email: opt.email,
-                id: opt.id
+                login:{ contains: login },
             },
         });
-        return (found ? found : undefined);
-    }
-
-    async updateUser (
-        opt: FindUserOptions,
-        data: UpdateUserOptions,
-    ) {
-        await this.prisma.user.update({
-            where: {
-                login: opt.login,
-                email: opt.email,
-                id: opt.id
-            },
-            data: {
-                avatar_url: data.avatar_url,
-                email: data.email,
-                password: data.password,
-                rt: data.rt,
-            },
-        });
-    }
-
-    async createUser(
-        opt: CreateUserOptions
-    ): Promise<User> {
-        const user = await this.prisma.user.create({
-            data: {
-                login: opt.login,
-                email: opt.email,
-                password: opt.password,
-            },
-        });
-        return user;
-    }
-
-    async setUserOnline(
-        id: number,
-        online: boolean
-    ) {
-        // try {
-            await this.prisma.user.update({
-                where: {
-                    id: id
-                },
-                data: {
-                    state: online
-                }
-            });
-        // } catch (err) {
-        //     throw new NotFoundException('user not found');
-        // }
-    }
-
-    async get_USER_by_USER_id(
-        id: number
-    ): Promise<User> {
-        const user = await this.prisma.user.findUnique({
-            where: {
-                id: id
-            }
-        });
-        if (!user) {
-            throw new NotFoundException('user not found');
-        }
-        return (user);
-    }
-
-    async get_USER_by_USER_login(
-        login: string
-    ): Promise<User> {
-        const user = await this.prisma.user.findUnique({
-            where: {
-                login: login
-            }
-        });
-        if (!user) {
-            throw new NotFoundException('user not found');
-        }
-        return (user);
+        console.log(login, " --> ", found);
+        if (found) { return (found);}
+        return (undefined);
     }
 }

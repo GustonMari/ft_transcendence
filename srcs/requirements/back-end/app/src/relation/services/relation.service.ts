@@ -96,7 +96,7 @@ export class RelationService {
         return relations;
     }
 
-    async check_relation_match_id (
+    async validateRelation (
         user_id: number,
         relation_id: number
     ) : Promise<boolean> {
@@ -110,9 +110,13 @@ export class RelationService {
         }), ...await this.get_unique_relation({
             id: relation_id,
             to_id: user_id,
+            include: {
+                from: false,
+                to: false,
+            }
             
         })};
-        return (!!relations[0]);
+        return (!!relations);
     }
 
 }

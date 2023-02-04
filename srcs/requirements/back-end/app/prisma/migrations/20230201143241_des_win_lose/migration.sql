@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "users" ADD COLUMN     "description" VARCHAR(240),
+ADD COLUMN     "loses" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "wins" INTEGER NOT NULL DEFAULT 0;
