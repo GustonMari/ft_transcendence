@@ -22,15 +22,24 @@ export class RelationRequestService {
         }
         const relations = {...await this.relation.get_unique_relation({
             from_id: from,
-            to_id: to
+            to_id: to,
+            include: {
+                from: false,
+                to: false
+            }
         }), ...await this.relation.get_unique_relation({
             to_id: from,
             from_id: to,
+            include: {
+                from: false,
+                to: false
+            }
         })};
+        console.log(relations);
         if (relations !== undefined) {
-            if (relations[0].state === "FRIEND") {
+            if (relations.state === "FRIEND") {
                 throw new BadRequestException("You already have this user in your friends list");
-            } else if (relations[0].state === "BLOCKED") {
+            } else if (relations.state === "BLOCKED") {
                 throw new BadRequestException("You have blocked this user");
             } else {
                 throw new BadRequestException("You already send or receive a request for this user");

@@ -9,7 +9,7 @@ export const RequestList = (props: any) => {
 
     return (
         <>
-            <div className="w-full h-full bg-white p-4 text-sm">
+            <div className="w-full h-full p-4 text-sm">
                 <div className="m-6 overflow-x-auto rounded-md border border-gray-200 shadow-md">
                     <table className="w-full bg-white text-left border-collapse table-fixed">
                         <thead className="bg-gray-50">

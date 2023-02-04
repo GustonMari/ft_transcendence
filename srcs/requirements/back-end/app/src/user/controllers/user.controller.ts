@@ -18,6 +18,7 @@ import {
     ApiBearerAuth,
     ApiNotFoundResponse,
     ApiOkResponse,
+    ApiQuery,
     ApiUnauthorizedResponse
 } from "@nestjs/swagger";
 import TokenPayloadRO from "app/src/auth/ros/token_payload.ro";
@@ -51,10 +52,10 @@ export class UserController {
     @TransformPlainToInstance(UserRO, {
         excludeExtraneousValues: true,
     })
-    async get_me(
+    async getMe(
         @GetMe("id") id: number,
     ): Promise<UserRO> {
-        const user_raw = await this.userService.get_USER_by_USER_id(id);
+        const user_raw = await this.userService.getUserWithId(id);
         return (user_raw);
     }
 
@@ -76,13 +77,13 @@ export class UserController {
     @TransformPlainToInstance(UserRO, {
         excludeExtraneousValues: true,
     })
-    async get_USER_by_USER_id(
+    async getUserWithId(
         @Param(
             "id",
             ParseIntPipe
         ) id: number
     ): Promise<UserRO> {
-        const user_raw = await this.userService.get_USER_by_USER_id(id);
+        const user_raw = await this.userService.getUserWithId(id);
         return (user_raw);
     }
 
@@ -100,17 +101,32 @@ export class UserController {
         description: "Return the user with the given string",
         type: UserRO
     })
+    @ApiQuery({
+        name: "login",
+        type: String,
+        description: "The login of the user to get"
+    })
 
     @Get("get")
     @TransformPlainToInstance(UserRO, {
         excludeExtraneousValues: true,
     })
-    async get_USER_by_USER_login(
+    async getUserWithUsername(
         @Query("login") login: string
     ): Promise<UserRO> {
         if (!login) {
             throw new BadRequestException("Invalid STRING parameter")
         }
-        return (await this.userService.get_USER_by_USER_login(login));
+        return (await this.userService.getUserWithUsername(login));
+    }
+
+    @Get("match/string/:string")
+    @TransformPlainToInstance(UserRO, {
+        excludeExtraneousValues: true,
+    })
+    async findMatchingUsers(
+        @Param("string") string: string
+    ): Promise<UserRO[]> {
+        return (await this.userService.findMatchingUsers(string));
     }
 }

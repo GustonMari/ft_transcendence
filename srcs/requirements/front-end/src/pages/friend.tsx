@@ -7,7 +7,7 @@ import { ProfileComponent } from "../components/user/ProfileComponent"
 import g from "../styles/background.module.css"
 
 
-export const Friends = (props: any) => {
+export const Friends = ({user}: any) => {
 
     const [friends, setFriends] = useState([]);
     const [pending, setPending] = useState([]);

@@ -5,6 +5,8 @@ import Home from "./pages/home";
 import SignIn from "./pages/signin";
 import PrivateRoute from "./components/PrivateRoute";
 import { Friends } from "./pages/friend";
+import { Profile } from "./pages/profile";
+import { Result } from "./components/search/Result";
 
 function App() {
   return (
@@ -21,8 +23,14 @@ function App() {
                 <Friends/>
             </PrivateRoute>
         } />
+        <Route path="/profile" element={
+            <PrivateRoute>
+                <Profile/>
+            </PrivateRoute>
+        } />
         <Route path="/signin" element={<SignIn />} />
         {/* <Route path='/' element={<App/>}/> */}
+        <Route path='/search' element={<Result/>}/>
       </Routes>
     </div>
   );

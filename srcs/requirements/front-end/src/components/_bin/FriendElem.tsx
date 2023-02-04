@@ -1,3 +1,5 @@
+import { MdArchitecture } from "react-icons/md";
+
 export const FriendElem = (props: any) => {
   return (
     <>

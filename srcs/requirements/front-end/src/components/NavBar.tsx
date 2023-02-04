@@ -43,7 +43,15 @@ export const NavBar = (props: any) => {
               <div className={styles.search_icon}>
                 <BiSearch className={styles.icons} />
               </div>
-              <input type="text" placeholder="Search" />
+              <input type="text" placeholder="Search" onKeyDown={
+                    (e: any) => {
+                        if (e.key === "Enter") {
+                            e.preventDefault();
+                            navigate("/search?user=" + e.target.value);
+                            window.location.reload();
+                        }
+                    }
+              }/>
             </li>
             <li>
               <a href="/home">

@@ -134,6 +134,25 @@ export default class API {
         }
     }
 
+    static async sendFriendRequest(
+        uid: number,
+        successFunc: () => void,
+        errorFunc: (err: ApiError) => void
+    ) {
+        try {
+            await APP.put("/relation/friend/request/add/id/" + uid);
+            successFunc();
+        } catch (err) {
+            const error = err as AxiosError;
+            if (axios.isAxiosError(err)) {
+                errorFunc({
+                    code: error.code,
+                    message: error.message,           
+                });
+            };
+        }
+    }
+
     static async acceptRequest(
         rid: number,
         successFunc: (list: any) => void,
@@ -180,6 +199,44 @@ export default class API {
         try {
             const res = await APP.get("/user/get/" + id);
             successFunc(res.data);
+        } catch (err) {
+            const error = err as AxiosError;
+            if (axios.isAxiosError(err)) {
+                errorFunc({
+                    code: error.code,
+                    message: error.message,           
+                });
+            };
+        }
+    }
+
+    static async updateProfile (
+        opt: any,
+        successFunc: () => void,
+        errorFunc: (err: ApiError) => void
+    ) {
+        try {
+            await APP.patch("/user/profile/me/update", opt);
+            successFunc();
+        } catch (err) {
+            const error = err as AxiosError;
+            if (axios.isAxiosError(err)) {
+                errorFunc({
+                    code: error.code,
+                    message: error.message,           
+                });
+            };
+        }
+    }
+
+    static async searchUser (
+        opt: string | null,
+        successFunc: (r: any) => void,
+        errorFunc: (err: ApiError) => void
+    ) {
+        try {
+            const r = await APP.get("/user/match/string/" + opt);
+            successFunc(r.data);
         } catch (err) {
             const error = err as AxiosError;
             if (axios.isAxiosError(err)) {
