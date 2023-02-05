@@ -30,7 +30,11 @@ function App() {
         } />
         <Route path="/signin" element={<SignIn />} />
         {/* <Route path='/' element={<App/>}/> */}
-        <Route path='/search' element={<Result/>}/>
+        <Route path='/search' element={
+            <PrivateRoute>
+                <Result/>
+            </PrivateRoute>
+        }/>
       </Routes>
     </div>
   );
