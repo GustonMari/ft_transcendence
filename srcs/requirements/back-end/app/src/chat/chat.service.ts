@@ -73,7 +73,6 @@ export class ChatService {
 		const room_exist = await this.prisma.room.findUnique({ 
 			where: { 
 				name: room_name,
-				// id: user_id,
 		
 		} });
 		if (!room_exist) {
@@ -90,7 +89,7 @@ export class ChatService {
 		if (user_in_room) {
 			await this.prisma.usersOnRooms.delete({
 			  where: {
-				user_id_room_id:/*  user_in_room */
+				user_id_room_id:
 				{
 					user_id: user_id,
 					room_id: room_exist.id,
@@ -98,13 +97,7 @@ export class ChatService {
 			  }
 			});
 		}
-		// this.prisma.usersOnRooms.delete({
-		// 	where: {
-		// 		room_id_user_id: {
-		// 			room_id: room_name,
-		// 			user_id: user_id,
-		// 		}
-		// })
+
 	}
 
 	async roomExists(room_name: string): Promise<boolean> {
@@ -112,6 +105,21 @@ export class ChatService {
 		if (!room_exist) {
 			return false;
 		}
+		return true;
+	}
+
+
+	async deleteRoom(room_name: string, user_id: number): Promise<boolean> {
+		const room_exist = await this.prisma.room.findUnique({ where: { name: room_name } });
+		if (!room_exist) {
+			return false;
+		}
+		await this.prisma.usersOnRooms.deleteMany({
+			where: {
+				room_id: room_exist.id,
+			},
+		})
+		await this.prisma.room.delete({ where: { name: room_name } });
 		return true;
 	}
 }

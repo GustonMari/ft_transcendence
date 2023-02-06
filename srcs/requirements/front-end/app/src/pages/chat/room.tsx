@@ -34,4 +34,16 @@ export function LeaveRoom(props : any)
 
 }
 
+export function DeleteRoom(props : any)
+{
+	let { define_room, current_user, socket  } = props;
+	const [value, setValue] = React.useState("");
+	return (
+		<div>
+		<input onChange={(e) => setValue(e.target.value)} placeholder="delete your room..." value={value} />
+			<button onClick={() => socket?.emit("deleteRoom", { room_name: value, id_user: current_user.id})}>Delete room</button>
+		</div>
+	)
+}
+
 export default RoomForm;

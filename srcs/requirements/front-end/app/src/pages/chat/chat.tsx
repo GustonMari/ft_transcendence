@@ -5,7 +5,7 @@ import MessageInput from "./Messageinput";
 import Messages from "./Message";
 import axios from "axios";
 import Create_socket from "./socket";
-import {RoomForm, LeaveRoom} from "./room";
+import {RoomForm, LeaveRoom, DeleteRoom} from "./room";
 import { APP } from "../../api/app";
 import App from "../../App";
 
@@ -56,6 +56,7 @@ export default function Chat() {
 		<h1>Chat</h1>
 		<RoomForm define_room={define_room} current_user={currentUser} socket={socket}/>
 		<LeaveRoom define_room={define_room} current_user={currentUser} socket={socket}/>
+		<DeleteRoom define_room={define_room} current_user={currentUser} socket={socket}/>
 		<MessageInput send={send}/>
 		<Messages messages={messages} room={room} socket={socket}/>
 	</div>

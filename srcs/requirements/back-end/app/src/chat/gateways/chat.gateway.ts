@@ -78,33 +78,26 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		this.myserver.to(data.room_name).emit('message', `new user (${data.id_user}) joined the room`);
 	}
 
-	// @SubscribeMessage('leaveRoom')
-	// handleLeaveRoom(socket: Socket, room: string): WsResponse<unknown> {
-	// 	//? emit un  petit message pour dire que tel user a quitte la room
-	// 	//! ici on va ajouter a prisma la room dans la table user
-	// 	this.chatService.leaveRoom(room, socket.id);
-	// 	socket.leave(room);
-	// 	return { event: 'joinRoom', data: room};
-	// }
-
 	@SubscribeMessage('leaveRoom')
 	handleLeaveRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket) {
 		//? emit un  petit message pour dire que tel user a quitte la room
-		//! ici on va ajouter a prisma la room dans la table user
-		
 		console.log(`user ${data.id_user} left the room ${data.room_name}`);
 		this.chatService.leaveRoom(data.room_name, data.id_user);
 		socket.leave(data.room_name);
+		this.myserver.to(data.room_name).emit('message', `new user (${data.id_user}) has leave the room`);
 	}
 
 
 
-	// @SubscribeMessage('deleteRoom')
-	// handleDeleteRoom(socket: Socket, room: string): void {
-	// 	//* check si le user est admin
-	// 	socket.leave(room);
-	// 	//! ici on va supprimer la room dans la table user de prisma
-	// }
+	@SubscribeMessage('deleteRoom')
+	handleDeleteRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket): void {
+		//* check si le user est admin
+		// socket.leave(room);
+
+		this.myserver.socketsLeave(data.room_name);
+		this.chatService.deleteRoom(data.room_name, data.id_user);
+		//! ici on va supprimer la room dans la table user de prisma
+	}
 
 	// @SubscribeMessage('banUser')
 	// handleBanUser(socket: Socket, user: string): void {
