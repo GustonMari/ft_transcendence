@@ -31,46 +31,73 @@ export class ChatService {
 		});
 	}
 
-	async joinChatRoom(room_name: string, user_id: number ) : Promise<Room>
+	async joinChatRoom(room_name: string, user_id: number )/*  : Promise<Room> */
 	{
+		//TODO: change with findOne
 		const current_user = await this.prisma.user.findUnique({ where: { id: user_id } });
 		if (!current_user) {
 			throw new Error('User not found');
 		}
-		// //TODO: vraiment tout doux
-		// //! ATTENTION IL FAUT MIGRATE ET CHANGE FINDFIRST EN FINDUNIQUE
-		const current_room = await this.prisma.room.create(
-			{
+
+		//on cherche si la room existe deja sinon on la creer
+		const room_exist = await this.prisma.room.findUnique({ where: { name: room_name } });
+		if (!room_exist) {
+			//! or maybe trhow something
+			this.createChatRoom(room_name, user_id);
+		}
+		else {
+
+			console.log("room exist----------------->");
+			const user_in_room = await this.prisma.usersOnRooms.findFirst({
 				where: {
-					name: room_name,
-					// users: {
-					// 	some: {
-					// 		user: {
-					// 			id: user_id,
-					// 		}
-					// 	}
-					// }
-				},
+					user_id: user_id,
+					room_id: room_exist.id,
+				}
+			});
+
+			if (!user_in_room) {
+				console.log("user in room dont exist-----------------> CREATE IT");
+				await this.prisma.usersOnRooms.create({
+					data: {
+						user: { connect: { id: user_id } },
+						room: { connect: { id: room_exist.id } }
+					}
+				});
 			}
 
 
-		);
-
-		await this.prisma.usersOnRooms.create({
-			data: {
-				user: { connect: { id: user_id } },
-				room: { connect: { id: current_room.id } }
-			}
-		});
-
-		return current_room;
 
 
-		// const current_room = await this.prisma.room.findUnique({ where: { name: room_name } });
-		// if (!current_room) {
-		// 	throw new Error('Room not found');
-		// }
-		// await this.prisma
+
+			// // //TODO: vraiment tout doux
+			// // //! ATTENTION IL FAUT MIGRATE ET CHANGE FINDFIRST EN FINDUNIQUE
+			// current_room = await this.prisma.room.update(
+			// 	{
+					
+			// 		// where: {
+			// 		// 	name: room_name,
+					
+			// 			// users: {
+			// 			// 	some: {
+			// 			// 		user: {
+			// 			// 			id: user_id,
+			// 			// 		}
+			// 			// 	}
+			// 			// }
+			// 		// },
+			// 	}
+			// );
+		}
+
+
+		// await this.prisma.usersOnRooms.create({
+		// 	data: {
+		// 		user: { connect: { id: user_id } },
+		// 		room: { connect: { id: current_room.id } }
+		// 	}
+		// });
+
+		// return current_room;
 	
 		
 	}
