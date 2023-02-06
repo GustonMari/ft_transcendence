@@ -173,4 +173,40 @@ export class ChatService {
 		return user.id;
 	  }
 
+	async banUser(room_name: string, user_id: number, user_to_ban: number): Promise<boolean> {
+		const room_exist = await this.prisma.room.findUnique({ where: { name: room_name } });
+		if (!room_exist) {
+			return false;
+		}
+		await this.prisma.usersOnRooms.update({
+			where: {
+				user_id_room_id: {
+					user_id: user_to_ban,
+					room_id: room_exist.id,
+				}
+			},
+			data: {
+				banned: true,
+			}
+		})
+	}
+
+	async unbanUser(room_name: string, user_id: number, user_to_ban: number): Promise<boolean> {
+		const room_exist = await this.prisma.room.findUnique({ where: { name: room_name } });
+		if (!room_exist) {
+			return false;
+		}
+		await this.prisma.usersOnRooms.update({
+			where: {
+				user_id_room_id: {
+					user_id: user_to_ban,
+					room_id: room_exist.id,
+				}
+			},
+			data: {
+				banned: false,
+			}
+		})
+	}
+
 }
