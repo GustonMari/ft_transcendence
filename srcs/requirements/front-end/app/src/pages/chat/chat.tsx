@@ -55,7 +55,7 @@ export default function Chat() {
 	<div>
 		<h1>Chat</h1>
 		<RoomForm define_room={define_room} current_user={currentUser} socket={socket}/>
-		<LeaveRoom room_name={room} socket={socket}/>
+		<LeaveRoom define_room={define_room} current_user={currentUser} socket={socket}/>
 		<MessageInput send={send}/>
 		<Messages messages={messages} room={room} socket={socket}/>
 	</div>

@@ -66,4 +66,52 @@ export class ChatService {
 			}
 		}
 	}
+
+
+	async leaveRoom(room_name: string, user_id: number) {
+		
+		const room_exist = await this.prisma.room.findUnique({ 
+			where: { 
+				name: room_name,
+				// id: user_id,
+		
+		} });
+		if (!room_exist) {
+			return ;
+		}
+
+		const user_in_room = await this.prisma.usersOnRooms.findFirst({
+			where: {
+				user_id: user_id,
+				room_id: room_exist.id,
+			}
+		});
+
+		if (user_in_room) {
+			await this.prisma.usersOnRooms.delete({
+			  where: {
+				user_id_room_id:/*  user_in_room */
+				{
+					user_id: user_id,
+					room_id: room_exist.id,
+				}
+			  }
+			});
+		}
+		// this.prisma.usersOnRooms.delete({
+		// 	where: {
+		// 		room_id_user_id: {
+		// 			room_id: room_name,
+		// 			user_id: user_id,
+		// 		}
+		// })
+	}
+
+	async roomExists(room_name: string): Promise<boolean> {
+		const room_exist = await this.prisma.room.findUnique({ where: { name: room_name } });
+		if (!room_exist) {
+			return false;
+		}
+		return true;
+	}
 }

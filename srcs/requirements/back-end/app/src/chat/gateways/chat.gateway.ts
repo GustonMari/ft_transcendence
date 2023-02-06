@@ -60,33 +60,44 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 
 	@SubscribeMessage('joinRoom')
-	handleJoinRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket): void {
+	async handleJoinRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket): Promise<void> {
 		
-		//! ici on va ajouter a prisma la room dans la table user
-		//? on peut peut etre emit un petit message pour dire quon a join la room
-		
-		const roomExists = this.myserver.sockets.adapter.rooms.has(data.room_name);
+		// const roomExists = this.myserver.sockets.adapter.rooms.has(data.room_name);
+		const roomExists = await this.chatService.roomExists(data.room_name);
 		if (roomExists) {
-			this.chatService.joinChatRoom(data.room_name, data.id_user);
+			await this.chatService.joinChatRoom(data.room_name, data.id_user);
 			console.log(`The room "${data.room_name}" exist, you join the room`);
 
 		}
 		else {
-			this.chatService.createChatRoom(data.room_name, data.id_user);
+			await this.chatService.createChatRoom(data.room_name, data.id_user);
 			console.log(`The room "${data.room_name}" does not exist, you create the room, you are admin`);
 		}
 		// 	//* usr devient admin
-		socket.join(data.room_name);
+		await socket.join(data.room_name);
 		this.myserver.to(data.room_name).emit('message', `new user (${data.id_user}) joined the room`);
 	}
 
+	// @SubscribeMessage('leaveRoom')
+	// handleLeaveRoom(socket: Socket, room: string): WsResponse<unknown> {
+	// 	//? emit un  petit message pour dire que tel user a quitte la room
+	// 	//! ici on va ajouter a prisma la room dans la table user
+	// 	this.chatService.leaveRoom(room, socket.id);
+	// 	socket.leave(room);
+	// 	return { event: 'joinRoom', data: room};
+	// }
+
 	@SubscribeMessage('leaveRoom')
-	handleLeaveRoom(socket: Socket, room: string): WsResponse<unknown> {
+	handleLeaveRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket) {
 		//? emit un  petit message pour dire que tel user a quitte la room
 		//! ici on va ajouter a prisma la room dans la table user
-		socket.leave(room);
-		return { event: 'joinRoom', data: room};
+		
+		console.log(`user ${data.id_user} left the room ${data.room_name}`);
+		this.chatService.leaveRoom(data.room_name, data.id_user);
+		socket.leave(data.room_name);
 	}
+
+
 
 	// @SubscribeMessage('deleteRoom')
 	// handleDeleteRoom(socket: Socket, room: string): void {
@@ -117,16 +128,6 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	// @SubscribeMessage('unblockUser')
 	// handleUnblockUser(socket: Socket, user: string): void {
 	// 	//! changer prisma pour que le user soit unblock
-	// }
-
-	// @SubscribeMessage('muteUser')
-	// handleMuteUser(socket: Socket, user: string): void {
-	// 	//! changer prisma pour que le user soit mute
-	// }
-
-	// @SubscribeMessage('unmuteUser')
-	// handleUnmuteUser(socket: Socket, user: string): void {
-	// 	//! changer prisma pour que le user soit unmute
 	// }
 
 	// @SubscribeMessage('addAdmin')

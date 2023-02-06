@@ -23,10 +23,12 @@ export function RoomForm(/* {define_room}: {define_room: (value: string) => void
 
 export function LeaveRoom(props : any)
 {
-	let { room_name, socket } = props;
+	let { define_room, current_user, socket  } = props;
+	const [value, setValue] = React.useState("");
 	return (
 		<div>
-			<button onClick={() => socket?.emit("leaveRoom", room_name)}>Leave room</button>
+		<input onChange={(e) => setValue(e.target.value)} placeholder="exit your room..." value={value} />
+			<button onClick={() => socket?.emit("leaveRoom", { room_name: value, id_user: current_user.id})}>Leave room</button>
 		</div>
 	)
 
