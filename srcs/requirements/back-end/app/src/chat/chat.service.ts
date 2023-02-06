@@ -64,42 +64,6 @@ export class ChatService {
 					}
 				});
 			}
-
-
-
-
-
-			// // //TODO: vraiment tout doux
-			// // //! ATTENTION IL FAUT MIGRATE ET CHANGE FINDFIRST EN FINDUNIQUE
-			// current_room = await this.prisma.room.update(
-			// 	{
-					
-			// 		// where: {
-			// 		// 	name: room_name,
-					
-			// 			// users: {
-			// 			// 	some: {
-			// 			// 		user: {
-			// 			// 			id: user_id,
-			// 			// 		}
-			// 			// 	}
-			// 			// }
-			// 		// },
-			// 	}
-			// );
 		}
-
-
-		// await this.prisma.usersOnRooms.create({
-		// 	data: {
-		// 		user: { connect: { id: user_id } },
-		// 		room: { connect: { id: current_room.id } }
-		// 	}
-		// });
-
-		// return current_room;
-	
-		
 	}
-
 }
