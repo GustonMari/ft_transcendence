@@ -122,4 +122,25 @@ export class ChatService {
 		await this.prisma.room.delete({ where: { name: room_name } });
 		return true;
 	}
+
+	async setAdmin(room_name: string, user_id: number): Promise<boolean> {
+		const room_exist = await this.prisma.room.findUnique({ where: { name: room_name } });
+		if (!room_exist) {
+			return false;
+		}
+		console.log("On SET ADMIN")
+		await this.prisma.usersOnRooms.update({
+			where: {
+				user_id_room_id: {
+					user_id: user_id,
+					room_id: room_exist.id,
+				}
+			},
+			data: {
+				admin: true,
+			}
+		})
+
+
+	}
 }

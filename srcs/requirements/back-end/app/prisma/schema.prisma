@@ -62,24 +62,12 @@ model User {
     @@map("users")
 }
 
-// model Message {
-//     id         Int      @id @unique @default(autoincrement())
-//     // created_at DateTime @default(now())
-//     // updated_at DateTime @updatedAt
-//     // text       String
-//     // from       User     @relation(fields: [from_id], references: [id])
-//     // from_id    Int
-//     // to         User     @relation(fields: [to_id], references: [id])
-//     // to_id      Int
-
-//     // @@map("messages")
-// }
-
 model Room {
     id         Int      @id @unique @default(autoincrement())
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
     name       String   @unique
+
 
     users UsersOnRooms[]
     // @@map("rooms")
@@ -98,6 +86,9 @@ model UsersOnRooms {
     room_id Int
 
 
+    admin Boolean @default(false)
+    muted Boolean @default(false)
+    banned Boolean @default(false)
     @@id([user_id, room_id])
 
     // @@map("users_on_rooms")

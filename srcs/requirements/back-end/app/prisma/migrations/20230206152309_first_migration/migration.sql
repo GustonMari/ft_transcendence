@@ -57,6 +57,9 @@ CREATE TABLE "UsersOnRooms" (
     "updated_at" TIMESTAMP(3) NOT NULL,
     "user_id" INTEGER NOT NULL,
     "room_id" INTEGER NOT NULL,
+    "admin" BOOLEAN NOT NULL DEFAULT false,
+    "muted" BOOLEAN NOT NULL DEFAULT false,
+    "banned" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "UsersOnRooms_pkey" PRIMARY KEY ("user_id","room_id")
 );

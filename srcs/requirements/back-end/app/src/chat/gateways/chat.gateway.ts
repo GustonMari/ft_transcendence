@@ -72,6 +72,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		else {
 			await this.chatService.createChatRoom(data.room_name, data.id_user);
 			console.log(`The room "${data.room_name}" does not exist, you create the room, you are admin`);
+			await this.chatService.setAdmin(data.room_name, data.id_user);
 		}
 		// 	//* usr devient admin
 		await socket.join(data.room_name);
