@@ -5,7 +5,7 @@ import MessageInput from "./Messageinput";
 import Messages from "./Message";
 import axios from "axios";
 import Create_socket from "./socket";
-import {RoomForm, LeaveRoom, DeleteRoom} from "./room";
+import {RoomForm, LeaveRoom, DeleteRoom, SetAdmin} from "./room";
 import { APP } from "../../api/app";
 import App from "../../App";
 
@@ -13,8 +13,6 @@ import App from "../../App";
 
 export default function Chat() {
 
-
-	console.log("ZOUBI");
 	const socket = Create_socket();
 	const [messages, setMessage] = useState<string[]>([]);
 	const [room, setRoom] = useState<string>('');
@@ -57,6 +55,7 @@ export default function Chat() {
 		<RoomForm define_room={define_room} current_user={currentUser} socket={socket}/>
 		<LeaveRoom define_room={define_room} current_user={currentUser} socket={socket}/>
 		<DeleteRoom define_room={define_room} current_user={currentUser} socket={socket}/>
+		<SetAdmin define_room={define_room} current_user={currentUser} socket={socket}/>
 		<MessageInput send={send}/>
 		<Messages messages={messages} room={room} socket={socket}/>
 	</div>

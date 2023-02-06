@@ -20,7 +20,7 @@ import { AccessGuard } from 'app/src/auth/guards/access.guard';
 import { User } from '@prisma/client';
 import { UserController } from 'app/src/user/controllers/user.controller';
 import { ChatService } from '../chat.service';
-import { InfoMessage, InfoRoom } from './chat.interface';
+import { InfoMessage, InfoRoom, InfoRoomTo } from './chat.interface';
 
 
 // @UseGuards(AccessGuard)
@@ -62,7 +62,6 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	@SubscribeMessage('joinRoom')
 	async handleJoinRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket): Promise<void> {
 		
-		// const roomExists = this.myserver.sockets.adapter.rooms.has(data.room_name);
 		const roomExists = await this.chatService.roomExists(data.room_name);
 		if (roomExists) {
 			await this.chatService.joinChatRoom(data.room_name, data.id_user);
@@ -74,7 +73,6 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			console.log(`The room "${data.room_name}" does not exist, you create the room, you are admin`);
 			await this.chatService.setAdmin(data.room_name, data.id_user);
 		}
-		// 	//* usr devient admin
 		await socket.join(data.room_name);
 		this.myserver.to(data.room_name).emit('message', `new user (${data.id_user}) joined the room`);
 	}
@@ -98,6 +96,18 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		this.myserver.socketsLeave(data.room_name);
 		this.chatService.deleteRoom(data.room_name, data.id_user);
 		//! ici on va supprimer la room dans la table user de prisma
+	}
+
+	@SubscribeMessage('setAdmin')
+	async handleSetAdmin(@MessageBody() data: InfoRoomTo, @ConnectedSocket() socket: Socket): Promise<void> {
+		
+		if (this.chatService.isAdmin(data.room_name, data.id_user_from)) {
+			const id_user_to = await this.chatService.getIdUser(data.login_user_to);
+			await this.chatService.setAdmin(data.room_name, id_user_to);
+			this.myserver.to(data.room_name).emit('message', `user (${id_user_to}) is now admin`);
+		}
+		else
+			this.myserver.to(data.room_name).emit('message', `you dont have permission to set an admin`);
 	}
 
 	// @SubscribeMessage('banUser')
@@ -142,8 +152,6 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	@SubscribeMessage('message') // Subscribe to the message event send by the client (front end) called 'message'
 	handleMessage(@MessageBody() data: InfoMessage, @ConnectedSocket() socket: Socket): void {
 
-		// socket.join(data.room);
-		// console.log('=== socket id: ' + socket.id + ' joined room: ' + new Array(...socket.rooms).join(' '));
 		this.myserver.to(data.room).emit('message', data.message); // Emit the message event to the client, for every user
 
 	}

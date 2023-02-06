@@ -47,7 +47,6 @@ export class ChatService {
 		}
 		else {
 
-			console.log("room exist----------------->");
 			const user_in_room = await this.prisma.usersOnRooms.findFirst({
 				where: {
 					user_id: user_id,
@@ -56,7 +55,6 @@ export class ChatService {
 			});
 
 			if (!user_in_room) {
-				console.log("user in room dont exist-----------------> CREATE IT");
 				await this.prisma.usersOnRooms.create({
 					data: {
 						user: { connect: { id: user_id } },
@@ -128,7 +126,6 @@ export class ChatService {
 		if (!room_exist) {
 			return false;
 		}
-		console.log("On SET ADMIN")
 		await this.prisma.usersOnRooms.update({
 			where: {
 				user_id_room_id: {
@@ -140,7 +137,40 @@ export class ChatService {
 				admin: true,
 			}
 		})
-
-
 	}
+
+	async isAdmin(room_name: string, user_id: number): Promise<boolean> {
+		const room_exist = await this.prisma.room.findUnique({ where: { name: room_name } });
+		if (!room_exist) {
+			return false;
+		}
+		const user_in_room = await this.prisma.usersOnRooms.findFirst({
+			where: {
+				user_id: user_id,
+				room_id: room_exist.id,
+			}
+		});
+		if (!user_in_room) {
+			return false;
+		}
+		return user_in_room.admin;
+	}
+
+	// async getIdUser(user_login: string): Promise<number> {
+	// 	const user = await this.prisma.user.findUnique({ where: { login: user_login } });
+	// 	if (!user) {
+	// 		return -1;
+	// 	}
+	// 	return user.id;
+	// }
+
+	async getIdUser(user_login: string): Promise<number> {
+		const user = await this.prisma.user.findUnique({ where: { login: user_login } });
+		// const user = await this.prisma.user.findUnique({ where: { id: 1}});
+		if (!user) {
+		  return -1;
+		}
+		return user.id;
+	  }
+
 }

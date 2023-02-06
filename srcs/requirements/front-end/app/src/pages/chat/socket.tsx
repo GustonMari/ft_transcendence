@@ -9,12 +9,6 @@ export default function  Create_socket (): Socket | undefined {
 
 	useEffect(() => {
 
-		// console.log("MON COOKIE = ", Cookies.get('access_token'))
-		
-		// let mycookie = /*  'access_token=' +  */Cookies.get('access_token') ;
-		// if (mycookie === undefined)
-		// 	mycookie = "";
-
 		const new_socket = io("http://localhost:3000", {
 			transports : ['websocket', 'polling', 'flashsocket'],
 			withCredentials: true,
@@ -23,14 +17,10 @@ export default function  Create_socket (): Socket | undefined {
 				"Access-Control-Allow-Methods": "GET",
 				"Access-Control-Allow-Headers": "my-custom-header",
 				"Access-Control-Allow-Credentials": "true",
-				// "cookie": mycookie,
-				// "authorization": 'Bearer ' + mycookie
 			},
 			transportOptions: {
 				polling: {
 				  extraHeaders: {
-					// cookie: mycookie,
-					// authorization: 'Bearer ' + mycookie
 				  },
 				}
 			}
