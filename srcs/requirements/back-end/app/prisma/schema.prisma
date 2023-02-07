@@ -76,7 +76,7 @@ model Room {
 //! this is the model for the many to many relationship between users and rooms
 
 model UsersOnRooms {
-    // id         Int      @id @unique @default(autoincrement())
+
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
@@ -89,6 +89,12 @@ model UsersOnRooms {
     admin Boolean @default(false)
     muted Boolean @default(false)
     banned Boolean @default(false)
+
+	muted_at DateTime? 
+	muted_till DateTime?
+	banned_at DateTime?
+	banned_till DateTime?
+
     @@id([user_id, room_id])
 
     // @@map("users_on_rooms")

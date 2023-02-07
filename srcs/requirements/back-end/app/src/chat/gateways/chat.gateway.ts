@@ -89,7 +89,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 
 	@SubscribeMessage('deleteRoom')
-	handleDeleteRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket): void {
+	handleDeleteRoom(@MessageBody() data: InfoRoom): void {
 		//* check si le user est admin
 		// socket.leave(room);
 
@@ -99,7 +99,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 
 	@SubscribeMessage('setAdmin')
-	async handleSetAdmin(@MessageBody() data: InfoRoomTo, @ConnectedSocket() socket: Socket): Promise<void> {
+	async handleSetAdmin(@MessageBody() data: InfoRoomTo): Promise<void> {
 		
 		if (this.chatService.isAdmin(data.room_name, data.id_user_from)) {
 			const id_user_to = await this.chatService.getIdUser(data.login_user_to);
@@ -111,7 +111,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 
 	@SubscribeMessage('banUser')
-	async handleBanUser(@MessageBody() data: InfoRoomTo, @ConnectedSocket() socket: Socket): Promise<void> {
+	async handleBanUser(@MessageBody() data: InfoRoomTo): Promise<void> {
 
 		if (await this.chatService.isAdmin(data.room_name, data.id_user_from)) {
 			const id_user_to = await this.chatService.getIdUser(data.login_user_to);
@@ -128,7 +128,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 
 	@SubscribeMessage('unbanUser')
-	async handleUnbanUser(@MessageBody() data: InfoRoomTo, @ConnectedSocket() socket: Socket): Promise<void> {
+	async handleUnbanUser(@MessageBody() data: InfoRoomTo): Promise<void> {
 
 		if (await this.chatService.isAdmin(data.room_name, data.id_user_from)) {
 			const id_user_to = await this.chatService.getIdUser(data.login_user_to);
@@ -139,6 +139,23 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			this.myserver.to(data.room_name).emit('message', `you dont have permission to unban an user`);
 	}
 
+	@SubscribeMessage('muteUser')
+	async handleMuteUser(@MessageBody() data: InfoRoomTo): Promise<void> {
+
+		if (await this.chatService.isAdmin(data.room_name, data.id_user_from)) {
+			const id_user_to = await this.chatService.getIdUser(data.login_user_to);
+			if (await this.chatService.isAdmin(data.room_name, id_user_to))
+			{
+				this.myserver.to(data.room_name).emit('message', `you cant mute an admin`);
+				return ;
+			}
+			await this.chatService.muteUser(data.room_name, data.id_user_from, id_user_to);
+			this.myserver.to(data.room_name).emit('message', `user (${id_user_to}) is now muted`);
+		}
+		else
+			this.myserver.to(data.room_name).emit('message', `you dont have permission to mute an user`);
+	}
+
 	// @SubscribeMessage('blockUser')
 	// handleBlockUser(socket: Socket, user: string): void {
 	// 	//! changer prisma pour que le user soit block
@@ -147,13 +164,6 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	// @SubscribeMessage('unblockUser')
 	// handleUnblockUser(socket: Socket, user: string): void {
 	// 	//! changer prisma pour que le user soit unblock
-	// }
-
-	// @SubscribeMessage('addAdmin')
-	// handleAddAdmin(socket: Socket, user: string): void {
-	// 	//* check si le user qui fait la demande est admin
-	// 	//! changer prisma pour que le user soit admin
-	// 	//? emit un petit message pour dire que tel user est admin
 	// }
 
 	// @SubscribeMessage('removeAdmin')

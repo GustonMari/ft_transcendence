@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'app/src/prisma/prisma.service';
 import { User, Room } from '@prisma/client';
@@ -207,6 +208,59 @@ export class ChatService {
 				banned: false,
 			}
 		})
+	}
+
+	async muteUser(room_name: string, user_id: number, user_to_mute: number): Promise<boolean> {
+		const room_exist = await this.prisma.room.findUnique({ where: { name: room_name } });
+		if (!room_exist) {
+			return false;
+		}
+		await this.prisma.usersOnRooms.update({
+			where: {
+				user_id_room_id: {
+					user_id: user_to_mute,
+					room_id: room_exist.id,
+				}
+			},
+			data: {
+				muted: true,
+				muted_at: new Date(),
+
+				
+			}
+		})
+		return true;
+	}
+
+	async isUserUnmute(room_name: string, user_id: number, user_to_mute: number, timeout: number): Promise<boolean>
+	{
+		const room_exist = await this.prisma.room.findUnique({ where: { name: room_name } });
+		if (!room_exist) {
+			return false;
+		}
+		const user = await this.prisma.usersOnRooms.findFirst({
+			where: {
+				user_id: user_to_mute,
+				room_id: room_exist.id,
+			}
+		});
+		if (user.muted == false)
+			return false;
+		else if (user.muted == true && user.muted_at.getTime() + timeout < new Date().getTime()) {
+			await this.prisma.usersOnRooms.update({
+				where: {
+					user_id_room_id: {
+						user_id: user_to_mute,
+						room_id: room_exist.id,
+					}
+				},
+				data: {
+					muted: false,
+				}
+			})
+			return true;
+		}
+		return false;
 	}
 
 }
