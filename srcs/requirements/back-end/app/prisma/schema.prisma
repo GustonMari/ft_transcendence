@@ -40,6 +40,21 @@ model Chat_Relation {
     @@map("chat_request")
 }
 
+model User_Block {
+	id Int @id @unique @default(autoincrement())
+	created_at DateTime @default(now())
+	updated_at DateTime @updatedAt
+
+	blocked Boolean @default(false)
+	userId Int 
+	userPtain Int
+
+
+	user User @relation(fields: [id], references: [id])
+
+	// @@map("user_block")
+}
+
 model User {
     id         Int      @id @unique @default(autoincrement())
     created_at DateTime @default(now())
@@ -58,7 +73,9 @@ model User {
     outgoing Relation[]    @relation("outgoing")
 
     rooms UsersOnRooms[]
-    // roles Role[]
+    
+	blocks User_Block[]
+
     @@map("users")
 }
 
@@ -71,7 +88,7 @@ model Room {
 
     users UsersOnRooms[]
     // @@map("rooms")
-}
+} 
 
 //! this is the model for the many to many relationship between users and rooms
 
@@ -91,7 +108,7 @@ model UsersOnRooms {
     banned Boolean @default(false)
 
 	muted_at DateTime? 
-	muted_till DateTime?
+	muted_till DateTime? 
 	banned_at DateTime?
 	banned_till DateTime?
 

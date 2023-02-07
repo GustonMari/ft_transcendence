@@ -1,5 +1,9 @@
 {
   "dependencies": {
+    "@nestjs/schedule": "^2.2.0",
     "js-cookie": "^3.0.1"
+  },
+  "devDependencies": {
+    "@types/cron": "^2.0.0"
   }
 }

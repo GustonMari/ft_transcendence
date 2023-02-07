@@ -20,7 +20,8 @@ import { AccessGuard } from 'app/src/auth/guards/access.guard';
 import { User } from '@prisma/client';
 import { UserController } from 'app/src/user/controllers/user.controller';
 import { ChatService } from '../chat.service';
-import { InfoMessage, InfoRoom, InfoRoomTo } from './chat.interface';
+import { InfoBanTo, InfoBlockTo, InfoMessage, InfoMuteTo, InfoRoom, InfoRoomTo } from './chat.interface';
+import { ChatSchedulingService } from '../chat_scheduling.service';
 
 
 // @UseGuards(AccessGuard)
@@ -33,7 +34,9 @@ import { InfoMessage, InfoRoom, InfoRoomTo } from './chat.interface';
 })
 export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 
-	constructor(private chatService: ChatService) {}
+	constructor(private chatService: ChatService, private chatSchedulingService: ChatSchedulingService) {
+		this.chatSchedulingService.handleCron();
+	}
 
 	@WebSocketServer() // Create a instance of the server
 	myserver: Server;
@@ -111,7 +114,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 
 	@SubscribeMessage('banUser')
-	async handleBanUser(@MessageBody() data: InfoRoomTo): Promise<void> {
+	async handleBanUser(@MessageBody() data: InfoBanTo): Promise<void> {
 
 		if (await this.chatService.isAdmin(data.room_name, data.id_user_from)) {
 			const id_user_to = await this.chatService.getIdUser(data.login_user_to);
@@ -120,7 +123,9 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 				this.myserver.to(data.room_name).emit('message', `you cant ban an admin`);
 				return ;
 			}
-			await this.chatService.banUser(data.room_name, data.id_user_from, id_user_to);
+			const ban_date = new Date();
+			ban_date.setTime(ban_date.getTime() + data.ban_till * 60000);
+			await this.chatService.banUser(data.room_name, data.id_user_from, id_user_to, ban_date);
 			this.myserver.to(data.room_name).emit('message', `user (${id_user_to}) is now ban`);
 		}
 		else
@@ -140,7 +145,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 
 	@SubscribeMessage('muteUser')
-	async handleMuteUser(@MessageBody() data: InfoRoomTo): Promise<void> {
+	async handleMuteUser(@MessageBody() data: InfoMuteTo): Promise<void> {
 
 		if (await this.chatService.isAdmin(data.room_name, data.id_user_from)) {
 			const id_user_to = await this.chatService.getIdUser(data.login_user_to);
@@ -149,11 +154,32 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 				this.myserver.to(data.room_name).emit('message', `you cant mute an admin`);
 				return ;
 			}
-			await this.chatService.muteUser(data.room_name, data.id_user_from, id_user_to);
+			const mute_date = new Date();
+			mute_date.setTime(mute_date.getTime() + data.mute_till * 60000);
+			await this.chatService.muteUser(data.room_name, data.id_user_from, id_user_to, mute_date);
 			this.myserver.to(data.room_name).emit('message', `user (${id_user_to}) is now muted`);
 		}
 		else
 			this.myserver.to(data.room_name).emit('message', `you dont have permission to mute an user`);
+	}
+
+	@SubscribeMessage('blockUser')
+	async handleBlockUser(@MessageBody() data: InfoBlockTo): Promise<void> {
+		console.log('user to block : ', data.login_user_to, 'user from : ', data.id_user_from, '')
+		
+		const id_user_to = await this.chatService.getIdUser(data.login_user_to);
+		if (id_user_to === undefined)
+			return ;
+		await this.chatService.blockUser(data.id_user_from, id_user_to);
+	}
+
+	@SubscribeMessage('unblockUser')
+	async handleUnblockUser(@MessageBody() data: InfoBlockTo): Promise<void> {
+
+		const id_user_to = await this.chatService.getIdUser(data.login_user_to);
+		if (id_user_to === undefined)
+			return ;
+		// await this.chatService.unblockUser(data.id_user_from, id_user_to);
 	}
 
 	// @SubscribeMessage('blockUser')

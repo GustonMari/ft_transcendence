@@ -5,7 +5,7 @@ import MessageInput from "./Messageinput";
 import Messages from "./Message";
 import axios from "axios";
 import Create_socket from "./socket";
-import {RoomForm, LeaveRoom, DeleteRoom, SetAdmin, BanUser, UnbanUser} from "./room";
+import {RoomForm, LeaveRoom, DeleteRoom, SetAdmin, BanUser, UnbanUser, MuteUser, BlockUser, UnBlockUser} from "./room";
 import { APP } from "../../api/app";
 import App from "../../App";
 
@@ -58,6 +58,9 @@ export default function Chat() {
 		<SetAdmin define_room={define_room} current_user={currentUser} socket={socket}/>
 		<BanUser define_room={define_room} current_user={currentUser} socket={socket}/>
 		<UnbanUser define_room={define_room} current_user={currentUser} socket={socket}/>
+		<MuteUser define_room={define_room} current_user={currentUser} socket={socket}/>
+		<BlockUser current_user={currentUser} socket={socket}/>
+		<UnBlockUser current_user={currentUser} socket={socket}/>
 		<MessageInput send={send}/>
 		<Messages messages={messages} room={room} socket={socket}/>
 	</div>

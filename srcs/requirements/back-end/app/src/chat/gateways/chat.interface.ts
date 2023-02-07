@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 
 
 export interface InfoRoom {
@@ -11,6 +12,34 @@ dans la room --> room_name
 */
 export interface InfoRoomTo {
 	room_name: string;
+	id_user_from: number;
+	login_user_to: string;
+}
+
+
+/*
+Sert pour qu'un admin puisse ban un user
+*/
+export interface InfoBanTo {
+	room_name: string;
+	id_user_from: number;
+	login_user_to: string;
+	ban_till: number;
+}
+/*
+Sert pour qu'un admin puisse mute un user
+*/
+export interface InfoMuteTo {
+	room_name: string;
+	id_user_from: number;
+	login_user_to: string;
+	mute_till: number;
+}
+
+/*
+Sert pour qu'un user puisse block un autre user
+*/
+export interface InfoBlockTo {
 	id_user_from: number;
 	login_user_to: string;
 }
