@@ -89,8 +89,6 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		this.myserver.to(data.room_name).emit('message', `new user (${data.id_user}) has leave the room`);
 	}
 
-
-
 	@SubscribeMessage('deleteRoom')
 	handleDeleteRoom(@MessageBody() data: InfoRoom): void {
 		//* check si le user est admin
@@ -168,8 +166,10 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		console.log('user to block : ', data.login_user_to, 'user from : ', data.id_user_from, '')
 		
 		const id_user_to = await this.chatService.getIdUser(data.login_user_to);
-		if (id_user_to === undefined)
+		if (id_user_to === undefined) {
+			console.log('user to block not found');
 			return ;
+		}
 		await this.chatService.blockUser(data.id_user_from, id_user_to);
 	}
 
@@ -177,9 +177,11 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	async handleUnblockUser(@MessageBody() data: InfoBlockTo): Promise<void> {
 
 		const id_user_to = await this.chatService.getIdUser(data.login_user_to);
-		if (id_user_to === undefined)
+		if (id_user_to === undefined) {
+			console.log('user to unblock not found');
 			return ;
-		// await this.chatService.unblockUser(data.id_user_from, id_user_to);
+		}
+		await this.chatService.unblockUser(data.id_user_from, id_user_to);
 	}
 
 	// @SubscribeMessage('blockUser')
@@ -209,31 +211,31 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 }
 
 
-@WebSocketGateway({
-	namespace: 'admin',
-	cors: {
-		origin: "http://localhost:3000/",
-		credentials: true,
-		methods: ['GET', 'POST'],
-	}
-})
-export class AdminChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
-	@WebSocketServer()
-	myserver: Server;
+// @WebSocketGateway({
+// 	namespace: 'admin',
+// 	cors: {
+// 		origin: "http://localhost:3000/",
+// 		credentials: true,
+// 		methods: ['GET', 'POST'],
+// 	}
+// })
+// export class AdminChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+// 	@WebSocketServer()
+// 	myserver: Server;
 
 
 
-	private logger: Logger = new Logger('AppGateway');
+// 	private logger: Logger = new Logger('AppGateway');
 
-	afterInit(server: Server) {
-		this.logger.log('Initialized!');
-	}
+// 	afterInit(server: Server) {
+// 		this.logger.log('Initialized!');
+// 	}
 
-	handleConnection(client: Socket, ...args: any[]) {
-		client.join('all');
-	}
+// 	handleConnection(client: Socket, ...args: any[]) {
+// 		client.join('all');
+// 	}
 
-	handleDisconnect(client: Socket) {
-	}
+// 	handleDisconnect(client: Socket) {
+// 	}
 
-}
+// }

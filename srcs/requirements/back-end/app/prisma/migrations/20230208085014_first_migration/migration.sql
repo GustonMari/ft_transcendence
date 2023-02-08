@@ -31,7 +31,6 @@ CREATE TABLE "User_Block" (
     "updated_at" TIMESTAMP(3) NOT NULL,
     "blocked" BOOLEAN NOT NULL DEFAULT false,
     "userId" INTEGER NOT NULL,
-    "userPtain" INTEGER NOT NULL,
 
     CONSTRAINT "User_Block_pkey" PRIMARY KEY ("id")
 );
@@ -111,7 +110,7 @@ ALTER TABLE "friend_request" ADD CONSTRAINT "friend_request_from_id_fkey" FOREIG
 ALTER TABLE "friend_request" ADD CONSTRAINT "friend_request_to_id_fkey" FOREIGN KEY ("to_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "User_Block" ADD CONSTRAINT "User_Block_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "User_Block" ADD CONSTRAINT "User_Block_id_fkey" FOREIGN KEY ("id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "UsersOnRooms" ADD CONSTRAINT "UsersOnRooms_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

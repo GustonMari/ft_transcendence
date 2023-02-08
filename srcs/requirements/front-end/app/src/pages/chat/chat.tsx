@@ -8,6 +8,7 @@ import Create_socket from "./socket";
 import {RoomForm, LeaveRoom, DeleteRoom, SetAdmin, BanUser, UnbanUser, MuteUser, BlockUser, UnBlockUser} from "./room";
 import { APP } from "../../api/app";
 import App from "../../App";
+import { RoomList } from "./navbar";
 
 
 
@@ -52,6 +53,8 @@ export default function Chat() {
 	return (
 	<div>
 		<h1>Chat</h1>
+		{/* <h2>i am {currentUser.id}</h2> */}
+		<RoomList current_user={currentUser} socket={socket}/>
 		<RoomForm define_room={define_room} current_user={currentUser} socket={socket}/>
 		<LeaveRoom define_room={define_room} current_user={currentUser} socket={socket}/>
 		<DeleteRoom define_room={define_room} current_user={currentUser} socket={socket}/>

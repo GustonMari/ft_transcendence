@@ -6,6 +6,7 @@ import { APP } from "../../api/app";
 export function RoomForm(props : any)
 {
 	let {define_room, current_user, socket} = props;
+
 	const [value, setValue] = React.useState("");
 	return (
 	<div>

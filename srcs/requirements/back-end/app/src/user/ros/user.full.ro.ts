@@ -1,5 +1,6 @@
+/* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from "@prisma/client";
+import { Room, User } from "@prisma/client";
 import { Expose } from "class-transformer";
 
 
@@ -40,4 +41,5 @@ export class UserRO {
     @Expose()
     @ApiProperty({ description: 'User password', type: 'string' })
     state: boolean;
+
 }

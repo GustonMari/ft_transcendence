@@ -232,14 +232,9 @@ export class ChatService {
 		return true;
 	}
 
+	
+	//TODO: Ne marche pas du tout --> supprimer, partie mathias 
 	async blockUser(user_id: number, user_to_block: number): Promise<boolean> {
-
-		// const user_me = await this.prisma.user.findFirst({
-		// 		where: {
-		// 			id: user_id,
-		// 		},
-		// })
-		
 
 		await this.prisma.user.update({
 			where: {
@@ -248,45 +243,47 @@ export class ChatService {
 			data: {
 				blocks: {
 					create: {
-						userPtain: user_to_block,
-						// userId: 100000,
+						userId: user_to_block,
 						blocked: true,
 					}
 				}
 			}
 		})
 
-		// await this.prisma.user_Block.update({ 
-		// 	where: {
-		// 		id: user_id,
-		// 	},
-		// 	data: {
-		// 		blocked: true,
-		// 		userId: user_to_block,
-		// 	}
-		// })
-
 		return true;
 	}
 
-	// async unblockUser(user_id: number, user_to_unblock: number): Promise<boolean> {
-	// 	await this.prisma.user.update({
-	// 		where: {
-	// 			id: user_id,
-	// 		},
-	// 		data: {
-	// 			blocks: {
-	// 				update: {
-	// 					where: {
-	// 						userId: user_to_unblock,
-	// 					},
-	// 					data: {
-	// 						blocked: false,
-	// 					},
-	// 				}
-	// 			}
-	// 		}
-	// 	})
-	// 	return true;
-	// }
+	//TODO: Ne marche pas du tout--> supprimer, partie mathias 
+	async unblockUser(user_id: number, user_to_block: number): Promise<boolean> {
+
+		await this.prisma.user.update({
+			where: {
+				id: user_id,
+			},
+			data: {
+				blocks: {
+					delete: {
+						id: user_id,
+					}
+				}
+			}
+			
+			
+		})
+		return true;
+	}
+
+	async getUserRooms (user_id: number): Promise<Room[]> {
+		const rooms = await this.prisma.usersOnRooms.findMany({
+			where: {
+				user_id: user_id,
+			},
+			include: {
+				room: true,
+			}
+		})
+		// const map_rooms = rooms.map(room => room.room);
+		// console.log('rooms', JSON.stringify(map_rooms))
+		return rooms.map(room => room.room);
+	}
 }

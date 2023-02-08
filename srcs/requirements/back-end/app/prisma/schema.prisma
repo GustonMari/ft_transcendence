@@ -47,8 +47,6 @@ model User_Block {
 
 	blocked Boolean @default(false)
 	userId Int 
-	userPtain Int
-
 
 	user User @relation(fields: [id], references: [id])
 
