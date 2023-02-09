@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { HistoryDto } from "./dto/chat.dto";
+import { APP } from "../../api/app";
 
 export default function Messages(props: any) {
 
@@ -17,6 +18,7 @@ export default function Messages(props: any) {
 	);
 }
 
+
 export function GetMessagesByRoom(props: any)
 {
 	let { define_room, current_user, socket  } = props;
@@ -30,19 +32,35 @@ export function GetMessagesByRoom(props: any)
 	)
 }
 
-// export function DisplayMessagesByRoom(props: any)
+// export function GetMessagesByRoom(props: any)
 // {
-// 	let { current_user, socket, history  } = props;
+// 	let { define_room, current_user, socket  } = props;
+// 	const [room_name, set_room_name] = React.useState("");
 
-		
+// 	useEffect(() => {
+// 		const getMessagesByRoom = async () => {
+// 			try {
+// 				const res = await APP.get("/chat/get_messages_by_room", {
+// 					params: {
+// 						room_name: room_name
+// 				}});
+// 				console.log(res.data);
+// 			} catch (error) {
+// 				console.error(error);
+// 			}
+// 		};
+// 		getMessagesByRoom();
+// 	}, [room_name]);
+
 // 	return (
 // 		<div>
-// 			{history.map((message: string[], index: number) => (
-// 				<div key={index}>{message}</div>
-// 			))}
+// 		<input onChange={(e) => set_room_name(e.target.value)} placeholder="get messages by room..." value={room_name} />
+// 		<button onClick={}> </button>
+// 			{/* <button onClick=  >Get messages</button> */}
 // 		</div>
 // 	)
 // }
+
 
 export function DisplayMessagesByRoom(props: any) {
 	let { current_user, socket, history } = props;

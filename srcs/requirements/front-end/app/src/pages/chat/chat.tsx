@@ -18,9 +18,7 @@ export default function Chat() {
 	const socket = Create_socket();
 	const [messages, setMessage] = useState<string[]>([]);
 	const [room, setRoom] = useState<string>('');
-	// const [current_user, setCurrent_user] = useState<any>([]);
 	const [currentUser, setCurrentUser] = useState<any>(null);
-
 	const [history, setHistory] = useState<any>([]);
 
 	useEffect(() => {
@@ -34,9 +32,6 @@ export default function Chat() {
 		};
 		getCurrentUser();
 	}, []);
-
-	// if (currentUser !== null)
-	// 	socket?.emit("message", {room: room, message:  JSON.stringify(currentUser.login)  });
 
 	const send = (value: string) => {
 		socket?.emit("message", {room: room, message: value, current_user: currentUser});
@@ -56,7 +51,14 @@ export default function Chat() {
 	}
 
 	socket?.on("message", message_listener);
-	socket?.on("get_messages_history", history_listener);
+	
+	// socket?.on("get_messages_history", history_listener);
+
+	// useEffect(() => {
+	// 	if (room) {
+	// 	  socket?.emit("getMessagesByRoom", room);
+	// 	}
+	//   }, [room, socket]);
 
 	return (
 	<div>
@@ -74,7 +76,6 @@ export default function Chat() {
 		<h1>Historique</h1>
 		<GetMessagesByRoom define_room={define_room} current_user={currentUser} socket={socket}/>
 		<DisplayMessagesByRoom current_user={currentUser} history={history} socket={socket}/>
-
 
 	</div>
 	);

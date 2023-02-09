@@ -299,7 +299,6 @@ export class ChatService {
 				messages: true,
 			}
 		})
-		// console.log("LES MESSAGES : " + JSON.stringify(messages.messages) )
 		console.log('in back getmessagesbyroom')
 		return messages.messages;
 	}

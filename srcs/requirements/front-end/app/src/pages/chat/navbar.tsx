@@ -12,14 +12,14 @@ export function RoomList(props : any) {
 		const getRooms = async () => {
 			try {
 				const res = await APP.get("/chat/get_user_rooms");
-				console.log('fetched', res.data);
+				// console.log('fetched', res.data);
 				setRooms(res.data);
 			} catch (error) {
 				console.error(error);
 			}
 		};
 		getRooms();
-	}, []);
+	}, [rooms]);
 
 
 	return (

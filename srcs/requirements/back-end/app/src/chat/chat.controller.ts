@@ -8,6 +8,7 @@ import { TransformPlainToInstance } from 'class-transformer';
 import { GetMe } from '../auth/decorators';
 import { Response } from 'express';
 import { UserRO } from '../user/ros/user.full.ro';
+import { MessageBody } from '@nestjs/websockets';
 
 
 @UseGuards(AccessGuard)
@@ -22,6 +23,11 @@ export class ChatController {
 		
 		const rooms = await this.chatService.getUserRooms(id);
 		response.send(rooms);
-		// return (rooms);
+	}
+
+	@get('get_messages_by_room')
+	async get_messages_by_room(@Res() response: Response ,@MessageBody() room_name: string): Promise<any> {
+		const rooms = await this.chatService.getMessagesByRoom(room_name);
+		response.send(rooms);
 	}
 }

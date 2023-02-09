@@ -169,11 +169,11 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	// 	//? emit un petit message pour dire que tel user n'est plus admin
 	// }
 
-	@SubscribeMessage('getMessagesByRoom')
-	async handleGetMessagesByRoom(@MessageBody() room_name: string) {
-		const messages = await this.chatService.getMessagesByRoom(room_name);
-		await this.myserver.to(room_name).emit('get_messages_history', messages);
-	}
+	// @SubscribeMessage('getMessagesByRoom')
+	// async handleGetMessagesByRoom(@MessageBody() room_name: string) {
+	// 	const messages = await this.chatService.getMessagesByRoom(room_name);
+	// 	await this.myserver.to(room_name).emit('get_messages_history', messages);
+	// }
 
 	@SubscribeMessage('message') // Subscribe to the message event send by the client (front end) called 'message'
 	async handleMessage(@MessageBody() data: InfoMessage, @ConnectedSocket() socket: Socket) {
