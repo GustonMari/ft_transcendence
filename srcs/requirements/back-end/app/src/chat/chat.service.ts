@@ -274,6 +274,7 @@ export class ChatService {
 							create: {
 								sender_id: infoMessage.current_user.id,
 								current_message: infoMessage.message,
+								sender_name: infoMessage.current_user.login,
 							},
 						}
 				}

@@ -6,4 +6,5 @@ export interface HistoryDto {
 	current_message: string;
 	sender_id: number;
 	room_id: number;
+	sender_name: string;
 }

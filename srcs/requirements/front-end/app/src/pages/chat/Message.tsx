@@ -51,7 +51,7 @@ export function DisplayMessagesByRoom(props: any) {
 	  <div>
 		{history.map((historyItem: HistoryDto, index: number) => (
 		  <div key={index}>
-			{historyItem.current_message} : {historyItem.current_message} 
+			{historyItem.sender_name} : {historyItem.current_message} 
 		  </div>
 		))}
 	  </div>
