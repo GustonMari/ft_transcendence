@@ -38,14 +38,6 @@ export interface InfoMuteTo {
 	mute_till: number;
 }
 
-/*
-Sert pour qu'un user puisse block un autre user
-*/
-export interface InfoBlockTo {
-	id_user_from: number;
-	login_user_to: string;
-}
-
 export interface InfoMessage {
 	room: string;
 	message: string;

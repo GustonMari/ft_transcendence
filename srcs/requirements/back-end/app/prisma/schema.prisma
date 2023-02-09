@@ -40,18 +40,6 @@ model Chat_Relation {
     @@map("chat_request")
 }
 
-model User_Block {
-	id Int @id @unique @default(autoincrement())
-	created_at DateTime @default(now())
-	updated_at DateTime @updatedAt
-
-	blocked Boolean @default(false)
-	userId Int 
-
-	user User @relation(fields: [id], references: [id])
-
-	// @@map("user_block")
-}
 
 model User {
     id         Int      @id @unique @default(autoincrement())
@@ -72,8 +60,6 @@ model User {
 
     rooms UsersOnRooms[]
     
-	blocks User_Block[]
-
 	messages Message[]
 
     @@map("users")
@@ -125,13 +111,12 @@ model Message {
 	created_at DateTime @default(now())
 	updated_at DateTime @updatedAt
 	current_message       String
-	history_message    String[]
+	sender_name String
 	sender     User     @relation(fields: [sender_id], references: [id])
 	sender_id  Int
 	room       Room     @relation(fields: [room_id], references: [id])
 	room_id    Int
 
-	// @@id([sender_id, room_id])
 	@@map("messages")
 }
 

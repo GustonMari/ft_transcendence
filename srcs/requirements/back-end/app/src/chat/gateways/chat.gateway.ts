@@ -20,7 +20,7 @@ import { AccessGuard } from 'app/src/auth/guards/access.guard';
 import { User } from '@prisma/client';
 import { UserController } from 'app/src/user/controllers/user.controller';
 import { ChatService } from '../chat.service';
-import { InfoBanTo, InfoBlockTo, InfoMessage, InfoMuteTo, InfoRoom, InfoRoomTo } from './chat.interface';
+import { InfoBanTo, InfoMessage, InfoMuteTo, InfoRoom, InfoRoomTo } from './chat.interface';
 import { ChatSchedulingService } from '../chat_scheduling.service';
 import { GetMe } from 'app/src/auth/decorators';
 
@@ -162,39 +162,6 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			this.myserver.to(data.room_name).emit('message', `you dont have permission to mute an user`);
 	}
 
-	@SubscribeMessage('blockUser')
-	async handleBlockUser(@MessageBody() data: InfoBlockTo): Promise<void> {
-		console.log('user to block : ', data.login_user_to, 'user from : ', data.id_user_from, '')
-		
-		const id_user_to = await this.chatService.getIdUser(data.login_user_to);
-		if (id_user_to === undefined) {
-			console.log('user to block not found');
-			return ;
-		}
-		await this.chatService.blockUser(data.id_user_from, id_user_to);
-	}
-
-	@SubscribeMessage('unblockUser')
-	async handleUnblockUser(@MessageBody() data: InfoBlockTo): Promise<void> {
-
-		const id_user_to = await this.chatService.getIdUser(data.login_user_to);
-		if (id_user_to === undefined) {
-			console.log('user to unblock not found');
-			return ;
-		}
-		await this.chatService.unblockUser(data.id_user_from, id_user_to);
-	}
-
-	// @SubscribeMessage('blockUser')
-	// handleBlockUser(socket: Socket, user: string): void {
-	// 	//! changer prisma pour que le user soit block
-	// }
-
-	// @SubscribeMessage('unblockUser')
-	// handleUnblockUser(socket: Socket, user: string): void {
-	// 	//! changer prisma pour que le user soit unblock
-	// }
-
 	// @SubscribeMessage('removeAdmin')
 	// handleRemoveAdmin(socket: Socket, user: string): void {
 	// 	//* check si le user qui fait la demande est admin
@@ -202,14 +169,18 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	// 	//? emit un petit message pour dire que tel user n'est plus admin
 	// }
 
-	//TODO ASYNC AWAIT
+	@SubscribeMessage('getMessagesByRoom')
+	async handleGetMessagesByRoom(@MessageBody() room_name: string) {
+		const messages = await this.chatService.getMessagesByRoom(room_name);
+		await this.myserver.to(room_name).emit('get_messages_history', messages);
+	}
+
 	@SubscribeMessage('message') // Subscribe to the message event send by the client (front end) called 'message'
-	handleMessage(@MessageBody() data: InfoMessage, @ConnectedSocket() socket: Socket): void {
+	async handleMessage(@MessageBody() data: InfoMessage, @ConnectedSocket() socket: Socket) {
 		if (data.current_user === undefined /* || data.message === undefined */)
 			return ;
 		console.log('Dans message :', data.current_user.login)
-		this.chatService.getMessagesByRoom(data);
-		this.chatService.stockMessage(data);
+		await this.chatService.stockMessage(data);
 		this.myserver.to(data.room).emit('message', data.message); // Emit the message event to the client, for every user
 
 	}

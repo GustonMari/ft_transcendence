@@ -25,17 +25,6 @@ CREATE TABLE "chat_request" (
 );
 
 -- CreateTable
-CREATE TABLE "User_Block" (
-    "id" SERIAL NOT NULL,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL,
-    "blocked" BOOLEAN NOT NULL DEFAULT false,
-    "userId" INTEGER NOT NULL,
-
-    CONSTRAINT "User_Block_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -85,7 +74,7 @@ CREATE TABLE "messages" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "current_message" TEXT NOT NULL,
-    "history_message" TEXT[],
+    "sender_name" TEXT NOT NULL,
     "sender_id" INTEGER NOT NULL,
     "room_id" INTEGER NOT NULL,
 
@@ -97,9 +86,6 @@ CREATE UNIQUE INDEX "friend_request_id_key" ON "friend_request"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "chat_request_id_key" ON "chat_request"("id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "User_Block_id_key" ON "User_Block"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_id_key" ON "users"("id");
@@ -124,9 +110,6 @@ ALTER TABLE "friend_request" ADD CONSTRAINT "friend_request_from_id_fkey" FOREIG
 
 -- AddForeignKey
 ALTER TABLE "friend_request" ADD CONSTRAINT "friend_request_to_id_fkey" FOREIGN KEY ("to_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "User_Block" ADD CONSTRAINT "User_Block_id_fkey" FOREIGN KEY ("id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "UsersOnRooms" ADD CONSTRAINT "UsersOnRooms_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

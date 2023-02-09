@@ -233,47 +233,6 @@ export class ChatService {
 		return true;
 	}
 
-	
-	//TODO: Ne marche pas du tout --> supprimer, partie mathias 
-	async blockUser(user_id: number, user_to_block: number): Promise<boolean> {
-
-		await this.prisma.user.update({
-			where: {
-				id: user_id,
-			},
-			data: {
-				blocks: {
-					create: {
-						userId: user_to_block,
-						blocked: true,
-					}
-				}
-			}
-		})
-
-		return true;
-	}
-
-	//TODO: Ne marche pas du tout--> supprimer, partie mathias 
-	async unblockUser(user_id: number, user_to_block: number): Promise<boolean> {
-
-		await this.prisma.user.update({
-			where: {
-				id: user_id,
-			},
-			data: {
-				blocks: {
-					delete: {
-						id: user_id,
-					}
-				}
-			}
-			
-			
-		})
-		return true;
-	}
-
 	async getUserRooms (user_id: number): Promise<Room[]> {
 		const rooms = await this.prisma.usersOnRooms.findMany({
 			where: {
@@ -325,8 +284,8 @@ export class ChatService {
 		return true;
 	}
 
-	async getMessagesByRoom (infoMessage : InfoMessage): Promise<Message[]> {
-		const room_id = await this.getRoomIdByName(infoMessage.room);
+	async getMessagesByRoom (room_name : string): Promise<Message[]> {
+		const room_id = await this.getRoomIdByName(room_name);
 		if (room_id == -1) {
 			console.log('Room not found')
 			return null;
@@ -339,9 +298,9 @@ export class ChatService {
 				messages: true,
 			}
 		})
-		console.log("LES MESSAGES : " + JSON.stringify(messages.messages) )
+		// console.log("LES MESSAGES : " + JSON.stringify(messages.messages) )
+		console.log('in back getmessagesbyroom')
 		return messages.messages;
-
 	}
 
 

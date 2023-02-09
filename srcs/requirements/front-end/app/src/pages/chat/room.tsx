@@ -110,31 +110,4 @@ export function MuteUser(props: any)
 	)
 }
 
-export function BlockUser(props: any)
-{
-	let {current_user, socket} = props
-	const [userToBlock, setUserToBlock] = React.useState("");
-
-	return (
-		<div>
-			<input onChange={(e) => setUserToBlock(e.target.value)} placeholder="login to block..." value={userToBlock} />
-				<button onClick={() => socket?.emit("blockUser", { id_user_from: current_user.id, login_user_to: userToBlock})}>Block user</button>
-		</div>
-	)
-}
-
-export function UnBlockUser(props: any)
-{
-	let {current_user, socket} = props
-	const [userToUnBlock, setUserToUnBlock] = React.useState("");
-
-	return (
-		<div>
-			<input onChange={(e) => setUserToUnBlock(e.target.value)} placeholder="login to unblock..." value={userToUnBlock} />
-				<button onClick={() => socket?.emit("unblockUser", { id_user_from: current_user.id, login_user_to: userToUnBlock})}>Unblock user</button>
-		</div>
-	)
-}
-
-
 export default RoomForm;

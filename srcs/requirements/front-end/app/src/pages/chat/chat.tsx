@@ -2,13 +2,14 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import io, { Socket } from "socket.io-client";
 import MessageInput from "./Messageinput";
-import Messages from "./Message";
+import Messages, { DisplayMessagesByRoom, GetMessagesByRoom } from "./Message";
 import axios from "axios";
 import Create_socket from "./socket";
 import {RoomForm, LeaveRoom, DeleteRoom, SetAdmin, BanUser, UnbanUser, MuteUser, BlockUser, UnBlockUser} from "./room";
 import { APP } from "../../api/app";
 import App from "../../App";
 import { RoomList } from "./navbar";
+import { HistoryDto } from "./dto/chat.dto";
 
 
 
@@ -19,6 +20,8 @@ export default function Chat() {
 	const [room, setRoom] = useState<string>('');
 	// const [current_user, setCurrent_user] = useState<any>([]);
 	const [currentUser, setCurrentUser] = useState<any>(null);
+
+	const [history, setHistory] = useState<any>([]);
 
 	useEffect(() => {
 	  const getCurrentUser = async () => {
@@ -48,12 +51,16 @@ export default function Chat() {
 		setMessage([...messages, message]);
 	}
 
+	const history_listener = (history: HistoryDto) => {
+		setHistory(history);
+	}
+
 	socket?.on("message", message_listener);
+	socket?.on("get_messages_history", history_listener);
 
 	return (
 	<div>
 		<h1>Chat</h1>
-		{/* <h2>i am {currentUser.id}</h2> */}
 		<RoomList current_user={currentUser} socket={socket}/>
 		<RoomForm define_room={define_room} current_user={currentUser} socket={socket}/>
 		<LeaveRoom define_room={define_room} current_user={currentUser} socket={socket}/>
@@ -62,10 +69,13 @@ export default function Chat() {
 		<BanUser define_room={define_room} current_user={currentUser} socket={socket}/>
 		<UnbanUser define_room={define_room} current_user={currentUser} socket={socket}/>
 		<MuteUser define_room={define_room} current_user={currentUser} socket={socket}/>
-		<BlockUser current_user={currentUser} socket={socket}/>
-		<UnBlockUser current_user={currentUser} socket={socket}/>
 		<MessageInput send={send}/>
 		<Messages messages={messages} room={room} socket={socket}/>
+		<h1>Historique</h1>
+		<GetMessagesByRoom define_room={define_room} current_user={currentUser} socket={socket}/>
+		<DisplayMessagesByRoom current_user={currentUser} history={history} socket={socket}/>
+
+
 	</div>
 	);
 }
