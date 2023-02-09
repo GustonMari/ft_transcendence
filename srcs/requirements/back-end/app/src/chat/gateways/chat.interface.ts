@@ -1,5 +1,7 @@
 /* eslint-disable prettier/prettier */
 
+import { User } from "@prisma/client";
+
 
 export interface InfoRoom {
 	room_name: string;
@@ -47,4 +49,5 @@ export interface InfoBlockTo {
 export interface InfoMessage {
 	room: string;
 	message: string;
+	current_user: User;
 }

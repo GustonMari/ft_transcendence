@@ -74,6 +74,8 @@ model User {
     
 	blocks User_Block[]
 
+	messages Message[]
+
     @@map("users")
 }
 
@@ -85,6 +87,8 @@ model Room {
 
 
     users UsersOnRooms[]
+
+	messages Message[]
     // @@map("rooms")
 } 
 
@@ -113,6 +117,22 @@ model UsersOnRooms {
     @@id([user_id, room_id])
 
     // @@map("users_on_rooms")
+}
+
+model Message {
+
+	id Int @id @unique @default(autoincrement())
+	created_at DateTime @default(now())
+	updated_at DateTime @updatedAt
+	current_message       String
+	history_message    String[]
+	sender     User     @relation(fields: [sender_id], references: [id])
+	sender_id  Int
+	room       Room     @relation(fields: [room_id], references: [id])
+	room_id    Int
+
+	// @@id([sender_id, room_id])
+	@@map("messages")
 }
 
 enum Role {

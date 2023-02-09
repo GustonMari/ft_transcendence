@@ -79,6 +79,19 @@ CREATE TABLE "UsersOnRooms" (
     CONSTRAINT "UsersOnRooms_pkey" PRIMARY KEY ("user_id","room_id")
 );
 
+-- CreateTable
+CREATE TABLE "messages" (
+    "id" SERIAL NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+    "current_message" TEXT NOT NULL,
+    "history_message" TEXT[],
+    "sender_id" INTEGER NOT NULL,
+    "room_id" INTEGER NOT NULL,
+
+    CONSTRAINT "messages_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "friend_request_id_key" ON "friend_request"("id");
 
@@ -103,6 +116,9 @@ CREATE UNIQUE INDEX "Room_id_key" ON "Room"("id");
 -- CreateIndex
 CREATE UNIQUE INDEX "Room_name_key" ON "Room"("name");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "messages_id_key" ON "messages"("id");
+
 -- AddForeignKey
 ALTER TABLE "friend_request" ADD CONSTRAINT "friend_request_from_id_fkey" FOREIGN KEY ("from_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -117,3 +133,9 @@ ALTER TABLE "UsersOnRooms" ADD CONSTRAINT "UsersOnRooms_user_id_fkey" FOREIGN KE
 
 -- AddForeignKey
 ALTER TABLE "UsersOnRooms" ADD CONSTRAINT "UsersOnRooms_room_id_fkey" FOREIGN KEY ("room_id") REFERENCES "Room"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "messages" ADD CONSTRAINT "messages_sender_id_fkey" FOREIGN KEY ("sender_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "messages" ADD CONSTRAINT "messages_room_id_fkey" FOREIGN KEY ("room_id") REFERENCES "Room"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

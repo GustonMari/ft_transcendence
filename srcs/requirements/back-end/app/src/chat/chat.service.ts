@@ -1,7 +1,8 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'app/src/prisma/prisma.service';
-import { User, Room } from '@prisma/client';
+import { User, Room, Message } from '@prisma/client';
+import { InfoMessage } from './gateways/chat.interface';
 
 @Injectable()
 export class ChatService {
@@ -282,8 +283,66 @@ export class ChatService {
 				room: true,
 			}
 		})
-		// const map_rooms = rooms.map(room => room.room);
-		// console.log('rooms', JSON.stringify(map_rooms))
 		return rooms.map(room => room.room);
 	}
+
+	async getRoomIdByName (room_name: string): Promise<number> {
+		const room = await this.prisma.room.findUnique({ where: { name: room_name } });
+		if (!room) {
+			return -1;
+		}
+		return room.id;
+	}
+
+	async stockMessage (infoMessage : InfoMessage): Promise<boolean> {
+		const room_id = await this.getRoomIdByName(infoMessage.room);
+		if (room_id == -1) {
+			console.log('Room not found')
+			return false;
+		}
+
+		await this.prisma.usersOnRooms.update({
+			where: {
+				user_id_room_id: {
+					user_id: infoMessage.current_user.id,
+					room_id: room_id,
+				},
+			},
+			data: {
+				room: {
+					update: {
+						messages: {
+							create: {
+								sender_id: infoMessage.current_user.id,
+								current_message: infoMessage.message,
+							},
+						}
+				}
+			}
+			}
+
+		})
+		return true;
+	}
+
+	async getMessagesByRoom (infoMessage : InfoMessage): Promise<Message[]> {
+		const room_id = await this.getRoomIdByName(infoMessage.room);
+		if (room_id == -1) {
+			console.log('Room not found')
+			return null;
+		}
+		const messages = await this.prisma.room.findUnique({
+			where: {
+				id: room_id,
+			},
+			select: {
+				messages: true,
+			}
+		})
+		console.log("LES MESSAGES : " + JSON.stringify(messages.messages) )
+		return messages.messages;
+
+	}
+
+
 }

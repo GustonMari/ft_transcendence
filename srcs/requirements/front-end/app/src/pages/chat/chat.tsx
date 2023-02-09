@@ -36,7 +36,7 @@ export default function Chat() {
 	// 	socket?.emit("message", {room: room, message:  JSON.stringify(currentUser.login)  });
 
 	const send = (value: string) => {
-		socket?.emit("message", {room: room, message: value});
+		socket?.emit("message", {room: room, message: value, current_user: currentUser});
 	}
 
 	const define_room = async (room: string) => {

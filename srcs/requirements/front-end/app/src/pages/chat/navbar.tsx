@@ -37,23 +37,4 @@ export function RoomList(props : any) {
 
 }
 
-
-// return (
-//     <div>
-//       <Navbar users={users} onUserClick={handleUserClick} />
-//       <MessageList messages={messages} />
-//     </div>
-//   );
-// };
-
-// const Navbar = ({ users, onUserClick }) => (
-//   <nav>
-//     {users.map(user => (
-//       <div key={user.id} onClick={() => onUserClick(user.id)}>
-//         {user.username}
-//       </div>
-//     ))}
-//   </nav>
-// );
-
 export default RoomList;

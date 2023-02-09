@@ -22,6 +22,7 @@ import { UserController } from 'app/src/user/controllers/user.controller';
 import { ChatService } from '../chat.service';
 import { InfoBanTo, InfoBlockTo, InfoMessage, InfoMuteTo, InfoRoom, InfoRoomTo } from './chat.interface';
 import { ChatSchedulingService } from '../chat_scheduling.service';
+import { GetMe } from 'app/src/auth/decorators';
 
 
 // @UseGuards(AccessGuard)
@@ -201,10 +202,14 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	// 	//? emit un petit message pour dire que tel user n'est plus admin
 	// }
 
-
+	//TODO ASYNC AWAIT
 	@SubscribeMessage('message') // Subscribe to the message event send by the client (front end) called 'message'
 	handleMessage(@MessageBody() data: InfoMessage, @ConnectedSocket() socket: Socket): void {
-
+		if (data.current_user === undefined /* || data.message === undefined */)
+			return ;
+		console.log('Dans message :', data.current_user.login)
+		this.chatService.getMessagesByRoom(data);
+		this.chatService.stockMessage(data);
 		this.myserver.to(data.room).emit('message', data.message); // Emit the message event to the client, for every user
 
 	}
