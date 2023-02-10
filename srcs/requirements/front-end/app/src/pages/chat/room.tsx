@@ -27,7 +27,7 @@ import { GetMessagesByRoom } from './Message';
 export function RoomForm(props : any)
 {
 	let {define_room, current_room, current_user, socket, handle_history, trigger, setTrigger} = props;
-	let counter = 0;
+	// var counter = 0;
 	const [value, setValue] = React.useState("");
 	// const [trigger, setTrigger] = React.useState("");
 
@@ -60,8 +60,10 @@ export function RoomForm(props : any)
 								define_room(room.name);
 								}}>{room.name}</button>
 							<button onClick={() => {
+								console.log("Dans le click zoo : " + " room_name = ", room.name + " | trigger = " + trigger);
 								socket?.emit("leaveRoom", { room_name: room.name, id_user: current_user.id})
-								setTrigger(counter += 1)
+								// counter += 1;
+								setTrigger(trigger += 1);
 							}}>Leave room</button>
 								
 						</span>
@@ -73,7 +75,8 @@ export function RoomForm(props : any)
 			console.log('');
 			define_room(value);
 			socket?.emit("message", {room: value, message: `${current_user.login} has join the room ${value}`})
-			setTrigger(value)
+			setTrigger(trigger += 1)
+			// setTrigger(value)
 		}
 			}
 		>Send</button>

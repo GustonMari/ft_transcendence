@@ -21,7 +21,7 @@ export default function Chat() {
 	const [currentUser, setCurrentUser] = useState<any>(null);
 	const [history, setHistory] = useState<any>([]);
 
-	const [trigger, setTrigger] = React.useState("");
+	const [trigger, setTrigger] = React.useState(0);
 
 	useEffect(() => {
 	  const getCurrentUser = async () => {
