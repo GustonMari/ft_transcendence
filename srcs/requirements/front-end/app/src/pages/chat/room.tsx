@@ -3,6 +3,7 @@ import io, { Socket } from "socket.io-client";
 import Create_socket from './socket';
 import { APP } from "../../api/app";
 import './Style.message.css';
+import { GetMessagesByRoom } from './Message';
 
 // export function RoomForm(props : any)
 // {
@@ -25,7 +26,7 @@ import './Style.message.css';
 
 export function RoomForm(props : any)
 {
-	let {define_room, current_user, socket} = props;
+	let {define_room, current_user, socket, handle_history} = props;
 
 	const [value, setValue] = React.useState("");
 	const [trigger, setTrigger] = React.useState("");
@@ -53,7 +54,8 @@ export function RoomForm(props : any)
 						<span className="conversation-container">
 							<img className='conversationImg' src="" alt="" />
 
-							<a className='conversation' href="">{room.name}</a>
+							<button className='conversation' onClick={() => {GetMessagesByRoom(handle_history, room.name)}}>{room.name}</button>
+							{/* <a className='conversation' href="">{room.name}</a> */}
 						</span>
 					</li>
 				))}

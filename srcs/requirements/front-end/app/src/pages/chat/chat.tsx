@@ -63,7 +63,7 @@ export default function Chat() {
 	return (
 	<div>
 		<h1>Chat</h1>
-		<RoomForm define_room={define_room} current_user={currentUser} socket={socket}/>
+		<RoomForm define_room={define_room} current_user={currentUser} socket={socket} handle_history={history_listener}/>
 		<LeaveRoom define_room={define_room} current_user={currentUser} socket={socket}/>
 		<DeleteRoom define_room={define_room} current_user={currentUser} socket={socket}/>
 		<SetAdmin define_room={define_room} current_user={currentUser} socket={socket}/>
@@ -73,7 +73,7 @@ export default function Chat() {
 		<MessageInput send={send}/>
 		<Messages messages={messages} room={room} socket={socket}/>
 		<h1>Historique</h1>
-		<GetMessagesByRoom define_room={define_room} current_user={currentUser} socket={socket} handle_history={history_listener}/>
+		{/* <GetMessagesByRoom define_room={define_room} current_user={currentUser} socket={socket} handle_history={history_listener}/> */}
 		<DisplayMessagesByRoom current_user={currentUser} history={history} socket={socket}/>
 
 	</div>
