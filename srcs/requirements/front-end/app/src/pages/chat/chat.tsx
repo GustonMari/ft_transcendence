@@ -64,7 +64,7 @@ export default function Chat() {
 	<div>
 		<h1>Chat</h1>
 		<Conversation></Conversation>
-		<RoomList current_user={currentUser} socket={socket}/>
+		{/* <RoomList current_user={currentUser} socket={socket}/> */}
 		<RoomForm define_room={define_room} current_user={currentUser} socket={socket}/>
 		<LeaveRoom define_room={define_room} current_user={currentUser} socket={socket}/>
 		<DeleteRoom define_room={define_room} current_user={currentUser} socket={socket}/>

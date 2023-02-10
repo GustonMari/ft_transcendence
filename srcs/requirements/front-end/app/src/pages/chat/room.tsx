@@ -3,18 +3,62 @@ import io, { Socket } from "socket.io-client";
 import Create_socket from './socket';
 import { APP } from "../../api/app";
 
+// export function RoomForm(props : any)
+// {
+// 	let {define_room, current_user, socket} = props;
+
+// 	const [value, setValue] = React.useState("");
+// 	return (
+// 	<div>
+// 		<input onChange={(e) => setValue(e.target.value)} placeholder="define your room..." value={value} />
+// 		<button onClick={() => {
+// 			console.log('');
+// 			define_room(value)
+// 			socket?.emit("message", {room: value, message: `${current_user.login} has join the room ${value}`})
+// 		}
+// 			}
+// 		>Send</button>
+// 	</div>
+// 	);
+// }
+
 export function RoomForm(props : any)
 {
 	let {define_room, current_user, socket} = props;
 
 	const [value, setValue] = React.useState("");
+	const [trigger, setTrigger] = React.useState("");
+
+	const [rooms, setRooms] = useState<any>([]);
+
+	useEffect(() => {
+		const getRooms = async () => {
+			try {
+				const res = await APP.get("/chat/get_user_rooms");
+				console.log('fetched', res.data);
+				setRooms(res.data);
+			} catch (error) {
+				console.error(error);
+			}
+		};
+		getRooms();
+	}, [trigger]);
 	return (
 	<div>
+		<h1>Liste de vos Rooms</h1>
+			<ul>
+				{rooms.map(room => (
+					<li key={room.id}>
+						<a href="">{room.name}</a>
+					</li>
+				))}
+			</ul>
 		<input onChange={(e) => setValue(e.target.value)} placeholder="define your room..." value={value} />
 		<button onClick={() => {
 			console.log('');
 			define_room(value)
 			socket?.emit("message", {room: value, message: `${current_user.login} has join the room ${value}`})
+			setTrigger(value)
 		}
 			}
 		>Send</button>
