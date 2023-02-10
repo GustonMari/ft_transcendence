@@ -54,8 +54,10 @@ export function RoomForm(props : any)
 						<span className="conversation-container">
 							<img className='conversationImg' src="" alt="" />
 
-							<button className='conversation' onClick={() => {GetMessagesByRoom(handle_history, room.name)}}>{room.name}</button>
-							{/* <a className='conversation' href="">{room.name}</a> */}
+							<button className='conversation' onClick={() => {
+								GetMessagesByRoom(handle_history, room.name);
+								define_room(room.name);
+								}}>{room.name}</button>
 						</span>
 					</li>
 				))}
@@ -63,7 +65,7 @@ export function RoomForm(props : any)
 		<input onChange={(e) => setValue(e.target.value)} placeholder="define your room..." value={value} />
 		<button onClick={() => {
 			console.log('');
-			define_room(value)
+			define_room(value);
 			socket?.emit("message", {room: value, message: `${current_user.login} has join the room ${value}`})
 			setTrigger(value)
 		}
