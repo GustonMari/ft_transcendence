@@ -1,4 +1,3 @@
-import { StyleModule } from './../../../front-end/app/src/pages/chat/CSS/style.module';
 /* eslint-disable prettier/prettier */
 import { JwtModule } from '@nestjs/jwt';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
@@ -13,7 +12,6 @@ import { ChatModule } from './chat/chat.module';
 
 @Module({
 	imports: [
-		StyleModule,
 		PrismaModule,
 		AuthModule,
 		UserModule,

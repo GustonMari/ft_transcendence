@@ -246,7 +246,7 @@ export class ChatService {
 	}
 
 	async getRoomIdByName (room_name: string): Promise<number> {
-		const room = await this.prisma.room.findUnique({ where: { name: room_name } });
+		const room = await this.prisma.room.findFirst({ where: { name: room_name } });
 		if (!room) {
 			return -1;
 		}

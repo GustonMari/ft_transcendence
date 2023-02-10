@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Param, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Post, Res, UseGuards } from '@nestjs/common';
 import { AccessGuard } from '../auth/guards/access.guard';
 import { ChatService } from './chat.service';
 import { PrismaService } from '../prisma/prisma.service';
@@ -25,9 +25,12 @@ export class ChatController {
 		response.send(rooms);
 	}
 
-	@Get('get_messages_by_room')
-	async get_messages_by_room(@Res() response: Response ,@MessageBody() room_name: string): Promise<any> {
-		const rooms = await this.chatService.getMessagesByRoom(room_name);
+	@Post('get_messages_by_room')
+	async get_messages_by_room(@Res() response: Response ,@MessageBody() room_name: any): Promise<any> {
+		if (room_name == null || room_name == undefined)
+			return null;
+		const rooms = await this.chatService.getMessagesByRoom(room_name.room_name);
+		console.log("room_name =====================", room_name.room_name);
 		response.send(rooms);
 	}
 }

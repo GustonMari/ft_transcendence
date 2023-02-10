@@ -19,47 +19,68 @@ export default function Messages(props: any) {
 }
 
 
-export function GetMessagesByRoom(props: any)
-{
-	let { define_room, current_user, socket  } = props;
-	const [room_name, set_room_name] = React.useState("");
+// export function GetMessagesByRoom(props: any)
+// {
+// 	let { define_room, current_user, socket  } = props;
+// 	const [room_name, set_room_name] = React.useState("");
 
-	return (
-		<div>
-		<input onChange={(e) => set_room_name(e.target.value)} placeholder="get messages by room..." value={room_name} />
-			<button onClick={() => socket?.emit("getMessagesByRoom", room_name )}>Get messages</button>
-		</div>
-	)
-}
+// 	return (
+// 		<div>
+// 		<input onChange={(e) => set_room_name(e.target.value)} placeholder="get messages by room..." value={room_name} />
+// 			<button onClick={() => socket?.emit("getMessagesByRoom", room_name )}>Get messages</button>
+// 		</div>
+// 	)
+// }
 
 // export function GetMessagesByRoom(props: any)
 // {
 // 	let { define_room, current_user, socket  } = props;
 // 	const [room_name, set_room_name] = React.useState("");
 
-// 	useEffect(() => {
-// 		const getMessagesByRoom = async () => {
-// 			try {
-// 				const res = await APP.get("/chat/get_messages_by_room", {
-// 					params: {
-// 						room_name: room_name
-// 				}});
-// 				console.log(res.data);
-// 			} catch (error) {
-// 				console.error(error);
-// 			}
-// 		};
-// 		getMessagesByRoom();
-// 	}, [room_name]);
-
 // 	return (
 // 		<div>
 // 		<input onChange={(e) => set_room_name(e.target.value)} placeholder="get messages by room..." value={room_name} />
-// 		<button onClick={}> </button>
-// 			{/* <button onClick=  >Get messages</button> */}
+// 			<button onClick={() => socket?.emit("getMessagesByRoom", room_name )}>Get messages</button>
 // 		</div>
 // 	)
 // }
+
+export function GetMessagesByRoom(props: any)
+{
+	let { define_room, current_user, socket, handle_history  } = props;
+	const [room_name, set_room_name] = React.useState("");
+	const [trigger, setTrigger] = React.useState("");
+
+	useEffect(() => {
+		const getMessagesByRoom = async () => {
+			try {
+				console.log("CEST LE ROOM NAME", room_name);
+				if (room_name) {
+					const res = await APP.post("/chat/get_messages_by_room", {room_name: room_name});
+					await handle_history(res.data);
+					console.log(res.data);
+				}
+				else
+					console.log("no room name");
+			} catch (error) {
+				console.error(error);
+			}
+		};
+		getMessagesByRoom();
+	}, [trigger]);
+
+	return (
+		<div>
+			<input onChange={(e) => set_room_name(e.target.value)} placeholder="get messages by room..." value={room_name} />
+				<button onClick={async () =>  {
+					await setTrigger(room_name);
+				}}> Get History
+				</button>
+				<h1>{room_name}</h1>
+			
+		</div>
+	)
+}
 
 
 export function DisplayMessagesByRoom(props: any) {

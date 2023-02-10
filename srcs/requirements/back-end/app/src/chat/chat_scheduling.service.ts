@@ -49,6 +49,5 @@ export class ChatSchedulingService {
 			console.log("UNBAN")
 		};
 	});
-	console.log("CHECK")
 	}
 }
