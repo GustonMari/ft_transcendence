@@ -74,4 +74,14 @@ export function DisplayMessagesByRoom(props: any) {
 		))}
 	  </div>
 	);
-  }
+
+}
+
+export function Conversation(props: any) {
+	return (
+		<div>
+			<img src="" alt="" />
+			<span>User 1</span>
+		</div>
+	);
+}

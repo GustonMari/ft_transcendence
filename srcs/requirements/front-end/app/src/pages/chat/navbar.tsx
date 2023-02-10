@@ -12,7 +12,7 @@ export function RoomList(props : any) {
 		const getRooms = async () => {
 			try {
 				const res = await APP.get("/chat/get_user_rooms");
-				// console.log('fetched', res.data);
+				console.log('fetched', res.data);
 				setRooms(res.data);
 			} catch (error) {
 				console.error(error);
@@ -28,10 +28,12 @@ export function RoomList(props : any) {
 			<ul>
 				{rooms.map(room => (
 					<li key={room.id}>
-						{room.name}
+						<a href="">{room.name}</a>
 					</li>
 				))}
 			</ul>
+			<h1>Liste avec href vers conv</h1>
+
 		</div>
 	);
 

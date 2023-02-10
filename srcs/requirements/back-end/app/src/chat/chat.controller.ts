@@ -25,7 +25,7 @@ export class ChatController {
 		response.send(rooms);
 	}
 
-	@get('get_messages_by_room')
+	@Get('get_messages_by_room')
 	async get_messages_by_room(@Res() response: Response ,@MessageBody() room_name: string): Promise<any> {
 		const rooms = await this.chatService.getMessagesByRoom(room_name);
 		response.send(rooms);
