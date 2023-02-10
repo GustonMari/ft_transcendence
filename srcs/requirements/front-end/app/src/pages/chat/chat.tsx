@@ -21,6 +21,8 @@ export default function Chat() {
 	const [currentUser, setCurrentUser] = useState<any>(null);
 	const [history, setHistory] = useState<any>([]);
 
+	const [trigger, setTrigger] = React.useState("");
+
 	useEffect(() => {
 	  const getCurrentUser = async () => {
 			try {
@@ -56,20 +58,19 @@ export default function Chat() {
 	}
 
 	socket?.on("message", message_listener);
-	
-	// socket?.on("get_messages_history", history_listener);
-
-	// useEffect(() => {
-	// 	if (room) {
-	// 	  socket?.emit("getMessagesByRoom", room);
-	// 	}
-	//   }, [room, socket]);
 
 	return (
 	<div>
 		<h1>Chat</h1>
-		<RoomForm define_room={define_room} current_room={room} current_user={currentUser} socket={socket} handle_history={history_listener}/>
-		<LeaveRoom define_room={define_room} current_user={currentUser} socket={socket}/>
+		<RoomForm
+			define_room={define_room}
+			current_room={room}
+			current_user={currentUser}
+			socket={socket}
+			handle_history={history_listener}
+			trigger={trigger}
+			setTrigger={setTrigger}
+			/>
 		<DeleteRoom define_room={define_room} current_user={currentUser} socket={socket}/>
 		<SetAdmin define_room={define_room} current_user={currentUser} socket={socket}/>
 		<BanUser define_room={define_room} current_user={currentUser} socket={socket}/>

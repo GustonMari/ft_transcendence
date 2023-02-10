@@ -26,10 +26,10 @@ import { GetMessagesByRoom } from './Message';
 
 export function RoomForm(props : any)
 {
-	let {define_room, current_room, current_user, socket, handle_history} = props;
-
+	let {define_room, current_room, current_user, socket, handle_history, trigger, setTrigger} = props;
+	let counter = 0;
 	const [value, setValue] = React.useState("");
-	const [trigger, setTrigger] = React.useState("");
+	// const [trigger, setTrigger] = React.useState("");
 
 	const [rooms, setRooms] = useState<any>([]);
 
@@ -56,15 +56,14 @@ export function RoomForm(props : any)
 
 							<button className='conversation' onClick={() => {
 								GetMessagesByRoom(handle_history, room.name);
-								// console.log('current room = |' + current_room + '| room name = |' + room.name);
-								// if (current_room !== room.name && current_room !== null && current_room !== undefined && current_room !== '')
-								// {
-									// console.log('========================= current room = |' + current_room + '| room name = |' + room.name);
-									socket?.emit("leaveRoom", { room_name: current_room, id_user: current_user.id})
-								// }
+								socket?.emit("changeRoom", { room_name: current_room, id_user: current_user.id})
 								define_room(room.name);
-								//defin last room
 								}}>{room.name}</button>
+							<button onClick={() => {
+								socket?.emit("leaveRoom", { room_name: room.name, id_user: current_user.id})
+								setTrigger(counter += 1)
+							}}>Leave room</button>
+								
 						</span>
 					</li>
 				))}
