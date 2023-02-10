@@ -1,6 +1,11 @@
+import { useContext } from "react";
 import { BsXLg } from "react-icons/bs";
+import { ProfilePopUpContext } from "../../contexts/ProfilePopUp.context";
 
-export const ProfileComponent = ({user, offShow}: any) => {
+export const ProfileComponent = () => {
+
+    const {user, setShow} : any = useContext(ProfilePopUpContext);
+
   return (
     <>
         <div className="container max-w-md mx-auto md:max-w-2xl bg-white w-full rounded-lg p-2 mt-32">
@@ -13,7 +18,7 @@ export const ProfileComponent = ({user, offShow}: any) => {
                 <a className="absolute top-2 left-3"
                     onClick={(e) => {
                         e.preventDefault();
-                        offShow();
+                        setShow(false);
                     }}
                 >
                     <BsXLg/>

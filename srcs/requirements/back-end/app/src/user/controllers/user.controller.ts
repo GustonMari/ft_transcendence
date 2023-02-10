@@ -125,8 +125,9 @@ export class UserController {
         excludeExtraneousValues: true,
     })
     async findMatchingUsers(
-        @Param("string") string: string
+        @Param("string") string: string,
+        @GetMe("id") id: number,
     ): Promise<UserRO[]> {
-        return (await this.userService.findMatchingUsers(string));
+        return (await this.userService.findMatchingUsers(string, id));
     }
 }

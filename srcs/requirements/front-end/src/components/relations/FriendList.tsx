@@ -1,7 +1,11 @@
 import { MdOutlineRemoveCircleOutline } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
+import { useContext } from "react";
+import { ProfilePopUpContext } from "../../contexts/ProfilePopUp.context";
 
-export const FriendList = (props: any) => {
+export const FriendList = ({relations, onShow}: any) => {
+
+    const {setUser, setShow} : any = useContext(ProfilePopUpContext);
 
     return (
         <>
@@ -17,8 +21,7 @@ export const FriendList = (props: any) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {props.relations.map((relation: any) => {
-                                console.log("relations", relation);
+                            {relations.map((relation: any) => {
                                 const user = relation.user;
                                 return (
                                     <tr className="hover:bg-gray-50 h-14 relative p-2" key={relation.id}>
@@ -53,12 +56,14 @@ export const FriendList = (props: any) => {
                                                 onClick={
                                                     (e) => {
                                                         e.preventDefault();
-                                                        props.onShow(user);
+                                                        setShow(true);
+                                                        setUser(user);
                                                     }
                                                 }>
                                                 <CgProfile className="w-6 h-6"/>
                                             </a>
                                             <a className="hover:bg-red-500 rounded-full text-gray-600 hover:text-white">
+                                                { /* TODO: Remove friend from list */ }
                                                 <MdOutlineRemoveCircleOutline className="w-6 h-6"/>
                                             </a>
                                         </td>

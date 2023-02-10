@@ -1,3 +1,4 @@
+import { Relation } from '@prisma/client';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
@@ -126,13 +127,19 @@ export class UserService {
 
     async findMatchingUsers(
         login: string,
+        id: number
     ) : Promise<User[] | undefined> {
         const found = await this.prisma.user.findMany({
             where: {
                 login:{ contains: login },
+                id: {not: id},
+                outgoing : {
+                    none: {
+                        state: "BLOCKED",
+                    }
+                },
             },
         });
-        console.log(login, " --> ", found);
         if (found) { return (found);}
         return (undefined);
     }

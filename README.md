@@ -76,5 +76,4 @@ $gradient-radial: radial-gradient(#8d6b94ff, #b185a7ff, #c3a29eff, #e8dbc5ff, #f
 
 ## TODO List
 
-[ ] rework get_user
-[ ] use ro for response obj
+[ ] - Upgrade NotFound.tsx
