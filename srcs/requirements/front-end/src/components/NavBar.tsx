@@ -1,17 +1,28 @@
-import { useEffect, useState, useLayoutEffect } from "react";
-import { BiGroup, BiUser, BiMessage, BiSearch, BiLogOut, BiHome } from "react-icons/bi";
+import { useEffect, useState, useLayoutEffect, useContext } from "react";
+import {
+  BiGroup,
+  BiUser,
+  BiMessage,
+  BiSearch,
+  BiLogOut,
+  BiHome,
+} from "react-icons/bi";
 import s from "../styles/Nav/NavBar.module.css";
 import sa from "../styles/Nav/NavBar.hidden.module.css";
 import API from "../api/api";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../contexts/User.context";
+import { ProfilePopUpContext } from "../contexts/ProfilePopUp.context";
 
+export const NavBar = ({ onProfile, profilePic }: any) => {
 
-export const NavBar = (props: any) => {
-    const [me, setMe] = useState({} as any);
-    const [styles, setStyles] = useState(sa as any);
+  const {user}: any = useContext(UserContext)
+  const {setUser, setShow} : any = useContext(ProfilePopUpContext);
+  
+  const [styles, setStyles] = useState(sa as any);
 
-    const navigate = useNavigate();
-    
+  const navigate = useNavigate();
+
   useEffect(() => {
     const handleMouseMove = (event: any) => {
       if (event.clientX < 80) {
@@ -26,13 +37,7 @@ export const NavBar = (props: any) => {
     };
   }, []);
 
-  useLayoutEffect(() => {
-    API.checkAuth((data: any) => {
-        setMe(data);
-    }, (err: any) => {
-        console.log(err);
-    });
-}, []);
+  
 
   return (
     <>
@@ -43,15 +48,17 @@ export const NavBar = (props: any) => {
               <div className={styles.search_icon}>
                 <BiSearch className={styles.icons} />
               </div>
-              <input type="text" placeholder="Search" onKeyDown={
-                    (e: any) => {
-                        if (e.key === "Enter") {
-                            e.preventDefault();
-                            navigate("/search?user=" + e.target.value);
-                            window.location.reload();
-                        }
-                    }
-              }/>
+              <input
+                type="text"
+                placeholder="Search"
+                onKeyDown={(e: any) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    navigate("/search?user=" + e.target.value);
+                    window.location.reload();
+                  }
+                }}
+              />
             </li>
             <li>
               <a href="/home">
@@ -80,26 +87,28 @@ export const NavBar = (props: any) => {
           </ul>
         </nav>
         <div className={styles.profile_footer}>
-          <div className={styles.avatar}>
-            <img src={props.img} />
-          </div>
-          <div className={styles.profile_info}>
-            <a>{me.login}</a>
-            <div className={styles.match_history}>
-              <span>W : 5 | L : 2</span>
-            </div>
-          </div>
+            <a onClick={
+                (e) => {
+                    e.preventDefault();
+                    setUser(user);
+                    setShow(true);
+                }
+            }>
+                <div className={styles.avatar}>
+                    <img src={profilePic} />
+                </div>
+                <div className={styles.profile_info}>
+                    <a>{user.login}</a>
+                    <div className={styles.match_history}>
+                    <span>W : 5 | L : 2</span>
+                    </div>
+                </div>
+            </a>
           <a
             className={styles.logout_btn}
             onClick={() => {
-              API.logOut(
-                () => {
-                    navigate("/signin");
-                },
-                () => {
-                    navigate("/signin");
-                }
-              );
+                API.logOut(() => {}, () => {});
+                navigate("/signin");
             }}
           >
             <BiLogOut className={styles.logout_btn_icon} />

@@ -5,9 +5,10 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 import s from "./../../styles/search/result.module.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { NavBar } from "../NavBar";
-import { useLayoutEffect, useState } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import API from "../../api/api";
 import { ProfileComponent } from "../user/ProfileComponent";
+import { ProfilePopUpContext } from "../../contexts/ProfilePopUp.context";
 
 export const Result = (props: any) => {
     const [param, setParam] = useSearchParams();
@@ -15,12 +16,9 @@ export const Result = (props: any) => {
     const [oriSearch, setOriSearch] = useState(param.get('user'));
     const [apiRes, setApiRes] = useState([] as any);
 
-    const [ pop, setPop ] = useState(false);
-    const [popUser, setPopUser] = useState({} as any);
+    const {setUser, setShow, show} : any = useContext(ProfilePopUpContext);
 
     const navigate = useNavigate();
-
-    // const [users, setUsers] = useState([] as any);
 
     useLayoutEffect(() => {
         API.searchUser(
@@ -34,38 +32,6 @@ export const Result = (props: any) => {
             }
         );
     }, []);
-    
-
-    const users = [
-        {
-            id: 1,
-            login: "user111111111111111111111111111111111111111111111111",
-            first_name: "User",
-            last_name: "One",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet aliquam tincidunt, nunc nisl aliquam tortor, eget aliquam nisl nisl sit amet lorem. Sed euismod, nunc sit amet aliquam tincidunt, nunc nisl aliquam tortor, eget aliquam nisl nisl sit amet lorem.",
-        },
-        {
-            id: 2,
-            login: "user2",
-            first_name: "User",
-            last_name: "Two",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet aliquam tincidunt, nunc nisl aliquam tortor, eget aliquam nisl nisl sit amet lorem. Sed euismod, nunc sit amet aliquam tincidunt, nunc nisl aliquam tortor, eget aliquam nisl nisl sit amet lorem.",
-        },
-        {
-            id: 3,
-            login: "user3",
-            first_name: "User",
-            last_name: "Three",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet aliquam tincidunt, nunc nisl aliquam tortor, eget aliquam nisl nisl sit amet lorem. Sed euismod, nunc sit amet aliquam tincidunt, nunc nisl aliquam tortor, eget aliquam nisl nisl sit amet lorem.",
-        },
-        {
-            id: 4,
-            login: "user4",
-            first_name: "User",
-            last_name: "Four",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet aliquam tincidunt, nunc nisl aliquam tortor, eget aliquam nisl nisl sit amet lorem. Sed euismod, nunc sit amet aliquam tincidunt, nunc nisl aliquam tortor, eget aliquam nisl nisl sit amet lorem.",
-        },
-    ]
 
     return (
         <>
@@ -116,8 +82,8 @@ export const Result = (props: any) => {
                                             <td className={s.user_description}>{(user.description ? user.description : "No Description")}</td>
                                             <td className={s.user_action_buttons}>
                                                 <a className={s.btn_see_profile} onClick={(e: any) => {
-                                                    setPop(true);
-                                                    setPopUser(user);
+                                                    setShow(true);
+                                                    setUser(user);
                                                 }}>
                                                     <CgProfile/>
                                                 </a>
@@ -148,7 +114,7 @@ export const Result = (props: any) => {
                         </table>
                     </div>
                 <div>
-                    {pop && <ProfileComponent offShow={() => setPop(false)} user={popUser}/>}
+                    {show && <ProfileComponent/>}
                 </div>
             </div>
         </>

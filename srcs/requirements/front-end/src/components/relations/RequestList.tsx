@@ -1,11 +1,19 @@
-import { useState } from "react";
+import { useContext, useRef, useState } from "react";
 import {
     MdOutlineRemoveCircleOutline,
     MdOutlineCheckCircleOutline
 } from "react-icons/md";
 import API from "../../api/api";
+import { ProfilePopUpContext } from "../../contexts/ProfilePopUp.context";
 
-export const RequestList = (props: any) => {
+export const RequestList = ({relations}: any) => {
+
+    const [rel, setRel] = useState<any[]>(relations);
+
+    const {setUser, setShow} : any = useContext(ProfilePopUpContext);
+
+    console.log(rel);
+    console.log(relations);
 
     return (
         <>
@@ -19,7 +27,7 @@ export const RequestList = (props: any) => {
                             </tr>
                         </thead>
                         <tbody className="w-full">
-                            {props.relations.map((relation: any) => {
+                            {rel.map((relation: any) => {
                                 const user = relation.user
                                 return (
                                     <tr className="w-full hover:bg-gray-50 h-14 p-2 relative" key={relation.id}>
@@ -36,7 +44,8 @@ export const RequestList = (props: any) => {
                                                     (e) => {
                                                         e.preventDefault();
                                                         API.acceptRequest(relation.id, () => {
-                                                            console.log("accepted");
+                                                            const id = relation.id;
+                                                            setRel(rel.filter((r: any) => r.id !== id));
                                                         }, (err: any) => {
                                                             console.log(err);
                                                         });
@@ -49,7 +58,8 @@ export const RequestList = (props: any) => {
                                                         (e) => {
                                                             // e.preventDefault();
                                                             API.removeRequest(relation.id, () => {
-                                                                console.log("accepted");
+                                                                const id = relation.id;
+                                                                setRel(rel.filter((r: any) => r.id !== id));
                                                             }, (err: any) => {
                                                                 console.log(err);
                                                             });
