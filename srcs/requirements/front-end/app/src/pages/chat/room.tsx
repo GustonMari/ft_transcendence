@@ -56,7 +56,12 @@ export function RoomForm(props : any)
 
 							<button className='conversation' onClick={() => {
 								GetMessagesByRoom(handle_history, room.name);
-								socket?.emit("leaveRoom", { room_name: current_room, id_user: current_user.id})
+								// console.log('current room = |' + current_room + '| room name = |' + room.name);
+								// if (current_room !== room.name && current_room !== null && current_room !== undefined && current_room !== '')
+								// {
+									// console.log('========================= current room = |' + current_room + '| room name = |' + room.name);
+									socket?.emit("leaveRoom", { room_name: current_room, id_user: current_user.id})
+								// }
 								define_room(room.name);
 								//defin last room
 								}}>{room.name}</button>

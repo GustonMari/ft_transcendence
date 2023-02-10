@@ -85,9 +85,8 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	handleLeaveRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket) {
 		//? emit un  petit message pour dire que tel user a quitte la room
 		console.log(`user ${data.id_user} left the room ${data.room_name}`);
-		this.chatService.leaveRoom(data.room_name, data.id_user);
 		socket.leave(data.room_name);
-		// this.myserver.to(data.room_name).emit('message', `new user (${data.id_user}) has leave the room`);
+		// this.myserver.to(data.room_name).emit('message', `new user (${data.id_user}) has left the room`);
 	}
 
 	@SubscribeMessage('deleteRoom')
