@@ -10,6 +10,7 @@ import { Result } from "./components/search/Result";
 import { NotFound } from "./error/NotFound";
 import { UserProvider } from "./contexts/User.context";
 import WrapContext from "./contexts/wrap.context";
+import { GlobalFeatures } from "./components/communs/GlobalFeatures";
 
 function App() {
   return (
@@ -25,29 +26,36 @@ function App() {
             <Route path="/home" element={
                 <WrapContext components={
                     <PrivateRoute>
-                        <Home/>
+                        <GlobalFeatures>
+                            <Home/>
+                        </GlobalFeatures>
                     </PrivateRoute>
                 }/>
             } />
             <Route path="/friends" element={
                 <WrapContext components={
                     <PrivateRoute>
-                        <Friends/>
+                        <GlobalFeatures>
+                            <Friends/>
+                        </GlobalFeatures>
                     </PrivateRoute>
                 }/>
             } />
             <Route path="/profile" element={
                 <WrapContext components={
                     <PrivateRoute>
+                            <GlobalFeatures>
                         <Profile/>
+                            </GlobalFeatures>
                     </PrivateRoute>
                 } />
             } />
-            {/* <Route path='/' element={<App/>}/> */}
             <Route path='/search' element={
                 <WrapContext components={
                     <PrivateRoute>
-                        <Result/>
+                        <GlobalFeatures>
+                            <Result/>
+                        </GlobalFeatures>
                     </PrivateRoute>
                 } />
             }/>

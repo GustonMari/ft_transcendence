@@ -77,3 +77,4 @@ $gradient-radial: radial-gradient(#8d6b94ff, #b185a7ff, #c3a29eff, #e8dbc5ff, #f
 ## TODO List
 
 [ ] - Upgrade NotFound.tsx
+[ ] - Handle block user (call api when button is clicked, create block user page, unblock user in this page).

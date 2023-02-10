@@ -138,6 +138,11 @@ export class UserService {
                         state: "BLOCKED",
                     }
                 },
+                incoming : {
+                    none: {
+                        state: "BLOCKED",
+                    }
+                },
             },
         });
         if (found) { return (found);}
