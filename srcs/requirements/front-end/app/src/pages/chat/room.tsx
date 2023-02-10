@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import io, { Socket } from "socket.io-client";
 import Create_socket from './socket';
 import { APP } from "../../api/app";
+import './Style.message.css';
 
 // export function RoomForm(props : any)
 // {
@@ -49,7 +50,11 @@ export function RoomForm(props : any)
 			<ul>
 				{rooms.map(room => (
 					<li key={room.id}>
-						<a href="">{room.name}</a>
+						<span className="conversation-container">
+							<img className='conversationImg' src="" alt="" />
+
+							<a className='conversation' href="">{room.name}</a>
+						</span>
 					</li>
 				))}
 			</ul>

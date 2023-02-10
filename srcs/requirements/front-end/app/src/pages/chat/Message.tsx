@@ -76,12 +76,3 @@ export function DisplayMessagesByRoom(props: any) {
 	);
 
 }
-
-export function Conversation(props: any) {
-	return (
-		<div>
-			<img src="" alt="" />
-			<span>User 1</span>
-		</div>
-	);
-}

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import io, { Socket } from "socket.io-client";
 import MessageInput from "./Messageinput";
-import Messages, { Conversation, DisplayMessagesByRoom, GetMessagesByRoom } from "./Message";
+import Messages, { DisplayMessagesByRoom, GetMessagesByRoom } from "./Message";
 import axios from "axios";
 import Create_socket from "./socket";
 import {RoomForm, LeaveRoom, DeleteRoom, SetAdmin, BanUser, UnbanUser, MuteUser, BlockUser, UnBlockUser} from "./room";
@@ -63,8 +63,7 @@ export default function Chat() {
 	return (
 	<div>
 		<h1>Chat</h1>
-		<Conversation></Conversation>
-		{/* <RoomList current_user={currentUser} socket={socket}/> */}
+		{/* <Conversation></Conversation> */}
 		<RoomForm define_room={define_room} current_user={currentUser} socket={socket}/>
 		<LeaveRoom define_room={define_room} current_user={currentUser} socket={socket}/>
 		<DeleteRoom define_room={define_room} current_user={currentUser} socket={socket}/>

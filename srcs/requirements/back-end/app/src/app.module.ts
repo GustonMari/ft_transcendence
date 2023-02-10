@@ -1,3 +1,4 @@
+import { StyleModule } from './../../../front-end/app/src/pages/chat/CSS/style.module';
 /* eslint-disable prettier/prettier */
 import { JwtModule } from '@nestjs/jwt';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
@@ -11,17 +12,18 @@ import { ChatGateway } from './chat/gateways/chat.gateway';
 import { ChatModule } from './chat/chat.module';
 
 @Module({
-    imports: [
-        PrismaModule,
-        AuthModule,
-        UserModule,
-        FriendModule,
-        ChatModule
-    ],
-    providers: [
-        PrismaService,
+	imports: [
+		StyleModule,
+		PrismaModule,
+		AuthModule,
+		UserModule,
+		FriendModule,
+		ChatModule
+	],
+	providers: [
+		PrismaService,
 		// ChatGateway
-    ],
+	],
 })
 
 export class AppModule { }

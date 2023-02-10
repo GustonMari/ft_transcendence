@@ -1,3 +1,8 @@
+.conversation-container {
+	display: flex;
+	align-items: center;
+  }
+
 .conversation {
 	margin-top: 10px;
   display: flex;
