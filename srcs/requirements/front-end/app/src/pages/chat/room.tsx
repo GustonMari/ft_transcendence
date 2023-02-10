@@ -65,6 +65,11 @@ export function RoomForm(props : any)
 								// counter += 1;
 								setTrigger(trigger += 1);
 							}}>Leave room</button>
+							<button onClick={() => {
+								socket?.emit("deleteRoom", { room_name: room.name, id_user: current_user.id})
+								setTrigger(trigger += 1);
+							}}>Delete room</button>
+								
 								
 						</span>
 					</li>
