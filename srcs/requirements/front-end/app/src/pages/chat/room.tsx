@@ -26,7 +26,7 @@ import { GetMessagesByRoom } from './Message';
 
 export function RoomForm(props : any)
 {
-	let {define_room, current_user, socket, handle_history} = props;
+	let {define_room, current_room, current_user, socket, handle_history} = props;
 
 	const [value, setValue] = React.useState("");
 	const [trigger, setTrigger] = React.useState("");
@@ -56,7 +56,9 @@ export function RoomForm(props : any)
 
 							<button className='conversation' onClick={() => {
 								GetMessagesByRoom(handle_history, room.name);
+								socket?.emit("leaveRoom", { room_name: current_room, id_user: current_user.id})
 								define_room(room.name);
+								//defin last room
 								}}>{room.name}</button>
 						</span>
 					</li>
