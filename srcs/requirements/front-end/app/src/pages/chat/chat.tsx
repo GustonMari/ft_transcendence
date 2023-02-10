@@ -46,6 +46,7 @@ export default function Chat() {
 		setMessage([...messages, message]);
 	}
 
+
 	const history_listener = (history: HistoryDto) => {
 		setHistory(history);
 	}
@@ -71,10 +72,10 @@ export default function Chat() {
 		<UnbanUser define_room={define_room} current_user={currentUser} socket={socket}/>
 		<MuteUser define_room={define_room} current_user={currentUser} socket={socket}/>
 		<MessageInput send={send}/>
-		<Messages messages={messages} room={room} socket={socket}/>
+		{/* <Messages messages={messages} room={room} socket={socket}/> */}
 		<h1>Historique</h1>
 		{/* <GetMessagesByRoom define_room={define_room} current_user={currentUser} socket={socket} handle_history={history_listener}/> */}
-		<DisplayMessagesByRoom current_user={currentUser} history={history} socket={socket}/>
+		<DisplayMessagesByRoom current_user={currentUser} history={history} socket={socket} messages={messages} room={room}/>
 
 	</div>
 	);
