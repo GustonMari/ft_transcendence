@@ -78,7 +78,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			await this.chatService.setAdmin(data.room_name, data.id_user);
 		}
 		await socket.join(data.room_name);
-		this.myserver.to(data.room_name).emit('message', `new user (${data.id_user}) joined the room`);
+		// this.myserver.to(data.room_name).emit('message', `new user (${data.id_user}) joined the room`);
 	}
 
 	@SubscribeMessage('leaveRoom')
@@ -87,7 +87,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		console.log(`user ${data.id_user} left the room ${data.room_name}`);
 		this.chatService.leaveRoom(data.room_name, data.id_user);
 		socket.leave(data.room_name);
-		this.myserver.to(data.room_name).emit('message', `new user (${data.id_user}) has leave the room`);
+		// this.myserver.to(data.room_name).emit('message', `new user (${data.id_user}) has leave the room`);
 	}
 
 	@SubscribeMessage('deleteRoom')
@@ -106,10 +106,10 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		if (this.chatService.isAdmin(data.room_name, data.id_user_from)) {
 			const id_user_to = await this.chatService.getIdUser(data.login_user_to);
 			await this.chatService.setAdmin(data.room_name, id_user_to);
-			this.myserver.to(data.room_name).emit('message', `user (${id_user_to}) is now admin`);
+			// this.myserver.to(data.room_name).emit('message', `user (${id_user_to}) is now admin`);
 		}
-		else
-			this.myserver.to(data.room_name).emit('message', `you dont have permission to set an admin`);
+		// else
+			// this.myserver.to(data.room_name).emit('message', `you dont have permission to set an admin`);
 	}
 
 	@SubscribeMessage('banUser')
@@ -119,16 +119,16 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			const id_user_to = await this.chatService.getIdUser(data.login_user_to);
 			if (await this.chatService.isAdmin(data.room_name, id_user_to))
 			{
-				this.myserver.to(data.room_name).emit('message', `you cant ban an admin`);
+				// this.myserver.to(data.room_name).emit('message', `you cant ban an admin`);
 				return ;
 			}
 			const ban_date = new Date();
 			ban_date.setTime(ban_date.getTime() + data.ban_till * 60000);
 			await this.chatService.banUser(data.room_name, data.id_user_from, id_user_to, ban_date);
-			this.myserver.to(data.room_name).emit('message', `user (${id_user_to}) is now ban`);
+			// this.myserver.to(data.room_name).emit('message', `user (${id_user_to}) is now ban`);
 		}
-		else
-			this.myserver.to(data.room_name).emit('message', `you dont have permission to ban an user`);
+		// else
+			// this.myserver.to(data.room_name).emit('message', `you dont have permission to ban an user`);
 	}
 
 	@SubscribeMessage('unbanUser')
@@ -137,10 +137,10 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		if (await this.chatService.isAdmin(data.room_name, data.id_user_from)) {
 			const id_user_to = await this.chatService.getIdUser(data.login_user_to);
 			await this.chatService.unbanUser(data.room_name, data.id_user_from, id_user_to);
-			this.myserver.to(data.room_name).emit('message', `user (${id_user_to}) is now unbanned`);
+			// this.myserver.to(data.room_name).emit('message', `user (${id_user_to}) is now unbanned`);
 		}
-		else
-			this.myserver.to(data.room_name).emit('message', `you dont have permission to unban an user`);
+		// else
+			// this.myserver.to(data.room_name).emit('message', `you dont have permission to unban an user`);
 	}
 
 	@SubscribeMessage('muteUser')
@@ -150,16 +150,16 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			const id_user_to = await this.chatService.getIdUser(data.login_user_to);
 			if (await this.chatService.isAdmin(data.room_name, id_user_to))
 			{
-				this.myserver.to(data.room_name).emit('message', `you cant mute an admin`);
+				// this.myserver.to(data.room_name).emit('message', `you cant mute an admin`);
 				return ;
 			}
 			const mute_date = new Date();
 			mute_date.setTime(mute_date.getTime() + data.mute_till * 60000);
 			await this.chatService.muteUser(data.room_name, data.id_user_from, id_user_to, mute_date);
-			this.myserver.to(data.room_name).emit('message', `user (${id_user_to}) is now muted`);
+			// this.myserver.to(data.room_name).emit('message', `user (${id_user_to}) is now muted`);
 		}
-		else
-			this.myserver.to(data.room_name).emit('message', `you dont have permission to mute an user`);
+		// else
+		// 	this.myserver.to(data.room_name).emit('message', `you dont have permission to mute an user`);
 	}
 
 	// @SubscribeMessage('removeAdmin')
@@ -181,7 +181,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			return ;
 		console.log('Dans message :', data.current_user.login)
 		await this.chatService.stockMessage(data);
-		this.myserver.to(data.room).emit('message', data.message); // Emit the message event to the client, for every user
+		this.myserver.to(data.room).emit('message', data); // Emit the message event to the client, for every user
 
 	}
 }

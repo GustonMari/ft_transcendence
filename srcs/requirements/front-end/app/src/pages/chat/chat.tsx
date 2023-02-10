@@ -9,14 +9,14 @@ import {RoomForm, LeaveRoom, DeleteRoom, SetAdmin, BanUser, UnbanUser, MuteUser,
 import { APP } from "../../api/app";
 import App from "../../App";
 import { RoomList } from "./navbar";
-import { HistoryDto } from "./dto/chat.dto";
+import { HistoryDto, InfoMessage } from "./dto/chat.dto";
 
 
 
 export default function Chat() {
 
 	const socket = Create_socket();
-	const [messages, setMessage] = useState<string[]>([]);
+	const [messages, setMessage] = useState<any>([]);
 	const [room, setRoom] = useState<string>('');
 	const [currentUser, setCurrentUser] = useState<any>(null);
 	const [history, setHistory] = useState<any>([]);
@@ -42,8 +42,12 @@ export default function Chat() {
 		await socket?.emit("joinRoom", { room_name: room, id_user: currentUser.id} );
 	}
 
-	const message_listener = (message: string) => {
-		setMessage([...messages, message]);
+	const message_listener = (infomessage: any) => {
+		// console.log('message lsitener' + JSON.stringify(infomessage));
+		if (messages == undefined || messages == null)
+			setMessage(infomessage);
+		setMessage([...messages, infomessage]);
+		console.log('message lsitener' + JSON.stringify(messages));
 	}
 
 
@@ -75,7 +79,7 @@ export default function Chat() {
 		{/* <Messages messages={messages} room={room} socket={socket}/> */}
 		<h1>Historique</h1>
 		{/* <GetMessagesByRoom define_room={define_room} current_user={currentUser} socket={socket} handle_history={history_listener}/> */}
-		<DisplayMessagesByRoom current_user={currentUser} history={history} socket={socket} messages={messages} room={room}/>
+		<DisplayMessagesByRoom current_user={currentUser} socket={socket} history={history}  infomessage={messages} room={room}/>
 
 	</div>
 	);

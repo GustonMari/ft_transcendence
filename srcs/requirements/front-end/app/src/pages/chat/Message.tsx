@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { HistoryDto } from "./dto/chat.dto";
+import { HistoryDto, InfoMessage } from "./dto/chat.dto";
 import { APP } from "../../api/app";
 
 export default function Messages(props: any) {
@@ -47,8 +47,16 @@ export function GetMessagesByRoom(handle_history: any, room_name: string)
 
 
 export function DisplayMessagesByRoom(props: any) {
-	let { current_user, socket, history, messages, room} = props;
-  
+	let { current_user, socket, history, infomessage, room} = props;
+	if (infomessage == undefined && infomessage == null)
+		return (
+			<div>
+				<h1>Mauvais bail</h1>
+			</div>
+		)
+	else
+		console.log("infomessage est bien la ");
+
 	return (
 	  <div>
 		<h1>Messages</h1>
@@ -58,9 +66,9 @@ export function DisplayMessagesByRoom(props: any) {
 			{historyItem.sender_name} : {historyItem.current_message} 
 		  </div>
 		))}
-		{messages.map((message: string[], index: number) => (
+		{infomessage.map((infomessage: any, index: number) => (
 			<div key={index}>
-				{current_user.login} : {message}
+				{infomessage.current_user.login} : {infomessage.message}
 				</div>
 		))}
 	  </div>

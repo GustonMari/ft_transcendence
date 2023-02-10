@@ -8,3 +8,23 @@ export interface HistoryDto {
 	room_id: number;
 	sender_name: string;
 }
+
+export interface InfoMessage {
+	room: string;
+	message: string;
+	current_user: User;
+}
+
+export interface User {
+	id: number
+	created_at: Date
+	updated_at: Date
+	login: string
+	first_name: string | null
+	last_name: string | null
+	avatar_url: string | null
+	email: string
+	state: boolean
+	password: string
+	rt: string | null
+}
