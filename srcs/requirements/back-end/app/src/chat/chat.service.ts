@@ -114,12 +114,31 @@ export class ChatService {
 		if (!room_exist) {
 			return false;
 		}
+
+		// await this.prisma.room.update({
+		// 	where: { name: room_name },
+		// 	data: {
+		// 	  messages: {
+		// 		// delete: true,
+		// 	  }
+		// 	},
+		//   });
+
 		await this.prisma.usersOnRooms.deleteMany({
 			where: {
 				room_id: room_exist.id,
 			},
 		})
-		await this.prisma.room.delete({ where: { name: room_name } });
+		// await this.prisma.room.delete({ where: { name: room_name } });
+		await this.prisma.room.delete({
+			where: { name: room_name },
+			include: {
+			  messages: {
+				
+				// cascade: true
+			  }
+			}
+		  });
 		return true;
 	}
 

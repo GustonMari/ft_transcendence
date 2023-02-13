@@ -52,6 +52,26 @@ export function RoomForm(props : any)
 
 	return (
 	<div>
+		<nav>
+			<ul>
+				<li>
+					<a href="">Home</a>
+					
+				</li>
+				<li>
+					<a href="">Rooms</a>
+				</li>
+				<li>
+					<a href="">Profile</a>
+				</li>
+				<li>
+					<a href="">Logout</a>
+				</li>
+				<li>
+					<a href="">Settings</a>
+				</li>
+			</ul>
+		</nav>
 		<h1>Liste de vos Rooms</h1>
 			<ul>
 				{rooms.map(room => (
@@ -65,11 +85,11 @@ export function RoomForm(props : any)
 								define_room(room.name);
 								socket?.on('renderReact', render_react);
 								}}>{room.name}</button>
-							<button onClick={() => {
+							<button className='conversation' onClick={() => {
 								socket?.emit("leaveRoom", { room_name: room.name, id_user: current_user.id})
 								socket?.on('renderReact', render_react);
 							}}>Leave room</button>
-							<button onClick={() => {
+							<button className='conversation' onClick={() => {
 								socket?.emit("deleteRoom", { room_name: room.name, id_user: current_user.id})
 								socket?.on('renderReact', render_react);
 							}}>Delete room</button>
@@ -78,7 +98,7 @@ export function RoomForm(props : any)
 				))}
 			</ul>
 		<input onChange={(e) => setValue(e.target.value)} placeholder="define your room..." value={value} />
-		<button onClick={() => {
+		<button  onClick={() => {
 			define_room(value);
 			socket?.emit("message", {room: value, message: `${current_user.login} has join the room ${value}`})
 			socket?.on('renderReact', render_react);

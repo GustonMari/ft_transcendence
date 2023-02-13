@@ -112,9 +112,9 @@ model Message {
 	updated_at DateTime @updatedAt
 	current_message       String
 	sender_name String
-	sender     User     @relation(fields: [sender_id], references: [id])
+	sender     User     @relation(fields: [sender_id], references: [id], onDelete: Cascade)
 	sender_id  Int
-	room       Room     @relation(fields: [room_id], references: [id])
+	room       Room     @relation(fields: [room_id], references: [id], onDelete: Cascade)
 	room_id    Int
 
 	@@map("messages")

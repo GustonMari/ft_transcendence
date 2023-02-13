@@ -91,6 +91,12 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	@SubscribeMessage('deleteRoom')
 	async handleDeleteRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket) {
 		//* check si le user est admin
+		console.log('delete room ==================================');
+		if(!this.chatService.isAdmin(data.room_name, data.id_user))
+		{
+			console.log('you dont have permission to delete the room');
+			return ;
+		}
 		await this.myserver.socketsLeave(data.room_name);
 		await this.chatService.deleteRoom(data.room_name, data.id_user);
 		socket.emit('renderReact', 'renderReact');
