@@ -28,7 +28,7 @@ import { setMaxIdleHTTPParsers } from 'http';
 
 export function RoomForm(props : any)
 {
-	let {define_room, current_room, current_user, socket, handle_history, trigger, setTrigger} = props;
+	let {define_room, current_room, current_user, socket, handle_history, trigger, setTrigger, setMessage} = props;
 	const [value, setValue] = React.useState("");
 
 	const [rooms, setRooms] = useState<any>([]);
@@ -80,16 +80,19 @@ export function RoomForm(props : any)
 							<img className='conversationImg' src="" alt="" />
 
 							<button className='conversation' onClick={() => {
+								setMessage([]);
 								GetMessagesByRoom(handle_history, room.name);
 								socket?.emit("changeRoom", { room_name: current_room, id_user: current_user.id})
 								define_room(room.name);
 								socket?.on('renderReact', render_react);
 								}}>{room.name}</button>
 							<button className='conversation' onClick={() => {
+								setMessage([]);
 								socket?.emit("leaveRoom", { room_name: room.name, id_user: current_user.id})
 								socket?.on('renderReact', render_react);
 							}}>Leave room</button>
 							<button className='conversation' onClick={() => {
+								setMessage([]);
 								socket?.emit("deleteRoom", { room_name: room.name, id_user: current_user.id})
 								socket?.on('renderReact', render_react);
 							}}>Delete room</button>
@@ -99,6 +102,7 @@ export function RoomForm(props : any)
 			</ul>
 		<input onChange={(e) => setValue(e.target.value)} placeholder="define your room..." value={value} />
 		<button  onClick={() => {
+			setMessage([]);
 			define_room(value);
 			socket?.emit("message", {room: value, message: `${current_user.login} has join the room ${value}`})
 			socket?.on('renderReact', render_react);

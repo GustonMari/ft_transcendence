@@ -69,6 +69,7 @@ export default function Chat() {
 			handle_history={history_listener}
 			trigger={trigger}
 			setTrigger={setTrigger}
+			setMessage={setMessage}
 			/>
 		<DeleteRoom define_room={define_room} current_user={currentUser} socket={socket}/>
 		<SetAdmin define_room={define_room} current_user={currentUser} socket={socket}/>
