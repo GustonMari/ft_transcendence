@@ -45,7 +45,6 @@ export default function Chat() {
 	}
 
 	const message_listener = (infomessage: any) => {
-		// console.log('message lsitener' + JSON.stringify(infomessage));
 		if (messages == undefined || messages == null)
 			setMessage(infomessage);
 		setMessage([...messages, infomessage]);
@@ -77,9 +76,7 @@ export default function Chat() {
 		<UnbanUser define_room={define_room} current_user={currentUser} socket={socket}/>
 		<MuteUser define_room={define_room} current_user={currentUser} socket={socket}/>
 		<MessageInput send={send}/>
-		{/* <Messages messages={messages} room={room} socket={socket}/> */}
 		<h1>Historique</h1>
-		{/* <GetMessagesByRoom define_room={define_room} current_user={currentUser} socket={socket} handle_history={history_listener}/> */}
 		<DisplayMessagesByRoom current_user={currentUser} socket={socket} history={history}  infomessage={messages} room={room}/>
 
 	</div>

@@ -29,16 +29,13 @@ import { setMaxIdleHTTPParsers } from 'http';
 export function RoomForm(props : any)
 {
 	let {define_room, current_room, current_user, socket, handle_history, trigger, setTrigger} = props;
-	// var counter = 0;
 	const [value, setValue] = React.useState("");
-	// const [trigger, setTrigger] = React.useState("");
 
 	const [rooms, setRooms] = useState<any>([]);
 
 	useEffect(() => {
 		const getRooms = async () => {
 			try {
-				console.log('fetching rooms...');
 				const res = await APP.get("/chat/get_user_rooms");
 				console.log('fetched', res.data);
 				setRooms(res.data);
@@ -50,10 +47,9 @@ export function RoomForm(props : any)
 	}, [trigger]);
 
 	const render_react = () => {
-		console.log("Dans le render_react");
 		setTrigger(trigger += 1);
 	}
-	// }, [rooms.length]);
+
 	return (
 	<div>
 		<h1>Liste de vos Rooms</h1>
@@ -70,33 +66,22 @@ export function RoomForm(props : any)
 								socket?.on('renderReact', render_react);
 								}}>{room.name}</button>
 							<button onClick={() => {
-								console.log("Dans le click zoo : " + " room_name = ", room.name + " | trigger = " + trigger);
 								socket?.emit("leaveRoom", { room_name: room.name, id_user: current_user.id})
-								// counter += 1;
 								socket?.on('renderReact', render_react);
-								
-								// setTrigger(trigger += 1);
 							}}>Leave room</button>
 							<button onClick={() => {
-								console.log("on a bien cliqué sur le bouton delete room =" + room.name + " | trigger = " + trigger);
 								socket?.emit("deleteRoom", { room_name: room.name, id_user: current_user.id})
 								socket?.on('renderReact', render_react);
-							
-								// setTrigger(trigger += 1);
 							}}>Delete room</button>
-								
-								
 						</span>
 					</li>
 				))}
 			</ul>
 		<input onChange={(e) => setValue(e.target.value)} placeholder="define your room..." value={value} />
 		<button onClick={() => {
-			console.log('jai bien cliquer sur le boutton send putain ta mere');
 			define_room(value);
 			socket?.emit("message", {room: value, message: `${current_user.login} has join the room ${value}`})
 			socket?.on('renderReact', render_react);
-			// setTrigger(trigger += 1)
 		}
 			}
 		>Send</button>

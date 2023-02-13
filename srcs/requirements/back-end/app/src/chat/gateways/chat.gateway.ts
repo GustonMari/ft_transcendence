@@ -42,11 +42,6 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	@WebSocketServer() // Create a instance of the server
 	myserver: Server;
 
-	// usrcontroller: UserController = new UserController();
-	// const server = require('http').createServer();
-
-	//create code who enable cors for the server
-
 	private logger: Logger = new Logger('AppGateway');
 
 	afterInit(server: Server) {
@@ -56,11 +51,9 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	handleConnection(client: Socket, ...args: any[]) {
 		
 		client.join('all');
-		// this.logger.log(`Client connected: ${client.id}`);
 	}
 
 	handleDisconnect(client: Socket) {
-		// this.logger.log(`Client disconnected: ${client.id}`);
 	}
 
 	@SubscribeMessage('joinRoom')
@@ -79,18 +72,13 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		}
 		await socket.join(data.room_name);
 		socket.emit('renderReact', 'renderReact');
-		// this.myserver.to(data.room_name).emit('message', `new user (${data.id_user}) joined the room`);
 	}
 
 	@SubscribeMessage('leaveRoom')
 	async handleLeaveRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket) {
-		//? emit un  petit message pour dire que tel user a quitte la room
-		console.log(`user ${data.id_user} left the room ${data.room_name}`);
 		await this.chatService.leaveRoom(data.room_name, data.id_user);
 		await socket.leave(data.room_name);
 		socket.emit('renderReact', 'renderReact');
-
-		// this.myserver.to(data.room_name).emit('message', `new user (${data.id_user}) has leave the room`);
 	}
 
 	@SubscribeMessage('changeRoom')
@@ -103,12 +91,9 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	@SubscribeMessage('deleteRoom')
 	async handleDeleteRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket) {
 		//* check si le user est admin
-		// socket.leave(room);
-		console.log(' retour du bouton ' + data);
 		await this.myserver.socketsLeave(data.room_name);
 		await this.chatService.deleteRoom(data.room_name, data.id_user);
 		socket.emit('renderReact', 'renderReact');
-		//! ici on va supprimer la room dans la table user de prisma
 	}
 
 	@SubscribeMessage('setAdmin')
@@ -117,7 +102,6 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		if (this.chatService.isAdmin(data.room_name, data.id_user_from)) {
 			const id_user_to = await this.chatService.getIdUser(data.login_user_to);
 			await this.chatService.setAdmin(data.room_name, id_user_to);
-			// this.myserver.to(data.room_name).emit('message', `user (${id_user_to}) is now admin`);
 		}
 		// else
 			// this.myserver.to(data.room_name).emit('message', `you dont have permission to set an admin`);
@@ -190,7 +174,6 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	async handleMessage(@MessageBody() data: InfoMessage, @ConnectedSocket() socket: Socket) {
 		if (data.current_user === undefined /* || data.message === undefined */)
 			return ;
-		console.log('Dans message :', data.current_user.login)
 		await this.chatService.stockMessage(data);
 		this.myserver.to(data.room).emit('message', data); // Emit the message event to the client, for every user
 
