@@ -78,31 +78,36 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			await this.chatService.setAdmin(data.room_name, data.id_user);
 		}
 		await socket.join(data.room_name);
+		socket.emit('renderReact', 'renderReact');
 		// this.myserver.to(data.room_name).emit('message', `new user (${data.id_user}) joined the room`);
 	}
 
 	@SubscribeMessage('leaveRoom')
-	handleLeaveRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket) {
+	async handleLeaveRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket) {
 		//? emit un  petit message pour dire que tel user a quitte la room
 		console.log(`user ${data.id_user} left the room ${data.room_name}`);
-		this.chatService.leaveRoom(data.room_name, data.id_user);
-		socket.leave(data.room_name);
+		await this.chatService.leaveRoom(data.room_name, data.id_user);
+		await socket.leave(data.room_name);
+		socket.emit('renderReact', 'renderReact');
+
 		// this.myserver.to(data.room_name).emit('message', `new user (${data.id_user}) has leave the room`);
 	}
 
 	@SubscribeMessage('changeRoom')
-	handleChangeRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket) {
+	async handleChangeRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket) {
 		console.log(`user ${data.id_user} left the room ${data.room_name}`);
-		socket.leave(data.room_name);
+		await socket.leave(data.room_name);
+		socket.emit('renderReact', 'renderReact');
 	}
 
 	@SubscribeMessage('deleteRoom')
-	handleDeleteRoom(@MessageBody() data: InfoRoom): void {
+	async handleDeleteRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket) {
 		//* check si le user est admin
 		// socket.leave(room);
-
-		this.myserver.socketsLeave(data.room_name);
-		this.chatService.deleteRoom(data.room_name, data.id_user);
+		console.log(' retour du bouton ' + data);
+		await this.myserver.socketsLeave(data.room_name);
+		await this.chatService.deleteRoom(data.room_name, data.id_user);
+		socket.emit('renderReact', 'renderReact');
 		//! ici on va supprimer la room dans la table user de prisma
 	}
 
