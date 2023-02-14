@@ -60,26 +60,41 @@ export default function Chat() {
 
 	return (
 	<div>
-		<h1>Chat</h1>
-		<RoomForm
-			define_room={define_room}
-			current_room={room}
-			current_user={currentUser}
-			socket={socket}
-			handle_history={history_listener}
-			trigger={trigger}
-			setTrigger={setTrigger}
-			setMessage={setMessage}
-			/>
-		<DeleteRoom define_room={define_room} current_user={currentUser} socket={socket}/>
-		<SetAdmin define_room={define_room} current_user={currentUser} socket={socket}/>
-		<BanUser define_room={define_room} current_user={currentUser} socket={socket}/>
-		<UnbanUser define_room={define_room} current_user={currentUser} socket={socket}/>
-		<MuteUser define_room={define_room} current_user={currentUser} socket={socket}/>
-		<MessageInput send={send}/>
-		<h1>Historique</h1>
-		<DisplayMessagesByRoom current_user={currentUser} socket={socket} history={history}  infomessage={messages} room={room}/>
+		<div>
+			<nav className="nav-bar">
+				<a className='nav-bar-box' href="">Home</a>
+				<a href="">Rooms</a>
+				<a href="">Profile</a>
+				<a href="">Logout</a>
+				<a href="">Settings</a>
+			</nav>
+		</div>
+		<div className="global">
+			<div>
+				<RoomForm
+					define_room={define_room}
+					current_room={room}
+					current_user={currentUser}
+					socket={socket}
+					handle_history={history_listener}
+					trigger={trigger}
+					setTrigger={setTrigger}
+					setMessage={setMessage}
+					/>
+			</div>
+			<div>
+				<DisplayMessagesByRoom current_user={currentUser} socket={socket} history={history}  infomessage={messages} room={room}/>
+			</div>
+			<div>
+				{/* <DeleteRoom define_room={define_room} current_user={currentUser} socket={socket}/> */}
+				<SetAdmin define_room={define_room} current_user={currentUser} socket={socket}/>
+				<BanUser define_room={define_room} current_user={currentUser} socket={socket}/>
+				<UnbanUser define_room={define_room} current_user={currentUser} socket={socket}/>
+				<MuteUser define_room={define_room} current_user={currentUser} socket={socket}/>
+				<MessageInput send={send}/>
+			</div>
 
+		</div>
 	</div>
 	);
 }

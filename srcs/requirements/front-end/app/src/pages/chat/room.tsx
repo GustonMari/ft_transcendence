@@ -52,26 +52,13 @@ export function RoomForm(props : any)
 
 	return (
 	<div>
-		<nav>
-			<ul>
-				<li>
-					<a href="">Home</a>
-					
-				</li>
-				<li>
-					<a href="">Rooms</a>
-				</li>
-				<li>
-					<a href="">Profile</a>
-				</li>
-				<li>
-					<a href="">Logout</a>
-				</li>
-				<li>
-					<a href="">Settings</a>
-				</li>
-			</ul>
-		</nav>
+			{/* <nav className="nav-bar">
+				<a className='nav-bar-box' href="">Home</a>
+				<a href="">Rooms</a>
+				<a href="">Profile</a>
+				<a href="">Logout</a>
+				<a href="">Settings</a>
+			</nav> */}
 		<h1>Liste de vos Rooms</h1>
 			<ul>
 				{rooms.map(room => (
