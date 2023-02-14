@@ -6,26 +6,6 @@ import './Style.message.css';
 import { GetMessagesByRoom } from './Message';
 import { setMaxIdleHTTPParsers } from 'http';
 
-// export function RoomForm(props : any)
-// {
-// 	let {define_room, current_user, socket} = props;
-
-// 	const [value, setValue] = React.useState("");
-// 	return (
-// 	<div>
-// 		<input onChange={(e) => setValue(e.target.value)} placeholder="define your room..." value={value} />
-// 		<button onClick={() => {
-// 			console.log('');
-// 			define_room(value)
-// 			socket?.emit("message", {room: value, message: `${current_user.login} has join the room ${value}`})
-// 		}
-// 			}
-// 		>Send</button>
-// 	</div>
-// 	);
-// }
-
-
 export function RoomForm(props : any)
 {
 	let {define_room, current_room, current_user, socket, handle_history, trigger, setTrigger, setMessage} = props;
@@ -52,15 +32,8 @@ export function RoomForm(props : any)
 
 	return (
 	<div>
-			{/* <nav className="nav-bar">
-				<a className='nav-bar-box' href="">Home</a>
-				<a href="">Rooms</a>
-				<a href="">Profile</a>
-				<a href="">Logout</a>
-				<a href="">Settings</a>
-			</nav> */}
-		<h1>Liste de vos Rooms</h1>
-			<ul>
+		<h1>Rooms</h1>
+			<span>
 				{rooms.map(room => (
 					<li key={room.id}>
 						<span className="conversation-container">
@@ -72,21 +45,21 @@ export function RoomForm(props : any)
 								socket?.emit("changeRoom", { room_name: current_room, id_user: current_user.id})
 								define_room(room.name);
 								socket?.on('renderReact', render_react);
-								}}>{room.name}</button>
+								}}>{ ShortedName(room.name) }</button>
 							<button className='conversation' onClick={() => {
 								setMessage([]);
 								socket?.emit("leaveRoom", { room_name: room.name, id_user: current_user.id})
 								socket?.on('renderReact', render_react);
-							}}>Leave room</button>
+							}}>Leave</button>
 							<button className='conversation' onClick={() => {
 								setMessage([]);
 								socket?.emit("deleteRoom", { room_name: room.name, id_user: current_user.id})
 								socket?.on('renderReact', render_react);
-							}}>Delete room</button>
+							}}>Delete</button>
 						</span>
 					</li>
 				))}
-			</ul>
+			</span>
 		<input onChange={(e) => setValue(e.target.value)} placeholder="define your room..." value={value} />
 		<button  onClick={() => {
 			setMessage([]);
@@ -98,6 +71,13 @@ export function RoomForm(props : any)
 		>Send</button>
 	</div>
 	);
+}
+
+export function ShortedName(name : string) : string
+{
+	if (name.length > 10)
+		return (name.slice(0, 10) + "...");
+	return (name);
 }
 
 export function LeaveRoom(props : any)

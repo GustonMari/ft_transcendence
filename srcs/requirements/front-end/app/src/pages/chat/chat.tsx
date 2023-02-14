@@ -82,8 +82,9 @@ export default function Chat() {
 					setMessage={setMessage}
 					/>
 			</div>
-			<div>
+			<div className="message-box">
 				<DisplayMessagesByRoom current_user={currentUser} socket={socket} history={history}  infomessage={messages} room={room}/>
+				<MessageInput send={send}/>
 			</div>
 			<div>
 				{/* <DeleteRoom define_room={define_room} current_user={currentUser} socket={socket}/> */}
@@ -91,9 +92,7 @@ export default function Chat() {
 				<BanUser define_room={define_room} current_user={currentUser} socket={socket}/>
 				<UnbanUser define_room={define_room} current_user={currentUser} socket={socket}/>
 				<MuteUser define_room={define_room} current_user={currentUser} socket={socket}/>
-				<MessageInput send={send}/>
 			</div>
-
 		</div>
 	</div>
 	);

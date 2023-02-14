@@ -7,13 +7,17 @@
 .global {
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
+  /* grid-template-rows: 1fr 1fr 1fr; */
   grid-gap: 10px;
+  border: solid yellow;
+  grid-row-end: 1;
+  
 }
 
 
 .nav-bar {
   display: flex;
-  position: fixed;
+  /* position: fixed; */
   /* justify-content: center; */
   justify-content: space-between;
   align-content: flex-end;
@@ -51,13 +55,13 @@
 }
 
 .conversation:hover {
-	margin-top: 10px;
+	/* margin-top: 10px;
   display: flex;
   align-items: center;
   border-radius: 10px;
   padding: 15px;
   font-family: 'Roboto', sans-serif;
-  box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.1); */
 }
 
 .conversationImg {
@@ -65,4 +69,37 @@
   width: 40px;
   border-radius: 50%;
   margin-right: 10px;
+  margin-left: 10px;
+}
+
+.message-box {
+  
+  display: grid;
+  border: solid black;
+  grid-template-columns: 1fr;
+  grid-template-rows: 9fr 0fr;
+}
+
+.inputmessage {
+  display: flex;
+  justify-content: left;
+  border: solid red;
+  height: 100%;
+  box-sizing: border-box;
+  
+}
+
+.print-message {
+  height: 500px;
+  overflow-y: scroll;
+  /* overflow: auto; */
+  display: flex;
+  flex-direction: column;
+  /* justify-content: end; */
+  border: solid green;
+
+}
+
+.borderbox {
+  width: 100%;
 }
