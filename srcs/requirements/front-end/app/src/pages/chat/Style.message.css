@@ -48,12 +48,6 @@
 
 .input-room {
   display: flex;
-  align-items: flex-end;
-  /* flex: 1; */
-  /* flex-direction: row; */
-  /* justify-content: space-between; */
- 
-
   border: solid rgb(139, 46, 48);
 }
 
