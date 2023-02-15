@@ -61,16 +61,16 @@ export default function Chat() {
 	return (
 	<div>
 		<div>
-			<nav className="nav-bar">
+			{/* <nav className="nav-bar">
 				<a className='nav-bar-box' href="">Home</a>
 				<a href="">Rooms</a>
 				<a href="">Profile</a>
 				<a href="">Logout</a>
 				<a href="">Settings</a>
-			</nav>
+			</nav> */}
 		</div>
 		<div className="global">
-			<div>
+			<div className="room-menu">
 				<RoomForm
 					define_room={define_room}
 					current_room={room}
@@ -86,7 +86,7 @@ export default function Chat() {
 				<DisplayMessagesByRoom current_user={currentUser} socket={socket} history={history}  infomessage={messages} room={room}/>
 				<MessageInput send={send}/>
 			</div>
-			<div>
+			<div className="menu-chat">
 				{/* <DeleteRoom define_room={define_room} current_user={currentUser} socket={socket}/> */}
 				<SetAdmin define_room={define_room} current_user={currentUser} socket={socket}/>
 				<BanUser define_room={define_room} current_user={currentUser} socket={socket}/>

@@ -31,9 +31,9 @@ export function RoomForm(props : any)
 	}
 
 	return (
-	<div>
-		<h1>Rooms</h1>
-			<span>
+		<div className='between-room-input'>
+		{/* <h1>Rooms</h1> */}
+			<span className='room-list'>
 				{rooms.map(room => (
 					<li key={room.id}>
 						<span className="conversation-container">
@@ -60,15 +60,17 @@ export function RoomForm(props : any)
 					</li>
 				))}
 			</span>
-		<input onChange={(e) => setValue(e.target.value)} placeholder="define your room..." value={value} />
-		<button  onClick={() => {
-			setMessage([]);
-			define_room(value);
-			socket?.emit("message", {room: value, message: `${current_user.login} has join the room ${value}`})
-			socket?.on('renderReact', render_react);
-		}
-			}
-		>Send</button>
+			<div className='input-room'>
+				<input onChange={(e) => setValue(e.target.value)} placeholder="define your room..." value={value} />
+				<button  onClick={() => {
+					setMessage([]);
+					define_room(value);
+					socket?.emit("message", {room: value, message: `${current_user.login} has join the room ${value}`})
+					socket?.on('renderReact', render_react);
+				}
+					}
+				>Send</button>
+			</div>
 	</div>
 	);
 }

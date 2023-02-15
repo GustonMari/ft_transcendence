@@ -79,7 +79,8 @@ export function DisplayMessagesByRoom(props: any) {
 	// }
 
 	return (
-	  <div ref={messagesContainer} style={{ overflowY: 'auto', maxHeight: '500px' }}>
+	//   <div ref={messagesContainer} style={{ overflowY: 'auto', maxHeight: '500px' }}>
+	  <div ref={messagesContainer} className='print-message'>
 		{history.map((historyItem: HistoryDto, index: number) => (
 		  <div key={index}>
 			{ IsSenderOrReceiver({historyItem, current_user}) }
