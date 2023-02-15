@@ -33,6 +33,24 @@ export function GetMessagesByRoom(handle_history: any, room_name: string)
 		getMessagesByRoom();
 }
 
+function IsSenderOrReceiver(props: any)
+{
+	let {historyItem, current_user} = props;
+
+	if(historyItem.sender_id == current_user.id)
+		return (	
+			<div className="message-sender">
+				{historyItem.sender_name} : {historyItem.current_message}
+			</div>
+		);
+	else
+		return (
+			<div className="message-receiver">
+				{historyItem.sender_name} : {historyItem.current_message}
+			</div>
+	);
+}
+
 export function DisplayMessagesByRoom(props: any) {
 	let { current_user, socket, history, infomessage, room} = props;
 
@@ -64,7 +82,8 @@ export function DisplayMessagesByRoom(props: any) {
 	  <div ref={messagesContainer} style={{ overflowY: 'auto', maxHeight: '500px' }}>
 		{history.map((historyItem: HistoryDto, index: number) => (
 		  <div key={index}>
-			{historyItem.sender_name} : {historyItem.current_message} 
+			{ IsSenderOrReceiver({historyItem, current_user}) }
+			{/* {historyItem.sender_name} : {historyItem.current_message}  */}
 		  </div>
 		))}
 		{infomessage.map((infomessage: any, index: number) => (
