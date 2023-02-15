@@ -22,7 +22,8 @@
   /* display: flex; */
   /* align-items: flex-end; */
   flex: 0 0 330px;
-  border: solid rgb(187, 194, 56);
+  margin-right: 5px;
+  outline: solid rgb(187, 194, 56);
 }
 
 .between-room-input {
@@ -30,25 +31,21 @@
   min-height: 100vh;
   flex-direction: column;
   justify-content: space-between;
-  /* justify-content: flex-end; */
-  /* align-items: flex-end; */
-  /* flex: 1; */
-  border: solid seagreen;
+  outline: solid seagreen;
 }
 
 .room-list {
   display: flex;
   flex-direction: column;
   flex: 1;
-  /* justify-content: flex-end; */
-  /* flex: 0 0 330px; */
-  /* flex: 1; */
-  border: solid rgb(137, 46, 139);
+  outline: solid rgb(137, 46, 139);
+  max-height: 97vh;
+  overflow-y: scroll;
 }
 
 .input-room {
   display: flex;
-  border: solid rgb(139, 46, 48);
+  outline: solid rgb(139, 46, 48);
 }
 
 /******************************************************
@@ -87,27 +84,24 @@
   
   display: flex;
   flex-direction: column;
-  /* justify-content: space-between; */
-  border: solid black;
+  outline: solid black;
+  margin-left: 3px;
+  margin-right: 3px;
   flex: 1;
 }
 
 .inputmessage {
   display: flex;
   align-items: flex-end;
-
-  /* flex: 1; */
 }
 
 .print-message {
-/* overflow-y: scroll; */
   flex: 1;
-  max-height: 97vh;
-  /* height: 97vh; */
+  max-height: 98vh;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
-  border: solid red;
+  outline: solid red;
 }
 
 .borderbox {
@@ -131,6 +125,8 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  margin-right: 5px;
+  /* min-width: 30vh; */
   flex: 0 0 330px;
-  border: solid seagreen;
+  outline: solid seagreen;
 }
