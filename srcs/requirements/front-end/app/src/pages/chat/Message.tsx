@@ -61,25 +61,7 @@ export function DisplayMessagesByRoom(props: any) {
 		}
 	  }, [infomessage, history]);
 
-	// if (infomessage == undefined && infomessage == null)
-	// 	return (
-	// 		<div>
-	// 			<h1>Mauvais bail</h1>
-	// 		</div>
-	// 	)
-	// else
-	// {
-	// 	console.log("infomessage est bien la ");
-	// 	const container = document.querySelector(".print-message");
-	// 	if (container != null)
-	// 	{
-	// 		container.scrollTop = container.scrollHeight;
-	// 	}
-
-	// }
-
 	return (
-	//   <div ref={messagesContainer} style={{ overflowY: 'auto', maxHeight: '500px' }}>
 	  <div ref={messagesContainer} className='print-message'>
 		{history.map((historyItem: HistoryDto, index: number) => (
 		  <div key={index}>

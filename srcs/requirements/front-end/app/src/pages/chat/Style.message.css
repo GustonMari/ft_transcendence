@@ -1,116 +1,138 @@
 /******************************************************
-  GLOBAL
+GLOBAL
 ******************************************************/
 
+/* For all */
 *{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 .global {
-  display: flex;
-  justify-content: space-between;
-  min-height: 100vh;
-  flex-direction: row;
-  min-width: 100vh;
-  /* flex: 1; */
-  outline: solid yellow;
+	display: flex;
+	justify-content: space-between;
+	min-height: 100vh;
+	min-width: 100vh;
+	/* max-height: 150vh;
+	max-width: 150vh; */
+	flex-direction: row;
+	/* flex: 1; */
+	outline: solid yellow;
 }
 
+/* All left */
 .room-menu {
-  /* display: flex; */
-  /* align-items: flex-end; */
-  flex: 0 0 330px;
-  margin-right: 5px;
-  outline: solid rgb(187, 194, 56);
+	/* display: flex; */
+	/* align-items: flex-end; */
+	flex: 0 0 330px;
+	margin-right: 5px;
+	outline: solid rgb(187, 194, 56);
 }
 
+/* Room display and input room */
 .between-room-input {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-  justify-content: space-between;
-  outline: solid seagreen;
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+	justify-content: space-between;
+	outline: solid seagreen;
 }
 
+/* List of rooms */
 .room-list {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  outline: solid rgb(137, 46, 139);
-  max-height: 97vh;
-  overflow-y: scroll;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	outline: solid rgb(137, 46, 139);
+	max-height: 97vh;
+	overflow-y: scroll;
 }
 
+/* Line of one room --> picture, leave, delete ... */
+.line-room{
+	display: flex;
+	align-items: center;
+	flex: 1;
+}
+
+/* Button of one room */
+.line-room-button {
+	margin-top: 10px;
+	display: flex;
+	align-items: center;
+	border-radius: 10px;
+	padding: 10px;
+	font-family: 'Roboto', sans-serif;
+	box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.1);
+}
+
+.line-room-button:hover {
+
+}
+
+/* Picture of one room */
+.line-room-img {
+	height: 40px;
+	width: 40px;
+	border-radius: 50%;
+	margin-right: 10px;
+	margin-left: 10px;
+}
+
+/* input of room */
 .input-room {
-  display: flex;
-  outline: solid rgb(139, 46, 48);
+	display: flex;
+	outline: solid rgb(139, 46, 48);
 }
 
 /******************************************************
-  MESSAGE
+MESSAGE
 *******************************************************/
 
-.conversation-container {
-	display: flex;
-	align-items: center;
-  flex: 1;
-}
-
-.conversation {
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  border-radius: 10px;
-  padding: 10px;
-  font-family: 'Roboto', sans-serif;
-  box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.1);
-}
-
-.conversation:hover {
-
-}
-
-.conversationImg {
-  height: 40px;
-  width: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
-  margin-left: 10px;
-}
-
+/*Global of middle menu*/
 .message-box {
-  
-  display: flex;
-  flex-direction: column;
-  outline: solid black;
-  margin-left: 3px;
-  margin-right: 3px;
-  flex: 1;
+
+	display: flex;
+	flex-direction: column;
+	outline: solid black;
+	margin-left: 3px;
+	margin-right: 3px;
+	flex: 1;
+	overflow: auto;
+	overflow-wrap: break-word;
 }
 
+/* input of a message */
 .inputmessage {
-  display: flex;
-  align-items: flex-end;
+	display: flex;
+	align-items: flex-end;
+	/* overflow-wrap: break-word; */
 }
 
+/* List of message, combine history and real time socket message*/
 .print-message {
-  flex: 1;
-  max-height: 98vh;
-  overflow-y: scroll;
-  display: flex;
-  flex-direction: column;
-  outline: solid red;
+	flex: 1;
+	max-height: 98vh;
+	overflow-y: scroll;
+	display: flex;
+	flex-direction: column;
+	outline: solid red;
+
+	
 }
 
+
+/* for input, general stuff, need to be changed */
 .borderbox {
-  display: flex;
-  flex: 1;
+	display: flex;
+	flex: 1;
 }
 
 .message-sender {
-
+	/* word-wrap: break-word;
+	max-width: 100%;
+	overflow-wrap: break-word; */
 }
 
 .message-receiver {
@@ -118,15 +140,16 @@
 }
 
 /******************************************************
-  MENU CHAT
+MENU CHAT
 ******************************************************/
 
+/*Global for right menu*/
 .menu-chat {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  margin-right: 5px;
-  /* min-width: 30vh; */
-  flex: 0 0 330px;
-  outline: solid seagreen;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	margin-right: 5px;
+	/* min-width: 30vh; */
+	flex: 0 0 330px;
+	outline: solid seagreen;
 }
