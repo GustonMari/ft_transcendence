@@ -12,19 +12,15 @@ GLOBAL
 .global {
 	display: flex;
 	justify-content: space-between;
-	min-height: 100vh;
-	min-width: 100vh;
-	/* max-height: 150vh;
-	max-width: 150vh; */
+	height: 100vh;
+	/* min-width: 100vh; */
+	width: 100vh;
 	flex-direction: row;
-	/* flex: 1; */
 	outline: solid yellow;
 }
 
 /* All left */
 .room-menu {
-	/* display: flex; */
-	/* align-items: flex-end; */
 	flex: 0 0 330px;
 	margin-right: 5px;
 	outline: solid rgb(187, 194, 56);
@@ -53,22 +49,37 @@ GLOBAL
 .line-room{
 	display: flex;
 	align-items: center;
-	flex: 1;
+	justify-content: space-between;
+	background-color: rgba(39, 6, 47, 0.764);
+	margin: 10px;
+	border-radius: 10px;
+}
+
+.line-room:hover{
+	background-color: rgba(39, 6, 47, 0.358);
+}
+
+.split {
+	display: flex;
+	align-items: center;
 }
 
 /* Button of one room */
 .line-room-button {
-	margin-top: 10px;
 	display: flex;
 	align-items: center;
+	background-color: rgba(39, 6, 47, 0.358);
+	color: white;
+	margin: 5px;
 	border-radius: 10px;
+	border: none;
 	padding: 10px;
 	font-family: 'Roboto', sans-serif;
-	box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.1);
 }
 
 .line-room-button:hover {
-
+	background-color: rgba(236, 236, 236, 0.372);
+	color: rgb(215, 152, 197);
 }
 
 /* Picture of one room */
@@ -84,6 +95,18 @@ GLOBAL
 .input-room {
 	display: flex;
 	outline: solid rgb(139, 46, 48);
+	/* margin-bottom: 5px; */
+}
+
+.icon-room {
+	width: 20px;
+	height: 20px;
+}
+
+.line-room-button:hover .icon-room {
+	filter: invert(100%);
+	-webkit-filter: invert(100%);
+	color: rgba(255, 255, 255, 0.372);
 }
 
 /******************************************************
@@ -133,10 +156,16 @@ MESSAGE
 	/* word-wrap: break-word;
 	max-width: 100%;
 	overflow-wrap: break-word; */
+	color:green;
+
 }
 
 .message-receiver {
-
+	
+	color: blue;
+	justify-content: flex-end;
+	align-self: center;
+	outline: solid 1px rgb(85, 85, 159);
 }
 
 /******************************************************

@@ -37,25 +37,37 @@ export function RoomForm(props : any)
 				{rooms.map(room => (
 					<li key={room.id}>
 						<span className="line-room">
-							<img className='line-room-img' src="" alt="" />
-
-							<button className='line-room-button' onClick={() => {
-								setMessage([]);
-								GetMessagesByRoom(handle_history, room.name);
-								socket?.emit("changeRoom", { room_name: current_room, id_user: current_user.id})
-								define_room(room.name);
-								socket?.on('renderReact', render_react);
-								}}>{ ShortedName(room.name) }</button>
-							<button className='line-room-button' onClick={() => {
-								setMessage([]);
-								socket?.emit("leaveRoom", { room_name: room.name, id_user: current_user.id})
-								socket?.on('renderReact', render_react);
-							}}>Leave</button>
-							<button className='line-room-button' onClick={() => {
-								setMessage([]);
-								socket?.emit("deleteRoom", { room_name: room.name, id_user: current_user.id})
-								socket?.on('renderReact', render_react);
-							}}>Delete</button>
+							<div className='split'>
+								<img className='line-room-img' src="" alt="" />
+								<button className='line-room-button' onClick={() => {
+									setMessage([]);
+									GetMessagesByRoom(handle_history, room.name);
+									socket?.emit("changeRoom", { room_name: current_room, id_user: current_user.id})
+									define_room(room.name);
+									socket?.on('renderReact', render_react);
+									}}>{ ShortedName(room.name) }</button>
+							</div>
+							<div className='split'>
+								{/* <button className='line-room-button' onClick={() => {
+									setMessage([]);
+									socket?.emit("leaveRoom", { room_name: room.name, id_user: current_user.id})
+									socket?.on('renderReact', render_react);
+								}}>Leave</button> */}
+								<button type="submit" className='line-room-button' onClick={() => {
+									setMessage([]);
+									socket?.emit("leaveRoom", { room_name: room.name, id_user: current_user.id})
+									socket?.on('renderReact', render_react);
+									}}>
+									<img className='icon-room' src="./leave-room.png" alt="leave room" />
+								</button>
+								<button className='line-room-button' onClick={() => {
+									setMessage([]);
+									socket?.emit("deleteRoom", { room_name: room.name, id_user: current_user.id})
+									socket?.on('renderReact', render_react);
+									}}>
+									<img className='icon-room' src="./delete-room.png" alt="leave room" />
+								</button>
+							</div>
 						</span>
 					</li>
 				))}
