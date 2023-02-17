@@ -53,6 +53,27 @@ function IsSenderOrReceiver(props: any)
 	);
 }
 
+function IsSenderOrReceiver_socket(props: any)
+{
+	let {infomessage, current_user} = props;
+
+	if (infomessage.current_user.id == current_user.id)
+	return (
+		<div className="message-sender">
+			{infomessage.current_user.login} : {infomessage.message}
+		</div>
+	);
+	else
+		return (
+			<div className="wrapper-message">	
+				<div className="message-receiver">
+					{infomessage.current_user.login} : {infomessage.message}
+				</div>
+			</div>
+	);
+
+}
+
 export function DisplayMessagesByRoom(props: any) {
 	let { current_user, socket, history, infomessage, room} = props;
 
@@ -68,12 +89,12 @@ export function DisplayMessagesByRoom(props: any) {
 		{history.map((historyItem: HistoryDto, index: number) => (
 		  <div key={index}>
 			{ IsSenderOrReceiver({historyItem, current_user}) }
-			{/* {historyItem.sender_name} : {historyItem.current_message}  */}
 		  </div>
 		))}
 		{infomessage.map((infomessage: any, index: number) => (
 			<div key={index}>
-				{infomessage.current_user.login} : {infomessage.message}
+				{IsSenderOrReceiver_socket({infomessage, current_user})}
+				{/* {infomessage.current_user.login} : {infomessage.message} */}
 				</div>
 		))}
 	  </div>
