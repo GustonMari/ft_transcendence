@@ -206,19 +206,26 @@ MESSAGE
 	
 }
 
+/*Wrapp message receiver to put the box to the right*/
+.wrapper-message {
+	display: flex;
+	justify-content: flex-end;
+}
+
+/*Your message, (left)*/
 .message-sender {
 	color:green;
 
 }
 
+/*Message of other user (right)*/
 .message-receiver {
-	
 	color: blue;
-	justify-content: flex-end;
-	align-self: center;
+	width: fit-content;
 	outline: solid 1px rgb(85, 85, 159);
 }
 
+/*Button to send message*/
 .input-msg-button {
 	display: flex;
 	border-radius: 50%;
@@ -230,6 +237,13 @@ MESSAGE
 	background-color: rgba(39, 6, 47, 0.643);
 }
 
+.input-msg-button:hover .icon-send-msg {
+	filter: invert(100%);
+	-webkit-filter: invert(100%);
+	color: rgba(255, 255, 255, 0.372);
+}
+
+/*Icon of the button to send message*/
 .icon-send-msg {
 	display: flex;
 	justify-content: center;

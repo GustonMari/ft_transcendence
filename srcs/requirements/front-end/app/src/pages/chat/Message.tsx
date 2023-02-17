@@ -38,15 +38,17 @@ function IsSenderOrReceiver(props: any)
 	let {historyItem, current_user} = props;
 
 	if(historyItem.sender_id == current_user.id)
-		return (	
+		return (
 			<div className="message-sender">
 				{historyItem.sender_name} : {historyItem.current_message}
 			</div>
 		);
 	else
 		return (
-			<div className="message-receiver">
-				{historyItem.sender_name} : {historyItem.current_message}
+			<div className="wrapper-message">	
+				<div className="message-receiver">
+					{historyItem.sender_name} : {historyItem.current_message}
+				</div>
 			</div>
 	);
 }
