@@ -214,15 +214,25 @@ MESSAGE
 
 /*Your message, (left)*/
 .message-sender {
-	color:green;
+	color: rgb(255, 255, 255);
+	max-width: 70%;
+	margin: 0.3rem 1rem 0.3rem ;
+	padding: 0.5rem 1.5rem;
+	border-radius: 1.125rem 1.125rem 1.125rem 0;
+	box-shadow: 1px 1px 20px 5px rgba(39, 6, 47, 0.27);
+	background-color: rgba(102, 14, 124, 0.643);
 
 }
 
 /*Message of other user (right)*/
 .message-receiver {
-	color: blue;
-	width: fit-content;
-	outline: solid 1px rgb(85, 85, 159);
+	color: rgb(255, 255, 255);
+	max-width: 70%;
+	margin: 0.3rem 1rem 0.3rem auto; /*BUG: Peut etre que auto bug, a tester*/
+	padding: 0.5rem 1.5rem;
+	border-radius: 1.125rem 1.125rem 0 1.125rem;
+	box-shadow: 1px 1px 20px 5px rgba(39, 6, 47, 0.27);
+	background-color: rgba(39, 6, 47, 0.643);
 }
 
 /*Button to send message*/
