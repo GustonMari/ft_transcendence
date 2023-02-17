@@ -78,6 +78,7 @@ LEFT
 	border: none;
 	padding: 10px;
 	font-family: 'Roboto', sans-serif;
+	transition: background-color  0.3s;
 }
 
 .line-room-button:hover {
@@ -88,7 +89,8 @@ LEFT
 .line-room-button:hover .icon-room {
 	filter: invert(100%);
 	-webkit-filter: invert(100%);
-	color: rgba(255, 255, 255, 0.372);
+	transition: filter  0.3s;
+	
 }
 
 /* Picture of one room */
@@ -133,10 +135,15 @@ LEFT
 	background-color: rgba(39, 6, 47, 0.643);
 }
 
+.input-room-button:hover {
+	background-color: rgba(39, 6, 47, 0.305);
+	transition: background-color 0.3s;
+}
+
 .input-room-button:hover .icon-enter-room {
 	filter: invert(100%);
 	-webkit-filter: invert(100%);
-	color: rgba(255, 255, 255, 0.372);
+	transition: filter  0.3s;
 }
 
 /* Delete room, leave room*/
@@ -247,10 +254,15 @@ MESSAGE
 	background-color: rgba(39, 6, 47, 0.643);
 }
 
+.input-msg-button:hover {
+	background-color: rgba(39, 6, 47, 0.305);
+	transition: background-color 0.3s;
+}
+
 .input-msg-button:hover .icon-send-msg {
 	filter: invert(100%);
 	-webkit-filter: invert(100%);
-	color: rgba(255, 255, 255, 0.372);
+	transition: filter  0.3s;
 }
 
 /*Icon of the button to send message*/
