@@ -178,11 +178,17 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 	@SubscribeMessage('message') // Subscribe to the message event send by the client (front end) called 'message'
 	async handleMessage(@MessageBody() data: InfoMessage, @ConnectedSocket() socket: Socket) {
-		if (data.current_user === undefined /* || data.message === undefined */)
+		if (data.current_user === undefined )
 			return ;
-		await this.chatService.stockMessage(data);
-		this.myserver.to(data.room).emit('message', data); // Emit the message event to the client, for every user
-
+		if (await this.chatService.isUserMutedInRoom(data.room, data.current_user.id))
+		{
+			await this.chatService.stockMessage(data);
+			this.myserver.to(data.room).emit('message', data); // Emit the message event to the client, for every user
+		}
+		else
+		{
+			console.log("You are mute mother fucker")
+		}
 	}
 }
 

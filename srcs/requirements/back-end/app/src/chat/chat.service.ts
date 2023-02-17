@@ -252,6 +252,20 @@ export class ChatService {
 		return true;
 	}
 
+	async isUserMutedInRoom(room_name: string, user_id: number): Promise<boolean> {
+		const room_exist = await this.prisma.room.findUnique({ where: { name: room_name } });
+		if (!room_exist) {
+			return false;
+		}
+		const is_mute = await this.prisma.usersOnRooms.findFirst({
+			where: {
+				room_id: room_exist.id,
+				user_id: user_id,
+			}});
+			// console.log("isUserMutedInRoom" + JSON.stringify(is_mute) );
+		return (!is_mute.muted);
+	}
+
 	async getUserRooms (user_id: number): Promise<Room[]> {
 		const rooms = await this.prisma.usersOnRooms.findMany({
 			where: {

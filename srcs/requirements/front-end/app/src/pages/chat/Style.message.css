@@ -230,9 +230,9 @@ MESSAGE
 	border-radius: 1.125rem 1.125rem 1.125rem 0;
 	box-shadow: 1px 1px 20px 5px rgba(39, 6, 47, 0.27);
 	background-color: rgba(102, 14, 124, 0.643);
+	width: fit-content;
 	opacity: 0.2;
 	overflow: hidden;
-	width: fit-content;
 	
 	animation:  slide-message 0.3s forwards;
 	transform: translateX(-100%);
