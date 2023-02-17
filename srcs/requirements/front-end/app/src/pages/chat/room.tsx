@@ -74,14 +74,14 @@ export function RoomForm(props : any)
 			</span>
 			<div className='input-room'>
 				<input className='borderbox' onChange={(e) => setValue(e.target.value)} placeholder="define your room..." value={value} />
-				<button  onClick={() => {
+				<button className='input-room-button'  onClick={() => {
 					setMessage([]);
 					define_room(value);
 					socket?.emit("message", {room: value, message: `${current_user.login} has join the room ${value}`})
 					socket?.on('renderReact', render_react);
-				}
-					}
-				>Send</button>
+					}}>
+					<img className='icon-enter-room' src="./enter-room.png" alt="create room" />
+				</button>
 			</div>
 	</div>
 	);

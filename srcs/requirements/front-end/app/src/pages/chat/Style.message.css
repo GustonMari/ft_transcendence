@@ -13,11 +13,15 @@ GLOBAL
 	display: flex;
 	justify-content: space-between;
 	height: 100vh;
-	/* min-width: 100vh; */
-	width: 100vh;
+	min-width: 100vh;
+	/* width: 100vh; */
 	flex-direction: row;
 	outline: solid yellow;
 }
+
+/******************************************************
+LEFT
+******************************************************/
 
 /* All left */
 .room-menu {
@@ -40,7 +44,7 @@ GLOBAL
 	display: flex;
 	flex-direction: column;
 	flex: 1;
-	outline: solid rgb(137, 46, 139);
+	/* outline: solid rgb(137, 46, 139); */
 	max-height: 97vh;
 	overflow-y: scroll;
 }
@@ -82,6 +86,12 @@ GLOBAL
 	color: rgb(215, 152, 197);
 }
 
+.line-room-button:hover .icon-room {
+	filter: invert(100%);
+	-webkit-filter: invert(100%);
+	color: rgba(255, 255, 255, 0.372);
+}
+
 /* Picture of one room */
 .line-room-img {
 	height: 40px;
@@ -91,11 +101,43 @@ GLOBAL
 	margin-left: 10px;
 }
 
+/* for input, general stuff, need to be changed */
+.borderbox {
+	display: flex;
+	flex: 1;
+	background-color:  rgba(39, 6, 47, 0.764);
+	border-radius: 10px;
+	color: white;
+	border: 2px solid rgba(39, 6, 47, 0.2);
+	box-shadow: 0px 0px 10px 2px rgba(39, 6, 47, 0.13);
+
+}
+
+.borderbox:hover {
+	background-color:  rgba(39, 6, 47, 0.358);
+}
+
 /* input of room */
 .input-room {
 	display: flex;
-	outline: solid rgb(139, 46, 48);
+	margin: 7px;
+	/* outline: solid rgb(139, 46, 48); */
 	/* margin-bottom: 5px; */
+}
+
+.input-room-button {
+	display: flex;
+	border-radius: 50%;
+	padding: 2px;
+	border: none;
+	margin: 2px;
+	background-color: rgba(39, 6, 47, 0.643);
+}
+
+.input-room-button:hover .icon-enter-room {
+	filter: invert(100%);
+	-webkit-filter: invert(100%);
+	color: rgba(255, 255, 255, 0.372);
 }
 
 .icon-room {
@@ -103,11 +145,13 @@ GLOBAL
 	height: 20px;
 }
 
-.line-room-button:hover .icon-room {
-	filter: invert(100%);
-	-webkit-filter: invert(100%);
-	color: rgba(255, 255, 255, 0.372);
+.icon-enter-room {
+	width: 20px;
+	height: 20px;
 }
+
+
+
 
 /******************************************************
 MESSAGE
@@ -145,17 +189,7 @@ MESSAGE
 	
 }
 
-
-/* for input, general stuff, need to be changed */
-.borderbox {
-	display: flex;
-	flex: 1;
-}
-
 .message-sender {
-	/* word-wrap: break-word;
-	max-width: 100%;
-	overflow-wrap: break-word; */
 	color:green;
 
 }
@@ -166,6 +200,11 @@ MESSAGE
 	justify-content: flex-end;
 	align-self: center;
 	outline: solid 1px rgb(85, 85, 159);
+}
+
+.icon-send-message {
+	width: 1px;
+	height: 1px;
 }
 
 /******************************************************
