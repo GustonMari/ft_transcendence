@@ -178,7 +178,9 @@ MESSAGE
 	flex: 1;
 	overflow: auto;
 	overflow-wrap: break-word;
+
 }
+
 
 .borderbox-msg {
 	display: flex;
@@ -228,7 +230,21 @@ MESSAGE
 	border-radius: 1.125rem 1.125rem 1.125rem 0;
 	box-shadow: 1px 1px 20px 5px rgba(39, 6, 47, 0.27);
 	background-color: rgba(102, 14, 124, 0.643);
+	opacity: 0.2;
+	overflow: hidden;
+	
+	animation:  slide-message 0.3s forwards;
+	transform: translateX(-100%);
+	transition: opacity 0.3s ease-in-out;
 
+}
+
+@keyframes slide-message {
+	to {
+		transform:translateX(0);
+		opacity: 1;
+	}
+	
 }
 
 /*Message of other user (right)*/
@@ -240,7 +256,17 @@ MESSAGE
 	border-radius: 1.125rem 1.125rem 0 1.125rem;
 	box-shadow: 1px 1px 20px 5px rgba(39, 6, 47, 0.27);
 	background-color: rgba(39, 6, 47, 0.643);
+
+	opacity: 0.2;
+	overflow: hidden;
+	
+	animation:  slide-message 0.3s forwards;
+	transform: translateX(+100%);
+	transition: opacity 0.3s ease-in-out;
 }
+
+
+
 
 /*Button to send message*/
 .input-msg-button {
