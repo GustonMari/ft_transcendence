@@ -78,11 +78,14 @@ export function DisplayMessagesByRoom(props: any) {
 	let { current_user, socket, history, infomessage, room} = props;
 
 	const messagesContainer = useRef<HTMLDivElement>(null);
+
 	useEffect(() => {
 		if (messagesContainer.current) {
 		  messagesContainer.current.scrollTop = messagesContainer.current.scrollHeight;
 		}
 	  }, [infomessage, history]);
+
+
 
 	return (
 	  <div ref={messagesContainer} className='print-message'>

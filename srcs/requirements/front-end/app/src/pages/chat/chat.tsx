@@ -20,7 +20,6 @@ export default function Chat() {
 	const [room, setRoom] = useState<string>('');
 	const [currentUser, setCurrentUser] = useState<any>(null);
 	const [history, setHistory] = useState<any>([]);
-
 	const [trigger, setTrigger] = React.useState(0);
 
 	useEffect(() => {
@@ -56,7 +55,17 @@ export default function Chat() {
 		setHistory(history);
 	}
 
+	const user_is_ban = () => {
+		setBan(true);
+	}
+
+	// const user_is_unban = () => {
+	// 	setBan(false);
+	// }
+
 	socket?.on("message", message_listener);
+	
+	// socket?.on("unban", user_is_unban);
 
 	return (
 	<div>

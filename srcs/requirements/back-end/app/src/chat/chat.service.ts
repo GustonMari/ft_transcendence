@@ -232,6 +232,19 @@ export class ChatService {
 		return true;
 	}
 
+	async isUserBannedInRoom(room_name: string, user_id: number): Promise<boolean> {
+		const room_exist = await this.prisma.room.findUnique({ where: { name: room_name } });
+		if (!room_exist) {
+			return false;
+		}
+		const is_ban = await this.prisma.usersOnRooms.findFirst({
+			where: {
+				room_id: room_exist.id,
+				user_id: user_id,
+			}});
+		return (is_ban.banned);
+	}
+
 	async muteUser(room_name: string, user_id: number, user_to_mute: number, mute_date): Promise<boolean> {
 		const room_exist = await this.prisma.room.findUnique({ where: { name: room_name } });
 		if (!room_exist) {

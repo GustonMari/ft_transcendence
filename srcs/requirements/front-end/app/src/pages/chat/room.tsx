@@ -10,8 +10,8 @@ export function RoomForm(props : any)
 {
 	let {define_room, current_room, current_user, socket, handle_history, trigger, setTrigger, setMessage} = props;
 	const [value, setValue] = React.useState("");
-
 	const [rooms, setRooms] = useState<any>([]);
+	const [ban, setBan] = useState<boolean>();
 
 	useEffect(() => {
 		const getRooms = async () => {
@@ -30,6 +30,16 @@ export function RoomForm(props : any)
 		setTrigger(trigger += 1);
 	}
 
+	
+	const user_is_ban = (is_ban: boolean) => {
+		console.log('======================================  is ban =' , is_ban);
+		setBan(is_ban);
+	}
+	
+	socket?.on("isban", user_is_ban);
+
+
+
 	return (
 		<div className='between-room-input'>
 		{/* <h1>Rooms</h1> */}
@@ -40,9 +50,10 @@ export function RoomForm(props : any)
 							<div className='split'>
 								<img className='line-room-img' src="" alt="" />
 								<button className='line-room-button' onClick={() => {
+									socket?.emit("changeRoom", { room_name: current_room, id_user: current_user.id})
+									ban ? alert('You are ban'): alert('You are not ban');
 									setMessage([]);
 									GetMessagesByRoom(handle_history, room.name);
-									socket?.emit("changeRoom", { room_name: current_room, id_user: current_user.id})
 									define_room(room.name);
 									socket?.on('renderReact', render_react);
 									}}>{ ShortedName(room.name) }</button>
