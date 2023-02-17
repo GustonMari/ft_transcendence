@@ -73,7 +73,7 @@ export function RoomForm(props : any)
 				))}
 			</span>
 			<div className='input-room'>
-				<input className='borderbox' onChange={(e) => setValue(e.target.value)} placeholder="define your room..." value={value} />
+				<input className='borderbox-room' onChange={(e) => setValue(e.target.value)} placeholder="define your room..." value={value} />
 				<button className='input-room-button'  onClick={() => {
 					setMessage([]);
 					define_room(value);

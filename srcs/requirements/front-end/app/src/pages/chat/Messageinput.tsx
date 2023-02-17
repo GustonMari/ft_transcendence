@@ -7,9 +7,9 @@ export default function MessageInput({send}: {send: (value: string) => void}) {
 
 	return (
 	<div className="inputmessage">
-		<input className="borderbox" onChange={(e) => setValue(e.target.value)} placeholder="type your message..." value={value} />
-		<button onClick={() => send(value)}>Send
-		{/* <img className='icon-send-msg' src="./send-message.png" alt="Send message" /> */}
+		<input className="borderbox-msg" onChange={(e) => setValue(e.target.value)} placeholder="type your message..." value={value} />
+		<button className="input-msg-button" onClick={() => send(value)}>
+		<img className='icon-send-msg' src="./send-message.png" alt="Send message" />
 		</button>
 	</div>
 	);
