@@ -94,7 +94,6 @@ export function DisplayMessagesByRoom(props: any) {
 		{infomessage.map((infomessage: any, index: number) => (
 			<div key={index}>
 				{IsSenderOrReceiver_socket({infomessage, current_user})}
-				{/* {infomessage.current_user.login} : {infomessage.message} */}
 				</div>
 		))}
 	  </div>
