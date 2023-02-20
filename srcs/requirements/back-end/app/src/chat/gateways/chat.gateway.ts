@@ -79,17 +79,12 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		// }
 		// socket.emit('isban', false);
 		if (roomExists) { 
-			console.log("you joinned the chatroom bg")
 			await this.chatService.joinChatRoom(data.room_name, data.id_user);
-			console.log(`The room "${data.room_name}" exist, you join the room`);
-
 		}
 		else {
 			await this.chatService.createChatRoom(data.room_name, data.id_user);
-			console.log(`The room "${data.room_name}" does not exist, you create the room, you are admin`);
 			await this.chatService.setAdmin(data.room_name, data.id_user);
 		}
-		console.log("you joinned the room bg")
 		await socket.join(data.room_name);
 		socket.emit('renderReact', 'renderReact');
 	
@@ -104,20 +99,12 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 	@SubscribeMessage('changeRoom')
 	async handleChangeRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket) {
-		console.log(`user ${data.id_user} left the room ${data.room_name}`);
-		// if (await this.chatService.isUserBannedInRoom(data.room_name, data.id_user)) {
-		// 	await socket.emit('isban', true);
-		// 	return;
-		// }
-		// socket.emit('isban', false);
 		await socket.leave(data.room_name);
 		socket.emit('renderReact', 'renderReact');
 	}
 
 	@SubscribeMessage('deleteRoom')
 	async handleDeleteRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket) {
-		//* check si le user est admin
-		console.log('delete room ==================================');
 		if(!this.chatService.isAdmin(data.room_name, data.id_user))
 		{
 			console.log('you dont have permission to delete the room');
@@ -135,8 +122,6 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			const id_user_to = await this.chatService.getIdUser(data.login_user_to);
 			await this.chatService.setAdmin(data.room_name, id_user_to);
 		}
-		// else
-			// this.myserver.to(data.room_name).emit('message', `you dont have permission to set an admin`);
 	}
 
 	@SubscribeMessage('banUser')
@@ -146,16 +131,12 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			const id_user_to = await this.chatService.getIdUser(data.login_user_to);
 			if (await this.chatService.isAdmin(data.room_name, id_user_to))
 			{
-				// this.myserver.to(data.room_name).emit('message', `you cant ban an admin`);
 				return ;
 			}
 			const ban_date = new Date();
 			ban_date.setTime(ban_date.getTime() + data.ban_till * 60000);
 			await this.chatService.banUser(data.room_name, data.id_user_from, id_user_to, ban_date);
-			// this.myserver.to(data.room_name).emit('message', `user (${id_user_to}) is now ban`);
 		}
-		// else
-			// this.myserver.to(data.room_name).emit('message', `you dont have permission to ban an user`);
 	}
 
 	@SubscribeMessage('unbanUser')
@@ -164,10 +145,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		if (await this.chatService.isAdmin(data.room_name, data.id_user_from)) {
 			const id_user_to = await this.chatService.getIdUser(data.login_user_to);
 			await this.chatService.unbanUser(data.room_name, data.id_user_from, id_user_to);
-			// this.myserver.to(data.room_name).emit('message', `user (${id_user_to}) is now unbanned`);
 		}
-		// else
-			// this.myserver.to(data.room_name).emit('message', `you dont have permission to unban an user`);
 	}
 
 	@SubscribeMessage('muteUser')
@@ -177,16 +155,12 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			const id_user_to = await this.chatService.getIdUser(data.login_user_to);
 			if (await this.chatService.isAdmin(data.room_name, id_user_to))
 			{
-				// this.myserver.to(data.room_name).emit('message', `you cant mute an admin`);
 				return ;
 			}
 			const mute_date = new Date();
 			mute_date.setTime(mute_date.getTime() + data.mute_till * 60000);
 			await this.chatService.muteUser(data.room_name, data.id_user_from, id_user_to, mute_date);
-			// this.myserver.to(data.room_name).emit('message', `user (${id_user_to}) is now muted`);
 		}
-		// else
-		// 	this.myserver.to(data.room_name).emit('message', `you dont have permission to mute an user`);
 	}
 
 	// @SubscribeMessage('removeAdmin')
@@ -196,18 +170,11 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	// 	//? emit un petit message pour dire que tel user n'est plus admin
 	// }
 
-	// @SubscribeMessage('getMessagesByRoom')
-	// async handleGetMessagesByRoom(@MessageBody() room_name: string) {
-	// 	const messages = await this.chatService.getMessagesByRoom(room_name);
-	// 	await this.myserver.to(room_name).emit('get_messages_history', messages);
-	// }
-
 	@SubscribeMessage('message') // Subscribe to the message event send by the client (front end) called 'message'
 	async handleMessage(@MessageBody() data: InfoMessage, @ConnectedSocket() socket: Socket) {
 		if (data.current_user === undefined )
 			return ;
 		if (await this.chatService.isUserBannedInRoom(data.room, data.current_user.id)) {
-			console.log("You can't go to this room you are banned lol");
 			return ;
 		}
 		if (await (this.chatService.isUserMutedInRoom(data.room, data.current_user.id)))
@@ -215,39 +182,5 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			await this.chatService.stockMessage(data);
 			this.myserver.to(data.room).emit('message', data); // Emit the message event to the client, for every user
 		}
-		else
-		{
-			console.log("You are mute mother fucker")
-		}
 	}
 }
-
-
-// @WebSocketGateway({
-// 	namespace: 'admin',
-// 	cors: {
-// 		origin: "http://localhost:3000/",
-// 		credentials: true,
-// 		methods: ['GET', 'POST'],
-// 	}
-// })
-// export class AdminChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
-// 	@WebSocketServer()
-// 	myserver: Server;
-
-
-
-// 	private logger: Logger = new Logger('AppGateway');
-
-// 	afterInit(server: Server) {
-// 		this.logger.log('Initialized!');
-// 	}
-
-// 	handleConnection(client: Socket, ...args: any[]) {
-// 		client.join('all');
-// 	}
-
-// 	handleDisconnect(client: Socket) {
-// 	}
-
-// }

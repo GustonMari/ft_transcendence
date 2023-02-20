@@ -30,7 +30,6 @@ export class ChatController {
 		if (room_name == null || room_name == undefined)
 			return null;
 		const rooms = await this.chatService.getMessagesByRoom(room_name.room_name);
-		console.log("room_name =====================", room_name.room_name);
 		response.send(rooms);
 	}
 
@@ -38,8 +37,6 @@ export class ChatController {
 	async get_isban_user_by_room(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
 
 		const ban = await this.chatService.isUserBannedInRoom(info.room_name, info.id_user);
-		console.log("Ban zoo = ", ban ,"room_name =====================", info.room_name, " | User id = " ,info.id_user);
-
 		response.send(ban);
 
 	}

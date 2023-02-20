@@ -25,8 +25,7 @@ export function GetMessagesByRoom(handle_history: any, room_name: string)
 			try {
 					const res = await APP.post("/chat/get_messages_by_room", {room_name: room_name});
 					await handle_history(res.data);
-					console.log(res.data);
-			} catch (erroQWDr) {
+			} catch (error) {
 				console.error(error);
 			}
 		};

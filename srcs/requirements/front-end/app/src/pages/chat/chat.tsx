@@ -47,7 +47,6 @@ export default function Chat() {
 		if (messages == undefined || messages == null)
 			setMessage(infomessage);
 		setMessage([...messages, infomessage]);
-		console.log('message lsitener' + JSON.stringify(messages));
 	}
 
 
@@ -55,17 +54,7 @@ export default function Chat() {
 		setHistory(history);
 	}
 
-	const user_is_ban = () => {
-		setBan(true);
-	}
-
-	// const user_is_unban = () => {
-	// 	setBan(false);
-	// }
-
 	socket?.on("message", message_listener);
-	
-	// socket?.on("unban", user_is_unban);
 
 	return (
 	<div>
