@@ -42,6 +42,7 @@ export function RoomForm(props : any)
 									const is_ban = async () => {
 										const res = await APP.post("/chat/get_isban_user", {room_name: room.name, id_user: current_user.id});
 										let ban = res.data;
+										ban ? "" : socket?.emit("changeRoom", { room_name: current_room, id_user: current_user.id});
 										AuthorizeUser({ban, setMessage, GetMessagesByRoom, define_room, room, handle_history})
 									}
 									is_ban();
