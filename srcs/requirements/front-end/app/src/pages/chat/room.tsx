@@ -11,7 +11,6 @@ export function RoomForm(props : any)
 	let {define_room, current_room, current_user, socket, handle_history, trigger, setTrigger, setMessage} = props;
 	const [value, setValue] = React.useState("");
 	const [rooms, setRooms] = useState<any>([]);
-	const [ban, setBan] = useState<boolean>();
 
 	useEffect(() => {
 		const getRooms = async () => {
@@ -31,12 +30,12 @@ export function RoomForm(props : any)
 	}
 
 	
-	const user_is_ban = (is_ban: boolean) => {
-		console.log('======================================  is ban =' , is_ban);
-		setBan(is_ban);
-	}
+	// const user_is_ban = (is_ban: boolean) => {
+	// 	console.log('======================================  is ban =' , is_ban, Date.now().toString());
+	// 	setBan(is_ban);
+	// }
 	
-	socket?.on("isban", user_is_ban);
+	// socket?.on("isban", user_is_ban);
 
 
 
@@ -50,11 +49,20 @@ export function RoomForm(props : any)
 							<div className='split'>
 								<img className='line-room-img' src="" alt="" />
 								<button className='line-room-button' onClick={() => {
-									socket?.emit("changeRoom", { room_name: current_room, id_user: current_user.id})
-									ban ? alert('You are ban'): alert('You are not ban');
-									setMessage([]);
-									GetMessagesByRoom(handle_history, room.name);
-									define_room(room.name);
+									
+									// socket?.emit("isban", { room_name: room.name, id_user: current_user.id});
+									// socket?.on("isban", user_is_ban);
+									// socket?.emit("changeRoom", { room_name: current_room, id_user: current_user.id});
+									// setMessage([]);
+									
+									const is_ban = async () => {
+										const res = await APP.post("/chat/get_isban_user", {room_name: room.name, id_user: current_user.id});
+										let ban = res.data;
+										console.log('======================================  is ban =' , res.data, Date.now().toString(), '++++++++++++ ', ban );
+										AuthorizeUser({ban, setMessage, GetMessagesByRoom, define_room, room, handle_history})
+									}
+									is_ban();
+									
 									socket?.on('renderReact', render_react);
 									}}>{ ShortedName(room.name) }</button>
 							</div>
@@ -96,6 +104,20 @@ export function RoomForm(props : any)
 			</div>
 	</div>
 	);
+}
+
+async function AuthorizeUser(props : any) : Promise<void>
+{
+	let { ban, setMessage, GetMessagesByRoom, define_room, room, handle_history} = props;
+	if (ban === false) {
+		console.log("you are not ban :-) ", Date.now().toString());
+		setMessage([]);
+		GetMessagesByRoom(handle_history, room.name);
+		define_room(room.name);
+	}
+	else {
+		console.log("you are ban :-(", Date.now().toString());
+	}
 }
 
 export function ShortedName(name : string) : string

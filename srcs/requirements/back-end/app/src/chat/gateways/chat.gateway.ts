@@ -56,15 +56,28 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	handleDisconnect(client: Socket) {
 	}
 
+	// @SubscribeMessage('isban')
+	// async handleIsBan(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket): Promise<void> {
+	// 	const roomExists = await this.chatService.roomExists(data.room_name);
+	// 	if (roomExists && await this.chatService.isUserBannedInRoom(data.room_name, data.id_user)) {
+	// 		await socket.emit('isban', true);
+	// 		// return;
+	// 	}
+	// 	else
+	// 		socket.emit('isban', false);
+
+	// }
+
+
 	@SubscribeMessage('joinRoom')
 	async handleJoinRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket): Promise<void> {
 		
 		const roomExists = await this.chatService.roomExists(data.room_name);
-		if (roomExists && await this.chatService.isUserBannedInRoom(data.room_name, data.id_user)) {
-			await socket.emit('isban', true);
-			return;
-		}
-		socket.emit('isban', false);
+		// if (roomExists && await this.chatService.isUserBannedInRoom(data.room_name, data.id_user)) {
+		// 	await socket.emit('isban', true);
+		// 	return;
+		// }
+		// socket.emit('isban', false);
 		if (roomExists) { 
 			console.log("you joinned the chatroom bg")
 			await this.chatService.joinChatRoom(data.room_name, data.id_user);
@@ -82,42 +95,6 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	
 	}
 
-	// @SubscribeMessage('joinRoom')
-	// async handleJoinRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket): Promise<void> {
-		
-	// 	const roomExists = await this.chatService.roomExists(data.room_name);
-	// 	if (roomExists) { 
-	// 		if (await this.chatService.isUserBannedInRoom(data.room_name, data.id_user)) {
-	// 			socket.emit('isban', true);
-	// 			console.log("You can't go to this room you are banned lol");
-	// 		}
-	// 		else
-	// 		{
-	// 			console.log("you joinned the chatroom bg")
-	// 			socket.emit('isban', false);
-	// 			await this.chatService.joinChatRoom(data.room_name, data.id_user);
-	// 			console.log(`The room "${data.room_name}" exist, you join the room`);
-	// 		}
-	// 	}
-	// 	else {
-	// 		socket.emit('isban', false);
-	// 		await this.chatService.createChatRoom(data.room_name, data.id_user);
-	// 		console.log(`The room "${data.room_name}" does not exist, you create the room, you are admin`);
-	// 		await this.chatService.setAdmin(data.room_name, data.id_user);
-	// 	}
-	// 	if (await this.chatService.isUserBannedInRoom(data.room_name, data.id_user)) {
-	// 		socket.emit('isban', true);
-	// 		console.log("You can't go to this room you are banned lol");
-	// 		return ;
-	// 	}
-	// 	else
-	// 	{
-	// 		console.log("you joinned the room bg")
-	// 		await socket.join(data.room_name);
-	// 		socket.emit('renderReact', 'renderReact');
-	// 	}
-	// }
-
 	@SubscribeMessage('leaveRoom')
 	async handleLeaveRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket) {
 		await this.chatService.leaveRoom(data.room_name, data.id_user);
@@ -128,11 +105,11 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	@SubscribeMessage('changeRoom')
 	async handleChangeRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket) {
 		console.log(`user ${data.id_user} left the room ${data.room_name}`);
-		if (await this.chatService.isUserBannedInRoom(data.room_name, data.id_user)) {
-			await socket.emit('isban', true);
-			return;
-		}
-		socket.emit('isban', false);
+		// if (await this.chatService.isUserBannedInRoom(data.room_name, data.id_user)) {
+		// 	await socket.emit('isban', true);
+		// 	return;
+		// }
+		// socket.emit('isban', false);
 		await socket.leave(data.room_name);
 		socket.emit('renderReact', 'renderReact');
 	}

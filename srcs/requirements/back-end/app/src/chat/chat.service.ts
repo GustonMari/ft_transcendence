@@ -235,6 +235,7 @@ export class ChatService {
 	async isUserBannedInRoom(room_name: string, user_id: number): Promise<boolean> {
 		const room_exist = await this.prisma.room.findUnique({ where: { name: room_name } });
 		if (!room_exist) {
+			console.log("la room n'existe pas");
 			return false;
 		}
 		const is_ban = await this.prisma.usersOnRooms.findFirst({
@@ -242,6 +243,7 @@ export class ChatService {
 				room_id: room_exist.id,
 				user_id: user_id,
 			}});
+		// console.log("isUserBannedInRoom: ", is_ban.banned, " | room_name = ", room_name, " | user_id = ", user_id);
 		return (is_ban.banned);
 	}
 
@@ -348,6 +350,5 @@ export class ChatService {
 		console.log('in back getmessagesbyroom')
 		return messages.messages;
 	}
-
 
 }
