@@ -59,14 +59,16 @@ export function RoomForm(props : any)
 									}}>
 									<img className='icon-room' src="./leave-room.png" alt="leave room" />
 								</button> */}
-								<button className='line-room-button' onClick={() => {
+
+								{/* <button className='line-room-button' onClick={() => {
 									
 									setMessage([]);
 									socket?.emit("deleteRoom", { room_name: room.name, id_user: current_user.id})
 									socket?.on('renderReact', render_react);
 									}}>
 									<img className='icon-room' src="./delete-room.png" alt="delete room" />
-								</button>
+								</button> */}
+								<PopupDelete setMessage={setMessage} socket={socket} room={room} current_user={current_user} render_react={render_react}></PopupDelete>
 							</div>
 						</span>
 					</li>
@@ -103,6 +105,47 @@ export function PopupLeave(props: any) {
 			  onClick={() => {}}
 			>
 			  <img className="icon-room" src="./leave-room.png" alt="leave room" />
+			</button>
+		  )}
+		>
+		  <div>
+			<button className='line-room-button-popup'
+			  onClick={() => {
+				setMessage([]);
+				socket?.emit("leaveRoom", {
+				  room_name: room.name,
+				  id_user: current_user.id,
+				});
+				socket?.on("renderReact", render_react);
+			  }}
+			>
+				<img className="icon-room-popup" src="./accept.png" alt="leave room" />
+			</button>
+			<button className='line-room-button-popup' onClick={closeTooltip}>
+				<img className="icon-room-popup" src="./cancel.png" alt="leave room" />
+			</button>
+		  </div>
+		</Popup>
+	  </div>
+	);
+}
+
+export function PopupDelete(props: any) {
+	let { setMessage, socket, room, current_user, render_react } = props;
+	const ref = useRef<any>();
+	const closeTooltip = () => ref.current.close();
+  
+	return (
+	  <div>
+		<Popup
+		  ref={ref}
+		  trigger={(open) => (
+			<button
+			  type="submit"
+			  className="line-room-button"
+			  onClick={() => {}}
+			>
+			  <img className="icon-room" src="./delete-room.png" alt="delete room" />
 			</button>
 		  )}
 		>
