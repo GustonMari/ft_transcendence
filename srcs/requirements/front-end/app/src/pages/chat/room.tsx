@@ -90,22 +90,10 @@ export function RoomForm(props : any)
 export function PopupLeave(props: any) {
 	let { setMessage, socket, room, current_user, render_react } = props;
 	const ref = useRef<any>();
-	const openTooltip = () => ref.current.open();
 	const closeTooltip = () => ref.current.close();
-	const toggleTooltip = () => ref.current.toggle();
   
 	return (
 	  <div>
-		{/* <button type="button" className="button" onClick={openTooltip}>
-		  open
-		</button>
-		<button type="button" className="button" onClick={closeTooltip}>
-		  close
-		</button>
-  
-		<button type="button" className="button" onClick={toggleTooltip}>
-		  toggle
-		</button> */}
 		<Popup
 		  ref={ref}
 		  trigger={(open) => (
@@ -119,7 +107,7 @@ export function PopupLeave(props: any) {
 		  )}
 		>
 		  <div>
-			<button
+			<button className='line-room-button-popup'
 			  onClick={() => {
 				setMessage([]);
 				socket?.emit("leaveRoom", {
@@ -129,68 +117,16 @@ export function PopupLeave(props: any) {
 				socket?.on("renderReact", render_react);
 			  }}
 			>
-			  YES
+				<img className="icon-room-popup" src="./accept.png" alt="leave room" />
 			</button>
-			<button onClick={closeTooltip}>NO</button>
+			<button className='line-room-button-popup' onClick={closeTooltip}>
+				<img className="icon-room-popup" src="./cancel.png" alt="leave room" />
+			</button>
 		  </div>
 		</Popup>
 	  </div>
 	);
-  }
-
-// export function PopupLeave(props: any)
-// {
-// 		let { setMessage, socket, room, current_user, render_react} = props;
-// 		const ref = useRef<any>();
-// 		const openTooltip = () => ref.current.open();
-// 		const closeTooltip = () => ref.current.close();
-// 		const toggleTooltip = () => ref.current.toggle();
-	  
-// 		return (
-// 		  <div>
-// 			<button type="button" className="button" onClick={openTooltip}>
-// 			  open
-// 			</button>
-// 			<button type="button" className="button" onClick={closeTooltip}>
-// 			  close
-// 			</button>
-	  
-// 			<button type="button" className="button" onClick={toggleTooltip}>
-// 			  toggle
-// 			</button>
-// 			<Popup
-// 			  ref={ref}
-// 			  trigger={
-// 				open => (
-// 					<button type="submit" className='line-room-button' onClick={() => {
-// 						}}>
-					
-// 						<img className='icon-room' src="./leave-room.png" alt="leave room" />
-// 					</button>
-// 				)
-// 				// <button type="button" className="button">
-// 				//   I am the trigger
-// 				// </button>
-// 			  }
-// 			>
-// 			  <div>
-// 				{/* Lorem ipsum dolor sit */}
-// 				<button onClick={() => {
-// 				  setMessage([]);
-// 				  socket?.emit("leaveRoom", { room_name: room.name, id_user: current_user.id});
-// 				  socket?.on('renderReact', render_react);
-// 				}}> YES </button>
-// 				<button onClick={() => {
-
-// 				{closeTooltip}
-// 				}}> NO </button>
-				
-// 			  </div>
-// 			</Popup>
-// 		  </div>
-// 		);
-// }
-
+}
 
 export async function AuthorizeUser(props : any) : Promise<void>
 {

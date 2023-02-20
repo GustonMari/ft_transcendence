@@ -93,6 +93,7 @@ LEFT
 	
 }
 
+
 /* Picture of one room */
 .line-room-img {
 	height: 40px;
@@ -160,7 +161,37 @@ LEFT
 	height: 20px;
 }
 
+/*Room popup*/
 
+.line-room-button-popup {
+	background-color: rgba(39, 6, 47, 0.581);
+	margin: 1px;
+	text-align: center;
+
+	border-radius: 10px;
+	border: none;
+	padding: 1px;
+	font-family: 'Roboto', sans-serif;
+	transition: background-color  0.3s;
+}
+
+.line-room-button-popup:hover {
+	background-color: rgba(236, 236, 236, 0.372);
+	color: rgb(215, 152, 197);
+}
+
+.line-room-button-popup:hover .icon-room-popup {
+	filter: invert(100%);
+	-webkit-filter: invert(100%);
+	transition: filter  0.3s;
+	
+}
+
+.icon-room-popup {
+	display: flex;
+	width: 15px;
+	height: 15px;
+}
 
 
 /******************************************************
