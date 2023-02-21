@@ -10,7 +10,7 @@ import { setMaxIdleHTTPParsers } from 'http';
 export function RoomForm(props : any)
 {
 	let {define_room, current_room, current_user, socket, handle_history, trigger, setTrigger, setMessage} = props;
-	const [value, setValue] = React.useState("");
+	// const [value, setValue] = React.useState("");
 	const [rooms, setRooms] = useState<any>([]);
 
 	const roomContainer = useRef<HTMLDivElement>(null);
@@ -63,17 +63,45 @@ export function RoomForm(props : any)
 					</li>
 				))}
 			</span>
-			<div className='input-room'>
-				<input className='borderbox-room' onChange={(e) => setValue(e.target.value)} placeholder="define your room..." value={value} />
-				<button className='input-room-button'  onClick={() => {
-					setMessage([]);
-					define_room(value);
-					socket?.emit("message", {room: value, message: `${current_user.login} has join the room ${value}`})
-					socket?.on('renderReact', render_react);
-					}}>
-					<img className='icon-enter-room' src="./enter-room.png" alt="create room" />
-				</button>
-			</div>
+			<InputRoom define_room={define_room} 
+			current_room={current_room} 
+			current_user={current_user} 
+			socket={socket} 
+			handle_history={handle_history} 
+			setMessage={setMessage}
+			render_react={render_react}/>
+	</div>
+	);
+}
+
+function InputRoom(props: any) {
+	
+	let {define_room, current_room, current_user, socket, handle_history, setMessage, render_react} = props;
+	
+	const [value, setValue] = React.useState("");
+
+	function addRoom() {
+		setMessage([]);
+		define_room(value);
+		socket?.emit("message", {room: value, message: `${current_user.login} has join the room ${value}`})
+		socket?.on('renderReact', render_react);
+		setValue("");
+	}
+
+	function handleKeyDown(event: any) {
+		console.log(event.key);
+		if (event.key === "Enter") {
+			event.preventDefault();
+			addRoom();
+		}
+	  }
+
+	return (
+	<div className='input-room'>
+		<input className='borderbox-room' onChange={(e) => setValue(e.target.value)} onKeyDown={handleKeyDown} placeholder="define your room..." value={value} />
+		<button className='input-room-button'  onClick={() => addRoom()}>
+			<img className='icon-enter-room' src="./enter-room.png" alt="create room" />
+		</button>
 	</div>
 	);
 }
