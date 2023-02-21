@@ -11,32 +11,38 @@ GLOBAL
 
 
 .global {
-	display: flex;
-    justify-content: space-between;
-    height: 100vh;
-    min-width: 120vh;
-    flex-direction: row;
-    outline: solid yellow;
-	
-	/* background-image: url("../../../static/chat/background-trans.jpg");
-	background-size: cover;
-	background-position: center center;
-	filter: blur(0px);
-  animation: blur 2s infinite; */
+  display: flex;
+  justify-content: space-between;
+  height: 100vh;
+  min-width: 120vh;
+  flex-direction: row;
+  outline: solid yellow;
+  overflow-x: hidden;
+
+   /* background-image: url("../../../static/chat/background-trans.jpg");
+  background-size: cover;
+  background-position: center center; */
+
+
 }
 
 .global::before {
   content: "";
   background-image: url("../../../static/chat/background-trans.jpg");
-	background-size: cover;
-  background-position: center center;
-  position: absolute;
+  background-size: cover;
+  background-position: left top;
+  /* position: absolute; */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  /* width: 100vw;
+  height: 100vh; */
+
   z-index: -1;
   animation: blur 20s infinite; 
+  background-attachment: fixed;
 }
 
 @keyframes blur {
