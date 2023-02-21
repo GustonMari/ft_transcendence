@@ -18,10 +18,37 @@ GLOBAL
     flex-direction: row;
     outline: solid yellow;
 	
-	background-image: url("../../../static/chat/background-trans.jpg");
+	/* background-image: url("../../../static/chat/background-trans.jpg");
 	background-size: cover;
 	background-position: center center;
-	
+	filter: blur(0px);
+  animation: blur 2s infinite; */
+}
+
+.global::before {
+  content: "";
+  background-image: url("../../../static/chat/background-trans.jpg");
+	background-size: cover;
+  background-position: center center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  animation: blur 20s infinite; 
+}
+
+@keyframes blur {
+  0% {
+    filter: saturate(100%);
+  }
+  50% {
+    filter: saturate(200%);
+  }
+  100% {
+    filter: saturate(100%);
+  }
 }
 
 /******************************************************
