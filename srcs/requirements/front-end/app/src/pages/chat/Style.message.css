@@ -362,6 +362,13 @@ MESSAGE
 	height: 15px;
 }
 
+.chat-date {
+	display: flex;
+	justify-content: end;
+	font-size: 10px;
+	font-style: italic;
+}
+
 /******************************************************
 MENU CHAT
 ******************************************************/

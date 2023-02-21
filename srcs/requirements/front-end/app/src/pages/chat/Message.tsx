@@ -2,6 +2,11 @@ import React, { useEffect, useRef } from "react";
 import { HistoryDto, InfoMessage } from "./dto/chat.dto";
 import { APP } from "../../api/app";
 import './Style.message.css';
+import dayjs from "dayjs";
+import 'dayjs/locale/fr';
+
+dayjs.locale('fr'); // set locale to French
+
 
 export default function Messages(props: any) {
 
@@ -40,6 +45,7 @@ function IsSenderOrReceiver(props: any)
 		return (
 			<div className="message-sender">
 				{historyItem.sender_name} : {historyItem.current_message}
+				<span className="chat-date"> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
 			</div>
 		);
 	else
@@ -47,6 +53,7 @@ function IsSenderOrReceiver(props: any)
 			<div className="wrapper-message">	
 				<div className="message-receiver">
 					{historyItem.sender_name} : {historyItem.current_message}
+					<span className="chat-date"> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
 				</div>
 			</div>
 	);
@@ -60,6 +67,8 @@ function IsSenderOrReceiver_socket(props: any)
 	return (
 		<div className="message-sender">
 			{infomessage.current_user.login} : {infomessage.message}
+			<br></br>
+			<span className="chat-date"> {dayjs(infomessage.created_at).format("DD MMM YYYY À H:mm")} </span>
 		</div>
 	);
 	else
@@ -67,6 +76,7 @@ function IsSenderOrReceiver_socket(props: any)
 			<div className="wrapper-message">	
 				<div className="message-receiver">
 					{infomessage.current_user.login} : {infomessage.message}
+					<span className="chat-date"> {dayjs(infomessage.created_at).format("DD MMM YYYY À H:mm")} </span>
 				</div>
 			</div>
 	);
