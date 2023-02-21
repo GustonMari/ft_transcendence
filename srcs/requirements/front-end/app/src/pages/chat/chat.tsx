@@ -86,10 +86,10 @@ export default function Chat() {
 			</div>
 			<div className="menu-chat">
 				{/* <DeleteRoom define_room={define_room} current_user={currentUser} socket={socket}/> */}
-				<SetAdmin define_room={define_room} current_user={currentUser} socket={socket}/>
+				{/* <SetAdmin define_room={define_room} current_user={currentUser} socket={socket}/>
 				<BanUser define_room={define_room} current_user={currentUser} socket={socket}/>
 				<UnbanUser define_room={define_room} current_user={currentUser} socket={socket}/>
-				<MuteUser define_room={define_room} current_user={currentUser} socket={socket}/>
+				<MuteUser define_room={define_room} current_user={currentUser} socket={socket}/> */}
 			</div>
 		</div>
 	</div>

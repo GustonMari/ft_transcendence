@@ -98,12 +98,15 @@ export function PopupLeave(props: any) {
 	  <div>
 		<Popup
 		  ref={ref}
+		  position='bottom center'
+		//   arrow={false}
+		  className='popup-content'
 		  trigger={(open) => (
-			<button
+			  <button
 			  type="submit"
 			  className="line-room-button"
 			  onClick={() => {}}
-			>
+			  >
 			  <img className="icon-room" src="./leave-room.png" alt="leave room" />
 			</button>
 		  )}
