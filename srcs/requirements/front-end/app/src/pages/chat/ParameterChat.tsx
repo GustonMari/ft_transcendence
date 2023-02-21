@@ -10,3 +10,19 @@ import { APP } from "../../api/app";
 import App from "../../App";
 import { RoomList } from "./navbar";
 import { HistoryDto, InfoMessage } from "./dto/chat.dto";
+
+export function ParameterChat(props: any)
+{
+	let {define_room, current_room, current_user, socket} = props;
+
+	console.log("current_room", current_room);
+
+	return (
+		<>
+			<SetAdmin define_room={define_room} current_room={current_room} current_user={current_user} socket={socket}/>
+			{/* <BanUser define_room={define_room} current_room={current_room} current_user={current_user} socket={socket}/> */}
+			{/* <UnbanUser define_room={define_room} current_user={current_user} socket={socket}/> */}
+			{/* <MuteUser define_room={define_room} current_room={current_room} current_user={current_user} socket={socket}/> */}
+		</>
+	);
+}

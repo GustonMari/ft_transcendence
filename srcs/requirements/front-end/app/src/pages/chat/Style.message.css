@@ -10,10 +10,11 @@ GLOBAL
 }
 
 .global {
-	display: flex;
+  display: flex;
 	justify-content: space-between;
+  overflow-x: hidden;
 	height: 100vh;
-	min-width: 100vh;
+	min-width: 120vh;
 	flex-direction: row;
 	outline: solid yellow;
 }
@@ -234,7 +235,7 @@ MESSAGE
 }
 
 
-.borderbox-msg {
+.borderbox-msg, .borderbox-param{
 	display: flex;
 	flex: 1;
 	background-color:  rgba(39, 6, 47, 0.764);
@@ -247,7 +248,7 @@ MESSAGE
 }
 
 /* input of a message */
-.inputmessage {
+.inputmessage, .inputparam {
 	display: flex;
 	margin: 7px;
 	padding: 2px;

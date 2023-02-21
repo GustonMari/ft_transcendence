@@ -221,33 +221,32 @@ export function DeleteRoom(props : any)
 
 export function SetAdmin(props : any)
 {
-	let { define_room, current_user, socket  } = props;
+	let { define_room, current_room, current_user, socket  } = props;
 	const [value, setValue] = React.useState("");
-	const [room_value, setRoom] = React.useState("");
+
 	return (
-		<div>
-		<input onChange={(e) => setRoom(e.target.value)} placeholder="define your room..." value={room_value} />
-		<input onChange={(e) => setValue(e.target.value)} placeholder="set admin login..." value={value} />
-			<button onClick={() => socket?.emit("setAdmin", { room_name: room_value, id_user_from: current_user.id, login_user_to: value})}>Set admin</button>
+		<div className='inputparam'>
+			<input className='borderbox-param' onChange={(e) => setValue(e.target.value)} placeholder="set admin login..." value={value} />
+				<button onClick={() => socket?.emit("setAdmin", { room_name: current_room, id_user_from: current_user.id, login_user_to: value})}>Set admin</button>
 		</div>
 	)
 }
 
+
+
 export function BanUser(props : any)
 {
-	let { define_room, current_user, socket  } = props;
+	let { define_room, current_room, current_user, socket  } = props;
 	const [value, setValue] = React.useState("");
-	const [room_value, setRoom] = React.useState("");
 	const [date_value, setDate] = React.useState("");
 
 	return (
 		<div>
-		<input onChange={(e) => setRoom(e.target.value)} placeholder="define your room..." value={room_value} />
-		<input onChange={(e) => setValue(e.target.value)} placeholder="ban user login..." value={value} />
-		<input onChange={(e) => setDate(e.target.value)} placeholder="duration ban in min..." value={date_value} />
-			<button onClick={() => socket?.emit("banUser", { room_name: room_value, id_user_from: current_user.id, login_user_to: value, ban_till: date_value})}>Ban user</button>
+			<input onChange={(e) => setValue(e.target.value)} placeholder="ban user login..." value={value} />
+			<input onChange={(e) => setDate(e.target.value)} placeholder="duration ban in min..." value={date_value} />
+				<button onClick={() => socket?.emit("banUser", { room_name: current_room, id_user_from: current_user.id, login_user_to: value, ban_till: date_value})}>Ban user</button>
 		</div>
-	)
+	);
 }
 
 export function UnbanUser(props : any)
@@ -267,17 +266,15 @@ export function UnbanUser(props : any)
 
 export function MuteUser(props: any)
 {
-	let { define_room, current_user, socket  } = props;
+	let { define_room, current_room, current_user, socket  } = props;
 	const [value, setValue] = React.useState("");
-	const [room_value, setRoom] = React.useState("");
 	const [date_value, setDate] = React.useState("");
 
 	return (
 		<div>
-		<input onChange={(e) => setRoom(e.target.value)} placeholder="define your room..." value={room_value} />
-		<input onChange={(e) => setValue(e.target.value)} placeholder="mute user login..." value={value} />
-		<input onChange={(e) => setDate(e.target.value)} placeholder="duration mute in min..." value={date_value} />
-			<button onClick={() => socket?.emit("muteUser", { room_name: room_value, id_user_from: current_user.id, login_user_to: value, mute_till: date_value})}>Mute user</button>
+			<input onChange={(e) => setValue(e.target.value)} placeholder="mute user login..." value={value} />
+			<input onChange={(e) => setDate(e.target.value)} placeholder="duration mute in min..." value={date_value} />
+				<button onClick={() => socket?.emit("muteUser", { room_name: current_room, id_user_from: current_user.id, login_user_to: value, mute_till: date_value})}>Mute user</button>
 		</div>
 	)
 }

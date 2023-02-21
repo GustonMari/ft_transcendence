@@ -9,6 +9,7 @@ import {RoomForm, LeaveRoom, DeleteRoom, SetAdmin, BanUser, UnbanUser, MuteUser,
 import { APP } from "../../api/app";
 import App from "../../App";
 import { RoomList } from "./navbar";
+import { ParameterChat } from "./ParameterChat";
 import { HistoryDto, InfoMessage } from "./dto/chat.dto";
 
 
@@ -85,6 +86,7 @@ export default function Chat() {
 				<MessageInput send={send}/>
 			</div>
 			<div className="menu-chat">
+				<ParameterChat define_room={define_room} current_room={room} current_user={currentUser} socket={socket}/>
 				{/* <DeleteRoom define_room={define_room} current_user={currentUser} socket={socket}/> */}
 				{/* <SetAdmin define_room={define_room} current_user={currentUser} socket={socket}/>
 				<BanUser define_room={define_room} current_user={currentUser} socket={socket}/>
