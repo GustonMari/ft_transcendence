@@ -20,9 +20,9 @@ export function ParameterChat(props: any)
 	return (
 		<>
 			<SetAdmin define_room={define_room} current_room={current_room} current_user={current_user} socket={socket}/>
-			{/* <BanUser define_room={define_room} current_room={current_room} current_user={current_user} socket={socket}/> */}
+			<BanUser define_room={define_room} current_room={current_room} current_user={current_user} socket={socket}/>
 			{/* <UnbanUser define_room={define_room} current_user={current_user} socket={socket}/> */}
-			{/* <MuteUser define_room={define_room} current_room={current_room} current_user={current_user} socket={socket}/> */}
+			<MuteUser define_room={define_room} current_room={current_room} current_user={current_user} socket={socket}/>
 		</>
 	);
 }
