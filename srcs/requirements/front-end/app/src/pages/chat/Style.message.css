@@ -59,7 +59,7 @@ LEFT
 .room-menu {
 	flex: 0 0 330px;
 	margin-right: 5px;
-	outline: solid rgb(187, 194, 56);
+	/* outline: solid rgb(187, 194, 56); */
 }
 
 /* Room display and input room */
@@ -69,7 +69,8 @@ LEFT
 	max-height: 100vh;
 	flex-direction: column;
 	justify-content: space-between;
-	outline: solid seagreen;
+  background: rgba(39, 6, 47, 0.358);
+  border-radius: 10px;
 }
 
 /* List of rooms */
@@ -258,7 +259,7 @@ MESSAGE
 
 	display: flex;
 	flex-direction: column;
-	outline: solid black;
+	/* outline: solid black; */
 	min-height: 100vh;
 	min-width: 50vh;
 	flex: 1;
@@ -286,6 +287,7 @@ MESSAGE
 	margin: 7px;
 	padding: 2px;
   align-items: center;
+  background: rgba(39, 6, 47, 0.358);
 	/* justify-content: space-between; */
 	/* align-items: flex-end; */
 	/* overflow-wrap: break-word; */
@@ -297,7 +299,8 @@ MESSAGE
 	overflow-y: scroll;
 	display: flex;
 	flex-direction: column;
-	outline: solid red;
+	/* outline: solid red; */
+  /* background: rgba(39, 6, 47, 0.358); */
 
 	
 }
@@ -399,9 +402,9 @@ MENU CHAT
 	flex-direction: column;
 	justify-content: flex-end;
 	margin-right: 5px;
-	/* min-width: 30vh; */
 	flex: 0 0 330px;
-	outline: solid seagreen;
+  background: rgba(39, 6, 47, 0.358);
+  border-radius: 10px;
 }
 
 /*Global for the button to open the menu*/
