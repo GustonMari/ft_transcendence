@@ -241,10 +241,25 @@ export function SetAdmin(props : any)
 	let { define_room, current_room, current_user, socket  } = props;
 	const [value, setValue] = React.useState("");
 
+	function emitAndClear() {
+		socket?.emit("setAdmin", { room_name: current_room, id_user_from: current_user.id, login_user_to: value});
+		// send(value);
+		setValue("");
+	}
+
+	function handleKeyDown(event: any) {
+		console.log(event.key);
+		if (event.key === "Enter") {
+		  event.preventDefault();
+		//   send(value);
+		emitAndClear();
+		}
+	}
+
 	return (
 		<div className='inputparam'>
-			<input className='borderbox-param' onChange={(e) => setValue(e.target.value)} placeholder="set admin login..." value={value} />
-				<button className='input-param-button' onClick={() => socket?.emit("setAdmin", { room_name: current_room, id_user_from: current_user.id, login_user_to: value})}>Set admin</button>
+			<input className='borderbox-param' onChange={(e) => setValue(e.target.value)} onKeyDown={handleKeyDown} placeholder="set admin login..." value={value} />
+				<button className='input-param-button' onClick={() => emitAndClear() }>Set admin</button>
 		</div>
 	)
 }
@@ -287,11 +302,19 @@ export function MuteUser(props: any)
 	const [value, setValue] = React.useState("");
 	const [date_value, setDate] = React.useState("");
 
+
+	function emitAndClear() {
+		socket?.emit("muteUser", { room_name: current_room, id_user_from: current_user.id, login_user_to: value, mute_till: date_value});
+		setDate("");
+		setValue("");
+	}
+
+
 	return (
 		<div className='inputparam'>
 			<input className='borderbox-param' onChange={(e) => setValue(e.target.value)} placeholder="mute user login..." value={value} />
 			<input className='borderbox-param' onChange={(e) => setDate(e.target.value)} placeholder="duration mute in min..." value={date_value} />
-				<button className='input-param-button' onClick={() => socket?.emit("muteUser", { room_name: current_room, id_user_from: current_user.id, login_user_to: value, mute_till: date_value})}>Mute</button>
+				<button className='input-param-button' onClick={() => emitAndClear()}>Mute</button>
 		</div>
 	)
 }
