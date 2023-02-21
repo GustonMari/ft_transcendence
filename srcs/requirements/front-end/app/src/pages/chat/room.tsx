@@ -272,11 +272,17 @@ export function BanUser(props : any)
 	const [value, setValue] = React.useState("");
 	const [date_value, setDate] = React.useState("");
 
+	function emitAndClear() {
+		socket?.emit("banUser", { room_name: current_room, id_user_from: current_user.id, login_user_to: value, ban_till: date_value});
+		setDate("");
+		setValue("");
+	}
+
 	return (
 		<div className='inputparam'>
 			<input className='borderbox-param' onChange={(e) => setValue(e.target.value)} placeholder="ban user login..." value={value} />
 			<input className='borderbox-param' onChange={(e) => setDate(e.target.value)} placeholder="duration ban in min..." value={date_value} />
-				<button className='input-param-button' onClick={() => socket?.emit("banUser", { room_name: current_room, id_user_from: current_user.id, login_user_to: value, ban_till: date_value})}>Ban</button>
+				<button className='input-param-button' onClick={() => emitAndClear()}>Ban</button>
 		</div>
 	);
 }
