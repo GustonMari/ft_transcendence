@@ -9,13 +9,19 @@ GLOBAL
 	box-sizing: border-box;
 }
 
+
 .global {
 	display: flex;
-	justify-content: space-between;
-	height: 100vh;
-	min-width: 100vh;
-	flex-direction: row;
-	outline: solid yellow;
+    justify-content: space-between;
+    height: 100vh;
+    min-width: 120vh;
+    flex-direction: row;
+    outline: solid yellow;
+	
+	background-image: url("../../../static/chat/background-trans.jpg");
+	background-size: cover;
+	background-position: center center;
+	
 }
 
 /******************************************************
@@ -33,6 +39,7 @@ LEFT
 .between-room-input {
 	display: flex;
 	min-height: 100vh;
+	max-height: 100vh;
 	flex-direction: column;
 	justify-content: space-between;
 	outline: solid seagreen;

@@ -13,17 +13,23 @@ export function RoomForm(props : any)
 	const [value, setValue] = React.useState("");
 	const [rooms, setRooms] = useState<any>([]);
 
+	const roomContainer = useRef<HTMLDivElement>(null);
+
 	useEffect(() => {
 		const getRooms = async () => {
 			try {
 				const res = await APP.get("/chat/get_user_rooms");
 				setRooms(res.data);
+				if (roomContainer.current) {
+					roomContainer.current.scrollTop = roomContainer.current.scrollHeight;
+				  }
 			} catch (error) {
 				console.error(error);
 			}
 		};
 		getRooms();
-	}, [trigger]);
+		
+	}, [trigger, define_room]);
 
 	const render_react = () => {
 		setTrigger(trigger += 1);
@@ -31,8 +37,7 @@ export function RoomForm(props : any)
 
 	return (
 		<div className='between-room-input'>
-		{/* <h1>Rooms</h1> */}
-			<span className='room-list'>
+			<span ref={roomContainer} className='room-list'>
 				{rooms.map(room => (
 					<li key={room.id}>
 						<span className="line-room">
@@ -52,22 +57,6 @@ export function RoomForm(props : any)
 							</div>
 							<div className='split'>
 								<PopupLeave setMessage={setMessage} socket={socket} room={room} current_user={current_user} render_react={render_react}></PopupLeave>
-								{/* <button type="submit" className='line-room-button' onClick={() => {
-									setMessage([]);
-									socket?.emit("leaveRoom", { room_name: room.name, id_user: current_user.id})
-									socket?.on('renderReact', render_react);
-									}}>
-									<img className='icon-room' src="./leave-room.png" alt="leave room" />
-								</button> */}
-
-								{/* <button className='line-room-button' onClick={() => {
-									
-									setMessage([]);
-									socket?.emit("deleteRoom", { room_name: room.name, id_user: current_user.id})
-									socket?.on('renderReact', render_react);
-									}}>
-									<img className='icon-room' src="./delete-room.png" alt="delete room" />
-								</button> */}
 								<PopupDelete setMessage={setMessage} socket={socket} room={room} current_user={current_user} render_react={render_react}></PopupDelete>
 							</div>
 						</span>
