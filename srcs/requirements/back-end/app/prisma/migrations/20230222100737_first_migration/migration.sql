@@ -48,6 +48,7 @@ CREATE TABLE "Room" (
     "updated_at" TIMESTAMP(3) NOT NULL,
     "name" TEXT NOT NULL,
     "owner" TEXT NOT NULL,
+    "owner_id" INTEGER NOT NULL,
 
     CONSTRAINT "Room_pkey" PRIMARY KEY ("id")
 );
@@ -105,6 +106,9 @@ CREATE UNIQUE INDEX "Room_name_key" ON "Room"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Room_owner_key" ON "Room"("owner");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Room_owner_id_key" ON "Room"("owner_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "messages_id_key" ON "messages"("id");
