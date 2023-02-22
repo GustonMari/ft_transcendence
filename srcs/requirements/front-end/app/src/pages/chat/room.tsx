@@ -106,29 +106,17 @@ function InputRoom(props: any) {
 	async function checkIsPassword() {
 		const res = await APP.post("/chat/is_room_has_password", {room_name: value});
 		if (res.data === true)
-		{
-			console.log("true room has password");
 			return true;
-		}
 		else
-		{
-			console.log("false room has no password");
 			return false;
-		}
 	}
 
 	async function checkPassword() {
 		const res = await APP.post("/chat/verify_room_password", {room_name: value, password: password});
 		if (res.data === true)
-		{
-			console.log("in checkpassword true password is correct");
 			return true;
-		}
 		else
-		{
-			console.log("in checkpassword false password is incorrect");
 			return false;
-		}
 	}
 
 	async function addRoom() {
@@ -147,20 +135,6 @@ function InputRoom(props: any) {
 		}
 	}
 
-	async function submitPassword() {
-
-		if (await checkPassword())
-			{
-				console.log("in handlekeydownpassword true password is correct");
-				addRoom();
-				handleClose();
-			}
-			else {
-				console.log("in handlekeydownpassword false password is incorrect");
-				setPassword("");
-			}
-	}
-
 	async function handleKeyDownPassword(event: any) {
 		if (event.key === "Enter") {
 			event.preventDefault();
@@ -168,15 +142,25 @@ function InputRoom(props: any) {
 		}
 	}
 
+	async function submitPassword() {
+
+		if (await checkPassword())
+		{
+			addRoom();
+			handleClose();
+		}
+		else {
+			setPassword("");
+		}
+	}
+
+
 	let handleAddRoom = async () => {
 		if (await checkIsPassword())
-		{
 			handleShow();
-		}
 		else {
 			addRoom();
 		}
-
 	}
 
 	return (
