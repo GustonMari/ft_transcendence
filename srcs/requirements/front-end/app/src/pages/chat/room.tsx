@@ -147,10 +147,9 @@ function InputRoom(props: any) {
 		}
 	}
 
-	async function handleKeyDownPassword(event: any) {
-		if (event.key === "Enter") {
-			event.preventDefault();
-			if (await checkPassword())
+	async function submitPassword() {
+
+		if (await checkPassword())
 			{
 				console.log("in handlekeydownpassword true password is correct");
 				addRoom();
@@ -160,6 +159,12 @@ function InputRoom(props: any) {
 				console.log("in handlekeydownpassword false password is incorrect");
 				setPassword("");
 			}
+	}
+
+	async function handleKeyDownPassword(event: any) {
+		if (event.key === "Enter") {
+			event.preventDefault();
+			submitPassword()
 		}
 	}
 
@@ -203,7 +208,7 @@ function InputRoom(props: any) {
 				<Button variant="secondary" onClick={handleClose}>
 					Close
 				</Button>
-				<Button variant="primary" onClick={/* () => handleSetPassword(value) */ handleClose}>
+				<Button variant="primary" onClick={() => submitPassword()}>
 					Submit
 				</Button>
 			</Modal.Footer>

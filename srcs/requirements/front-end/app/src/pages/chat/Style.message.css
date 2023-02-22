@@ -163,30 +163,30 @@ LEFT
 
 /* input of room */
 .input-room {
-	display: flex;
-	margin: 7px;
+	display: flex !important;
+	margin: 7px !important;
 	/* outline: solid rgb(139, 46, 48); */
 	/* margin-bottom: 5px; */
 }
 
 .input-room-button {
-	display: flex;
-	border-radius: 50%;
-	padding: 2px;
-	border: none;
-	margin: 2px;
-	background-color: rgba(39, 6, 47, 0.643);
+	display: flex !important;
+	border-radius: 50% !important;
+	padding: 2px !important;
+	border: none !important;
+	margin: 2px !important;
+	background-color: rgba(39, 6, 47, 0.643) !important;
 }
 
 .input-room-button:hover {
-	background-color: rgba(39, 6, 47, 0.305);
-	transition: background-color 0.3s;
+	background-color: rgba(39, 6, 47, 0.305) !important;
+	transition: background-color 0.3s !important;
 }
 
 .input-room-button:hover .icon-enter-room {
-	filter: invert(100%);
-	-webkit-filter: invert(100%);
-	transition: filter  0.3s;
+	filter: invert(100%) !important;
+	-webkit-filter: invert(100%) !important;
+	transition: filter  0.3s !important;
 }
 
 /* Delete room, leave room*/
