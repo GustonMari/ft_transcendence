@@ -1,9 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { HistoryDto, InfoMessage } from "./dto/chat.dto";
 import { APP } from "../../api/app";
 import './Style.message.css';
 import dayjs from "dayjs";
 import 'dayjs/locale/fr';
+import { Button, Modal } from 'react-bootstrap';
 
 dayjs.locale('fr'); // set locale to French
 
@@ -44,7 +45,8 @@ function IsSenderOrReceiver(props: any)
 	if(historyItem.sender_id == current_user.id)
 		return (
 			<div className='wrapper-message'>
-				<img className="img-message-left" src="https://www.example.com/images/dinosaur.jpg"/>
+				{/* <img className="img-message-left" src="https://www.example.com/images/dinosaur.jpg"/> */}
+				<PopupImage imageSrc="https://www.example.com/images/dinosaur.jpg" classPass="img-message-left"/>
 				<div className="message-sender">
 					{historyItem.sender_name} : {historyItem.current_message}
 					<span className="chat-date"> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
@@ -120,3 +122,34 @@ export function DisplayMessagesByRoom(props: any) {
 	);
 
 }
+
+
+function PopupImage(props: any) {
+	const { imageSrc, classPass } = props;
+  
+	const [show, setShow] = useState(false);
+	const handleClose = () => setShow(false);
+	const handleShow = () => setShow(true);
+  
+	return (
+	  <div>
+		<Button variant="primary" onClick={handleShow} >
+		  <img src={ imageSrc } className={classPass}/>
+		</Button>
+  
+		<Modal show={show} onHide={handleClose}>
+		  <Modal.Header closeButton>
+			<Modal.Title>Avatar</Modal.Title>
+		  </Modal.Header>
+		  <Modal.Body>
+			<img src={ imageSrc }/>
+		  </Modal.Body>
+		  <Modal.Footer>
+			<Button variant="secondary" onClick={handleClose}>
+			  Close
+			</Button>
+		  </Modal.Footer>
+		</Modal>
+	  </div>
+	);
+  }
