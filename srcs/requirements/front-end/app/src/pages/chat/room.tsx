@@ -6,6 +6,8 @@ import { APP } from "../../api/app";
 import './Style.message.css';
 import { GetMessagesByRoom } from './Message';
 import { setMaxIdleHTTPParsers } from 'http';
+// import 'reactjs-popup/dist/index.css';
+
 
 export function RoomForm(props : any)
 {
@@ -151,6 +153,8 @@ export function PopupLeave(props: any) {
 	);
 }
 
+
+
 export function PopupDelete(props: any) {
 	let { setMessage, socket, room, current_user, render_react } = props;
 	const ref = useRef<any>();
@@ -198,40 +202,67 @@ export function PopupPassword(props: any) {
 	const closeTooltip = () => ref.current.close();
   
 	return (
-	  <div>
+	<div>
 		<Popup
-		  ref={ref}
-		  trigger={(open) => (
-			<button
-			  type="submit"
-			  className="line-room-button"
-			  onClick={() => {}}
-			>
-			  <img className="icon-room" src="./lock-room.png" alt="lock room" />
-			</button>
-		  )}
-		>
-		  <div>
-			<button className='line-room-button-popup'
-			  onClick={() => {
-				setMessage([]);
-				socket?.emit("leaveRoom", {
-				  room_name: room.name,
-				  id_user: current_user.id,
-				});
-				socket?.on("renderReact", render_react);
-			  }}
-			>
-				<img className="icon-room-popup" src="./accept.png" alt="leave room" />
-			</button>
-			<button className='line-room-button-popup' onClick={closeTooltip}>
-				<img className="icon-room-popup" src="./cancel.png" alt="leave room" />
-			</button>
-		  </div>
+		ref={ref}
+ 		   trigger={
+		   	<button className="line-room-button">
+				<img className="icon-room" src="./lock-room.png" alt="lock room" />
+			</button>}
+ 		   modal
+ 		   nested
+ 		 >
+
+      <div className="modal">
+        <button className="close" onClick={close}>
+          &times;
+        </button>
+        <div className="header"> Modal Title </div>
+        <div className="content">
+          {' '}
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, a nostrum.
+          Dolorem, repellat quidem ut, minima sint vel eveniet quibusdam voluptates
+          delectus doloremque, explicabo tempore dicta adipisci fugit amet dignissimos?
+          <br />
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur sit
+          commodi beatae optio voluptatum sed eius cumque, delectus saepe repudiandae
+          explicabo nemo nam libero ad, doloribus, voluptas rem alias. Vitae?
+        </div>
+        <div className="actions">
+          <Popup
+            trigger={<button className="button"> Trigger </button>}
+            position="top center"
+            nested
+          >
+            <span>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae
+              magni omnis delectus nemo, maxime molestiae dolorem numquam
+              mollitia, voluptate ea, accusamus excepturi deleniti ratione
+              sapiente! Laudantium, aperiam doloribus. Odit, aut.
+            </span>
+          </Popup>
+          <button
+            className="button"
+            onClick={() => {
+              console.log('modal closed ');
+              close();
+            }}
+          >
+            close modal
+          </button>
+        </div>
+      </div>
+
+			
+			  
 		</Popup>
-	  </div>
+
+		
+	</div>
 	);
 }
+
+
 
 export async function AuthorizeUser(props : any) : Promise<void>
 {
