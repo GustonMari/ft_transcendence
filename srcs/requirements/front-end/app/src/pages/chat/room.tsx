@@ -160,6 +160,16 @@ export function PopupDelete(props: any) {
 	const ref = useRef<any>();
 	const closeTooltip = () => ref.current.close();
   
+	function deleteRoom() {
+		setMessage([]);
+		socket?.emit("deleteRoom", {
+		  room_name: room.name,
+		  id_user: current_user.id,
+		});
+		socket?.on("renderReact", render_react);
+	}
+
+
 	return (
 	  <div>
 		<Popup
@@ -177,13 +187,16 @@ export function PopupDelete(props: any) {
 		  <div>
 			<button className='line-room-button-popup'
 			  onClick={() => {
-				setMessage([]);
-				socket?.emit("leaveRoom", {
-				  room_name: room.name,
-				  id_user: current_user.id,
-				});
-				socket?.on("renderReact", render_react);
-			  }}
+
+
+				const is_owner = async () => {
+					const res = await APP.post("/chat/get_isowner_login", {room_name: room.name, login: current_user.login});
+					let owner = res.data;
+					owner ? deleteRoom() : "" ;
+				}
+				is_owner();
+
+			}}
 			>
 				<img className="icon-room-popup" src="./accept.png" alt="leave room" />
 			</button>
