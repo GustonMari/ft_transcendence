@@ -145,6 +145,7 @@ function InputRoom(props: any) {
 		}
 		else {
 			setPassword("");
+			setValue("");
 		}
 	}
 
@@ -186,7 +187,9 @@ function InputRoom(props: any) {
 				<Button variant="secondary" onClick={handleClose}>
 					Close
 				</Button>
-				<Button variant="primary" onClick={() => submitPassword()}>
+				<Button variant="primary" onClick={() => {
+					submitPassword();
+				}}>
 					Submit
 				</Button>
 			</Modal.Footer>
