@@ -22,6 +22,7 @@ export class ChatService {
 				room: {
 					create: {
 						name: room_name,
+						owner: current_user.login,
 					}
 				},
 				user: {
@@ -345,4 +346,5 @@ export class ChatService {
 		return messages.messages;
 	}
 
+	
 }
