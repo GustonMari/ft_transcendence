@@ -47,4 +47,11 @@ export class ChatController {
 		response.send(owner);
 
 	}
+
+	@Post('set_room_password')
+	async set_room_password(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+		const res = await this.chatService.setRoomPassword(info.room_name, info.password);
+		response.send(res);
+
+	}
 }

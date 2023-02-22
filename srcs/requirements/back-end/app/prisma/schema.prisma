@@ -70,6 +70,7 @@ model Room {
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
     name       String   @unique
+    password   String   @default("")
 
     owner String
     owner_id Int

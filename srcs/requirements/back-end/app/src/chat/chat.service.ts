@@ -372,4 +372,11 @@ export class ChatService {
 		}
 		return false;
 	}
+
+	async setRoomPassword (room_name: string, user_id: number, password: string): Promise<boolean> {
+		if (this.IsOwnerOfRoomById(room_name, user_id)) {
+			
+		}
+		return false;
+	}
 }
