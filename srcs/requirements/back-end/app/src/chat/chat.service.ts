@@ -396,16 +396,19 @@ export class ChatService {
 				name: room_name,
 			},
 		})
-		if (argon.verify(room.password, password)) {
+		console.log("in verifyRoomPassword :", "room_name :", room_name, "password :", password, "| passwordDB = ", room.password);
+
+		// const hash_password = await argon.hash(password);
+		if (await argon.verify(room.password, password)) {
 			console.log("password is correct");
 			return true;
 		}
-		console.log("password is incorrect");
+		console.log("in verifyRoomPassword password is incorrect");
 		return false;
 	}
 
 	async isRoomHasPassword (room_name: string): Promise<boolean> {
-		console.log("isRoomAsPassword :", "room_name :", room_name);
+		console.log("in verifyRoomPassword isRoomAsPassword :", "room_name :", room_name);
 		const room = await this.prisma.room.findUnique({
 			where: {
 				name: room_name,

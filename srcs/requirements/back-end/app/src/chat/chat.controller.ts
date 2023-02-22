@@ -9,6 +9,7 @@ import { GetMe } from '../auth/decorators';
 import { Response } from 'express';
 import { UserRO } from '../user/ros/user.full.ro';
 import { MessageBody } from '@nestjs/websockets';
+import * as argon from 'argon2';
 
 
 @UseGuards(AccessGuard)
@@ -56,6 +57,7 @@ export class ChatController {
 
 	@Post('verify_room_password')
 	async verify_room_password(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+		// const res = await this.chatService.verifyRoomPassword(info.room_name, await  argon.hash(info.password));
 		const res = await this.chatService.verifyRoomPassword(info.room_name, info.password);
 		response.send(res);
 	}

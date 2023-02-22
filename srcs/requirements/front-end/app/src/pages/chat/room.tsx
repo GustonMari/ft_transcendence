@@ -96,8 +96,14 @@ function InputRoom(props: any) {
 	let {define_room, current_room, current_user, socket, handle_history, setMessage, render_react} = props;
 	
 	const [value, setValue] = React.useState("");
+	const [password, setPassword] = React.useState("");
+	const [show, setShow] = useState(false);
+	const handleClose = () => setShow(false);
+	const handleShow = () => {
+		setShow(true)
+	};
 
-	async function checkPassword() {
+	async function checkIsPassword() {
 		const res = await APP.post("/chat/is_room_has_password", {room_name: value});
 		if (res.data === true)
 		{
@@ -111,10 +117,21 @@ function InputRoom(props: any) {
 		}
 	}
 
+	async function checkPassword() {
+		const res = await APP.post("/chat/verify_room_password", {room_name: value, password: password});
+		if (res.data === true)
+		{
+			console.log("in checkpassword true password is correct");
+			return true;
+		}
+		else
+		{
+			console.log("in checkpassword false password is incorrect");
+			return false;
+		}
+	}
+
 	async function addRoom() {
-		// if (await checkPassword()) {
-		// 	console.log("checking password...")
-		// }
 		setMessage([]);
 		define_room(value);
 		socket?.emit("message", {room: value, message: `${current_user.login} has join the room ${value}`})
@@ -126,19 +143,28 @@ function InputRoom(props: any) {
 		console.log(event.key);
 		if (event.key === "Enter") {
 			event.preventDefault();
-			addRoom();
+			handleAddRoom();
 		}
 	}
 
-	const [show, setShow] = useState(false);
-	const handleClose = () => setShow(false);
-	const handleShow = () => {
-		console.log("in handleShow");
-		setShow(true)
-	};
+	async function handleKeyDownPassword(event: any) {
+		if (event.key === "Enter") {
+			event.preventDefault();
+			if (await checkPassword())
+			{
+				console.log("in handlekeydownpassword true password is correct");
+				addRoom();
+				handleClose();
+			}
+			else {
+				console.log("in handlekeydownpassword false password is incorrect");
+				setPassword("");
+			}
+		}
+	}
 
 	let handleAddRoom = async () => {
-		if (await checkPassword())
+		if (await checkIsPassword())
 		{
 			handleShow();
 		}
@@ -157,7 +183,7 @@ function InputRoom(props: any) {
 
 		<Modal show={show} onHide={handleClose}>
 			<Modal.Header closeButton>
-				<Modal.Title>Define password for the room</Modal.Title>
+				<Modal.Title>Enter the password of the room</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 			<Form>
@@ -167,8 +193,8 @@ function InputRoom(props: any) {
                 type="password"
                 placeholder="password"
                 autoFocus
-				onChange={(e) => setValue(e.target.value)}
-				// onKeyDown={handleKeyDown}
+				onChange={(e) => setPassword(e.target.value)}
+				onKeyDown={handleKeyDownPassword}
               />
             </Form.Group>
           </Form>
@@ -178,7 +204,7 @@ function InputRoom(props: any) {
 					Close
 				</Button>
 				<Button variant="primary" onClick={/* () => handleSetPassword(value) */ handleClose}>
-					Save Changes
+					Submit
 				</Button>
 			</Modal.Footer>
 		</Modal>
