@@ -105,18 +105,12 @@ function InputRoom(props: any) {
 
 	async function checkIsPassword() {
 		const res = await APP.post("/chat/is_room_has_password", {room_name: value});
-		if (res.data === true)
-			return true;
-		else
-			return false;
+		return res.data;
 	}
 
 	async function checkPassword() {
 		const res = await APP.post("/chat/verify_room_password", {room_name: value, password: password});
-		if (res.data === true)
-			return true;
-		else
-			return false;
+		return res.data;
 	}
 
 	async function addRoom() {
