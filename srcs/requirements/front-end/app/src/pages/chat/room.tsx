@@ -187,7 +187,6 @@ export function PopupDelete(props: any) {
 				const is_owner = async () => {
 					const res = await APP.post("/chat/get_isowner_login", {room_name: room.name, login: current_user.login});
 					let owner = res.data;
-					console.log('is a owner' + owner);
 					owner ? deleteRoom() : "" ;
 				}
 				is_owner();
