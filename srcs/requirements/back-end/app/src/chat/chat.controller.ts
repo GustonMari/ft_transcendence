@@ -59,4 +59,10 @@ export class ChatController {
 		const res = await this.chatService.verifyRoomPassword(info.room_name, info.password);
 		response.send(res);
 	}
+
+	@Post('is_room_has_password')
+	async is_room_has_password(@Res() response: Response ,@MessageBody() room_name: any): Promise<void> {
+		const res = await this.chatService.isRoomHasPassword(room_name.room_name);
+		response.send(res);
+	}
 }

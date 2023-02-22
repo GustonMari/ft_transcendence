@@ -268,7 +268,7 @@ MESSAGE
 	flex-direction: column;
 	/* outline: solid black; */
 	min-height: 100vh;
-	min-width: 50vh;
+	min-width: 60vh;
 	flex: 1;
 	overflow: auto;
 	overflow-wrap: break-word;

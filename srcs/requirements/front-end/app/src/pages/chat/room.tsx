@@ -81,13 +81,40 @@ export function RoomForm(props : any)
 	);
 }
 
+function test() {
+	return (
+		<div>
+			<p>test</p>
+		</div>
+	);
+}
+
+
+
 function InputRoom(props: any) {
 	
 	let {define_room, current_room, current_user, socket, handle_history, setMessage, render_react} = props;
 	
 	const [value, setValue] = React.useState("");
 
-	function addRoom() {
+	async function checkPassword() {
+		const res = await APP.post("/chat/is_room_has_password", {room_name: value});
+		if (res.data === true)
+		{
+			console.log("true room has password");
+			return true;
+		}
+		else
+		{
+			console.log("false room has no password");
+			return false;
+		}
+	}
+
+	async function addRoom() {
+		// if (await checkPassword()) {
+		// 	console.log("checking password...")
+		// }
 		setMessage([]);
 		define_room(value);
 		socket?.emit("message", {room: value, message: `${current_user.login} has join the room ${value}`})
@@ -101,17 +128,112 @@ function InputRoom(props: any) {
 			event.preventDefault();
 			addRoom();
 		}
-	  }
+	}
+
+	const [show, setShow] = useState(false);
+	const handleClose = () => setShow(false);
+	const handleShow = () => {
+		console.log("in handleShow");
+		setShow(true)
+	};
+
+	let handleAddRoom = async () => {
+		if (await checkPassword())
+		{
+			handleShow();
+		}
+		else {
+			addRoom();
+		}
+
+	}
 
 	return (
 	<div className='input-room'>
 		<input className='borderbox-room' onChange={(e) => setValue(e.target.value)} onKeyDown={handleKeyDown} placeholder="define your room..." value={value} />
-		<button className='input-room-button'  onClick={() => addRoom()}>
+		<Button className='input-room-button'  onClick={handleAddRoom}>
 			<img className='icon-enter-room' src="./enter-room.png" alt="create room" />
-		</button>
+		</Button>
+
+		<Modal show={show} onHide={handleClose}>
+			<Modal.Header closeButton>
+				<Modal.Title>Define password for the room</Modal.Title>
+			</Modal.Header>
+			<Modal.Body>
+			<Form>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label></Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="password"
+                autoFocus
+				onChange={(e) => setValue(e.target.value)}
+				// onKeyDown={handleKeyDown}
+              />
+            </Form.Group>
+          </Form>
+			</Modal.Body>
+			<Modal.Footer>
+				<Button variant="secondary" onClick={handleClose}>
+					Close
+				</Button>
+				<Button variant="primary" onClick={/* () => handleSetPassword(value) */ handleClose}>
+					Save Changes
+				</Button>
+			</Modal.Footer>
+		</Modal>
 	</div>
 	);
 }
+
+// function InputRoom(props: any) {
+	
+// 	let {define_room, current_room, current_user, socket, handle_history, setMessage, render_react} = props;
+	
+// 	const [value, setValue] = React.useState("");
+
+// 	async function checkPassword() {
+// 		const res = await APP.post("/chat/is_room_has_password", {room_name: value});
+// 		if (res.data === true)
+// 		{
+// 			console.log("true room has password");
+// 			return true;
+// 		}
+// 		else
+// 		{
+// 			console.log("false room has no password");
+// 			return false;
+// 		}
+// 	}
+
+// 	async function addRoom() {
+// 		if (await checkPassword()) {
+// 			console.log("checking password...")
+// 		}
+// 		setMessage([]);
+// 		define_room(value);
+// 		socket?.emit("message", {room: value, message: `${current_user.login} has join the room ${value}`})
+// 		socket?.on('renderReact', render_react);
+// 		setValue("");
+// 	}
+
+// 	function handleKeyDown(event: any) {
+// 		console.log(event.key);
+// 		if (event.key === "Enter") {
+// 			event.preventDefault();
+// 			addRoom();
+// 		}
+// 	  }
+
+// 	return (
+// 	<div className='input-room'>
+// 		<input className='borderbox-room' onChange={(e) => setValue(e.target.value)} onKeyDown={handleKeyDown} placeholder="define your room..." value={value} />
+// 		<button className='input-room-button'  onClick={() => addRoom()}>
+// 			<img className='icon-enter-room' src="./enter-room.png" alt="create room" />
+// 		</button>
+// 	</div>
+// 	);
+// }
 
 export function PopupLeave(props: any) {
 	let { setMessage, socket, room, current_user, render_react } = props;

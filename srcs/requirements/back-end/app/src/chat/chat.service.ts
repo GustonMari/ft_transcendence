@@ -403,4 +403,17 @@ export class ChatService {
 		console.log("password is incorrect");
 		return false;
 	}
+
+	async isRoomHasPassword (room_name: string): Promise<boolean> {
+		console.log("isRoomAsPassword :", "room_name :", room_name);
+		const room = await this.prisma.room.findUnique({
+			where: {
+				name: room_name,
+			},
+		})
+		if (room && room.password) {
+			return true;
+		}
+		return false;
+	}
 }
