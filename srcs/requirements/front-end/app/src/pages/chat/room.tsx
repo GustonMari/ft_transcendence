@@ -8,6 +8,10 @@ import { GetMessagesByRoom } from './Message';
 import { setMaxIdleHTTPParsers } from 'http';
 // import 'reactjs-popup/dist/index.css';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Button from 'react-bootstrap/Button';
+import { Modal } from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
 
 export function RoomForm(props : any)
 {
@@ -211,64 +215,49 @@ export function PopupDelete(props: any) {
 
 export function PopupPassword(props: any) {
 	let { setMessage, socket, room, current_user, render_react } = props;
-	const ref = useRef<any>();
-	const closeTooltip = () => ref.current.close();
+
+	const [show, setShow] = useState(false);
+
+	const handleClose = () => setShow(false);
+	const handleShow = () => setShow(true);
+
   
 	return (
 	<div>
-		<Popup
-		ref={ref}
- 		   trigger={
-		   	<button className="line-room-button">
-				<img className="icon-room" src="./lock-room.png" alt="lock room" />
-			</button>}
- 		   modal
- 		   nested
- 		 >
 
-      <div className="modal">
-        <button className="close" onClick={close}>
-          &times;
-        </button>
-        <div className="header"> Modal Title </div>
-        <div className="content">
-          {' '}
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, a nostrum.
-          Dolorem, repellat quidem ut, minima sint vel eveniet quibusdam voluptates
-          delectus doloremque, explicabo tempore dicta adipisci fugit amet dignissimos?
-          <br />
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur sit
-          commodi beatae optio voluptatum sed eius cumque, delectus saepe repudiandae
-          explicabo nemo nam libero ad, doloribus, voluptas rem alias. Vitae?
-        </div>
-        <div className="actions">
-          <Popup
-            trigger={<button className="button"> Trigger </button>}
-            position="top center"
-            nested
-          >
-            <span>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae
-              magni omnis delectus nemo, maxime molestiae dolorem numquam
-              mollitia, voluptate ea, accusamus excepturi deleniti ratione
-              sapiente! Laudantium, aperiam doloribus. Odit, aut.
-            </span>
-          </Popup>
-          <button
-            className="button"
-            onClick={() => {
-              console.log('modal closed ');
-              close();
-            }}
-          >
-            close modal
-          </button>
-        </div>
-      </div>
 
+		<Button className="line-room-button" variant="primary" onClick={handleShow}>
+			<img className="icon-room" src="./lock-room.png" alt="lock room" />
+		</Button>
 			
+		<Modal show={show} onHide={handleClose}>
+			<Modal.Header closeButton>
+				<Modal.Title>Modal heading</Modal.Title>
+			</Modal.Header>
+			<Modal.Body>
+			<Form>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Password for the room"
+                autoFocus
+              />
+            </Form.Group>
+          </Form>
+			</Modal.Body>
+			<Modal.Footer>
+				<Button variant="secondary" onClick={handleClose}>
+					Close
+				</Button>
+				<Button variant="primary" onClick={handleClose}>
+					Save Changes
+				</Button>
+			</Modal.Footer>
+		</Modal>
+
 			  
-		</Popup>
+
 
 		
 	</div>

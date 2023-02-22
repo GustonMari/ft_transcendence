@@ -2,6 +2,9 @@
 GLOBAL
 ******************************************************/
 
+@import "bootstrap";
+
+
 /* For all */
 *{
 	margin: 0;
@@ -108,16 +111,16 @@ LEFT
 
 /* Button of one room */
 .line-room-button {
-	display: flex;
-	align-items: center;
-	background-color: rgba(39, 6, 47, 0.358);
-	color: white;
-	margin: 5px;
-	border-radius: 10px;
-	border: none;
-	padding: 10px;
-	font-family: 'Roboto', sans-serif;
-	transition: background-color  0.3s;
+	display: flex !important;
+	align-items: center !important;
+	background-color: rgba(39, 6, 47, 0.358) !important;
+	color: white !important;
+	margin: 5px !important;
+	border-radius: 10px !important;
+	border: none !important;
+	padding: 10px !important;
+	font-family: 'Roboto', sans-serif !important;
+	transition: background-color  0.3s !important;
 }
 
 .line-room-button:hover {
