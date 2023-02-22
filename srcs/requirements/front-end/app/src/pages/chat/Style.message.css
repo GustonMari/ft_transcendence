@@ -318,14 +318,47 @@ MESSAGE
 /*Wrapp message receiver to put the box to the right*/
 .wrapper-message {
 	display: flex;
+	align-items: flex-end;
 	/* justify-content: flex-end; */
+}
+
+.wrapper-msg-and-img-left {
+	display: flex;
+	align-items: flex-end;
+	/* flex-direction: column; */
+	/* outline: solid red; */
+}
+
+.wrapper-msg-and-img-right {
+	display: flex;
+	align-items: flex-end;
+	/* flex-direction: column; */
+	/* outline: solid red; */
+}
+
+.img-message-left {
+	height: 30px;
+	width: 30px;
+	border-radius: 50%;
+	/* margin-right: 10px; */
+	margin-left: 10px;
+	margin-bottom: 4px;
+}
+
+.img-message-right {
+	height: 30px;
+	width: 30px;
+	border-radius: 50%;
+	margin-right: 10px;
+	/* margin-left: 10px; */
+	margin-bottom: 4px;
 }
 
 /*Your message, (left)*/
 .message-sender {
 	color: rgb(255, 255, 255);
 	max-width: 70%;
-	margin: 0.3rem 1rem 0.3rem;
+	margin: 0.3rem 0.7rem 0.3rem;
 	padding: 0.5rem 1.5rem;
 	border-radius: 1.125rem 1.125rem 1.125rem 0;
 	box-shadow: 1px 1px 20px 5px rgba(39, 6, 47, 0.27);
@@ -352,7 +385,7 @@ MESSAGE
 .message-receiver {
 	color: rgb(255, 255, 255);
 	max-width: 70%;
-	margin: 0.3rem 1rem 0.3rem auto; /*BUG: Peut etre que auto bug, a tester*/
+	margin: 0.3rem 0.7rem 0.3rem auto; /*BUG: Peut etre que auto bug, a tester*/
 	padding: 0.5rem 1.5rem;
 	border-radius: 1.125rem 1.125rem 0 1.125rem;
 	box-shadow: 1px 1px 20px 5px rgba(39, 6, 47, 0.27);

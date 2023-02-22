@@ -43,17 +43,23 @@ function IsSenderOrReceiver(props: any)
 
 	if(historyItem.sender_id == current_user.id)
 		return (
-			<div className="message-sender">
-				{historyItem.sender_name} : {historyItem.current_message}
-				<span className="chat-date"> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
+			<div className='wrapper-message'>
+				<img className="img-message-left" src="https://www.example.com/images/dinosaur.jpg"/>
+				<div className="message-sender">
+					{historyItem.sender_name} : {historyItem.current_message}
+					<span className="chat-date"> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
+				</div>
 			</div>
 		);
 	else
 		return (
-			<div className="wrapper-message">	
-				<div className="message-receiver">
-					{historyItem.sender_name} : {historyItem.current_message}
-					<span className="chat-date"> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
+			<div>
+				<div className="wrapper-message">	
+					<div className="message-receiver">
+						{historyItem.sender_name} : {historyItem.current_message}
+						<span className="chat-date"> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
+					</div>
+					<img className="img-message-right" src="ttps://www.example.com/images/dinosaur.jpg"/>
 				</div>
 			</div>
 	);
@@ -65,15 +71,17 @@ function IsSenderOrReceiver_socket(props: any)
 
 	if (infomessage.current_user.id == current_user.id)
 	return (
-		<div className="message-sender">
-			{infomessage.current_user.login} : {infomessage.message}
-			<br></br>
-			<span className="chat-date"> {dayjs(infomessage.created_at).format("DD MMM YYYY À H:mm")} </span>
-		</div>
+		<>
+			<div className="message-sender">
+				{infomessage.current_user.login} : {infomessage.message}
+				<br></br>
+				<span className="chat-date"> {dayjs(infomessage.created_at).format("DD MMM YYYY À H:mm")} </span>
+			</div>
+		</>
 	);
 	else
-		return (
-			<div className="wrapper-message">	
+	return (
+		<div className="wrapper-message">	
 				<div className="message-receiver">
 					{infomessage.current_user.login} : {infomessage.message}
 					<span className="chat-date"> {dayjs(infomessage.created_at).format("DD MMM YYYY À H:mm")} </span>
