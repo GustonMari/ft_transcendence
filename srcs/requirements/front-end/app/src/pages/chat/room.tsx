@@ -220,9 +220,15 @@ export function PopupPassword(props: any) {
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
 
-	const handleSetPassword = (password: string) => {
+	const  handleSetPassword = async (password: string) => {
 		setShow(false);
+		const res = await APP.post("/chat/set_room_password", {room_name: room.name, user_id: current_user.id, password: password});
+		let isChanged = res.data;
 		console.log("password = ", password);
+		if (isChanged)
+			console.log("Mot de passe change");
+		else
+			console.log("Mot de passe non change");
 	}
 	function handleKeyDown(event: any) {
 		if (event.key === "Enter") {

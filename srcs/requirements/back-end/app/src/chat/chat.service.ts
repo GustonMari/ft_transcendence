@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'app/src/prisma/prisma.service';
 import { User, Room, Message } from '@prisma/client';
 import { InfoMessage } from './gateways/chat.interface';
+import * as argon from 'argon2';
 
 @Injectable()
 export class ChatService {
@@ -360,13 +361,11 @@ export class ChatService {
 	}
 
 	async IsOwnerOfRoomById (room_name: string, user_id: number): Promise<boolean> {
-	
 		const room = await this.prisma.room.findUnique({
 			where: {
 				name: room_name,
 			}
 		});
-
 		if (user_id === room.owner_id) {
 			return true;
 		}
@@ -374,9 +373,34 @@ export class ChatService {
 	}
 
 	async setRoomPassword (room_name: string, user_id: number, password: string): Promise<boolean> {
-		if (this.IsOwnerOfRoomById(room_name, user_id)) {
-			
+		console.log("setRoomPassword :", "room_name :", room_name, "user_id :", user_id, "password :", password);
+		if (await this.IsOwnerOfRoomById(room_name, user_id)) {
+			const room = await this.prisma.room.update({
+				where: {
+					name: room_name,
+				},
+				data: {
+					password: await argon.hash(password),
+				}
+			})
+			console.log("Im owner");
+			return true;
 		}
+		console.log("Im not owner");
+		return false;
+	}
+
+	async verifyRoomPassword (room_name: string, password: string): Promise<boolean> {
+		const room = await this.prisma.room.findUnique({
+			where: {
+				name: room_name,
+			},
+		})
+		if (argon.verify(room.password, password)) {
+			console.log("password is correct");
+			return true;
+		}
+		console.log("password is incorrect");
 		return false;
 	}
 }

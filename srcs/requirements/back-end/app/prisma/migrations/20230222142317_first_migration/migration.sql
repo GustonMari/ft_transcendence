@@ -47,6 +47,7 @@ CREATE TABLE "Room" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "name" TEXT NOT NULL,
+    "password" TEXT NOT NULL DEFAULT '',
     "owner" TEXT NOT NULL,
     "owner_id" INTEGER NOT NULL,
 
