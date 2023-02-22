@@ -217,31 +217,42 @@ export function PopupPassword(props: any) {
 	let { setMessage, socket, room, current_user, render_react } = props;
 
 	const [show, setShow] = useState(false);
-
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
 
-  
+	const handleSetPassword = (password: string) => {
+		setShow(false);
+		console.log("password = ", password);
+	}
+	function handleKeyDown(event: any) {
+		if (event.key === "Enter") {
+			event.preventDefault();
+			handleSetPassword(value);
+		}
+	  }
+
+	let [value, setValue] = React.useState("");
+
 	return (
 	<div>
-
-
 		<Button className="line-room-button" variant="primary" onClick={handleShow}>
 			<img className="icon-room" src="./lock-room.png" alt="lock room" />
 		</Button>
 			
 		<Modal show={show} onHide={handleClose}>
 			<Modal.Header closeButton>
-				<Modal.Title>Modal heading</Modal.Title>
+				<Modal.Title>Define password for the room</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 			<Form>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Email address</Form.Label>
+              <Form.Label></Form.Label>
               <Form.Control
                 type="password"
-                placeholder="Password for the room"
+                placeholder="password"
                 autoFocus
+				onChange={(e) => setValue(e.target.value)}
+				onKeyDown={handleKeyDown}
               />
             </Form.Group>
           </Form>
@@ -250,7 +261,7 @@ export function PopupPassword(props: any) {
 				<Button variant="secondary" onClick={handleClose}>
 					Close
 				</Button>
-				<Button variant="primary" onClick={handleClose}>
+				<Button variant="primary" onClick={() => handleSetPassword(value)}>
 					Save Changes
 				</Button>
 			</Modal.Footer>
