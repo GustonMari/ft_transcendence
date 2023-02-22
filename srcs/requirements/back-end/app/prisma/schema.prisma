@@ -71,8 +71,8 @@ model Room {
     updated_at DateTime @updatedAt
     name       String   @unique
 
-    owner String @unique
-    owner_id Int @unique
+    owner String
+    owner_id Int
     users UsersOnRooms[]
 
 	messages Message[]

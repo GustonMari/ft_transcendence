@@ -16,7 +16,6 @@ export class ChatService {
 			throw new Error('User not found');
 		}
 
-	
 		await this.prisma.usersOnRooms.create({
 			data: {
 				room: {
@@ -349,13 +348,14 @@ export class ChatService {
 
 	async IsOwnerOfRoomByLogin (room_name: string, user_login: string): Promise<boolean> {
 	
+		console.log("IsOwnerOfRoomByLogin SERVICE =" + user_login + " ROOM= " + room_name );
 		const room = await this.prisma.room.findUnique({
 			where: {
 				name: room_name,
 			}
 		});
-
-		if (user_login == room.owner) {
+		console.log('check = ' + user_login + " === " + room.owner)
+		if (user_login === room.owner) {
 			return true;
 		}
 		return false;
@@ -369,7 +369,7 @@ export class ChatService {
 			}
 		});
 
-		if (user_id == room.owner_id) {
+		if (user_id === room.owner_id) {
 			return true;
 		}
 		return false;

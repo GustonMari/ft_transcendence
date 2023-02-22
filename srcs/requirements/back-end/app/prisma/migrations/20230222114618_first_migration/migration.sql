@@ -105,12 +105,6 @@ CREATE UNIQUE INDEX "Room_id_key" ON "Room"("id");
 CREATE UNIQUE INDEX "Room_name_key" ON "Room"("name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Room_owner_key" ON "Room"("owner");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Room_owner_id_key" ON "Room"("owner_id");
-
--- CreateIndex
 CREATE UNIQUE INDEX "messages_id_key" ON "messages"("id");
 
 -- AddForeignKey

@@ -40,4 +40,12 @@ export class ChatController {
 		response.send(ban);
 
 	}
+
+	@Post('get_isowner_login')
+	async get_isowner_login(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+		console.log('get_isowner_login called info.room_name = ' + info.room_name + ' info.login = ' + info.login);
+		const owner = await this.chatService.IsOwnerOfRoomByLogin(info.room_name, info.login);
+		response.send(owner);
+
+	}
 }
