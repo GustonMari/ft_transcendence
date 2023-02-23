@@ -82,7 +82,7 @@ export default function Chat() {
 					/>
 			</div>
 			<div className="message-box">
-				<DisplayMessagesByRoom current_user={currentUser} socket={socket} history={history}  infomessage={messages} room={room}/>
+				<DisplayMessagesByRoom current_user={currentUser} socket={socket} history={history} infomessage={messages} room={room}/>
 				<MessageInput send={send}/>
 			</div>
 			<div className="menu-chat">

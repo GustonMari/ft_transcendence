@@ -110,9 +110,13 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			console.log('you dont have permission to delete the room');
 			return ;
 		}
-		await this.myserver.socketsLeave(data.room_name);
 		await this.chatService.deleteRoom(data.room_name, data.id_user);
-		socket.emit('renderReact', 'renderReact');
+		this.myserver.to(data.room_name).emit('renderReact', 'renderReact');
+		await this.myserver.socketsLeave(data.room_name);
+
+		// await this.myserver.socketsLeave(data.room_name);
+		// await this.chatService.deleteRoom(data.room_name, data.id_user);
+		// socket.emit('renderReact', 'renderReact');
 	}
 
 	@SubscribeMessage('setAdmin')
