@@ -9,6 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // import Button from 'react-bootstrap/Button';
 // import { Modal } from 'react-bootstrap';
 // import Form from 'react-bootstrap/Form';
+import { ProgressBar } from "./utils";
 
 dayjs.locale('fr'); // set locale to French
 
@@ -61,7 +62,7 @@ function IsSenderOrReceiver(props: any)
 		return (
 			<div>
 				<div className="wrapper-message">	
-					<PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass="img-message-left" current_user={historyItem.sender_name}/>
+					<PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass="img-message-left" current_user={historyItem.sender}/>
 					<div className="message-sender">
 						{historyItem.sender_name} : {historyItem.current_message}
 						<span className="chat-date"> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
@@ -150,11 +151,18 @@ function PopupImage(props: any) {
 
 		<Modal show={show} onHide={handleClose}>
 		  <Modal.Header closeButton>
-			<Modal.Title>Avatar</Modal.Title>
+			<Modal.Title>Profile</Modal.Title>
 		  </Modal.Header>
 		  <Modal.Body className="text-center">
 			<img src={ imageSrc } className="img-popup-user"/>
-			<h1></h1>
+			<br />
+			<br />
+			<ProgressBar progress={70}/>
+			<h4>Login : {current_user.login}</h4>
+			<h4>First Name : {current_user.first_name}</h4>
+			<h4>Last Name : {current_user.last_name}</h4>
+			<h4>Email : {current_user.email}</h4>
+			<h4>State : {current_user.state}</h4>
 		  </Modal.Body>
 		  <Modal.Footer>
 			<Button variant="secondary" onClick={handleClose}>
