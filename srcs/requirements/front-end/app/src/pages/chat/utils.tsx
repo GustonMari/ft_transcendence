@@ -13,6 +13,8 @@ import Button from 'react-bootstrap/Button';
 import { Modal } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 
+//shake_name = css name of the modal
+//shake_id = id of the modal
 export function shakeIt(shake_name: string, shake_id: string)
 {
 	const modalPopup = document.getElementById(shake_id);
