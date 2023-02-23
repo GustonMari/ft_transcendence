@@ -53,14 +53,14 @@ function IsSenderOrReceiver(props: any)
 					{historyItem.sender_name} : {historyItem.current_message}
 					<span className="chat-date"> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
 				</div>
-				<PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass="img-message-right"/>
+				<PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass="img-message-right" current_user={current_user}/>
 			</div>
 		);
 	else
 		return (
 			<div>
 				<div className="wrapper-message">	
-					<PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass="img-message-left"/>
+					<PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass="img-message-left" current_user={historyItem.sender_name}/>
 					<div className="message-sender">
 						{historyItem.sender_name} : {historyItem.current_message}
 						<span className="chat-date"> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
@@ -83,47 +83,21 @@ function IsSenderOrReceiver_socket(props: any)
 		 			{infomessage.current_user.login} : {infomessage.message}
 	 				<span className="chat-date"> {dayjs(infomessage.created_at).format("DD MMM YYYY À H:mm")} </span>
 				</div>
-				<PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass="img-message-right"/>
+				<PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass="img-message-right" current_user={current_user}/>
 			</div>
 		);
 	else
 		return (
 			<div>
 				<div className="wrapper-message">	
-					<PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass="img-message-left"/>
+					<PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass="img-message-left" current_user={infomessage.current_user}/>
 					<div className="message-sender">
 						{infomessage.current_user.login} : {infomessage.message}
 						<span className="chat-date"> {dayjs(infomessage.created_at).format("DD MMM YYYY À H:mm")} </span>
 					</div>
-					{/* <img className="img-message-right" src="https://cutt.ly/v8wcluh"/> */}
 				</div>
 			</div>
 	);
-
-
-
-
-	// let {infomessage, current_user} = props;
-
-	// if (infomessage.current_user.id == current_user.id)
-	// return (
-	// 	<>
-	// 		<div className="message-sender">
-	// 			{infomessage.current_user.login} : {infomessage.message}
-	// 			<br></br>
-	// 			<span className="chat-date"> {dayjs(infomessage.created_at).format("DD MMM YYYY À H:mm")} </span>
-	// 		</div>
-	// 	</>
-	// );
-	// else
-	// return (
-	// 	<div className="wrapper-message">	
-	// 			<div className="message-receiver">
-	// 				{infomessage.current_user.login} : {infomessage.message}
-	// 				<span className="chat-date"> {dayjs(infomessage.created_at).format("DD MMM YYYY À H:mm")} </span>
-	// 			</div>
-	// 		</div>
-	// );
 }
 
 export function DisplayMessagesByRoom(props: any) {
@@ -158,7 +132,7 @@ export function DisplayMessagesByRoom(props: any) {
 
 
 function PopupImage(props: any) {
-	const { imageSrc, classPass } = props;
+	const { imageSrc, classPass, current_user } = props;
   
 	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
@@ -179,6 +153,7 @@ function PopupImage(props: any) {
 		  </Modal.Header>
 		  <Modal.Body className="text-center">
 			<img src={ imageSrc } className="img-popup-user"/>
+			<h1></h1>
 		  </Modal.Body>
 		  <Modal.Footer>
 			<Button variant="secondary" onClick={handleClose}>
