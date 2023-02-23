@@ -46,7 +46,6 @@ export class ChatController {
 	async get_isowner_login(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
 		const owner = await this.chatService.IsOwnerOfRoomByLogin(info.room_name, info.login);
 		response.send(owner);
-
 	}
 
 	@Post('set_room_password')

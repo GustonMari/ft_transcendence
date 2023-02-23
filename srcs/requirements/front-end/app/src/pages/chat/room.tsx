@@ -12,6 +12,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import { Modal } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
+import { shakeIt } from './utils';
 
 export function RoomForm(props : any)
 {
@@ -145,14 +146,7 @@ function InputRoom(props: any) {
 		}
 		else {
 			setPassword("");
-			const modalPopup = document.getElementById("password-modal");
-			if (modalPopup)
-			{
-				modalPopup.classList.add("shake");
-				setTimeout(() => {
-					modalPopup.classList.remove("shake");
-				}, 500);
-			}
+			shakeIt("shake", "shaking-modal-input-room");
 		}
 	}
 
@@ -172,7 +166,7 @@ function InputRoom(props: any) {
 			<img className='icon-enter-room' src="./enter-room.png" alt="create room" />
 		</Button>
 
-		<Modal show={show} onHide={handleClose} id="password-modal">
+		<Modal show={show} onHide={handleClose} id="shaking-modal-input-room">
 			<Modal.Header closeButton>
 				<Modal.Title>Enter the password of the room</Modal.Title>
 			</Modal.Header>
@@ -274,6 +268,7 @@ export function PopupDelete(props: any) {
 			<button
 			  type="submit"
 			  className="line-room-button"
+			  id="shaking-modal-delete-room"
 			  onClick={() => {}}
 			>
 			  <img className="icon-room" src="./delete-room.png" alt="delete room" />
@@ -283,15 +278,12 @@ export function PopupDelete(props: any) {
 		  <div>
 			<button className='line-room-button-popup'
 			  onClick={() => {
-
-
 				const is_owner = async () => {
 					const res = await APP.post("/chat/get_isowner_login", {room_name: room.name, login: current_user.login});
 					let owner = res.data;
-					owner ? deleteRoom() : "" ;
+					owner ? deleteRoom() : shakeIt("shake-button", "shaking-modal-delete-room") ;
 				}
 				is_owner();
-
 			}}
 			>
 				<img className="icon-room-popup" src="./accept.png" alt="leave room" />
@@ -310,7 +302,15 @@ export function PopupPassword(props: any) {
 
 	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
-	const handleShow = () => setShow(true);
+
+	const handleShow = async () => {
+		const owner = await APP.post("/chat/get_isowner_login", {room_name: room.name, login: current_user.login})
+		if (owner.data)
+			setShow(true);
+		else {
+			shakeIt("shake-button", "shaking-modal-password-room");
+		  }
+	};
 
 	const  handleSetPassword = async (password: string) => {
 		setShow(false);
@@ -322,22 +322,23 @@ export function PopupPassword(props: any) {
 		else
 			console.log("Mot de passe non change");
 	}
+
 	function handleKeyDown(event: any) {
 		if (event.key === "Enter") {
 			event.preventDefault();
 			handleSetPassword(value);
 		}
-	  }
+	}
 
 	let [value, setValue] = React.useState("");
 
 	return (
 	<div>
-		<Button className="line-room-button" variant="primary" onClick={handleShow}>
+		<Button className="line-room-button" id="shaking-modal-password-room" variant="primary" onClick={handleShow}>
 			<img className="icon-room" src="./lock-room.png" alt="lock room" />
 		</Button>
 			
-		<Modal show={show} onHide={handleClose}>
+		<Modal show={show} onHide={handleClose} >
 			<Modal.Header closeButton>
 				<Modal.Title>Define password for the room</Modal.Title>
 			</Modal.Header>
@@ -365,13 +366,77 @@ export function PopupPassword(props: any) {
 			</Modal.Footer>
 		</Modal>
 
+	</div>
+	);
+}
+
+// export function PopupPassword(props: any) {
+// 	let { setMessage, socket, room, current_user, render_react } = props;
+
+// 	const [show, setShow] = useState(false);
+// 	const handleClose = () => setShow(false);
+// 	const handleShow = () => setShow(true);
+
+// 	const  handleSetPassword = async (password: string) => {
+// 		setShow(false);
+// 		const res = await APP.post("/chat/set_room_password", {room_name: room.name, user_id: current_user.id, password: password});
+// 		let isChanged = res.data;
+// 		console.log("password = ", password);
+// 		if (isChanged)
+// 			console.log("Mot de passe change");
+// 		else
+// 			console.log("Mot de passe non change");
+// 	}
+// 	function handleKeyDown(event: any) {
+// 		if (event.key === "Enter") {
+// 			event.preventDefault();
+// 			handleSetPassword(value);
+// 		}
+// 	  }
+
+// 	let [value, setValue] = React.useState("");
+
+// 	return (
+// 	<div>
+// 		<Button className="line-room-button" variant="primary" onClick={handleShow}>
+// 			<img className="icon-room" src="./lock-room.png" alt="lock room" />
+// 		</Button>
+			
+// 		<Modal show={show} onHide={handleClose}>
+// 			<Modal.Header closeButton>
+// 				<Modal.Title>Define password for the room</Modal.Title>
+// 			</Modal.Header>
+// 			<Modal.Body>
+// 			<Form>
+//             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+//               <Form.Label></Form.Label>
+//               <Form.Control
+//                 type="password"
+//                 placeholder="password"
+//                 autoFocus
+// 				onChange={(e) => setValue(e.target.value)}
+// 				onKeyDown={handleKeyDown}
+//               />
+//             </Form.Group>
+//           </Form>
+// 			</Modal.Body>
+// 			<Modal.Footer>
+// 				<Button variant="secondary" onClick={handleClose}>
+// 					Close
+// 				</Button>
+// 				<Button variant="primary" onClick={() => handleSetPassword(value)}>
+// 					Save Changes
+// 				</Button>
+// 			</Modal.Footer>
+// 		</Modal>
+
 			  
 
 
 		
-	</div>
-	);
-}
+// 	</div>
+// 	);
+// }
 
 
 
