@@ -43,3 +43,8 @@ export interface InfoMessage {
 	message: string;
 	current_user: User;
 }
+
+export interface InfoInvite {
+	current_user: User; 
+	invited: string;
+}
