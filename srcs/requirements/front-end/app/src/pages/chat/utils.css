@@ -25,7 +25,7 @@
     width: var(--progress-percentage);
 	/* background-color: blue; */
 	/* background: linear-gradient(to right, green var(--progress-percentage), red var(--progress-percentage)); */
-	background-image: linear-gradient(to right, rgba(218, 96, 248, 0.528) var(--progress-percentage), rgba(117, 11, 144, 0.813) 100%);
+	background-image: linear-gradient(to right, rgba(218, 96, 248, 0.528) 0%, rgba(117, 11, 144, 0.813) 100%);
 	border-radius: inherit;
 	text-align: right;
 	color: white;

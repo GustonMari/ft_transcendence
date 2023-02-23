@@ -34,7 +34,6 @@ export function ProgressBar(props: any)
 
 	document.documentElement.style.setProperty('--progress-percentage', `${progress}%`);
 	
-	// const progressColor = `linear-gradient(to right, green ${progress}%, red ${progress}%)`;
 	
 	return (
 		<div className='container-progress-bar'>
