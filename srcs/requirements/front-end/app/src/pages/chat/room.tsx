@@ -96,8 +96,7 @@ function InputRoom(props: any) {
 	
 	let {define_room, current_room, current_user, socket, handle_history, setMessage, render_react} = props;
 	
-	// const id = `shaking-${current_room.name}`;
-	const id = "shaking-test";
+	const id = `shaking-${current_room.name}-input`;
 	const [value, setValue] = React.useState("");
 	const [password, setPassword] = React.useState("");
 	const [show, setShow] = useState(false);
@@ -148,8 +147,7 @@ function InputRoom(props: any) {
 		}
 		else {
 			setPassword("");
-			// shakeIt("shake", current_room.name);
-			shakeIt("shake", "shaking-test");
+			shakeIt("shake", (`${current_room.name}-input`));
 		}
 	}
 
