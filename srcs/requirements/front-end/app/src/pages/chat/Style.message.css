@@ -341,7 +341,7 @@ MESSAGE
 	width: 30px;
 	border-radius: 50%;
 	/* margin-right: 10px; */
-	margin-left: 10px;
+	margin-left: 3px;
 	margin-bottom: 4px;
 }
 
@@ -352,6 +352,15 @@ MESSAGE
 	margin-right: 10px;
 	/* margin-left: 10px; */
 	margin-bottom: 4px;
+}
+
+.img-popup-user {
+	height: 50px;
+	width: 50px;
+	border-radius: 50%;
+	/* margin-right: 10px; */
+	/* margin-left: 10px; */
+	/* margin-bottom: 4px; */
 }
 
 /*Your message, (left)*/

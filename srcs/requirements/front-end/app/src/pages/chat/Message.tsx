@@ -5,6 +5,10 @@ import './Style.message.css';
 import dayjs from "dayjs";
 import 'dayjs/locale/fr';
 import { Button, Modal } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+// import Button from 'react-bootstrap/Button';
+// import { Modal } from 'react-bootstrap';
+// import Form from 'react-bootstrap/Form';
 
 dayjs.locale('fr'); // set locale to French
 
@@ -45,8 +49,7 @@ function IsSenderOrReceiver(props: any)
 	if(historyItem.sender_id == current_user.id)
 		return (
 			<div className='wrapper-message'>
-				{/* <img className="img-message-left" src="https://www.example.com/images/dinosaur.jpg"/> */}
-				<PopupImage imageSrc="https://www.example.com/images/dinosaur.jpg" classPass="img-message-left"/>
+				<PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass="img-message-left"/>
 				<div className="message-sender">
 					{historyItem.sender_name} : {historyItem.current_message}
 					<span className="chat-date"> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
@@ -61,11 +64,41 @@ function IsSenderOrReceiver(props: any)
 						{historyItem.sender_name} : {historyItem.current_message}
 						<span className="chat-date"> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
 					</div>
-					<img className="img-message-right" src="ttps://www.example.com/images/dinosaur.jpg"/>
+					<PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass="img-message-right"/>
+					{/* <img className="img-message-right" src="https://cutt.ly/v8wcluh"/> */}
 				</div>
 			</div>
 	);
 }
+
+// function IsSenderOrReceiver(props: any)
+// {
+// 	let {historyItem, current_user} = props;
+
+// 	if(historyItem.sender_id == current_user.id)
+// 		return (
+// 			<div className='wrapper-message'>
+// 				<PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass="img-message-left"/>
+// 				<div className="message-sender">
+// 					{historyItem.sender_name} : {historyItem.current_message}
+// 					<span className="chat-date"> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
+// 				</div>
+// 			</div>
+// 		);
+// 	else
+// 		return (
+// 			<div>
+// 				<div className="wrapper-message">	
+// 					<div className="message-receiver">
+// 						{historyItem.sender_name} : {historyItem.current_message}
+// 						<span className="chat-date"> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
+// 					</div>
+// 					<PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass="img-message-right"/>
+// 					{/* <img className="img-message-right" src="https://cutt.ly/v8wcluh"/> */}
+// 				</div>
+// 			</div>
+// 	);
+// }
 
 function IsSenderOrReceiver_socket(props: any)
 {
@@ -133,16 +166,19 @@ function PopupImage(props: any) {
   
 	return (
 	  <div>
-		<Button variant="primary" onClick={handleShow} >
+		<a href="#" onClick={handleShow}>
+			<img src={ imageSrc } className={classPass}/>
+		</a>
+		{/* <Button id="bootstrap-overrides" variant="primary" onClick={handleShow} >
 		  <img src={ imageSrc } className={classPass}/>
-		</Button>
-  
+		</Button> */}
+
 		<Modal show={show} onHide={handleClose}>
 		  <Modal.Header closeButton>
 			<Modal.Title>Avatar</Modal.Title>
 		  </Modal.Header>
-		  <Modal.Body>
-			<img src={ imageSrc }/>
+		  <Modal.Body className="text-center">
+			<img src={ imageSrc } className="img-popup-user"/>
 		  </Modal.Body>
 		  <Modal.Footer>
 			<Button variant="secondary" onClick={handleClose}>
