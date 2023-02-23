@@ -15,6 +15,7 @@ import Form from 'react-bootstrap/Form';
 
 //shake_name = css name of the modal
 export function shakeIt(shake_name: string, room_name: string) {
+	console.log("shakeIt", "|", `shaking-${room_name}`, "|");
 	const modal = document.getElementById(`shaking-${room_name}`);
 	if (modal) {
 		modal.classList.add('shake');
