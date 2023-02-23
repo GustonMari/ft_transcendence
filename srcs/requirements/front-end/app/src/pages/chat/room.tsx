@@ -255,6 +255,7 @@ export function PopupDelete(props: any) {
 	let { setMessage, socket, room, current_user, render_react } = props;
 	const ref = useRef<any>();
 	const closeTooltip = () => ref.current.close();
+	const id = `shaking-${room.name}`;
   
 	function deleteRoom() {
 		setMessage([]);
@@ -274,7 +275,7 @@ export function PopupDelete(props: any) {
 			<button
 			  type="submit"
 			  className="line-room-button"
-			  id="shaking-modal-delete-room"
+			  id={id}
 			  onClick={() => {}}
 			>
 			  <img className="icon-room" src="./delete-room.png" alt="delete room" />
@@ -287,7 +288,7 @@ export function PopupDelete(props: any) {
 				const is_owner = async () => {
 					const res = await APP.post("/chat/get_isowner_login", {room_name: room.name, login: current_user.login});
 					let owner = res.data;
-					owner ? deleteRoom() : shakeIt("shake-button", "shaking-modal-delete-room") ;
+					owner ? deleteRoom() : shakeIt("shake-button", room.name) ;
 				}
 				is_owner();
 			}}
