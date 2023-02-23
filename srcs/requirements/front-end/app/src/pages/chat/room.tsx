@@ -82,16 +82,6 @@ export function RoomForm(props : any)
 	);
 }
 
-function test() {
-	return (
-		<div>
-			<p>test</p>
-		</div>
-	);
-}
-
-
-
 function InputRoom(props: any) {
 	
 	let {define_room, current_room, current_user, socket, handle_history, setMessage, render_react} = props;
@@ -169,9 +159,9 @@ function InputRoom(props: any) {
 		<Button className='input-room-button'  onClick={handleAddRoom}>
 			<img className='icon-enter-room' src="./enter-room.png" alt="create room" />
 		</Button>
-		{/* <Button className='input-room-button'  onClick={handleAddRoom}>
+		<Button className='input-room-button'  onClick={handleAddPrivateRoom}>
 			<img className='icon-enter-room' src="./private-message.png" alt="create room" />
-		</Button> */}
+		</Button>
 
 		<Modal show={show} onHide={handleClose} id={id}>
 			<Modal.Header closeButton>
