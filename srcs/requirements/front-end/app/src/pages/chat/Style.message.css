@@ -172,10 +172,15 @@ LEFT
 .input-room-button {
 	display: flex !important;
 	border-radius: 50% !important;
-	padding: 2px !important;
+	/* padding: 2px !important; */
+	padding: 4.5px !important;
 	border: none !important;
-	margin: 2px !important;
+	margin: 2.5px !important;
 	background-color: rgba(39, 6, 47, 0.643) !important;
+
+	/* align-items: center !important; */
+	/* width: 1px;
+	height: 1px; */
 }
 
 .input-room-button:hover {
@@ -201,6 +206,11 @@ LEFT
 .icon-enter-room {
 	width: 20px;
 	height: 20px;
+	/* width: 10px;
+	height: 10px; */
+	/* display: flex; */
+	
+	
 }
 
 /*Room popup*/

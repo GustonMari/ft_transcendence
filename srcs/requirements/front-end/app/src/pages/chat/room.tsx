@@ -150,7 +150,6 @@ function InputRoom(props: any) {
 		}
 	}
 
-
 	let handleAddRoom = async () => {
 		if (await checkIsPassword())
 			handleShow();
@@ -159,12 +158,19 @@ function InputRoom(props: any) {
 		}
 	}
 
+	let handleAddPrivateRoom = async () => {
+		addRoom();
+	}
+
 	return (
 	<div className='input-room'>
 		<input className='borderbox-room' onChange={(e) => setValue(e.target.value)} onKeyDown={handleKeyDown} placeholder="define your room..." value={value} />
 		<Button className='input-room-button'  onClick={handleAddRoom}>
 			<img className='icon-enter-room' src="./enter-room.png" alt="create room" />
 		</Button>
+		{/* <Button className='input-room-button'  onClick={handleAddRoom}>
+			<img className='icon-enter-room' src="./private-message.png" alt="create room" />
+		</Button> */}
 
 		<Modal show={show} onHide={handleClose} id="shaking-modal-input-room">
 			<Modal.Header closeButton>
@@ -297,18 +303,92 @@ export function PopupDelete(props: any) {
 	);
 }
 
+// export function PopupPassword(props: any) {
+// 	let { setMessage, socket, room, current_user, render_react } = props;
+
+// 	const [show, setShow] = useState(false);
+// 	const handleClose = () => setShow(false);
+
+// 	const handleShow = async () => {
+// 		const owner = await APP.post("/chat/get_isowner_login", {room_name: room.name, login: current_user.login})
+// 		if (owner.data)
+// 			setShow(true);
+// 		else {
+// 			shakeIt("shake-button", "shaking-modal-password-room");
+// 		  }
+// 	};
+
+// 	const  handleSetPassword = async (password: string) => {
+// 		setShow(false);
+// 		const res = await APP.post("/chat/set_room_password", {room_name: room.name, user_id: current_user.id, password: password});
+// 		let isChanged = res.data;
+// 		console.log("password = ", password);
+// 		if (isChanged)
+// 			console.log("Mot de passe change");
+// 		else
+// 			console.log("Mot de passe non change");
+// 	}
+
+// 	function handleKeyDown(event: any) {
+// 		if (event.key === "Enter") {
+// 			event.preventDefault();
+// 			handleSetPassword(value);
+// 		}
+// 	}
+
+// 	let [value, setValue] = React.useState("");
+
+// 	return (
+// 	<div>
+// 		<Button className="line-room-button" id="shaking-modal-password-room" variant="primary" onClick={handleShow}>
+// 			<img className="icon-room" src="./lock-room.png" alt="lock room" />
+// 		</Button>
+			
+// 		<Modal show={show} onHide={handleClose} >
+// 			<Modal.Header closeButton>
+// 				<Modal.Title>Define password for the room</Modal.Title>
+// 			</Modal.Header>
+// 			<Modal.Body>
+// 			<Form>
+//             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+//               <Form.Label></Form.Label>
+//               <Form.Control
+//                 type="password"
+//                 placeholder="password"
+//                 autoFocus
+// 				onChange={(e) => setValue(e.target.value)}
+// 				onKeyDown={handleKeyDown}
+//               />
+//             </Form.Group>
+//           </Form>
+// 			</Modal.Body>
+// 			<Modal.Footer>
+// 				<Button variant="secondary" onClick={handleClose}>
+// 					Close
+// 				</Button>
+// 				<Button variant="primary" onClick={() => handleSetPassword(value)}>
+// 					Save Changes
+// 				</Button>
+// 			</Modal.Footer>
+// 		</Modal>
+
+// 	</div>
+// 	);
+// }
+
 export function PopupPassword(props: any) {
 	let { setMessage, socket, room, current_user, render_react } = props;
 
 	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
+	const id = `shaking-${room.name}`;
 
 	const handleShow = async () => {
 		const owner = await APP.post("/chat/get_isowner_login", {room_name: room.name, login: current_user.login})
 		if (owner.data)
 			setShow(true);
 		else {
-			shakeIt("shake-button", "shaking-modal-password-room");
+			shakeIt("shake-button", room.name);
 		  }
 	};
 
@@ -334,7 +414,7 @@ export function PopupPassword(props: any) {
 
 	return (
 	<div>
-		<Button className="line-room-button" id="shaking-modal-password-room" variant="primary" onClick={handleShow}>
+		<Button className="line-room-button" id={id} variant="primary" onClick={handleShow}>
 			<img className="icon-room" src="./lock-room.png" alt="lock room" />
 		</Button>
 			
@@ -369,6 +449,8 @@ export function PopupPassword(props: any) {
 	</div>
 	);
 }
+
+
 
 
 export async function AuthorizeUser(props : any) : Promise<void>
