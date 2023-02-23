@@ -145,7 +145,14 @@ function InputRoom(props: any) {
 		}
 		else {
 			setPassword("");
-			setValue("");
+			const modalPopup = document.getElementById("password-modal");
+			if (modalPopup)
+			{
+				modalPopup.classList.add("shake");
+				setTimeout(() => {
+					modalPopup.classList.remove("shake");
+				}, 500);
+			}
 		}
 	}
 
@@ -165,7 +172,7 @@ function InputRoom(props: any) {
 			<img className='icon-enter-room' src="./enter-room.png" alt="create room" />
 		</Button>
 
-		<Modal show={show} onHide={handleClose}>
+		<Modal show={show} onHide={handleClose} id="password-modal">
 			<Modal.Header closeButton>
 				<Modal.Title>Enter the password of the room</Modal.Title>
 			</Modal.Header>
@@ -197,55 +204,6 @@ function InputRoom(props: any) {
 	</div>
 	);
 }
-
-// function InputRoom(props: any) {
-	
-// 	let {define_room, current_room, current_user, socket, handle_history, setMessage, render_react} = props;
-	
-// 	const [value, setValue] = React.useState("");
-
-// 	async function checkPassword() {
-// 		const res = await APP.post("/chat/is_room_has_password", {room_name: value});
-// 		if (res.data === true)
-// 		{
-// 			console.log("true room has password");
-// 			return true;
-// 		}
-// 		else
-// 		{
-// 			console.log("false room has no password");
-// 			return false;
-// 		}
-// 	}
-
-// 	async function addRoom() {
-// 		if (await checkPassword()) {
-// 			console.log("checking password...")
-// 		}
-// 		setMessage([]);
-// 		define_room(value);
-// 		socket?.emit("message", {room: value, message: `${current_user.login} has join the room ${value}`})
-// 		socket?.on('renderReact', render_react);
-// 		setValue("");
-// 	}
-
-// 	function handleKeyDown(event: any) {
-// 		console.log(event.key);
-// 		if (event.key === "Enter") {
-// 			event.preventDefault();
-// 			addRoom();
-// 		}
-// 	  }
-
-// 	return (
-// 	<div className='input-room'>
-// 		<input className='borderbox-room' onChange={(e) => setValue(e.target.value)} onKeyDown={handleKeyDown} placeholder="define your room..." value={value} />
-// 		<button className='input-room-button'  onClick={() => addRoom()}>
-// 			<img className='icon-enter-room' src="./enter-room.png" alt="create room" />
-// 		</button>
-// 	</div>
-// 	);
-// }
 
 export function PopupLeave(props: any) {
 	let { setMessage, socket, room, current_user, render_react } = props;
