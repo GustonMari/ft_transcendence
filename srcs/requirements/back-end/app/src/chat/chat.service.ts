@@ -10,7 +10,7 @@ export class ChatService {
 
 	constructor(private readonly prisma: PrismaService) { }
 
-	async createChatRoom(room_name: string, user_id: number )/*  : Promise<Room> */
+	async createChatRoom(room_name: string, user_id: number )
 	{
 		const current_user = await this.prisma.user.findUnique({ where: { id: user_id } });
 		if (!current_user) {
@@ -35,7 +35,7 @@ export class ChatService {
 		});
 	}
 
-	async joinChatRoom(room_name: string, user_id: number )/*  : Promise<Room> */
+	async joinChatRoom(room_name: string, user_id: number )
 	{
 		//TODO: change with findOne
 		const current_user = await this.prisma.user.findUnique({ where: { id: user_id } });
@@ -69,7 +69,6 @@ export class ChatService {
 		}
 	}
 
-
 	async leaveRoom(room_name: string, user_id: number) {
 		
 		const room_exist = await this.prisma.room.findUnique({ 
@@ -99,7 +98,6 @@ export class ChatService {
 			  }
 			});
 		}
-
 	}
 
 	async roomExists(room_name: string): Promise<boolean> {
@@ -117,27 +115,16 @@ export class ChatService {
 			return false;
 		}
 
-		// await this.prisma.room.update({
-		// 	where: { name: room_name },
-		// 	data: {
-		// 	  messages: {
-		// 		// delete: true,
-		// 	  }
-		// 	},
-		//   });
-
 		await this.prisma.usersOnRooms.deleteMany({
 			where: {
 				room_id: room_exist.id,
 			},
 		})
-		// await this.prisma.room.delete({ where: { name: room_name } });
 		await this.prisma.room.delete({
 			where: { name: room_name },
 			include: {
 			  messages: {
-				
-				// cascade: true
+	
 			  }
 			}
 		  });
@@ -178,14 +165,6 @@ export class ChatService {
 		}
 		return user_in_room.admin;
 	}
-
-	// async getIdUser(user_login: string): Promise<number> {
-	// 	const user = await this.prisma.user.findUnique({ where: { login: user_login } });
-	// 	if (!user) {
-	// 		return -1;
-	// 	}
-	// 	return user.id;
-	// }
 
 	async getIdUser(user_login: string): Promise<number> {
 		const user = await this.prisma.user.findUnique({ where: { login: user_login } });
