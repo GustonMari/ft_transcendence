@@ -26,6 +26,12 @@ export class ChatController {
 		response.send(rooms);
 	}
 
+	@Post('is_user_exists')
+	async is_user_exists(@Res() response: Response ,@MessageBody() info: any): Promise<any> {
+		const user = await this.chatService.isUserExists(info.login);
+		response.send(user);
+	}
+
 	@Post('get_messages_by_room')
 	async get_messages_by_room(@Res() response: Response ,@MessageBody() room_name: any): Promise<any> {
 		if (room_name == null || room_name == undefined)

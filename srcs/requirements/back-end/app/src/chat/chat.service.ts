@@ -108,6 +108,14 @@ export class ChatService {
 		return true;
 	}
 
+	async isUserExists(user_login: string): Promise<boolean> {
+		const user_exist = await this.prisma.user.findUnique({ where: { login: user_login } });
+		if (!user_exist) {
+			return false;
+		}
+		return true;
+	}
+
 
 	async deleteRoom(room_name: string, user_id: number): Promise<boolean> {
 		const room_exist = await this.prisma.room.findUnique({ where: { name: room_name } });

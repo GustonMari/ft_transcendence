@@ -84,9 +84,10 @@ export function RoomForm(props : any)
 
 function InputRoom(props: any) {
 	
-	let {define_room, current_room, current_user, socket, handle_history, setMessage, render_react} = props;
+	let	{define_room, current_room, current_user, socket, handle_history, setMessage, render_react} = props;
 	
 	const id = `shaking-${current_room.name}-input`;
+	const id_private = `shaking-${current_room.name}-input-private`;
 	const [value, setValue] = React.useState("");
 	const [password, setPassword] = React.useState("");
 	const [show, setShow] = useState(false);
@@ -150,7 +151,14 @@ function InputRoom(props: any) {
 	}
 
 	let handleAddPrivateRoom = async () => {
-		addRoom();
+		const user = await APP.post("/chat/is_user_exists", {login: value});
+		if (user.data) {
+			addRoom();
+		}
+		else {
+			
+			shakeIt("shake", (`${current_room.name}-input-private`));
+		}
 	}
 
 	return (
@@ -159,7 +167,7 @@ function InputRoom(props: any) {
 		<Button className='input-room-button'  onClick={handleAddRoom}>
 			<img className='icon-enter-room' src="./enter-room.png" alt="create room" />
 		</Button>
-		<Button className='input-room-button'  onClick={handleAddPrivateRoom}>
+		<Button className='input-room-button' id={id_private} onClick={handleAddPrivateRoom}>
 			<img className='icon-enter-room' src="./private-message.png" alt="create room" />
 		</Button>
 
