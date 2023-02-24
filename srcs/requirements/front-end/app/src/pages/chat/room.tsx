@@ -151,12 +151,18 @@ function InputRoom(props: any) {
 	}
 
 	let handleAddPrivateRoom = async () => {
+
 		const user = await APP.post("/chat/is_user_exists", {login: value});
 		if (user.data) {
-			addRoom();
+			let privateRoomName = "";
+			if (value.localeCompare(current_user.login) < 0)
+				privateRoomName = value + "-" + current_user.login;
+			else
+				privateRoomName = current_user.login + "-" + value;
+			define_room(privateRoomName);
+			setValue("");
 		}
 		else {
-			
 			shakeIt("shake", (`${current_room.name}-input-private`));
 		}
 	}
@@ -176,18 +182,18 @@ function InputRoom(props: any) {
 				<Modal.Title>Enter the password of the room</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-			<Form>
-            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label></Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="password"
-                autoFocus
-				onChange={(e) => setPassword(e.target.value)}
-				onKeyDown={handleKeyDownPassword}
-              />
-            </Form.Group>
-          </Form>
+				<Form>
+					<Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+						<Form.Label></Form.Label>
+						<Form.Control
+						type="password"
+						placeholder="password"
+						autoFocus
+						onChange={(e) => setPassword(e.target.value)}
+						onKeyDown={handleKeyDownPassword}
+						/>
+					</Form.Group>
+				</Form>
 			</Modal.Body>
 			<Modal.Footer>
 				<Button variant="secondary" onClick={handleClose}>
