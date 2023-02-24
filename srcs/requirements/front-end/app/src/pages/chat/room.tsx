@@ -161,6 +161,9 @@ function InputRoom(props: any) {
 				privateRoomName = current_user.login + "-" + value;
 			define_room(privateRoomName);
 			setValue("");
+
+			const user_to = await APP.post("/chat/get_user_by_login", {login: value});
+			// await socket?.emit("joinRoom", { room_name: room, id_user: currentUser.id} );
 		}
 		else {
 			shakeIt("shake", (`${current_room.name}-input-private`));
