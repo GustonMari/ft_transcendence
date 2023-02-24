@@ -141,12 +141,12 @@ function PopupImage(props: any) {
 	const handleShow = () => setShow(true);
 	let [value, setValue] = React.useState("");
   
-	function handleKeyDown(event: any) {
-		if (event.key === "Enter") {
-			event.preventDefault();
-			socket.emit("invite_pong", {current_user: current_user, invited: value});
+	function InviteFriend(event: any) {
+		// if (event.key === "Enter") {
+			// event.preventDefault();
+			socket.emit("invite_pong", {current_user: current_user});
 			// handleSetPassword(value);
-		}
+		// }
 	}
 
 	return (
@@ -175,7 +175,10 @@ function PopupImage(props: any) {
 			<h4>Email : {current_user.email}</h4>
 			<h4>State : {current_user.state}</h4>
 			<hr />
-			<Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+			<Button variant="secondary" onClick={InviteFriend}>
+			  Invite to Pong
+			</Button>
+			{/* <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label></Form.Label>
               <Form.Control
                 type="password"
@@ -184,7 +187,7 @@ function PopupImage(props: any) {
 				onChange={(e) => setValue(e.target.value)}
 				onKeyDown={handleKeyDown}
               />
-            </Form.Group>
+            </Form.Group> */}
 		  </Modal.Body>
 		  <Modal.Footer>
 			<Button variant="secondary" onClick={handleClose}>

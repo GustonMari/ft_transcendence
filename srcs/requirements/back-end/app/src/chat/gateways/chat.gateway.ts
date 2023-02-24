@@ -168,8 +168,10 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 
 	@SubscribeMessage('invite_pong')
-	async handleInvitePong(@MessageBody() data: InfoInvite, @ConnectedSocket() socket: Socket) {
-		
+	async handleInvitePong(@MessageBody() data: any, @ConnectedSocket() socket: Socket) {
+		//TODO rajouter check pour pas s'auto inviter
+		console.log('invite pong ' + data.current_user.login);
+
 	}
 
 	@SubscribeMessage('message') // Subscribe to the message event send by the client (front end) called 'message'
