@@ -56,28 +56,10 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	handleDisconnect(client: Socket) {
 	}
 
-	// @SubscribeMessage('isban')
-	// async handleIsBan(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket): Promise<void> {
-	// 	const roomExists = await this.chatService.roomExists(data.room_name);
-	// 	if (roomExists && await this.chatService.isUserBannedInRoom(data.room_name, data.id_user)) {
-	// 		await socket.emit('isban', true);
-	// 		// return;
-	// 	}
-	// 	else
-	// 		socket.emit('isban', false);
-
-	// }
-
-
 	@SubscribeMessage('joinRoom')
 	async handleJoinRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket): Promise<void> {
 		
 		const roomExists = await this.chatService.roomExists(data.room_name);
-		// if (roomExists && await this.chatService.isUserBannedInRoom(data.room_name, data.id_user)) {
-		// 	await socket.emit('isban', true);
-		// 	return;
-		// }
-		// socket.emit('isban', false);
 		if (roomExists) { 
 			await this.chatService.joinChatRoom(data.room_name, data.id_user);
 		}
@@ -105,7 +87,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 	@SubscribeMessage('deleteRoom')
 	async handleDeleteRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket) {
-		if(!this.chatService.isAdmin(data.room_name, data.id_user))
+		if (!await this.chatService.IsOwnerOfRoomById(data.room_name, data.id_user))
 		{
 			console.log('you dont have permission to delete the room');
 			return ;
@@ -113,10 +95,6 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		await this.chatService.deleteRoom(data.room_name, data.id_user);
 		this.myserver.to(data.room_name).emit('renderReact', 'renderReact');
 		await this.myserver.socketsLeave(data.room_name);
-
-		// await this.myserver.socketsLeave(data.room_name);
-		// await this.chatService.deleteRoom(data.room_name, data.id_user);
-		// socket.emit('renderReact', 'renderReact');
 	}
 
 	@SubscribeMessage('setAdmin')
@@ -133,7 +111,8 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 		if (await this.chatService.isAdmin(data.room_name, data.id_user_from)) {
 			const id_user_to = await this.chatService.getIdUser(data.login_user_to);
-			if (await this.chatService.isAdmin(data.room_name, id_user_to))
+			if (await this.chatService.isAdmin(data.room_name, id_user_to) 
+				&& (!await this.chatService.IsOwnerOfRoomById(data.room_name, data.id_user_from)))
 			{
 				return ;
 			}
@@ -157,7 +136,8 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 		if (await this.chatService.isAdmin(data.room_name, data.id_user_from)) {
 			const id_user_to = await this.chatService.getIdUser(data.login_user_to);
-			if (await this.chatService.isAdmin(data.room_name, id_user_to))
+			if (await this.chatService.isAdmin(data.room_name, id_user_to) 
+				&& (!await this.chatService.IsOwnerOfRoomById(data.room_name, data.id_user_from)))
 			{
 				return ;
 			}
@@ -178,11 +158,9 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	async handleMessage(@MessageBody() data: InfoMessage, @ConnectedSocket() socket: Socket) {
 		if (data.current_user === undefined )
 			return ;
-		if (await this.chatService.isUserBannedInRoom(data.room, data.current_user.id)) {
+		if (await this.chatService.isUserBannedInRoom(data.room, data.current_user.id))
 			return ;
-		}
-		if (await (this.chatService.isUserMutedInRoom(data.room, data.current_user.id)))
-		{
+		if (await (this.chatService.isUserMutedInRoom(data.room, data.current_user.id))) {
 			await this.chatService.stockMessage(data);
 			this.myserver.to(data.room).emit('message', data); // Emit the message event to the client, for every user
 		}
