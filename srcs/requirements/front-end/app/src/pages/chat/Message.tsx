@@ -111,7 +111,16 @@ export function DisplayMessagesByRoom(props: any) {
 		}
 	  }, [infomessage, history]);
 
+	//   const renderMessage = () => {
+	// 		console.log("FUCKKKKKKKKK");
+	// 		return ( 
+	// 		<div>
+	// 			<h1>Messages</h1>
+	// 		</div>
+	// 		);
+	// }
 
+	// socket?.on('renderReact', renderMessage);
 
 	return (
 	  <div ref={messagesContainer} className='print-message'>
