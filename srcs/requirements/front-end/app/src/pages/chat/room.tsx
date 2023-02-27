@@ -40,8 +40,12 @@ export function RoomForm(props : any)
 	}, [trigger, define_room]);
 
 	const render_react = () => {
+		// console.log("youpi = ", Date.now() );
 		setTrigger(trigger += 1);
 	}
+
+	socket?.on('renderReact', render_react);
+	// socket?.on('caca', () => {setTrigger(trigger += 1);})
 
 	return (
 		<div className='between-room-input'>
@@ -162,9 +166,7 @@ function InputRoom(props: any) {
 				privateRoomName = current_user.login + "-" + value;
 			define_room(privateRoomName);
 			setValue("");
-
 			const socket_id = await APP.post("/chat/get_user_socket_id", {login: value});
-			console.log("In handleAddprivateroom --> socket_	id = ", socket_id.data);
 			await socket?.emit("joinRoomWithSocketId", { room_name: privateRoomName, socket_id: socket_id.data, login: value} );
 		}
 		else {

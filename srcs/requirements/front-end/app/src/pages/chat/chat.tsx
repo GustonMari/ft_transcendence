@@ -66,9 +66,6 @@ export default function Chat() {
 	}
 
 	socket?.on("message", message_listener);
-	socket?.on('caca', (data: any) => {
-		console.log("caca", data);
-	});
 
 	return (
 	<div>
