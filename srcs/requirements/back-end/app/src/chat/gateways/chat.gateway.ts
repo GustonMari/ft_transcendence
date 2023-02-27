@@ -50,11 +50,45 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 	handleConnection(client: Socket, ...args: any[]) {
 		
+		client.emit('connected');
 		client.join('all');
 	}
 
 	handleDisconnect(client: Socket) {
 	}
+
+	@SubscribeMessage('addsocket')
+	async addSocketToUser(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+		
+		// console.log("addsocket, current user = ", data.id, " | socket_id = ", socket.id);
+		await this.chatService.addSocketToUser(data.id, socket.id);
+	
+	}
+
+	@SubscribeMessage('getSocketById')
+		async handleGetSocketById(@MessageBody() data: { socket_id: string }): Promise<Socket> {
+		const { socket_id } = data;
+		const sockets = this.myserver.sockets.sockets;
+		const client_socket = sockets[socket_id];
+		return client_socket;
+	}
+
+	@SubscribeMessage('joinRoomWithSocketId')
+		async joinRoomWithSocketId(@MessageBody() data: any) {
+
+		const sockets = this.myserver.sockets.sockets;
+
+		const client_socket = sockets.get(data.socket_id);
+
+		console.log("sockets = ", client_socket, /* " | client_socket = ", client_socket, " | socket_id = ", data.socket_id */);
+
+		console.log("ROOM NAME FDP = ", data.room_name);
+		const user_id = await this.chatService.getIdUser(data.login);
+		console.log("user_id = ", user_id);
+		await this.chatService.joinChatRoom(data.room_name, user_id);
+		await client_socket.join(data.room_name);
+	}
+
 
 	@SubscribeMessage('joinRoom')
 	async handleJoinRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket): Promise<void> {

@@ -35,6 +35,24 @@ export class ChatService {
 		});
 	}
 
+	async addSocketToUser(user_id: number, socket_id: string) {
+		await this.prisma.user.update({
+		  where: { id: user_id },
+		  data: {
+			socket_id: socket_id,
+		  },
+		});
+	}
+
+	async getUserSocketId(login: string): Promise<string> {
+		const user = await this.prisma.user.findUnique({
+			where: {
+				login: login,
+			}
+		});
+		return user.socket_id;
+	}
+
 	async joinChatRoom(room_name: string, user_id: number )
 	{
 		//TODO: change with findOne

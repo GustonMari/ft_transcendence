@@ -43,6 +43,7 @@ model Chat_Relation {
 
 model User {
     id         Int      @id @unique @default(autoincrement())
+    socket_id  String?  @unique
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
     login      String   @unique

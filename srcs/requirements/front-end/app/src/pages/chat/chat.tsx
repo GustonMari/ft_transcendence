@@ -24,10 +24,12 @@ export default function Chat() {
 	const [trigger, setTrigger] = React.useState(0);
 
 	useEffect(() => {
-	  const getCurrentUser = async () => {
+		const getCurrentUser = async () => {
 			try {
-			  const res = await APP.get("/user/me");
-			  setCurrentUser(res.data);
+				const res = await APP.get("/user/me");
+				setCurrentUser(res.data);
+				console.log("hello world, current user = ", currentUser, "| socket = ", socket);
+				// socket?.emit('addsocket', {currentUsers: currentUser});
 			} catch (error) {
 				console.error(error);
 			}
@@ -35,6 +37,14 @@ export default function Chat() {
 		getCurrentUser();
 	}, []);
 
+	useEffect(() => {
+		socket?.on('connected', () => {
+			console.log('Server connected');
+			socket?.emit('addsocket', currentUser);
+		  });
+	}, [currentUser]);
+	
+	
 	const send = (value: string) => {
 		socket?.emit("message", {room: room, message: value, current_user: currentUser});
 	}
@@ -56,6 +66,9 @@ export default function Chat() {
 	}
 
 	socket?.on("message", message_listener);
+	socket?.on('caca', (data: any) => {
+		console.log("caca", data);
+	});
 
 	return (
 	<div>

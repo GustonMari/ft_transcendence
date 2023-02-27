@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Popup from 'reactjs-popup';
 import io, { Socket } from "socket.io-client";
+
 import Create_socket from './socket';
 import { APP } from "../../api/app";
 import './Style.message.css';
@@ -162,8 +163,9 @@ function InputRoom(props: any) {
 			define_room(privateRoomName);
 			setValue("");
 
-			const user_to = await APP.post("/chat/get_user_by_login", {login: value});
-			// await socket?.emit("joinRoom", { room_name: room, id_user: currentUser.id} );
+			const socket_id = await APP.post("/chat/get_user_socket_id", {login: value});
+			console.log("In handleAddprivateroom --> socket_	id = ", socket_id.data);
+			await socket?.emit("joinRoomWithSocketId", { room_name: privateRoomName, socket_id: socket_id.data, login: value} );
 		}
 		else {
 			shakeIt("shake", (`${current_room.name}-input-private`));

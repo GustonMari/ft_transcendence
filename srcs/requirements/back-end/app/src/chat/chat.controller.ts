@@ -26,6 +26,12 @@ export class ChatController {
 		response.send(rooms);
 	}
 
+	@Post("get_user_socket_id")
+	async get_user_socket_id(@Res() response: Response ,@MessageBody() info: any): Promise<any> {
+		const socket_id = await this.chatService.getUserSocketId(info.login);
+		response.send(socket_id);
+	}
+
 	@Post('is_user_exists')
 	async is_user_exists(@Res() response: Response ,@MessageBody() info: any): Promise<any> {
 		const user = await this.chatService.isUserExists(info.login);
