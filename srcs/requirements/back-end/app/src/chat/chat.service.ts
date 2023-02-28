@@ -16,23 +16,29 @@ export class ChatService {
 		if (!current_user) {
 			throw new Error('User not found');
 		}
-
-		await this.prisma.usersOnRooms.create({
-			data: {
-				room: {
-					create: {
-						name: room_name,
-						owner: current_user.login,
-						owner_id: current_user.id,
-					}
-				},
-				user: {
-					connect: {
-						id: current_user.id,
+		const room_exist = await this.prisma.room.findUnique({ where: { name: room_name } });
+		console.log("ROOOM EXIST ? : ", room_exist);
+		if (room_exist) {
+			return ;
+		}
+		else {
+			await this.prisma.usersOnRooms.create({
+				data: {
+					room: {
+						create: {
+							name: room_name,
+							owner: current_user.login,
+							owner_id: current_user.id,
+						}
+					},
+					user: {
+						connect: {
+							id: current_user.id,
+						}
 					}
 				}
-			}
-		});
+			});
+		}
 	}
 
 	async addSocketToUser(user_id: number, socket_id: string) {

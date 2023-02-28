@@ -90,7 +90,7 @@ export function RoomForm(props : any)
 }
 
 function InputRoom(props: any) {
-	
+
 	let	{define_room, current_room, current_user, socket, handle_history, setMessage, render_react, setRoom, GetMessagesByRoom} = props;
 	
 	const id = `shaking-${current_room.name}-input`;
@@ -140,8 +140,7 @@ function InputRoom(props: any) {
 
 	async function submitPassword() {
 
-		if (await checkPassword())
-		{
+		if (await checkPassword()) {
 			addRoom();
 			handleClose();
 		}
@@ -173,10 +172,11 @@ function InputRoom(props: any) {
 			setValue("");
 			const socket_id = await APP.post("/chat/get_user_socket_id", {login: login});
 			await socket?.emit("joinRoomWithSocketId", { room_name: privateRoomName, socket_id: socket_id.data, login: value} );
-			socket?.on('joinPrivateRoom', async (data: any) => {
-				console.log("joinPrivateRoom", data);
-				await setRoom(data.room_name);
-			});
+			// socket?.on('joinPrivateRoom', async (data: any) => {
+			// 	console.log("joinPrivateRoom", data);
+			// 	await setRoom(data.room_name);
+			// 	await GetMessagesByRoom(handle_history, value);
+			// });
 		}
 		else {
 			shakeIt("shake", (`${current_room.name}-input-private`));
