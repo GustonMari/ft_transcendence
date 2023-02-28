@@ -17,7 +17,6 @@ export class ChatService {
 			throw new Error('User not found');
 		}
 		const room_exist = await this.prisma.room.findUnique({ where: { name: room_name } });
-		console.log("ROOOM EXIST ? : ", room_exist);
 		if (room_exist) {
 			return ;
 		}
@@ -360,13 +359,11 @@ export class ChatService {
 
 	async IsOwnerOfRoomByLogin (room_name: string, user_login: string): Promise<boolean> {
 	
-		console.log("=>>> room_name :", room_name, "user_login :", user_login);
 		const room = await this.prisma.room.findUnique({
 			where: {
 				name: room_name,
 			}
 		});
-		console.log("****=>>> room :", room);
 		if (room.owner != null && user_login === room.owner) {
 			return true;
 		}
@@ -386,7 +383,7 @@ export class ChatService {
 	}
 
 	async setRoomPassword (room_name: string, user_id: number, password: string): Promise<boolean> {
-		console.log("setRoomPassword :", "room_name :", room_name, "user_id :", user_id, "password :", password);
+
 		if (await this.IsOwnerOfRoomById(room_name, user_id)) {
 			const room = await this.prisma.room.update({
 				where: {
@@ -396,10 +393,8 @@ export class ChatService {
 					password: await argon.hash(password),
 				}
 			})
-			console.log("Im owner");
 			return true;
 		}
-		console.log("Im not owner");
 		return false;
 	}
 

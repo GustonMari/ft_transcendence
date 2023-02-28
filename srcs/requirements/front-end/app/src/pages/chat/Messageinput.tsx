@@ -11,10 +11,8 @@ export default function MessageInput({send}: {send: (value: string) => void}) {
 	}
 
 	function handleKeyDown(event: any) {
-		console.log(event.key);
 		if (event.key === "Enter") {
 		  event.preventDefault();
-		//   send(value);
 		sendAndClear();
 		}
 	  }

@@ -60,7 +60,6 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	@SubscribeMessage('addsocket')
 	async addSocketToUser(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
 		
-		// console.log("addsocket, current user = ", data.id, " | socket_id = ", socket.id);
 		await this.chatService.addSocketToUser(data.id, socket.id);
 	
 	}
@@ -79,10 +78,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		const sockets = this.myserver.sockets.sockets;
 		const client_socket = sockets.get(data.socket_id);
 		const user_id = await this.chatService.getIdUser(data.login);
-
-		
 		await this.chatService.joinChatRoom(data.room_name, user_id);
-		console.log("bababab room_name =", data.room_name, " | user_id = ", user_id);
 		await client_socket.join(data.room_name);
 		client_socket.emit('joinPrivateRoom', {my_room_name: data.room_name, my_user_id: user_id});
 		client_socket.emit('renderReact', 'renderReact');
@@ -105,7 +101,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	
 	}
 
-	
+
 	@SubscribeMessage('leaveRoom')
 	async handleLeaveRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket) {
 		await this.chatService.leaveRoom(data.room_name, data.id_user);
@@ -123,10 +119,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	@SubscribeMessage('deleteRoom')
 	async handleDeleteRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket) {
 		if (!await this.chatService.IsOwnerOfRoomById(data.room_name, data.id_user))
-		{
-			console.log('you dont have permission to delete the room');
 			return ;
-		}
 		await this.chatService.deleteRoom(data.room_name, data.id_user);
 		// this.myserver.to(data.room_name).emit('renderReact', 'renderReact');
 		this.myserver.emit('renderReact', 'renderReact');

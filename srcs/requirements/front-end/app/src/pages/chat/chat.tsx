@@ -28,7 +28,6 @@ export default function Chat() {
 			try {
 				const res = await APP.get("/user/me");
 				setCurrentUser(res.data);
-				console.log("hello world, current user = ", currentUser, "| socket = ", socket);
 			} catch (error) {
 				console.error(error);
 			}
@@ -38,7 +37,6 @@ export default function Chat() {
 
 	useEffect(() => {
 		socket?.on('connected', () => {
-			console.log('Server connected');
 			socket?.emit('addsocket', currentUser);
 		  });
 	}, [currentUser]);
@@ -66,12 +64,6 @@ export default function Chat() {
 
 	socket?.on("message", message_listener);
 
-	// socket?.on('joinPrivateRoom', async (data: any) => {
-	// 	console.log("joinPrivateRoom", data);
-	// 	setRoom(data.room_name);
-	// });
-
-	
 
 	return (
 	<div>

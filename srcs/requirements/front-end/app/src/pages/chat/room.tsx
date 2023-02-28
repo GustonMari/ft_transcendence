@@ -40,7 +40,6 @@ export function RoomForm(props : any)
 	}, [trigger, define_room]);
 
 	const render_react = () => {
-		// console.log("youpi = ", Date.now() );
 		setTrigger(trigger += 1);
 	}
 
@@ -116,7 +115,6 @@ function InputRoom(props: any) {
 	async function addRoom() {
 		setMessage([]);
 		define_room(value);
-		console.log("ROOM =================== ", value);
 		socket?.emit("message", {room: value, message: `${current_user.login} has join the room ${value}`});
 		await GetMessagesByRoom(handle_history, value);
 		socket?.on('renderReact', render_react);
@@ -124,7 +122,6 @@ function InputRoom(props: any) {
 	}
 
 	function handleKeyDown(event: any) {
-		console.log(event.key);
 		if (event.key === "Enter") {
 			event.preventDefault();
 			handleAddRoom();
@@ -177,11 +174,6 @@ function InputRoom(props: any) {
 			setValue("");
 			const socket_id = await APP.post("/chat/get_user_socket_id", {login: login});
 			await socket?.emit("joinRoomWithSocketId", { room_name: privateRoomName, socket_id: socket_id.data, login: value} );
-			// socket?.on('joinPrivateRoom', async (data: any) => {
-			// 	console.log("joinPrivateRoom", data);
-			// 	await setRoom(data.room_name);
-			// 	await GetMessagesByRoom(handle_history, value);
-			// });
 		}
 		else {
 			shakeIt("shake", (`${current_room.name}-input-private`));
@@ -349,12 +341,6 @@ export function PopupPassword(props: any) {
 	const  handleSetPassword = async (password: string) => {
 		setShow(false);
 		const res = await APP.post("/chat/set_room_password", {room_name: room.name, user_id: current_user.id, password: password});
-		let isChanged = res.data;
-		console.log("password = ", password);
-		if (isChanged)
-			console.log("Mot de passe change");
-		else
-			console.log("Mot de passe non change");
 	}
 
 	function handleKeyDown(event: any) {
@@ -459,15 +445,12 @@ export function SetAdmin(props : any)
 
 	function emitAndClear() {
 		socket?.emit("setAdmin", { room_name: current_room, id_user_from: current_user.id, login_user_to: value});
-		// send(value);
 		setValue("");
 	}
 
 	function handleKeyDown(event: any) {
-		console.log(event.key);
 		if (event.key === "Enter") {
 		  event.preventDefault();
-		//   send(value);
 		emitAndClear();
 		}
 	}

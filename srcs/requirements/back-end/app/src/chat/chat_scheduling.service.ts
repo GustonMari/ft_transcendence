@@ -31,8 +31,6 @@ export class ChatSchedulingService {
 				}
 			});
 		
-		
-		console.log("UNMUTE")
 		};
 		if (user.banned == true && user.banned_till < new Date()) {
 			await this.prisma.usersOnRooms.update({
@@ -46,7 +44,6 @@ export class ChatSchedulingService {
 					banned: false,
 				}
 			});
-			console.log("UNBAN")
 		};
 	});
 	}
