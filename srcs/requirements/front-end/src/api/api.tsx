@@ -44,6 +44,49 @@ export default class API {
     }
   }
 
+  static async ftConnect(
+    successFunc: () => void,
+    errorFunc: (err: ApiError) => void
+    ) {
+        try {
+            await APP.get("/auth/42/connect");
+            successFunc();
+        } catch (err) {
+            const error = err as AxiosError;
+            if (axios.isAxiosError(err)) {
+                errorFunc({
+                    code: error.code,
+                    message: error.message,
+                });
+            };
+        }
+    }
+
+    static async tfaCheck(
+        tfaCode: string,
+        username: string,
+        successFunc: () => void,
+        errorFunc: (err: ApiError) => void
+    ) {
+        try {
+            await APP.get("/auth/tfa/validation/", {
+                params: {
+                    token: tfaCode,
+                    username: username,
+                },
+            });
+            successFunc();
+        } catch (err) {
+            const error = err as AxiosError;
+            if (axios.isAxiosError(err)) {
+                errorFunc({
+                    code: error.code,
+                    message: error.message,
+                });
+            };
+        }
+    }
+
     static async checkAuth(
         successFunc: (data: any) => void,
         errorFunc: (err: ApiError) => void

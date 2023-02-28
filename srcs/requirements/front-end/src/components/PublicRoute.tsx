@@ -6,29 +6,25 @@ import WrapContext from '../contexts/wrap.context';
 import { Loading } from './Loading';
 import { UserContext } from '../contexts/User.context';
 
-export default function PrivateRoute ({children} : any) {
+export default function PublicRoute ({children} : any) {
 
     const [logged, setLogged] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(true);
-
-    const {user, setUser}: any = React.useContext(UserContext);
 
     useLayoutEffect(() => {
         
         API.checkAuth(
             (u: any) => {
-                setUser(u);
-                setLogged(true);
+                setIsLoading(false);
             },
             () => {
-                setIsLoading(false);
-                setUser(null);
+                setLogged(true);
             }
         );
     }, []);
 
     return (
-        (logged ? React.cloneElement(children, {user}) : (isLoading ? <Loading/> : <Navigate to={'/signin'}></Navigate>))
+        (logged ? React.cloneElement(children) : (isLoading ? <Loading/> : <Navigate to={'/home'}></Navigate>))
     );
 
-};
+}; 

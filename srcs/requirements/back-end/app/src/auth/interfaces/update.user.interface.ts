@@ -5,4 +5,6 @@ export interface UpdateUserOptions {
     first_name?: string;
     last_name?: string;
     description?: string;
+    tfa?: boolean;
+    tfa_secret?: string;
 }

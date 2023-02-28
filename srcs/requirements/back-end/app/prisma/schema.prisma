@@ -37,13 +37,14 @@ model User {
     last_name  String?
     avatar_url String?
     email      String   @unique
-    state      Boolean  @default(false) // true - inactive, false - active,
-    // lastActivity DateTime? // last activity date
+    state      Boolean  @default(false)
     password   String   @default(cuid())
     rt         String?
     description String? @db.VarChar(240)
     wins       Int      @default(0)
     loses      Int      @default(0)
+    tfa        Boolean  @default(false)
+    tfa_secret String?
 
     incoming Relation[]    @relation("incoming")
     outgoing Relation[]    @relation("outgoing")

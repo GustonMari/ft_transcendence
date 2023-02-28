@@ -1,7 +1,12 @@
 import { UserRO } from './../../user/ros/user.full.ro';
 import {
     Delete,
-    HttpStatus
+    HttpStatus,
+    Param,
+    Query,
+    Redirect,
+    Req,
+    UnauthorizedException
 } from '@nestjs/common';
 import { RegisterDTO } from './../dtos/register.dto';
 import LoginDTO from './../dtos/login.dto';
@@ -28,15 +33,20 @@ import {
     ApiNotFoundResponse,
     ApiOkResponse,
     ApiOperation,
+    ApiQuery,
     ApiUnauthorizedResponse
 } from '@nestjs/swagger';
-import { AccessGuard } from '../guards/access.guard';
 import {
     GetCredentials,
     GetMe
 } from '../decorators';
 import { Tokens } from '../interfaces';
-import { RefreshGuard } from '../guards/refresh.guard';
+import {
+    FtGuard,
+    RefreshGuard,
+    AccessGuard
+} from '../guards';
+
 
 @Controller('auth')
 export class AuthController {
@@ -46,18 +56,6 @@ export class AuthController {
 
     /* ------------------------------------------------------------------------------ */
 
-    @ApiOkResponse({
-        status: 201,
-        description: 'User has been registered'
-    })
-    @ApiUnauthorizedResponse({
-        status: 401,
-        description: 'This login is already taken'
-    })
-    @ApiBadRequestResponse({
-        status: 400,
-        description: 'Body does not have the values expected by the DTO'
-    })
     @ApiOperation({
         summary: 'Register a new user',
     })
@@ -88,18 +86,6 @@ export class AuthController {
 
     /* ------------------------------------------------------------------------------ */
 
-    @ApiOkResponse({
-        status: 200,
-        description: 'User logged in'
-    })
-    @ApiUnauthorizedResponse({
-        status: 401,
-        description: 'Password or login does not match the one in the DB'
-    })
-    @ApiBadRequestResponse({
-        status: 400,
-        description: 'Body does not have the values expected by the DTO'
-    })
     @ApiOperation({
         summary: 'Sign in a user',
     })
@@ -128,23 +114,14 @@ export class AuthController {
 
     /* ------------------------------------------------------------------------------ */
 
-    @ApiOkResponse({
-        status: 205,
-        description: 'User logged out and cookies deleted'
-    })
-    @ApiNotFoundResponse({
-        status: 404,
-        description: 'User store in jwt token does not exist'
-    })
     @ApiOperation({
         summary: 'Sign out a user',
     })
     @ApiCookieAuth("access_token")
-    @HttpCode(HttpStatus.RESET_CONTENT)
-    @ApiBearerAuth()
 
     @Delete('/logout')
     @UseGuards(AccessGuard)
+    @HttpCode(HttpStatus.RESET_CONTENT)
     async logout(
         @GetMe("id") id: number,
         @Res() res: Response
@@ -157,6 +134,11 @@ export class AuthController {
 
     /* ------------------------------------------------------------------------------ */
 
+    @ApiOperation({
+        summary: 'Refresh a user\'s access token',
+    })
+    @ApiCookieAuth("refresh_token")
+
     @Get('/refresh')
     @UseGuards(RefreshGuard)
     async refresh(
@@ -164,7 +146,6 @@ export class AuthController {
         @GetCredentials() credentials: Tokens,
         @Res() res: Response
     ) {
-        console.log(user);
         const {access_token, refresh_token} = await this.authService.refresh(user, credentials);
         res.cookie('access_token', access_token, {
             httpOnly: true,
@@ -178,4 +159,88 @@ export class AuthController {
         });
         res.send({ access_token: access_token });
     }
+
+    /* ------------------------------------------------------------------------------ */
+
+    @ApiOperation({
+        summary: 'Connect a user with 42 intra profile',
+    })
+
+    @Get('/42/connect')
+    @Redirect()
+    async connect42(
+        @Res() res: Response
+    ) {
+        let url = 'https://api.intra.42.fr/oauth/authorize';
+        url += '?client_id=';
+        url += ''; //TODO: add client id
+        url += '&redirect_uri=http://localhost:3000/api/auth/42/callback';
+        url += '&response_type=code';
+
+        return ({ url: url });
+    }
+
+    /* ------------------------------------------------------------------------------ */
+
+    @ApiOperation({
+        summary: 'Callback for 42 intra profile',
+    })
+    @ApiQuery({
+        name: 'code',
+        type: String,
+        description: 'code for 42 intra profile authentication'
+    })
+
+    @Get('/42/callback')
+    @UseGuards(FtGuard)
+    async callback42(
+        @Req() req: Request,
+        @Res() res: Response,
+    ) {
+        const user : any = req.user;
+        if (user == undefined) { throw new UnauthorizedException('profile is undefined'); }
+        
+        const {access_token, refresh_token} = await this.authService.callback(user.profile);
+        if (access_token == undefined || refresh_token == undefined) {
+            const qr_url = await this.authService.generateTFA(user.profile.username);
+            res.redirect('http://localhost:4200/tfa?qrcode=' + qr_url + "&username=" + user.profile.username);
+            return;
+        }
+        
+        res.cookie('access_token', access_token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none'
+        });
+        res.cookie('refresh_token', refresh_token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none'
+        });
+        res.redirect('http://localhost:4200/home');
+    }
+
+    /* ------------------------------------------------------------------------------ */
+
+    @Get('tfa/validation')
+    async validationTFA(
+        @Query('token') token: string,
+        @Query('username') username: string,
+        @Res() res: Response
+    ) { 
+        const {access_token, refresh_token} = await this.authService.validationTFA(token, username);
+        res.cookie('access_token', access_token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none'
+        });
+        res.cookie('refresh_token', refresh_token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none'
+        });
+        res.send();
+    }
+
+    /* ------------------------------------------------------------------------------ */
 }
