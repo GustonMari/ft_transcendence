@@ -5,7 +5,7 @@ import MessageInput from "./Messageinput";
 import Messages, { DisplayMessagesByRoom, GetMessagesByRoom } from "./Message";
 import axios from "axios";
 import Create_socket from "./socket";
-import {RoomForm, LeaveRoom, DeleteRoom, SetAdmin, BanUser, UnbanUser, MuteUser } from "./room";
+import {RoomForm, LeaveRoom, DeleteRoom, SetAdmin, BanUser, UnbanUser, MuteUser } from "./room/room";
 import { APP } from "../../api/app";
 import App from "../../App";
 import { RoomList } from "./navbar";

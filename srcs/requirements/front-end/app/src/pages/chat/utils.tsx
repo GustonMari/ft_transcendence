@@ -23,3 +23,20 @@ export function shakeIt(shake_name: string, room_name: string) {
 		}, 500);
 	}
   }
+
+export async function AuthorizeUser(props : any) : Promise<void>
+{
+	let { ban, setMessage, GetMessagesByRoom, define_room, room, handle_history} = props;
+	if (ban === false) {
+		setMessage([]);
+		GetMessagesByRoom(handle_history, room.name);
+		define_room(room.name);
+	}
+}
+
+export function ShortedName(name : string) : string
+{
+	if (name.length > 10)
+		return (name.slice(0, 10) + "...");
+	return (name);
+}
