@@ -5,14 +5,12 @@ import MessageInput from "./Messageinput";
 import Messages, { DisplayMessagesByRoom, GetMessagesByRoom } from "./Message";
 import axios from "axios";
 import Create_socket from "./socket";
-import {RoomForm, LeaveRoom, DeleteRoom, SetAdmin, BanUser, UnbanUser, MuteUser, BlockUser, UnBlockUser} from "./room";
+import {RoomForm, LeaveRoom, DeleteRoom, SetAdmin, BanUser, UnbanUser, MuteUser } from "./room";
 import { APP } from "../../api/app";
 import App from "../../App";
 import { RoomList } from "./navbar";
 import { ParameterChat } from "./ParameterChat";
 import { HistoryDto, InfoMessage } from "./dto/chat.dto";
-
-
 
 export default function Chat() {
 
@@ -41,7 +39,6 @@ export default function Chat() {
 		  });
 	}, [currentUser]);
 	
-	
 	const send = (value: string) => {
 		socket?.emit("message", {room: room, message: value, current_user: currentUser});
 	}
@@ -57,13 +54,11 @@ export default function Chat() {
 		setMessage([...messages, infomessage]);
 	}
 
-
 	const history_listener = (history: HistoryDto) => {
 		setHistory(history);
 	}
 
 	socket?.on("message", message_listener);
-
 
 	return (
 	<div>

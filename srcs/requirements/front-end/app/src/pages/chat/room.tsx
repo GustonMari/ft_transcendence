@@ -1,14 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Popup from 'reactjs-popup';
 import io, { Socket } from "socket.io-client";
-
 import Create_socket from './socket';
 import { APP } from "../../api/app";
 import './Style.message.css';
 import { GetMessagesByRoom } from './Message';
 import { setMaxIdleHTTPParsers } from 'http';
-// import 'reactjs-popup/dist/index.css';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import { Modal } from 'react-bootstrap';
@@ -18,7 +15,6 @@ import { shakeIt } from './utils';
 export function RoomForm(props : any)
 {
 	let {define_room, current_room, current_user, socket, handle_history, trigger, setTrigger, setMessage, setRoom} = props;
-	// const [value, setValue] = React.useState("");
 	const [rooms, setRooms] = useState<any>([]);
 
 	const roomContainer = useRef<HTMLDivElement>(null);
@@ -36,7 +32,6 @@ export function RoomForm(props : any)
 			}
 		};
 		getRooms();
-		
 	}, [trigger, define_room]);
 
 	const render_react = () => {
@@ -63,7 +58,8 @@ export function RoomForm(props : any)
 									}
 									is_ban();
 									socket?.on('renderReact', render_react);
-									}}>{ ShortedName(room.name) }</button>
+									}}>{ ShortedName(room.name) }
+								</button>
 							</div>
 							<div className='split'>
 								<PopupLeave setMessage={setMessage} socket={socket} room={room} current_user={current_user} render_react={render_react}></PopupLeave>
@@ -91,7 +87,6 @@ export function RoomForm(props : any)
 function InputRoom(props: any) {
 
 	let	{define_room, current_room, current_user, socket, handle_history, setMessage, render_react, setRoom, GetMessagesByRoom} = props;
-	
 	const id = `shaking-${current_room.name}-input`;
 	const id_private = `shaking-${current_room.name}-input-private`;
 	const [value, setValue] = React.useState("");
@@ -150,9 +145,8 @@ function InputRoom(props: any) {
 	let handleAddRoom = async () => {
 		if (await checkIsPassword())
 			handleShow();
-		else {
+		else
 			addRoom();
-		}
 	}
 
 	socket?.on('joinPrivateRoom', async (data: any) => {
@@ -199,11 +193,11 @@ function InputRoom(props: any) {
 					<Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
 						<Form.Label></Form.Label>
 						<Form.Control
-						type="password"
-						placeholder="password"
-						autoFocus
-						onChange={(e) => setPassword(e.target.value)}
-						onKeyDown={handleKeyDownPassword}
+							type="password"
+							placeholder="password"
+							autoFocus
+							onChange={(e) => setPassword(e.target.value)}
+							onKeyDown={handleKeyDownPassword}
 						/>
 					</Form.Group>
 				</Form>
@@ -231,19 +225,18 @@ export function PopupLeave(props: any) {
 	return (
 	  <div>
 		<Popup
-		  ref={ref}
-		  position='bottom center'
-		//   arrow={false}
-		  className='popup-content'
-		  trigger={(open) => (
-			  <button
-			  type="submit"
-			  className="line-room-button"
-			  onClick={() => {}}
-			  >
-			  <img className="icon-room" src="./leave-room.png" alt="leave room" />
-			</button>
-		  )}
+			ref={ref}
+			position='bottom center'
+			className='popup-content'
+			trigger={(open) => (
+				<button
+					type="submit"
+					className="line-room-button"
+					onClick={() => {}}
+					>
+					<img className="icon-room" src="./leave-room.png" alt="leave room" />
+				</button>
+			)}
 		>
 		  <div>
 			<button className='line-room-button-popup'
@@ -274,7 +267,7 @@ export function PopupDelete(props: any) {
 	const ref = useRef<any>();
 	const closeTooltip = () => ref.current.close();
 	const id = `shaking-${room.name}-delete`;
-  
+
 	function deleteRoom() {
 		setMessage([]);
 		socket?.emit("deleteRoom", {
@@ -283,7 +276,6 @@ export function PopupDelete(props: any) {
 		});
 		socket?.on("renderReact", render_react);
 	}
-
 
 	return (
 	  <div>
@@ -363,18 +355,18 @@ export function PopupPassword(props: any) {
 				<Modal.Title>Define password for the room</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-			<Form>
-            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label></Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="password"
-                autoFocus
-				onChange={(e) => setValue(e.target.value)}
-				onKeyDown={handleKeyDown}
-              />
-            </Form.Group>
-          </Form>
+				<Form>
+					<Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+						<Form.Label></Form.Label>
+						<Form.Control
+						type="password"
+						placeholder="password"
+						autoFocus
+						onChange={(e) => setValue(e.target.value)}
+						onKeyDown={handleKeyDown}
+						/>
+					</Form.Group>
+				</Form>
 			</Modal.Body>
 			<Modal.Footer>
 				<Button variant="secondary" onClick={handleClose}>
@@ -400,9 +392,6 @@ export async function AuthorizeUser(props : any) : Promise<void>
 		setMessage([]);
 		GetMessagesByRoom(handle_history, room.name);
 		define_room(room.name);
-	}
-	else {
-
 	}
 }
 
@@ -432,7 +421,7 @@ export function DeleteRoom(props : any)
 	const [value, setValue] = React.useState("");
 	return (
 		<div>
-		<input onChange={(e) => setValue(e.target.value)} placeholder="delete your room..." value={value} />
+			<input onChange={(e) => setValue(e.target.value)} placeholder="delete your room..." value={value} />
 			<button onClick={() => socket?.emit("deleteRoom", { room_name: value, id_user: current_user.id})}>Delete room</button>
 		</div>
 	)
@@ -458,7 +447,7 @@ export function SetAdmin(props : any)
 	return (
 		<div className='inputparam'>
 			<input className='borderbox-param' onChange={(e) => setValue(e.target.value)} onKeyDown={handleKeyDown} placeholder="set admin login..." value={value} />
-				<button className='input-param-button' onClick={() => emitAndClear() }>Set admin</button>
+			<button className='input-param-button' onClick={() => emitAndClear() }>Set admin</button>
 		</div>
 	)
 }
@@ -494,8 +483,8 @@ export function UnbanUser(props : any)
 
 	return (
 		<div >
-		<input className='borderbox-param' onChange={(e) => setRoom(e.target.value)} placeholder="define your room..." value={room_value} />
-		<input className='borderbox-param' onChange={(e) => setValue(e.target.value)} placeholder="unban user login..." value={value} />
+			<input className='borderbox-param' onChange={(e) => setRoom(e.target.value)} placeholder="define your room..." value={room_value} />
+			<input className='borderbox-param' onChange={(e) => setValue(e.target.value)} placeholder="unban user login..." value={value} />
 			<button className='input-param-button' onClick={() => socket?.emit("unbanUser", { room_name: room_value, id_user_from: current_user.id, login_user_to: value})}>Unban</button>
 		</div>
 	)
@@ -514,12 +503,11 @@ export function MuteUser(props: any)
 		setValue("");
 	}
 
-
 	return (
 		<div className='inputparam'>
 			<input className='borderbox-param' onChange={(e) => setValue(e.target.value)} placeholder="mute user login..." value={value} />
 			<input className='borderbox-param' onChange={(e) => setDate(e.target.value)} placeholder="duration mute in min..." value={date_value} />
-				<button className='input-param-button' onClick={() => emitAndClear()}>Mute</button>
+			<button className='input-param-button' onClick={() => emitAndClear()}>Mute</button>
 		</div>
 	)
 }
