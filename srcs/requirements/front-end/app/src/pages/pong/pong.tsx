@@ -8,6 +8,9 @@ import App from "../../App";
 import "./pong.css";
 // import "./pong"
 
+
+
+
 export default function Pong() {
 
 	useEffect(() => {
@@ -200,9 +203,9 @@ export default function Pong() {
 	}, []);
 
 	return (
-		<div>
+		<div className="container-game">
 			<h1>Pong game</h1>
-		   <canvas id="canvas" width="650"height="350" className=""></canvas>
+		   <canvas id="canvas" width="650"height="350" ></canvas>
 		    <script >
 		    </script>
 		</div>
