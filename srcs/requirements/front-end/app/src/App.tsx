@@ -5,7 +5,7 @@ import Home from "./pages/home";
 import SignIn from "./pages/signin";
 import Chat from "./pages/chat/chat";
 import PrivateRoute from "./components/PrivateRoute";
-import Pong from "./pages/pong/pong";
+import Pong from "./pages/pong/pong"
 
 // function App() {
 //   return (
