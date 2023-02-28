@@ -158,6 +158,11 @@ function InputRoom(props: any) {
 		}
 	}
 
+	socket?.on('joinPrivateRoom', async (data: any) => {
+		setRoom(data.my_room_name);
+		await GetMessagesByRoom(handle_history, "");
+	});
+
 	let handleAddPrivateRoom = async () => {
 
 		const login = value;
