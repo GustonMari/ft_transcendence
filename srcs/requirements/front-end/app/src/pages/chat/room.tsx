@@ -17,7 +17,7 @@ import { shakeIt } from './utils';
 
 export function RoomForm(props : any)
 {
-	let {define_room, current_room, current_user, socket, handle_history, trigger, setTrigger, setMessage} = props;
+	let {define_room, current_room, current_user, socket, handle_history, trigger, setTrigger, setMessage, setRoom} = props;
 	// const [value, setValue] = React.useState("");
 	const [rooms, setRooms] = useState<any>([]);
 
@@ -45,7 +45,6 @@ export function RoomForm(props : any)
 	}
 
 	socket?.on('renderReact', render_react);
-	// socket?.on('caca', () => {setTrigger(trigger += 1);})
 
 	return (
 		<div className='between-room-input'>
@@ -82,14 +81,17 @@ export function RoomForm(props : any)
 			socket={socket} 
 			handle_history={handle_history} 
 			setMessage={setMessage}
-			render_react={render_react}/>
+			render_react={render_react}
+			setRoom={setRoom}
+			GetMessagesByRoom={GetMessagesByRoom}
+			/>
 	</div>
 	);
 }
 
 function InputRoom(props: any) {
 	
-	let	{define_room, current_room, current_user, socket, handle_history, setMessage, render_react} = props;
+	let	{define_room, current_room, current_user, socket, handle_history, setMessage, render_react, setRoom, GetMessagesByRoom} = props;
 	
 	const id = `shaking-${current_room.name}-input`;
 	const id_private = `shaking-${current_room.name}-input-private`;
@@ -114,7 +116,9 @@ function InputRoom(props: any) {
 	async function addRoom() {
 		setMessage([]);
 		define_room(value);
-		socket?.emit("message", {room: value, message: `${current_user.login} has join the room ${value}`})
+		console.log("ROOM =================== ", value);
+		socket?.emit("message", {room: value, message: `${current_user.login} has join the room ${value}`});
+		await GetMessagesByRoom(handle_history, value);
 		socket?.on('renderReact', render_react);
 		setValue("");
 	}
@@ -157,17 +161,22 @@ function InputRoom(props: any) {
 
 	let handleAddPrivateRoom = async () => {
 
-		const user = await APP.post("/chat/is_user_exists", {login: value});
+		const login = value;
+		const user = await APP.post("/chat/is_user_exists", {login: login});
 		if (user.data) {
 			let privateRoomName = "";
-			if (value.localeCompare(current_user.login) < 0)
-				privateRoomName = value + "-" + current_user.login;
+			if (login.localeCompare(current_user.login) < 0)
+				privateRoomName = login + "-" + current_user.login;
 			else
-				privateRoomName = current_user.login + "-" + value;
+				privateRoomName = current_user.login + "-" + login;
 			define_room(privateRoomName);
 			setValue("");
-			const socket_id = await APP.post("/chat/get_user_socket_id", {login: value});
+			const socket_id = await APP.post("/chat/get_user_socket_id", {login: login});
 			await socket?.emit("joinRoomWithSocketId", { room_name: privateRoomName, socket_id: socket_id.data, login: value} );
+			socket?.on('joinPrivateRoom', async (data: any) => {
+				console.log("joinPrivateRoom", data);
+				await setRoom(data.room_name);
+			});
 		}
 		else {
 			shakeIt("shake", (`${current_room.name}-input-private`));

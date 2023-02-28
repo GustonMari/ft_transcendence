@@ -101,7 +101,7 @@ function IsSenderOrReceiver_socket(props: any)
 }
 
 export function DisplayMessagesByRoom(props: any) {
-	let { current_user, socket, history, infomessage, room} = props;
+	let { current_user, socket, history, infomessage, room, handle_history} = props;
 
 	const messagesContainer = useRef<HTMLDivElement>(null);
 
@@ -120,11 +120,13 @@ export function DisplayMessagesByRoom(props: any) {
 	// 		);
 	// }
 
-	// socket?.on('renderReact', renderMessage);
+	// socket?.on('renderReact', handle_history([]));
+	// if(!history)
+	// 	  return (<div ref={messagesContainer} className='print-message'></div>);
 
 	return (
 	  <div ref={messagesContainer} className='print-message'>
-		{history.map((historyItem: HistoryDto, index: number) => (
+		{!history ? "" : history.map((historyItem: HistoryDto, index: number) => (
 		  <div key={index}>
 			{ IsSenderOrReceiver({historyItem, current_user}) }
 		  </div>

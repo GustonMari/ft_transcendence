@@ -79,11 +79,11 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		const sockets = this.myserver.sockets.sockets;
 		const client_socket = sockets.get(data.socket_id);
 		const user_id = await this.chatService.getIdUser(data.login);
+
+		client_socket.emit('joinPrivateRoom', {my_room_name: data.room_name, my_user_id: user_id});
 	
 		await this.chatService.joinChatRoom(data.room_name, user_id);
 		await client_socket.join(data.room_name);
-		// console.log("date = ", Date.now());
-		// client_socket.emit('caca', 'caca');
 		client_socket.emit('renderReact', 'renderReact');
 		current_socket.emit('renderReact', 'renderReact');
 	}
@@ -117,6 +117,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		await socket.leave(data.room_name);
 		socket.emit('renderReact', 'renderReact');
 	}
+
 
 	@SubscribeMessage('deleteRoom')
 	async handleDeleteRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket) {
@@ -199,3 +200,4 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		}
 	}
 }
+

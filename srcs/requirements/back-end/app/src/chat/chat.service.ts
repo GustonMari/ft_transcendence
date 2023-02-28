@@ -354,12 +354,14 @@ export class ChatService {
 
 	async IsOwnerOfRoomByLogin (room_name: string, user_login: string): Promise<boolean> {
 	
+		console.log("=>>> room_name :", room_name, "user_login :", user_login);
 		const room = await this.prisma.room.findUnique({
 			where: {
 				name: room_name,
 			}
 		});
-		if (user_login === room.owner) {
+		console.log("****=>>> room :", room);
+		if (room.owner != null && user_login === room.owner) {
 			return true;
 		}
 		return false;

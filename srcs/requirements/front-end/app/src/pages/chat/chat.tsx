@@ -29,7 +29,6 @@ export default function Chat() {
 				const res = await APP.get("/user/me");
 				setCurrentUser(res.data);
 				console.log("hello world, current user = ", currentUser, "| socket = ", socket);
-				// socket?.emit('addsocket', {currentUsers: currentUser});
 			} catch (error) {
 				console.error(error);
 			}
@@ -67,6 +66,13 @@ export default function Chat() {
 
 	socket?.on("message", message_listener);
 
+	// socket?.on('joinPrivateRoom', async (data: any) => {
+	// 	console.log("joinPrivateRoom", data);
+	// 	setRoom(data.room_name);
+	// });
+
+	
+
 	return (
 	<div>
 		<div>
@@ -89,10 +95,11 @@ export default function Chat() {
 					trigger={trigger}
 					setTrigger={setTrigger}
 					setMessage={setMessage}
+					setRoom={setRoom}
 					/>
 			</div>
 			<div className="message-box">
-				<DisplayMessagesByRoom current_user={currentUser} socket={socket} history={history} infomessage={messages} room={room}/>
+				<DisplayMessagesByRoom current_user={currentUser} socket={socket} history={history} infomessage={messages} room={room} handle_history={history_listener}/>
 				<MessageInput send={send}/>
 			</div>
 			<div className="menu-chat">
