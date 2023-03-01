@@ -89,7 +89,9 @@ export class ChatService {
 
 	async addSocketToUser(user_id: number, socket_id: string) {
 		await this.prisma.user.update({
-		  where: { id: user_id },
+		  where: { id: user_id 
+			
+		},
 		  data: {
 			socket_id: socket_id,
 		  },
