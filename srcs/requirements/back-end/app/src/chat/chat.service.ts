@@ -10,34 +10,81 @@ export class ChatService {
 
 	constructor(private readonly prisma: PrismaService) { }
 
+	// async createChatRoom(room_name: string, user_id: number) {
+	// 	const current_user = await this.prisma.user.findUnique({ where: { id: user_id } });
+	// 	if (!current_user) {
+	// 	  throw new Error('User not found');
+	// 	}
+	  
+	// 	try {
+	// 	  await this.prisma.room.create({
+	// 		data: {
+	// 		  name: room_name,
+	// 		  owner: current_user.login,
+	// 		  owner_id: current_user.id,
+	// 		},
+	// 	  });
+	  
+	// 	  await this.prisma.usersOnRooms.create({
+	// 		data: {
+	// 		  room: {
+	// 			connect: { name: room_name },
+	// 		  },
+	// 		  user: {
+	// 			connect: { id: current_user.id },
+	// 		  },
+	// 		},
+	// 	  });
+	  
+	// 	  console.log(`Created room with name ${room_name}`);
+	// 	} catch (err) {
+	// 	  if (err.code === 'P2002') {
+	// 		console.log('Error: Name already exists');
+	// 	  } else {
+	// 		console.error(err);
+	// 	  }
+	// 	}
+	//   }
+
 	async createChatRoom(room_name: string, user_id: number )
 	{
 		const current_user = await this.prisma.user.findUnique({ where: { id: user_id } });
 		if (!current_user) {
 			throw new Error('User not found');
 		}
+
 		const room_exist = await this.prisma.room.findUnique({ where: { name: room_name } });
+		console.log('room_name', room_name, " | room_exist", room_exist)
 		if (room_exist) {
+			console.log('room already exist broooooooooooooooo')
 			return ;
 		}
 		else {
-			await this.prisma.usersOnRooms.create({
-				data: {
-					room: {
-						create: {
-							name: room_name,
-							owner: current_user.login,
-							owner_id: current_user.id,
-						}
-					},
-					user: {
-						connect: {
-							id: current_user.id,
+			try {
+				await this.prisma.usersOnRooms.create({
+					data: {
+						room: {
+							create: {
+								name: room_name,
+								owner: current_user.login,
+								owner_id: current_user.id,
+							}
+						},
+						user: {
+							connect: {
+								id: current_user.id,
+							}
 						}
 					}
-				}
-			});
-		}
+				});
+			} catch (err) {
+			if (err.code === 'P2002') {
+				console.error('Error: Name already exists');
+			}
+			else {
+				console.error(err);
+			  }
+		}}
 	}
 
 	async addSocketToUser(user_id: number, socket_id: string) {
@@ -61,6 +108,44 @@ export class ChatService {
 	async joinChatRoom(room_name: string, user_id: number )
 	{
 		//TODO: change with findOne
+		console.log("--------- room name = ", room_name, " | user_id = ", user_id, "---------")
+		const current_user = await this.prisma.user.findUnique({ where: { id: user_id } });
+		if (!current_user) {
+			throw new Error('User not found');
+		}
+
+		//on cherche si la room existe deja sinon on la creer
+		const room_exist = await this.prisma.room.findUnique({ where: { name: room_name} });
+		console.log("room_existssss = ", room_exist)
+		if (!room_exist) {
+			//! or maybe trhow something
+			console.log("on est dans joinChatRoom la room nexiste pas on createChatRoom(", room_name, ", ", user_id);
+
+			await this.createChatRoom(room_name, user_id);
+		}
+		else {
+			console.log("On update la room dans joinChatRoom --> user = ", current_user.login, " | room = ", room_name)
+			const user_in_room = await this.prisma.usersOnRooms.findFirst({
+				where: {
+					user_id: user_id,
+					room_id: room_exist.id,
+				}
+			});
+
+			if (!user_in_room) {
+				await this.prisma.usersOnRooms.create({
+					data: {
+						user: { connect: { id: user_id } },
+						room: { connect: { id: room_exist.id } }
+					}
+				});
+			}
+		}
+	}
+
+	async updateChatRoom(room_name: string, user_id: number )
+	{
+		//TODO: change with findOne
 		const current_user = await this.prisma.user.findUnique({ where: { id: user_id } });
 		if (!current_user) {
 			throw new Error('User not found');
@@ -69,11 +154,10 @@ export class ChatService {
 		//on cherche si la room existe deja sinon on la creer
 		const room_exist = await this.prisma.room.findUnique({ where: { name: room_name } });
 		if (!room_exist) {
-			//! or maybe trhow something
-			this.createChatRoom(room_name, user_id);
+
 		}
 		else {
-
+			console.log("On update la room dans joinChatRoom --> user = ", current_user.login, " | room = ", room_name)
 			const user_in_room = await this.prisma.usersOnRooms.findFirst({
 				where: {
 					user_id: user_id,

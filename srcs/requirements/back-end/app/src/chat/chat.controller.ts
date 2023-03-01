@@ -78,4 +78,5 @@ export class ChatController {
 		const res = await this.chatService.isRoomHasPassword(room_name.room_name);
 		response.send(res);
 	}
+
 }

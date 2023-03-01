@@ -14,7 +14,7 @@ import { shakeIt } from '../utils';
 import { addRoom, checkIsPassword, checkPassword } from './input_room_utils';
 
 export function InputRoom(props: any) {
-
+	let check = 0;
 	let	{define_room, current_room, current_user, socket, handle_history, setMessage, render_react, setRoom, GetMessagesByRoom} = props;
 	const id = `shaking-${current_room.name}-input`;
 	const id_private = `shaking-${current_room.name}-input-private`;
@@ -62,9 +62,31 @@ export function InputRoom(props: any) {
 	}
 
 	socket?.on('joinPrivateRoom', async (data: any) => {
+		console.log("joinPrivateRoom ", check ," ===> ", data);
+		check += 1;
 		setRoom(data.my_room_name);
 		await GetMessagesByRoom(handle_history, "");
 	});
+
+	// let handleAddPrivateRoom = async () => {
+
+	// 	const login = value;
+	// 	const user = await APP.post("/chat/is_user_exists", {login: login});
+	// 	if (user.data) {
+	// 		let privateRoomName = "";
+	// 		if (login.localeCompare(current_user.login) < 0)
+	// 			privateRoomName = login + "-" + current_user.login;
+	// 		else
+	// 			privateRoomName = current_user.login + "-" + login;
+	// 			await define_room(privateRoomName);
+	// 			setValue("");
+	// 			const socket_id = await APP.post("/chat/get_user_socket_id", {login: login});
+	// 			await socket?.emit("joinRoomWithSocketId", { room_name: privateRoomName, socket_id: socket_id.data, login: value} );
+	// 	}
+	// 	else {
+	// 		shakeIt("shake", (`${current_room.name}-input-private`));
+	// 	}
+	// }
 
 	let handleAddPrivateRoom = async () => {
 
@@ -76,10 +98,11 @@ export function InputRoom(props: any) {
 				privateRoomName = login + "-" + current_user.login;
 			else
 				privateRoomName = current_user.login + "-" + login;
-			define_room(privateRoomName);
-			setValue("");
-			const socket_id = await APP.post("/chat/get_user_socket_id", {login: login});
-			await socket?.emit("joinRoomWithSocketId", { room_name: privateRoomName, socket_id: socket_id.data, login: value} );
+				// await define_room(privateRoomName);
+				setRoom(privateRoomName);
+				setValue("");
+				const socket_id = await APP.post("/chat/get_user_socket_id", {login: login});
+				await socket?.emit("joinRoomWithSocketId", { room_name: privateRoomName, socket_id: socket_id.data, login: value, current_user_id: current_user.id} );
 		}
 		else {
 			shakeIt("shake", (`${current_room.name}-input-private`));
