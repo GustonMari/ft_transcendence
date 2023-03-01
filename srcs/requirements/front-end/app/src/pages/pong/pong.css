@@ -7,6 +7,12 @@
 	border-radius: 5px;
 } */
 
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
 :root {
 	--hue: 200;
 	--saturation: 75%;
@@ -93,5 +99,16 @@
 	justify-content: center;
 	font-weight: bold;
 	font-size: 3vh;
-	color: aquamarine;
+	color: var(--foreground-color);
+}
+
+.score > * {
+	margin: 0 1vh;
+	flex-grow: 1;
+
+	/* flex-basis: 0; */
+}
+
+.score > :first-child {
+	text-align: right;
 }
