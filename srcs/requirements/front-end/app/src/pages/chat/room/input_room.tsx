@@ -14,7 +14,6 @@ import { shakeIt } from '../utils';
 import { addRoom, checkIsPassword, checkPassword } from './input_room_utils';
 
 export function InputRoom(props: any) {
-	let check = 0;
 	let	{define_room, current_room, current_user, socket, handle_history, setMessage, render_react, setRoom, GetMessagesByRoom} = props;
 	const id = `shaking-${current_room.name}-input`;
 	const id_private = `shaking-${current_room.name}-input-private`;
@@ -62,8 +61,6 @@ export function InputRoom(props: any) {
 	}
 
 	socket?.on('joinPrivateRoom', async (data: any) => {
-		console.log("joinPrivateRoom ", check ," ===> ", data);
-		check += 1;
 		setRoom(data.my_room_name);
 		await GetMessagesByRoom(handle_history, "");
 	});

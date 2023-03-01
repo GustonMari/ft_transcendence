@@ -24,8 +24,6 @@ import { InfoBanTo, InfoMessage, InfoMuteTo, InfoRoom, InfoRoomTo } from './chat
 import { ChatSchedulingService } from '../chat_scheduling.service';
 import { GetMe } from 'app/src/auth/decorators';
 
-var check = 0;
-
 // @UseGuards(AccessGuard)
 @WebSocketGateway({
 	cors: {
@@ -73,37 +71,14 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		return client_socket;
 	}
 
-	// @SubscribeMessage('joinRoomWithSocketId')
-	// async joinRoomWithSocketId(@MessageBody() data: any, @ConnectedSocket() current_socket: Socket): Promise<void> {
-	// 	console.log(check, 'joinRoomWithSocketId', JSON.stringify(Date.now()));
-	// 	check += 1;
-	// 	const sockets = this.myserver.sockets.sockets;
-	// 	const client_socket = sockets.get(data.socket_id);
-	// 	const user_id = await this.chatService.getIdUser(data.login);
-	// 	await this.chatService.joinChatRoom(data.room_name, user_id);
-
-	// 	// await this.chatService.updateChatRoom(data.room_name, user_id);
-
-	// 	await client_socket.join(data.room_name);
-	// 	client_socket.emit('joinPrivateRoom', {my_room_name: data.room_name, my_user_id: user_id});
-	// 	client_socket.emit('renderReact', 'renderReact');
-	// 	current_socket.emit('renderReact', 'renderReact');
-	// }
-
 	@SubscribeMessage('joinRoomWithSocketId')
 	async joinRoomWithSocketId(@MessageBody() data: any, @ConnectedSocket() current_socket: Socket): Promise<void> {
-		console.log(check, 'joinRoomWithSocketId', JSON.stringify(Date.now()));
-		check += 1;
+
 		const sockets = this.myserver.sockets.sockets;
 		const client_socket = sockets.get(data.socket_id);
 		const user_id = await this.chatService.getIdUser(data.login);
-		console.log('                                       FIRST JOIN')
 		await this.chatService.joinChatRoom(data.room_name, data.current_user_id);
-
-		console.log('                                       SECOND JOIN')
-
 		await this.chatService.joinChatRoom(data.room_name, user_id);
-
 		await client_socket.join(data.room_name);
 		await current_socket.join(data.room_name);
 		client_socket.emit('joinPrivateRoom', {my_room_name: data.room_name, my_user_id: user_id});
@@ -154,10 +129,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		if (!await this.chatService.IsOwnerOfRoomById(data.room_name, data.id_user))
 			return ;
 		await this.chatService.deleteRoom(data.room_name, data.id_user);
-
-		//Peut etre a delete
 		this.myserver.to(data.room_name).emit('renderReactDeletedRoom', 'renderReact');
-
 		this.myserver.emit('renderReact', 'renderReact');
 		await this.myserver.socketsLeave(data.room_name);
 	}
