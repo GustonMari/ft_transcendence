@@ -68,26 +68,6 @@ export function InputRoom(props: any) {
 		await GetMessagesByRoom(handle_history, "");
 	});
 
-	// let handleAddPrivateRoom = async () => {
-
-	// 	const login = value;
-	// 	const user = await APP.post("/chat/is_user_exists", {login: login});
-	// 	if (user.data) {
-	// 		let privateRoomName = "";
-	// 		if (login.localeCompare(current_user.login) < 0)
-	// 			privateRoomName = login + "-" + current_user.login;
-	// 		else
-	// 			privateRoomName = current_user.login + "-" + login;
-	// 			await define_room(privateRoomName);
-	// 			setValue("");
-	// 			const socket_id = await APP.post("/chat/get_user_socket_id", {login: login});
-	// 			await socket?.emit("joinRoomWithSocketId", { room_name: privateRoomName, socket_id: socket_id.data, login: value} );
-	// 	}
-	// 	else {
-	// 		shakeIt("shake", (`${current_room.name}-input-private`));
-	// 	}
-	// }
-
 	let handleAddPrivateRoom = async () => {
 
 		const login = value;
@@ -98,8 +78,6 @@ export function InputRoom(props: any) {
 				privateRoomName = login + "-" + current_user.login;
 			else
 				privateRoomName = current_user.login + "-" + login;
-				// await define_room(privateRoomName);
-				// setRoom(privateRoomName);
 				setValue("");
 				const socket_id = await APP.post("/chat/get_user_socket_id", {login: login});
 				await socket?.emit("joinRoomWithSocketId", { room_name: privateRoomName, socket_id: socket_id.data, login: value, current_user_id: current_user.id} );

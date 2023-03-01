@@ -99,7 +99,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		const user_id = await this.chatService.getIdUser(data.login);
 		console.log('                                       FIRST JOIN')
 		await this.chatService.joinChatRoom(data.room_name, data.current_user_id);
-		// await this.chatService.updateChatRoom(data.room_name, user_id);
+
 		console.log('                                       SECOND JOIN')
 
 		await this.chatService.joinChatRoom(data.room_name, user_id);
@@ -154,7 +154,10 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		if (!await this.chatService.IsOwnerOfRoomById(data.room_name, data.id_user))
 			return ;
 		await this.chatService.deleteRoom(data.room_name, data.id_user);
-		// this.myserver.to(data.room_name).emit('renderReact', 'renderReact');
+
+		//Peut etre a delete
+		this.myserver.to(data.room_name).emit('renderReactDeletedRoom', 'renderReact');
+
 		this.myserver.emit('renderReact', 'renderReact');
 		await this.myserver.socketsLeave(data.room_name);
 	}

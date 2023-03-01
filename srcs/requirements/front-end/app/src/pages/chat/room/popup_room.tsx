@@ -15,7 +15,7 @@ import { addRoom, checkIsPassword, checkPassword } from './input_room_utils';
 import { InputRoom } from './input_room';
 
 export function PopupLeave(props: any) {
-	let { setMessage, socket, room, current_user, render_react } = props;
+	let { setMessage, socket, room, current_user, render_react, GetMessagesByRoom, handle_history} = props;
 	const ref = useRef<any>();
 	const closeTooltip = () => ref.current.close();
   
@@ -44,6 +44,8 @@ export function PopupLeave(props: any) {
 				  id_user: current_user.id,
 				});
 				socket?.on("renderReact", render_react);
+
+				GetMessagesByRoom(handle_history, "");
 			  }}
 			>
 				<img className="icon-room-popup" src="./accept.png" alt="leave room" />
@@ -60,7 +62,7 @@ export function PopupLeave(props: any) {
 
 
 export function PopupDelete(props: any) {
-	let { setMessage, socket, room, current_user, render_react } = props;
+	let { setMessage, socket, room, current_user, render_react, GetMessagesByRoom, handle_history} = props;
 	const ref = useRef<any>();
 	const closeTooltip = () => ref.current.close();
 	const id = `shaking-${room.name}-delete`;
@@ -72,7 +74,12 @@ export function PopupDelete(props: any) {
 		  id_user: current_user.id,
 		});
 		socket?.on("renderReact", render_react);
+		GetMessagesByRoom(handle_history, "");
 	}
+
+	socket?.on('renderReactDeletedRoom', () => {
+		GetMessagesByRoom(handle_history, "");
+	});
 
 	return (
 	  <div>

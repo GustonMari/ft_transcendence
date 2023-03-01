@@ -43,7 +43,7 @@ export function RoomForm(props : any)
 	}
 
 	socket?.on('renderReact', render_react);
-
+	
 	return (
 		<div className='between-room-input'>
 			<span ref={roomContainer} className='room-list'>
@@ -66,8 +66,8 @@ export function RoomForm(props : any)
 								</button>
 							</div>
 							<div className='split'>
-								<PopupLeave setMessage={setMessage} socket={socket} room={room} current_user={current_user} render_react={render_react}></PopupLeave>
-								<PopupDelete setMessage={setMessage} socket={socket} room={room} current_user={current_user} render_react={render_react}></PopupDelete>
+								<PopupLeave setMessage={setMessage} socket={socket} room={room} current_user={current_user} render_react={render_react} GetMessagesByRoom={GetMessagesByRoom} handle_history={handle_history}></PopupLeave>
+								<PopupDelete setMessage={setMessage} socket={socket} room={room} current_user={current_user} render_react={render_react} GetMessagesByRoom={GetMessagesByRoom} handle_history={handle_history}></PopupDelete>
 								<PopupPassword setMessage={setMessage} socket={socket} room={room} current_user={current_user} render_react={render_react}></PopupPassword>
 							</div>
 						</span>
