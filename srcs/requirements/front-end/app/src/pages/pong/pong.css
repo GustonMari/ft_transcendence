@@ -7,11 +7,20 @@
 	align-items: center;
 }
 
-canvas {
+*, *::after, *::before {
+	box-sizing: border-box;
+}
+
+.pong-body {
+	background-color: black;
+	width: 854px;
+	height: 480px;
+}
+/* canvas {
 	display: flex;
 	align-items: center;
 	margin: auto;
 	background-color: black;
 	border: 2px;
 	border-radius: 5px;
-}
+} */
