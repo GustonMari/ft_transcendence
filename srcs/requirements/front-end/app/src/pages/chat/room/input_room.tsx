@@ -99,7 +99,7 @@ export function InputRoom(props: any) {
 			else
 				privateRoomName = current_user.login + "-" + login;
 				// await define_room(privateRoomName);
-				setRoom(privateRoomName);
+				// setRoom(privateRoomName);
 				setValue("");
 				const socket_id = await APP.post("/chat/get_user_socket_id", {login: login});
 				await socket?.emit("joinRoomWithSocketId", { room_name: privateRoomName, socket_id: socket_id.data, login: value, current_user_id: current_user.id} );

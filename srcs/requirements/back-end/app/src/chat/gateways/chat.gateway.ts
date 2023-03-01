@@ -105,7 +105,9 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		await this.chatService.joinChatRoom(data.room_name, user_id);
 
 		await client_socket.join(data.room_name);
+		await current_socket.join(data.room_name);
 		client_socket.emit('joinPrivateRoom', {my_room_name: data.room_name, my_user_id: user_id});
+		current_socket.emit('joinPrivateRoom', {my_room_name: data.room_name, my_user_id: data.current_user_id});
 		client_socket.emit('renderReact', 'renderReact');
 		current_socket.emit('renderReact', 'renderReact');
 	}
