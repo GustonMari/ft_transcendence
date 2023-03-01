@@ -23,16 +23,16 @@ export default function Pong() {
 
 	return (
 		<div className="container-game">
-			<div className="">
+		<h1>Pong game</h1>
+			<div className="pong-body">
 				<title>Pong</title>
-				<h1>Pong game</h1>
 				<div className="score">
 					<div className="left-score">0</div>
 					<div className="right-score">0</div>
 				</div>
 				<div className="ball" id="ball"></div>
-				<div className="paddleleft" id="player-paddle-left"></div>
-				<div className="paddleright" id="player-paddle-right"></div>
+				<div className="paddle left" id="player-paddle-left"></div>
+				<div className="paddle right" id="player-paddle-right"></div>
 			</div>
 		</div>
 	);
