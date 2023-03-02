@@ -45,6 +45,7 @@ import {
     RefreshGuard,
     AccessGuard
 } from '../guards';
+import { UserRO } from 'app/src/user/ros/user.full.ro';
 
 
 @Controller('auth')
@@ -172,7 +173,7 @@ export class AuthController {
     ) {
         let url = 'https://api.intra.42.fr/oauth/authorize';
         url += '?client_id=';
-        url += process.env.CLIEND_ID;
+        url += process.env.CLIENT_ID;
         url += '&redirect_uri=http://localhost:3000/api/auth/42/callback';
         url += '&response_type=code';
 

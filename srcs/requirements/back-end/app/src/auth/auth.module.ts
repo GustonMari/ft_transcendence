@@ -15,7 +15,7 @@ import { PassportModule } from '@nestjs/passport';
         AuthService,
         AccessStrategy,
         RefreshStrategy,
-        // FtStrategy
+        FtStrategy
     ],
     controllers: [
         AuthController
