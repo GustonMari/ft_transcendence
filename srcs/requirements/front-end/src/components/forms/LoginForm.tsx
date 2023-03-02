@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import API from "../../api/api";
+import API from "../../network/api";
 import { useNavigate } from "react-router-dom";
+import styles from "../../styles/Forms/LoginForm.module.css"
 
 export default function LoginForm() {
   const [login, setLogin] = useState("");
@@ -11,11 +12,11 @@ export default function LoginForm() {
 
   return (
     <section>
-      <div className="auth_form">
-        <div className="left">
+      <div className={styles.container}>
           <h2>Sign In</h2>
+
           <form
-            className="form"
+            className={styles.form}
             onSubmit={async (e) => {
               e.preventDefault();
               const data = await API.signIn(
@@ -53,19 +54,24 @@ export default function LoginForm() {
               Sign In
             </button>
           </form>
-        </div>
         <div className="right">
           <h2>You don't have an account ?</h2>
           <button
             onClick={() => {
-              navigate("/register");
+                navigate("/register");
             }}
             className="btn_redirect"
-          >
+            >
             Sign Up
           </button>
         </div>
-      </div>
+        <button onClick={() => {
+            window.location.href = "http://localhost:3000/api/auth/42/connect"
+        }
+        }>
+            42connect
+        </button>
+            </div>
     </section>
   );
 }

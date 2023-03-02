@@ -1,3 +1,4 @@
+import { ChatModule } from './chat/chat.module';
 import { JwtModule } from '@nestjs/jwt';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { PrismaService } from './prisma/prisma.service';
@@ -12,7 +13,8 @@ import { FriendModule } from './relation/relation.module';
         PrismaModule,
         AuthModule,
         UserModule,
-        FriendModule
+        FriendModule,
+        ChatModule,
     ],
     providers: [
         PrismaService
