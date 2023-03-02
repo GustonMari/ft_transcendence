@@ -3,7 +3,7 @@ import {
     MdOutlineRemoveCircleOutline,
     MdOutlineCheckCircleOutline
 } from "react-icons/md";
-import API from "../../api/api";
+import API from "../../network/api";
 import { ProfilePopUpContext } from "../../contexts/ProfilePopUp.context";
 
 export const RequestList = ({relations}: any) => {

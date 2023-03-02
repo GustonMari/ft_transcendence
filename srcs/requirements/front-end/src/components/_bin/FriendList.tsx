@@ -1,5 +1,5 @@
 import { useLayoutEffect, useState } from "react";
-import API from "../../api/api";
+import API from "../../network/api";
 import {RelationList} from "./RelationList";
 import { FriendElem } from "./FriendElem";
 import { RequestElem } from "./RequestElem";

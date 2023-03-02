@@ -1,6 +1,6 @@
 import { Navigate, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import API from "../../api/api";
+import API from "../../network/api";
 
 import '../../styles/Buttons/LogOutButton.css'
 import { Http2ServerRequest } from "http2";

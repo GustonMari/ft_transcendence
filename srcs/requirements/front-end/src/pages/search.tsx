@@ -4,9 +4,9 @@ import { MdOutlineRemoveCircleOutline } from "react-icons/md";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import s from "./../styles/search/result.module.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { NavBar } from "../components/NavBar";
+import { NavBar } from "../components/communs/NavBar";
 import { useContext, useLayoutEffect, useState } from "react";
-import API from "../api/api";
+import API from "../network/api";
 import { ProfileComponent } from "../components/user/ProfileComponent";
 import { ProfilePopUpContext } from "../contexts/ProfilePopUp.context";
 

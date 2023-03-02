@@ -13,8 +13,8 @@ export class FtStrategy extends PassportStrategy(Strategy, '42') {
             // passReqToCallback: true,
             // scope: 'public',
 
-            clientID: '', //TODO: add clientID
-            clientSecret: '', //TODO: add clientSecret
+            clientID: process.env.CLIENT_ID,
+            clientSecret: process.env.CLIENT_SECRET,
             callbackURL: 'http://localhost:3000/api/auth/42/callback',
             profileFields: {
                 id: (obj: any) => {return String(obj.id);},

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import QRCode from "react-qr-code";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import API from "../api/api";
+import API from "../network/api";
 
 export default function TFA () {
 

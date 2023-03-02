@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
-import API from "../api/api"
-import { NavBar } from "../components/NavBar"
+import API from "../network/api"
+import { NavBar } from "../components/communs/NavBar"
 import { FriendList } from "../components/relations/FriendList"
 import { RequestList } from "../components/relations/RequestList"
 import { ProfileComponent } from "../components/user/ProfileComponent"

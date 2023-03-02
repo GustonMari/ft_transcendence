@@ -1,4 +1,4 @@
-import API from "../../api/api";
+import API from "../../network/api";
 
 export const RequestElem = (props: any) => {
     return (

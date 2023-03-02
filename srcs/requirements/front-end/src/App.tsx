@@ -3,16 +3,17 @@ import { Route, Routes, Navigate} from "react-router-dom";
 import Register from "./pages/register";
 import Home from "./pages/home";
 import SignIn from "./pages/signin";
-import PrivateRoute from "./components/PrivateRoute";
+import PrivateRoute from "./components/routes/PrivateRoute";
 import { Friends } from "./pages/friend";
 import { Profile } from "./pages/profile";
 import { Result } from "./pages/search";
-import { NotFound } from "./error/NotFound";
+import { NotFound } from "./errors/NotFound";
 import { UserProvider } from "./contexts/User.context";
 import WrapContext from "./contexts/wrap.context";
 import { GlobalFeatures } from "./components/communs/GlobalFeatures";
-import PublicRoute from "./components/PublicRoute";
+import PublicRoute from "./components/routes/PublicRoute";
 import TFA from "./pages/tfa";
+import Chat from "./pages/chat";
 
 function App() {
   return (
@@ -57,6 +58,17 @@ function App() {
                 </PrivateRoute>
             }/>
         } />
+
+        <Route path="/messages" element={
+            <WrapContext components={
+                <PrivateRoute>
+                    <GlobalFeatures>
+                        <Chat/>   
+                    </GlobalFeatures>
+                </PrivateRoute>
+            }/>
+        } />
+
         <Route path="/profile" element={
             <WrapContext components={
                 <PrivateRoute>

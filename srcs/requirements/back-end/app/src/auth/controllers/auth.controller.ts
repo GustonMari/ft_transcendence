@@ -173,7 +173,7 @@ export class AuthController {
     ) {
         let url = 'https://api.intra.42.fr/oauth/authorize';
         url += '?client_id=';
-        url += ''; //TODO: add client id
+        url += process.env.CLIEND_ID;
         url += '&redirect_uri=http://localhost:3000/api/auth/42/callback';
         url += '&response_type=code';
 
@@ -243,4 +243,11 @@ export class AuthController {
     }
 
     /* ------------------------------------------------------------------------------ */
+
+    @Get('test')
+    async test() {
+        
+        console.log(process.env.CLIEND_ID);
+        return('salut')
+    }
 }

@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { ProfilePopUpContext } from "../../contexts/ProfilePopUp.context";
-import { NavBar } from "../NavBar";
+import { NavBar } from "./NavBar";
 import { ProfileComponent } from "../user/ProfileComponent";
 
 export const GlobalFeatures = ({children}: any) => {

@@ -49,7 +49,76 @@ model User {
     incoming Relation[]    @relation("incoming")
     outgoing Relation[]    @relation("outgoing")
 
+    rooms UsersOnRooms[]
+	messages Message[]
+    socket_id  String?  @unique
+
     @@map("users")
+}
+
+model Chat_Relation {
+    id Int @id @unique @default(autoincrement())
+
+    created_at DateTime @default(now())
+
+    state RELATION_STATE 
+
+   
+
+    @@map("chat_request")
+}
+
+model Room {
+    id         Int      @id @unique @default(autoincrement())
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+    name       String   @unique
+    password   String   @default("")
+
+    owner String
+    owner_id Int
+    users UsersOnRooms[]
+
+	messages Message[]
+    // @@map("rooms")
+} 
+
+model UsersOnRooms {
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    user User @relation(fields: [user_id], references: [id])
+    user_id Int
+    room Room @relation(fields: [room_id], references: [id])
+    room_id Int
+
+
+    admin Boolean @default(false)
+    muted Boolean @default(false)
+    banned Boolean @default(false)
+
+	muted_at DateTime? 
+	muted_till DateTime? 
+	banned_at DateTime?
+	banned_till DateTime?
+
+    @@id([user_id, room_id])
+}
+
+model Message {
+
+	id Int @id @unique @default(autoincrement())
+	created_at DateTime @default(now())
+	updated_at DateTime @updatedAt
+	current_message       String
+	sender_name String
+	sender     User     @relation(fields: [sender_id], references: [id], onDelete: Cascade)
+	sender_id  Int
+	room       Room     @relation(fields: [room_id], references: [id], onDelete: Cascade)
+	room_id    Int
+
+	@@map("messages")
 }
 
 enum Role {

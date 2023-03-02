@@ -1,5 +1,5 @@
 import { useState } from "react";
-import API from "../../api/api";
+import API from "../../network/api";
 import { RelationList } from "./RelationList";
 
 export const ShowRelationList = (props: any) => {

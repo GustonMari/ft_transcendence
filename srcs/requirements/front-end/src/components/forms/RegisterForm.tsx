@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import styles from "../../styles/Forms/RegisterForm.module.css";
-import API from "../../api/api";
+import API from "../../network/api";
 import { useNavigate } from "react-router-dom";
 
 export default function RegisterForm() {
