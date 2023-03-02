@@ -105,10 +105,18 @@
 .score > * {
 	margin: 0 1vh;
 	flex-grow: 1;
-
+	flex-basis: 0;
+	padding: 0 2vh;
+	opacity: 0.5;
 	/* flex-basis: 0; */
 }
 
 .score > :first-child {
 	text-align: right;
+	border-right: 2px var(--foreground-color) solid;
 }
+
+/* .score > :first-child {
+	text-align: right;
+	border-right: 2px var(--foreground-color) solid;
+} */
