@@ -81,7 +81,7 @@ export class Ball {
 
 		if (rect.top <= 0 || rect.bottom >= window.innerHeight) {
 			console.log("outtttt")
-			console.log("delta = ", delta, " x = ", this.x, " y = ", this.y, " vectorX = ", this.vector.x, " vectorY = ", this.vector.y , " velocity = ", this.velocity, " ball = ", this.BallElem);
+			console.log("delta = ", delta, " x = ", this.x, " y = ", this.y, " vectorX = ", this.vector.x, " vectorY = ", this.vector.y , " velocity = ", this.velocity, " rect= ", rect, " ball = ", this.BallElem);
 
 			this.vector.y *= -1;
 		}
@@ -89,7 +89,7 @@ export class Ball {
 		if (rect.left <= 0 || rect.right >= window.innerWidth) {
 			console.log("outtttt")
 			console.log("delta = ", delta, " x = ", this.x, " y = ", this.y, " vectorX = ", this.vector.x, " vectorY = ", this.vector.y , " velocity = ", this.velocity, " ball = ", this.BallElem);
-
+			//TODO: divier cette fonction en deux pour les points, et pour le reset
 			this.vector.x *= -1;
 		}
 		// if (rect.top < 0 || rect.bottom > window.innerHeight) {

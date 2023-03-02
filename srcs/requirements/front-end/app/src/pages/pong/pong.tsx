@@ -43,6 +43,11 @@ export default function Pong() {
 
 			useEffect(() => {
 			  const ballElement = document.getElementById("ball") as HTMLDivElement;
+
+			  	const divElement = document.getElementById("pong-body");
+				const rect = divElement?.getBoundingClientRect();
+				console.log("ta mere putain", rect);
+				
 			  if (ballElement) {
 				setBall(ballElement);
 			  }
@@ -69,7 +74,7 @@ export default function Pong() {
 	return (
 		<div className="container-game">
 		<h1>Pong game</h1>
-			<div className="pong-body">
+			<div className="pong-body" id="pong-body">
 				<title>Pong</title>
 				<div className="score">
 					<div className="left-score">0</div>
