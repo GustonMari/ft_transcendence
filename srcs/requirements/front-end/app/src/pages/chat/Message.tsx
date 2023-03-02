@@ -148,6 +148,13 @@ function PopupImage(props: any) {
 		// }
 	}
 
+	if (current_user === undefined || current_user === null)
+		return (
+			<div>
+				<h1>PROBLEM TA MERE</h1>
+			</div>
+		);
+
 	return (
 	  <div>
 		<a href="#" onClick={handleShow}>

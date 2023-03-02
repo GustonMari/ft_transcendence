@@ -427,21 +427,41 @@ export class ChatService {
 		return true;
 	}
 
+	// async getMessagesByRoom (room_name : string): Promise<Message[]> {
+	// 	const room_id = await this.getRoomIdByName(room_name);
+	// 	if (room_id == -1) {
+	// 		return null;
+	// 	}
+	// 	const messages = await this.prisma.room.findUnique({
+	// 		where: {
+	// 			id: room_id,
+	// 		},
+	// 		select: {
+	// 			messages: true,
+	// 		}
+	// 	})
+	// 	return messages.messages;
+	// }
+
 	async getMessagesByRoom (room_name : string): Promise<Message[]> {
-		const room_id = await this.getRoomIdByName(room_name);
-		if (room_id == -1) {
-			return null;
-		}
-		const messages = await this.prisma.room.findUnique({
-			where: {
-				id: room_id,
-			},
-			select: {
-				messages: true,
-			}
-		})
-		return messages.messages;
-	}
+        const room_id = await this.getRoomIdByName(room_name);
+        if (room_id == -1) {
+            return null;
+        }
+        const messages = await this.prisma.room.findUnique({
+            where: {
+                id: room_id,
+            },
+            include: {
+                messages: {
+                    include: {
+                        sender: true,
+                    }
+                }
+            }
+        })
+        return messages.messages;
+    }
 
 	async IsOwnerOfRoomByLogin (room_name: string, user_login: string): Promise<boolean> {
 	
