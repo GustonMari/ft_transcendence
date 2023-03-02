@@ -2,11 +2,12 @@
 export class Ball {
 	
 	BallElem: any;
-	vector: {x: number, y: number} = {x: 0, y: 0};
+	vector: {x: number, y: number}/*  = {x: 0, y: 0} */;
 	velocity: number = 0.25;
 
 	constructor(BallElem: any)
 	{
+		this.vector = {x: 0.1, y: 0.1};
 		this.BallElem = BallElem;
 		console.log('constructor =', this.BallElem);
 	}
