@@ -6,20 +6,65 @@ import Create_socket from "../chat/socket";
 import { APP } from "../../api/app";
 import App from "../../App";
 import "./pong.css";
+import { Ball } from "./ball";
 // import "./pong"
 
 
 
 
 export default function Pong() {
-
-	useEffect(() => {
-
-		function playGame() {
 	
-		}
-		playGame();
-	}, []);
+			//create a new element 
+			// const ball = new Ball(document.getElementById("ball") as HTMLDivElement);
+			// const ball = new Ball(document.getElementById("ball"));
+			// console.log("creation ball = ", ball, " check document = ", document.getElementById("ball"));
+			// let lastTime: number;
+
+			// function update(time: number) {
+				
+			// 	//check for the first time
+			// 	if (lastTime != undefined || lastTime != null)
+			// 	{
+			// 		//difference between the two different frames
+			// 		const delta = time - lastTime;
+			// 		//? we use delta to prevent frame drops, because the time between each frame fluctuates
+			// 		ball.update(delta);
+			// 	}
+			// 	lastTime = time;
+			// 	// console.log(time);
+
+
+			// 	//create an infinite loop
+			// 	window.requestAnimationFrame(update);
+			// }
+			// window.requestAnimationFrame(update);
+
+			const [ball, setBall] = useState<HTMLDivElement | null>(null);
+
+			useEffect(() => {
+			  const ballElement = document.getElementById("ball") as HTMLDivElement;
+			  if (ballElement) {
+				setBall(ballElement);
+			  }
+			}, []);
+		  
+			const update = (lastTime: number, pongBall: Ball) => (time: number) => {
+			  if (lastTime != undefined || lastTime != null) {
+				const delta = time - lastTime;
+				pongBall.update(delta);
+			  }
+			  lastTime = time;
+			  window.requestAnimationFrame(update(lastTime, pongBall));
+			};
+		  
+			useEffect(() => {
+			  if (ball) {
+				const pongBall = new Ball(ball);
+				let lastTime: number = 0;
+				window.requestAnimationFrame(update(lastTime, pongBall));
+			  }
+			}, [ball]);
+
 
 	return (
 		<div className="container-game">
