@@ -34,6 +34,9 @@
 }
 
 .pong-body {
+	
+	/* TODO: il faudra remettre le overflow */
+	/* overflow: hidden; */ 
 	background-color: black;
 	position : absolute;
 	width: 90vh;

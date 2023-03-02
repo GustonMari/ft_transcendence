@@ -48,12 +48,18 @@ export class Ball {
 		this.BallElem.style.setProperty('--y', value.toString());
 	}
 
+	//Get the position of the ball
+	rect() {
+		/* retourne un objet DOMRect fournissant des informations sur la taille d'un élément
+		 et sa position relative par rapport à la zone d'affichage. */
+		return this.BallElem.getBoundingClientRect();
+	}
+
 	reset() {
 		this.x = 50;
 		this.y = 50;
 		this.vector = { x: 0, y: 0};
 		
-
 		// make random direction, but not too much up or down
 		// while (1)
 		while (Math.abs(this.vector.x) <= .2 || Math.abs(this.vector.x) >= .9)
@@ -71,6 +77,26 @@ export class Ball {
 		// this.y = 18;
 		this.x += this.vector.x * this.velocity * delta;
 		this.y += this.vector.y * this.velocity * delta;
+		const rect = this.rect();
+
+		if (rect.top <= 0 || rect.bottom >= window.innerHeight) {
+			console.log("outtttt")
+			console.log("delta = ", delta, " x = ", this.x, " y = ", this.y, " vectorX = ", this.vector.x, " vectorY = ", this.vector.y , " velocity = ", this.velocity, " ball = ", this.BallElem);
+
+			this.vector.y *= -1;
+		}
+
+		if (rect.left <= 0 || rect.right >= window.innerWidth) {
+			console.log("outtttt")
+			console.log("delta = ", delta, " x = ", this.x, " y = ", this.y, " vectorX = ", this.vector.x, " vectorY = ", this.vector.y , " velocity = ", this.velocity, " ball = ", this.BallElem);
+
+			this.vector.x *= -1;
+		}
+		// if (rect.top < 0 || rect.bottom > window.innerHeight) {
+		// 	console.log("outtttt")
+		// 	this.vector.y *= -1;
+		// }
+
 		// console.log("delta = ", delta, " x = ", this.x, " y = ", this.y, " vectorX = ", this.vector.x, " vectorY = ", this.vector.y , " velocity = ", this.velocity, " ball = ", this.BallElem);
 	}
 }
