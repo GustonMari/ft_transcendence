@@ -7,6 +7,7 @@ export interface HistoryDto {
 	sender_id: number;
 	room_id: number;
 	sender_name: string;
+	sender: User;
 }
 
 export interface InfoMessage {

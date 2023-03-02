@@ -5,6 +5,7 @@ import Home from "./pages/home";
 import SignIn from "./pages/signin";
 import Chat from "./pages/chat/chat";
 import PrivateRoute from "./components/PrivateRoute";
+import Pong from "./pages/pong/pong"
 
 // function App() {
 //   return (
@@ -38,7 +39,11 @@ function App() {
           <Route path="/chat" element={
             <PrivateRoute>
                 <Chat />
-                {/* <Route path="/chat" element={<Chat />} /> */}
+            </PrivateRoute>
+        } />
+          <Route path="/pong" element={
+            <PrivateRoute>
+                <Pong />
             </PrivateRoute>
         } />
         <Route path="/signin" element={<SignIn />} />

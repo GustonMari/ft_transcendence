@@ -1,0 +1,122 @@
+/* canvas {
+	display: flex;
+	align-items: center;
+	margin: auto;
+	background-color: black;
+	border: 2px;
+	border-radius: 5px;
+} */
+
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+:root {
+	--hue: 200;
+	--saturation: 75%;
+	--foreground-color: hsl(var(--hue), var(--saturation), 75%);
+}
+
+.container-game {
+	border: blueviolet 2px solid;
+	display: flex;
+	flex-direction: column;
+	min-width: 100vh;
+	min-height: 100vh;
+	justify-content: center;
+	align-items: center;
+}
+
+*, *::after, *::before {
+	box-sizing: border-box;
+}
+
+.pong-body {
+	background-color: black;
+	position : absolute;
+	width: 90vh;
+	height: 55vh;
+	/* width: 854px;
+	height: 480px; */
+	border-radius: 5px;
+}
+
+.paddle {
+	--position: 25;
+
+	position: absolute;
+	top: 50%;
+	/* top: calc(var(--position) * 1vh); */
+	transform: translateY(-50%);
+	background-color: var(--foreground-color);
+	/* background-color: blue; */
+	width: 2vh;
+	height: 13vh;
+	border-radius: 5px;
+}
+
+.paddle.left {
+
+	left: 1vh;
+
+	/* background-color: white;
+	width: 20px;
+	height: 100px;
+	border-radius: 5px;
+	margin-left: 5px; */
+}
+
+.paddle.right {
+	right: 1vh;
+
+	/* background-color: white;
+	width: 20px;
+	height: 100px;
+	border-radius: 5px;
+	margin-left: 5px; */
+}
+
+.ball {
+	--x: 50;
+	--y: 50;
+
+	position: absolute;
+	/* top: 50%;
+	left: 50%; */
+	top: calc(var(--y) * 1%);
+	left: calc(var(--x) * 1%);
+	transform: translateY(-50%);
+	background-color: var(--foreground-color);
+	width: 3vh;
+	height: 3vh;
+	border-radius: 50%;
+}
+
+.score {
+	display: flex;
+	justify-content: center;
+	font-weight: bold;
+	font-size: 3vh;
+	color: var(--foreground-color);
+}
+
+.score > * {
+	margin: 0 1vh;
+	flex-grow: 1;
+	flex-basis: 0;
+	padding: 0 2vh;
+	opacity: 0.5;
+	/* flex-basis: 0; */
+}
+
+.score > :first-child {
+	text-align: right;
+	border-right: 2px var(--foreground-color) solid;
+}
+
+/* .score > :first-child {
+	text-align: right;
+	border-right: 2px var(--foreground-color) solid;
+} */

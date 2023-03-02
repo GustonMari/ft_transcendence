@@ -20,7 +20,7 @@ import { AccessGuard } from 'app/src/auth/guards/access.guard';
 import { User } from '@prisma/client';
 import { UserController } from 'app/src/user/controllers/user.controller';
 import { ChatService } from '../chat.service';
-import { InfoBanTo, InfoMessage, InfoMuteTo, InfoRoom, InfoRoomTo } from './chat.interface';
+import { InfoBanTo, InfoMessage, InfoMuteTo, InfoRoom, InfoRoomTo, InfoInvite } from './chat.interface';
 import { ChatSchedulingService } from '../chat_scheduling.service';
 import { GetMe } from 'app/src/auth/decorators';
 
@@ -184,12 +184,12 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		}
 	}
 
-	// @SubscribeMessage('removeAdmin')
-	// handleRemoveAdmin(socket: Socket, user: string): void {
-	// 	//* check si le user qui fait la demande est admin
-	// 	//! changer prisma pour que le user soit plus admin
-	// 	//? emit un petit message pour dire que tel user n'est plus admin
-	// }
+	@SubscribeMessage('invite_pong')
+	async handleInvitePong(@MessageBody() data: any, @ConnectedSocket() socket: Socket) {
+		//TODO rajouter check pour pas s'auto inviter
+		console.log('invite pong ' + data.current_user.login);
+
+	}
 
 	@SubscribeMessage('message') // Subscribe to the message event send by the client (front end) called 'message'
 	async handleMessage(@MessageBody() data: InfoMessage, @ConnectedSocket() socket: Socket) {

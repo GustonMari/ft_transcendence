@@ -12,6 +12,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import { Modal } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
+import './utils.css'
 
 //shake_name = css name of the modal
 export function shakeIt(shake_name: string, room_name: string) {
@@ -39,4 +40,20 @@ export function ShortedName(name : string) : string
 	if (name.length > 10)
 		return (name.slice(0, 10) + "...");
 	return (name);
+}
+
+export function ProgressBar(props: any)
+{
+	let {progress} = props;
+
+	document.documentElement.style.setProperty('--progress-percentage', `${progress}%`);
+	
+	
+	return (
+		<div className='container-progress-bar'>
+			<div className="filler-progress-bar">
+				<span /* className="progress" */>{`${progress}%`}</span>
+			</div>
+		</div>
+	);
 }

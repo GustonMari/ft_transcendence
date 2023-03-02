@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module';
 import { FriendModule } from './relation/relation.module';
 import { ChatGateway } from './chat/gateways/chat.gateway';
 import { ChatModule } from './chat/chat.module';
+import { PongModule } from './pong/pong.module';
 
 @Module({
 	imports: [
@@ -16,7 +17,8 @@ import { ChatModule } from './chat/chat.module';
 		AuthModule,
 		UserModule,
 		FriendModule,
-		ChatModule
+		ChatModule,
+		PongModule
 	],
 	providers: [
 		PrismaService,
