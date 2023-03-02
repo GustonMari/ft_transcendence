@@ -9,7 +9,8 @@ export class Ball {
 	{
 		this.vector = {x: 0.1, y: 0.1};
 		this.BallElem = BallElem;
-		console.log('constructor =', this.BallElem);
+		this.reset();
+		// console.log('constructor =', this.BallElem);
 	}
 	
 	/*
@@ -54,6 +55,7 @@ export class Ball {
 		
 
 		// make random direction, but not too much up or down
+		// while (1)
 		while (Math.abs(this.vector.x) <= .2 || Math.abs(this.vector.x) >= .9)
 		{
 			//generate a random number between 0 and 2PI (360 degrees)
@@ -67,8 +69,8 @@ export class Ball {
 	update(delta: number) {
 		// this.x = 5;
 		// this.y = 18;
-		console.log("delta = ", delta, " x = ", this.x, " y = ", this.y, " vectorX = ", this.vector.x, " vectorY = ", this.vector.y , " velocity = ", this.velocity, " ball = ", this.BallElem);
 		this.x += this.vector.x * this.velocity * delta;
 		this.y += this.vector.y * this.velocity * delta;
+		// console.log("delta = ", delta, " x = ", this.x, " y = ", this.y, " vectorX = ", this.vector.x, " vectorY = ", this.vector.y , " velocity = ", this.velocity, " ball = ", this.BallElem);
 	}
 }
