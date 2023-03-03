@@ -69,13 +69,14 @@ export class Ball {
 			this.vector = { x: Math.cos(heading), y: Math.sin(heading) };
 		}
 		//initial velocity
-		// this.velocity = .025;
-		this.velocity = .1;
+		this.velocity = .025;
+		// this.velocity = .1;
 	}
 
 	update(delta: number, limit: DOMRect) {
 		this.x += this.vector.x * this.velocity * delta;
 		this.y += this.vector.y * this.velocity * delta;
+		this.velocity += 0.00001 * delta;
 		const rect = this.rect();
 
 		if(rect.top <= limit.top || rect.bottom >= limit.bottom) {

@@ -7,6 +7,7 @@ import { APP } from "../../api/app";
 import App from "../../App";
 import "./pong.css";
 import { Ball } from "./ball";
+import { Paddle } from "./paddle";
 // import "./pong"
 
 
@@ -16,27 +17,62 @@ export default function Pong() {
 
 			const [ball, setBall] = useState<HTMLDivElement | null>(null);
 			const [limit, setLimit] = useState<DOMRect | undefined>(undefined);
-			let first: boolean = false;
-			// const [limit, setLimit] = useRef<DOMRect | undefined>(undefined);
-			let newLimit: DOMRect | undefined;
 			const [trigger, setTrigger] = useState<number>(0);
 
-			useEffect(() => {
+			let newLimit: DOMRect | undefined;
+			let first: boolean = false;
+			// let playerPaddleLeft: Paddle;
+			// let playerPaddleRight: Paddle;
+			let playerPaddleLeft = new Paddle(document.getElementById("player-paddle-left") as HTMLDivElement);
+			let playerPaddleRight = new Paddle(document.getElementById("player-paddle-right") as HTMLDivElement);
+			
+			  useEffect(() => {
 
 			  const ballElement = document.getElementById("ball") as HTMLDivElement;
-			  let rect;
-
-				const divElement = document.getElementById("pong-body");
-				if (divElement)
-					rect = divElement?.getBoundingClientRect();
+			//   playerPaddleLeft = new Paddle(document.getElementById("player-paddle-left") as HTMLDivElement);
+			//   playerPaddleRight = new Paddle(document.getElementById("player-paddle-right") as HTMLDivElement);
 				
+			  let rect;
+			  
+			  const divElement = document.getElementById("pong-body");
+			  if (divElement)
+			  rect = divElement?.getBoundingClientRect();
+			  
 			  if (ballElement && rect) {
-				setLimit(rect);
-				newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
-				setBall(ballElement);
-			  }
+				  setLimit(rect);
+				  newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
+				  setBall(ballElement);
+				}
 			}, []);
-		  
+			
+			// document.addEventListener("mousemove", e => {
+			// 	playerPaddleLeft.position = (e.y / window.innerHeight) * 100
+			//   })
+
+			const DownHandler = (e: any) => {
+				if (e.keyCode == 87) {
+					console.log("w");
+					//BUG: j'aurai plutot dit bottom plutot que height
+
+					if (newLimit && playerPaddleLeft)
+					{
+						// playerPaddleLeft.position = (e.y *  newLimit?.height) / 100;
+						// playerPaddleLeft.position = 600;
+						console.log("DA FUCKKK =", playerPaddleLeft.position);
+					}
+				}
+				else if (e.keyCode == 83) {
+					console.log("s");
+				}
+				if (e.keyCode == 38) {
+					console.log("up");
+				}
+				else if (e.keyCode == 40) {
+					console.log("down");
+				}
+				e.preventDefault();
+			}
+
 			const update = (lastTime: number, pongBall: Ball, limit?: DOMRect) => (time: number) => {
 			  if (lastTime != undefined || lastTime != null) {
 				const delta = time - lastTime;
@@ -45,8 +81,15 @@ export default function Pong() {
 					newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
 					first = true;
 				}
-				if (newLimit)
-					pongBall.update(delta, newLimit);
+				// if (newLimit)
+					// pongBall.update(delta, newLimit);
+
+				document.addEventListener("mousemove", e => {
+					// console.log("papa dans maman e.y = " + e.y);
+
+					playerPaddleLeft.position = (e.y / window.innerHeight) * 100
+					})
+				document.addEventListener("keydown", DownHandler);
 				window.addEventListener('resize', () => {
 					 newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
 				});
@@ -59,6 +102,7 @@ export default function Pong() {
 				if (ball) {
 					console.log("ball");
 					const pongBall = new Ball(ball);
+					console.log('paddle left', playerPaddleLeft);
 					let lastTime: number = 0;
 					window.requestAnimationFrame(update(lastTime, pongBall));
 			  }

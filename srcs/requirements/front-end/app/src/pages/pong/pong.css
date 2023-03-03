@@ -51,7 +51,7 @@
 
 	position: absolute;
 	top: 50%;
-	/* top: calc(var(--position) * 1vh); */
+	top: calc(var(--position) * 1vh);
 	transform: translateY(-50%);
 	background-color: var(--foreground-color);
 	/* background-color: blue; */
