@@ -65,7 +65,7 @@ function App() {
             <WrapContext components={
                 <PrivateRoute>
                     <GlobalFeatures>
-                        <Chat/>   
+                        {/* <Chat/>    */} // TODO: fix css, conflic with differents css files
                     </GlobalFeatures>
                 </PrivateRoute>
             }/>
