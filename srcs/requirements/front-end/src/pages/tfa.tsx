@@ -1,49 +1,32 @@
-import React, { useEffect, useState } from "react";
-import QRCode from "react-qr-code";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import API from "../network/api";
+import { BackGroundForm } from "../components/forms/BackGroundForm";
+import TFAForm from "../components/forms/TFAForm";
+import { AlertContext } from "../contexts/Alert.context";
 
 export default function TFA () {
 
     const [params, _setParams] = useSearchParams();
-    const [code, setCode] = useState(params.get('qrcode') as any);
-    const [username, setUsername] = useState(params.get('username') as any);
-    const [tfaCode, setTfaCode] = useState('');
+    const [code, setCode] = useState<any>(params.get('qrcode'));
+    const [username, setUsername] = useState<any>(params.get('username'));
 
     const navigate = useNavigate();
+    const { handleError, handleSuccess }: any = useContext(AlertContext);
 
-    // useEffect(() => {
-    // }, [tfaCode]);
-
-    function handleClick(e: any) {
-        API.tfaCheck(
-            tfaCode,
-            username,
-            () => {
-                navigate("/home");
-            }, (err: any) => {
-                console.log(err);
-            }
-        );
-    }
-
-
+    useEffect(() => {
+        if (!username || !code ) {
+            navigate('/signin');
+            handleError("Error during the TFA, code or username is invalid");
+        }
+    })
 
     return (
         <>
-            <div>
-            <h1>Two Factor Authentication</h1>
-            <h1>{code.toString()}</h1>
-            <QRCode value={code.toString()}></QRCode>
-            <input onChange={(e) => {
-                e.preventDefault();
-                setTfaCode(e.target.value)
-            }}/>
-            <button onClick={(e) => {
-                e.preventDefault();
-                handleClick(e);
-            }}>Submit</button>
-            </div>
+            <BackGroundForm>
+                {username && code &&
+                    <TFAForm code={code} username={username}/>
+                }
+            </BackGroundForm>
         </>
-    )
+    );
 }

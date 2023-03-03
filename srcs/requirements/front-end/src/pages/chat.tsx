@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import MessageInput from "../components/messages/Message";
-import Messages, { DisplayMessagesByRoom, GetMessagesByRoom } from "../components/messages/Message";
+import { DisplayMessagesByRoom, GetMessagesByRoom } from "../components/messages/Message";
 import Create_socket from "../network/chat.socket";
 import {RoomForm} from "../components/rooms/RoomForm";
 import { APP } from "../network/app";
@@ -57,38 +57,29 @@ export default function Chat() {
 	socket?.on("message", message_listener);
 
 	return (
-	<div>
-		<div>
-			{/* <nav className="nav-bar">
-				<a className='nav-bar-box' href="">Home</a>
-				<a href="">Rooms</a>
-				<a href="">Profile</a>
-				<a href="">Logout</a>
-				<a href="">Settings</a>
-			</nav> */}
-		</div>
-		<div className="global">
-			<div className="room-menu">
-				<RoomForm
-					define_room={define_room}
-					current_room={room}
-					current_user={currentUser}
-					socket={socket}
-					handle_history={history_listener}
-					trigger={trigger}
-					setTrigger={setTrigger}
-					setMessage={setMessage}
-					setRoom={setRoom}
-					/>
-			</div>
-			<div className="message-box">
-				<DisplayMessagesByRoom current_user={currentUser} socket={socket} history={history} infomessage={messages} room={room} handle_history={history_listener}/>
-				<MessageInput send={send}/>
-			</div>
-			<div className="menu-chat">
-				<ParameterChat define_room={define_room} current_room={room} current_user={currentUser} socket={socket}/>
-			</div>
-		</div>
-	</div>
+        <div>
+            <div className="global">
+                <div className="room-menu">
+                    <RoomForm
+                        define_room={define_room}
+                        current_room={room}
+                        current_user={currentUser}
+                        socket={socket}
+                        handle_history={history_listener}
+                        trigger={trigger}
+                        setTrigger={setTrigger}
+                        setMessage={setMessage}
+                        setRoom={setRoom}
+                    />
+                </div>
+                <div className="message-box">
+                    <DisplayMessagesByRoom current_user={currentUser} socket={socket} history={history} infomessage={messages} room={room} handle_history={history_listener}/>
+                    <MessageInput send={send}/>
+                </div>
+                <div className="menu-chat">
+                    <ParameterChat define_room={define_room} current_room={room} current_user={currentUser} socket={socket}/>
+                </div>
+            </div>
+        </div>
 	);
 }

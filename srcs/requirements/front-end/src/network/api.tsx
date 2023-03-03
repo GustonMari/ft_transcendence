@@ -45,14 +45,15 @@ export default class API {
   }
 
   static async ftConnect(
-    successFunc: () => void,
+    successFunc: (url: string) => void,
     errorFunc: (err: ApiError) => void
     ) {
         try {
-            await APP.get("/auth/42/connect");
-            successFunc();
+            const data = await (await APP.get("/auth/42/connect")).data;
+            successFunc(data.url);
         } catch (err) {
             const error = err as AxiosError;
+            console.log(err);
             if (axios.isAxiosError(err)) {
                 errorFunc({
                     code: error.code,

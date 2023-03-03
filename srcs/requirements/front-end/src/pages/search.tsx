@@ -7,7 +7,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { NavBar } from "../components/communs/NavBar";
 import { useContext, useLayoutEffect, useState } from "react";
 import API from "../network/api";
-import { ProfileComponent } from "../components/user/ProfileComponent";
+import { ProfileComponent } from "../components/users/ProfileComponent";
 import { ProfilePopUpContext } from "../contexts/ProfilePopUp.context";
 
 export const Result = (props: any) => {

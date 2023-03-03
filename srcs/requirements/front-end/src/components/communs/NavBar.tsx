@@ -13,11 +13,13 @@ import API from "../../network/api";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../contexts/User.context";
 import { ProfilePopUpContext } from "../../contexts/ProfilePopUp.context";
+import { AlertContext } from "../../contexts/Alert.context";
 
 export const NavBar = ({ onProfile, profilePic }: any) => {
 
   const {user}: any = useContext(UserContext)
   const {setUser, setShow} : any = useContext(ProfilePopUpContext);
+  const {handleSuccess, handleError} : any = useContext(AlertContext);
   
   const [styles, setStyles] = useState(sa as any);
 
@@ -107,8 +109,12 @@ export const NavBar = ({ onProfile, profilePic }: any) => {
           <a
             className={styles.logout_btn}
             onClick={() => {
-                API.logOut(() => {}, () => {});
-                navigate("/signin");
+                API.logOut(() => {
+                    handleSuccess("You have been logged out")
+                    navigate("/signin");
+                }, () => {
+                    handleError("An error occured while logging out")
+                });
             }}
           >
             <BiLogOut className={styles.logout_btn_icon} />

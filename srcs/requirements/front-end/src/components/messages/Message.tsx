@@ -4,11 +4,8 @@ import { APP } from "../../network/app";
 import '../../styles/messages/Style.message.css';
 import dayjs from "dayjs";
 import 'dayjs/locale/fr';
-import { Button, Modal, Form } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import Button from 'react-bootstrap/Button';
-// import { Modal } from 'react-bootstrap';
-// import Form from 'react-bootstrap/Form';
 import { ProgressBar } from "../../functions/chat-rooms/functions";
 
 dayjs.locale('fr'); // set locale to French

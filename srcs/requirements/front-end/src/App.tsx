@@ -14,10 +14,12 @@ import { GlobalFeatures } from "./components/communs/GlobalFeatures";
 import PublicRoute from "./components/routes/PublicRoute";
 import TFA from "./pages/tfa";
 import Chat from "./pages/chat";
+import { AlertProvider } from "./contexts/Alert.context";
 
 function App() {
   return (
     <div className="App">
+        <AlertProvider>
       <Routes>
         {/* <UserProvider> */}
 
@@ -91,6 +93,7 @@ function App() {
 
         <Route path='*' element={<NotFound/>}/>
       </Routes>
+        </AlertProvider>
     </div>
   );
 }

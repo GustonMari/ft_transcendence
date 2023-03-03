@@ -25,15 +25,10 @@ import {
 } from 'express';
 import { AuthService } from '../services/auth.service';
 import {
-    ApiBadRequestResponse,
-    ApiBearerAuth,
     ApiBody,
     ApiCookieAuth,
-    ApiNotFoundResponse,
-    ApiOkResponse,
     ApiOperation,
     ApiQuery,
-    ApiUnauthorizedResponse
 } from '@nestjs/swagger';
 import {
     GetCredentials,
@@ -74,12 +69,10 @@ export class AuthController {
         res.cookie('access_token', access_token, {
             httpOnly: true,
             secure: true,
-            sameSite: 'none'
         });
         res.cookie('refresh_token', refresh_token, {
             httpOnly: true,
             secure: true,
-            sameSite: 'none'
         });
         res.send({ access_token: access_token });
     }
@@ -102,12 +95,10 @@ export class AuthController {
         res.cookie('access_token', access_token, {
             httpOnly: true,
             secure: true,
-            sameSite: 'none'
         });
         res.cookie('refresh_token', refresh_token, {
             httpOnly: true,
             secure: true,
-            sameSite: 'none'
         });
         res.send({ access_token: access_token });
     }
@@ -150,12 +141,10 @@ export class AuthController {
         res.cookie('access_token', access_token, {
             httpOnly: true,
             secure: true,
-            sameSite: 'none'
         });
         res.cookie('refresh_token', refresh_token, {
             httpOnly: true,
             secure: true,
-            sameSite: 'none'
         });
         res.send({ access_token: access_token });
     }
@@ -167,10 +156,7 @@ export class AuthController {
     })
 
     @Get('/42/connect')
-    @Redirect()
-    async connect42(
-        @Res() res: Response
-    ) {
+    async connect42() {
         let url = 'https://api.intra.42.fr/oauth/authorize';
         url += '?client_id=';
         url += process.env.CLIENT_ID;
@@ -210,12 +196,10 @@ export class AuthController {
         res.cookie('access_token', access_token, {
             httpOnly: true,
             secure: true,
-            sameSite: 'none'
         });
         res.cookie('refresh_token', refresh_token, {
             httpOnly: true,
             secure: true,
-            sameSite: 'none'
         });
         res.redirect('http://localhost:4200/home');
     }
@@ -232,12 +216,10 @@ export class AuthController {
         res.cookie('access_token', access_token, {
             httpOnly: true,
             secure: true,
-            sameSite: 'none'
         });
         res.cookie('refresh_token', refresh_token, {
             httpOnly: true,
             secure: true,
-            sameSite: 'none'
         });
         res.send();
     }

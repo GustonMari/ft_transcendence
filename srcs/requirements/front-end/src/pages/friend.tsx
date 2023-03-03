@@ -3,7 +3,7 @@ import API from "../network/api"
 import { NavBar } from "../components/communs/NavBar"
 import { FriendList } from "../components/relations/FriendList"
 import { RequestList } from "../components/relations/RequestList"
-import { ProfileComponent } from "../components/user/ProfileComponent"
+import { ProfileComponent } from "../components/users/ProfileComponent"
 import { ProfilePopUpContext } from "../contexts/ProfilePopUp.context"
 import g from "../styles/background.module.css"
 
