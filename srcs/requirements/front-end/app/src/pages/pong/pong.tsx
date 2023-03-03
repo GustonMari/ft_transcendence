@@ -25,6 +25,10 @@ export default function Pong() {
 			// let playerPaddleRight: Paddle;
 			let playerPaddleLeft = new Paddle(document.getElementById("player-paddle-left") as HTMLDivElement);
 			let playerPaddleRight = new Paddle(document.getElementById("player-paddle-right") as HTMLDivElement);
+			let	leftUpPressed : boolean = false;
+			let leftDownPressed : boolean = false;
+			let rightUpPressed : boolean = false;
+			let rightDownPressed : boolean = false;
 			
 			  useEffect(() => {
 
@@ -42,6 +46,8 @@ export default function Pong() {
 				  setLimit(rect);
 				  newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
 				  setBall(ballElement);
+				  document.addEventListener("keydown", DownHandler);
+				  document.addEventListener("keyup", UpHandler);
 				}
 			}, []);
 			
@@ -49,29 +55,92 @@ export default function Pong() {
 			// 	playerPaddleLeft.position = (e.y / window.innerHeight) * 100
 			//   })
 
+
+			// 			function DownHandler(e: any) {
+// 				if(e.keyCode == 87) {
+// 					leftUpPressed = true;
+// 				}
+// 				else if (e.keyCode == 83) {
+// 					leftDownPressed = true;
+// 				}
+// 				if (e.keyCode == 38) {
+// 					rightUpPressed = true;
+// 				}
+// 				else if (e.keyCode == 40) {
+// 					rightDownPressed = true;
+// 				}
+// 				e.preventDefault();
+// 			}
+
+// 			function UpHandler(e: any) {
+// 				if (e.keyCode == 87) {
+// 					leftUpPressed = false;
+// 				}
+// 				else if (e.keyCode == 83) {
+// 					leftDownPressed = false;
+// 				}
+// 				if (e.keyCode == 38) {
+// 					rightUpPressed = false;
+// 				}
+// 				else if (e.keyCode == 40) {
+// 					rightDownPressed = false;
+// 				}
+// 			}
+
 			const DownHandler = (e: any) => {
+				// console.log("im down down")
 				if (e.keyCode == 87) {
-					console.log("w");
+					leftUpPressed = true;
+					// console.log("w");
 					//BUG: j'aurai plutot dit bottom plutot que height
 
 					if (newLimit && playerPaddleLeft)
 					{
 						// playerPaddleLeft.position = (e.y *  newLimit?.height) / 100;
-						// playerPaddleLeft.position = 600;
-						console.log("DA FUCKKK =", playerPaddleLeft.position);
+						playerPaddleLeft.position -= 2;
+						// console.log("DA FUCKKK =", playerPaddleLeft.position);
 					}
 				}
 				else if (e.keyCode == 83) {
-					console.log("s");
+					// console.log("s");
+					leftDownPressed = true;
+					if (newLimit && playerPaddleLeft)
+					{
+						// playerPaddleLeft.position = (e.y *  newLimit?.height) / 100;
+						playerPaddleLeft.position += 2;
+						// console.log("DA FUCKKK =", playerPaddleLeft.position);
+					}
 				}
 				if (e.keyCode == 38) {
+					rightUpPressed = true;
 					console.log("up");
 				}
 				else if (e.keyCode == 40) {
+					rightDownPressed = true;
 					console.log("down");
+
+						
 				}
 				e.preventDefault();
 			}
+
+			const UpHandler = (e: any) => {
+				// console.log("im up up")
+				if (e.keyCode == 87) {
+					leftUpPressed = false;
+				}
+				else if (e.keyCode == 83) {
+					leftDownPressed = false;
+				}
+				if (e.keyCode == 38) {
+					rightUpPressed = false;
+				}
+				else if (e.keyCode == 40) {
+					rightDownPressed = false;
+				}
+			}
+
+
 
 			const update = (lastTime: number, pongBall: Ball, limit?: DOMRect) => (time: number) => {
 			  if (lastTime != undefined || lastTime != null) {
@@ -82,14 +151,13 @@ export default function Pong() {
 					first = true;
 				}
 				// if (newLimit)
-					// pongBall.update(delta, newLimit);
+				// 	pongBall.update(delta, newLimit);
 
-				document.addEventListener("mousemove", e => {
-					// console.log("papa dans maman e.y = " + e.y);
+				// document.addEventListener("mousemove", e => {
+				// 	// console.log("papa dans maman e.y = " + e.y);
 
-					playerPaddleLeft.position = (e.y / window.innerHeight) * 100
-					})
-				document.addEventListener("keydown", DownHandler);
+				// 	playerPaddleLeft.position = (e.y / window.innerHeight) * 100
+				// 	})
 				window.addEventListener('resize', () => {
 					 newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
 				});
