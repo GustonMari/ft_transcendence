@@ -72,31 +72,45 @@ export class Ball {
 		this.velocity = .025;
 	}
 
-	update(delta: number) {
-		// this.x = 5;
-		// this.y = 18;
+	update(delta: number, limit: DOMRect) {
 		this.x += this.vector.x * this.velocity * delta;
 		this.y += this.vector.y * this.velocity * delta;
 		const rect = this.rect();
 
-		if (rect.top <= 0 || rect.bottom >= window.innerHeight) {
-			console.log("outtttt")
-			console.log("delta = ", delta, " x = ", this.x, " y = ", this.y, " vectorX = ", this.vector.x, " vectorY = ", this.vector.y , " velocity = ", this.velocity, " rect= ", rect, " ball = ", this.BallElem);
+		if(rect.top <= limit.top || rect.bottom >= limit.bottom) {
+			// console.log("outtttt")
+			// console.log("delta = ", delta, " x = ", this.x, " y = ", this.y, " vectorX = ", this.vector.x, " vectorY = ", this.vector.y , " velocity = ", this.velocity, " rect= ", rect, " ball = ", this.BallElem);
 
 			this.vector.y *= -1;
 		}
 
-		if (rect.left <= 0 || rect.right >= window.innerWidth) {
-			console.log("outtttt")
-			console.log("delta = ", delta, " x = ", this.x, " y = ", this.y, " vectorX = ", this.vector.x, " vectorY = ", this.vector.y , " velocity = ", this.velocity, " ball = ", this.BallElem);
+		if (rect.left <= limit.left || rect.right >= limit.right) {
+			// console.log("outtttt")
+			// console.log("delta = ", delta, " x = ", this.x, " y = ", this.y, " vectorX = ", this.vector.x, " vectorY = ", this.vector.y , " velocity = ", this.velocity, " ball = ", this.BallElem);
 			//TODO: divier cette fonction en deux pour les points, et pour le reset
 			this.vector.x *= -1;
 		}
-		// if (rect.top < 0 || rect.bottom > window.innerHeight) {
-		// 	console.log("outtttt")
-		// 	this.vector.y *= -1;
-		// }
-
-		// console.log("delta = ", delta, " x = ", this.x, " y = ", this.y, " vectorX = ", this.vector.x, " vectorY = ", this.vector.y , " velocity = ", this.velocity, " ball = ", this.BallElem);
 	}
+
+	// update(delta: number, limit: DOMRect | undefined) {
+	// 	// this.x = 5;
+	// 	// this.y = 18;
+	// 	this.x += this.vector.x * this.velocity * delta;
+	// 	this.y += this.vector.y * this.velocity * delta;
+	// 	const rect = this.rect();
+
+	// 	if (rect.top <= 0 || rect.bottom >= window.innerHeight) {
+	// 		console.log("outtttt")
+	// 		console.log("delta = ", delta, " x = ", this.x, " y = ", this.y, " vectorX = ", this.vector.x, " vectorY = ", this.vector.y , " velocity = ", this.velocity, " rect= ", rect, " ball = ", this.BallElem);
+
+	// 		this.vector.y *= -1;
+	// 	}
+
+	// 	if (rect.left <= 0 || rect.right >= window.innerWidth) {
+	// 		console.log("outtttt")
+	// 		console.log("delta = ", delta, " x = ", this.x, " y = ", this.y, " vectorX = ", this.vector.x, " vectorY = ", this.vector.y , " velocity = ", this.velocity, " ball = ", this.BallElem);
+	// 		//TODO: divier cette fonction en deux pour les points, et pour le reset
+	// 		this.vector.x *= -1;
+	// 	}
+	// }
 }

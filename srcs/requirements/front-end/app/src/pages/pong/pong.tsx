@@ -40,15 +40,20 @@ export default function Pong() {
 			// window.requestAnimationFrame(update);
 
 			const [ball, setBall] = useState<HTMLDivElement | null>(null);
+			// const [limit, setLimit] = useState<DOMRect | undefined>(undefined);
+			const [limit, setLimit] = useState<DOMRect | undefined>(undefined);
 
 			useEffect(() => {
 			  const ballElement = document.getElementById("ball") as HTMLDivElement;
 
-			  	const divElement = document.getElementById("pong-body");
-				const rect = divElement?.getBoundingClientRect();
+				let rect;
+				const divElement = document.getElementById("pong-body");
+				if (divElement)
+					rect = divElement?.getBoundingClientRect();
 				console.log("ta mere putain", rect);
 				
-			  if (ballElement) {
+			  if (ballElement && rect) {
+				setLimit(rect);
 				setBall(ballElement);
 			  }
 			}, []);
@@ -56,7 +61,7 @@ export default function Pong() {
 			const update = (lastTime: number, pongBall: Ball) => (time: number) => {
 			  if (lastTime != undefined || lastTime != null) {
 				const delta = time - lastTime;
-				pongBall.update(delta);
+				pongBall.update(delta, limit);
 			  }
 			  lastTime = time;
 			  window.requestAnimationFrame(update(lastTime, pongBall));
