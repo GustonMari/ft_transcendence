@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import MessageInput from "../components/messages/Message";
+import MessageInput from "../components/messages/MessageInput";
 import { DisplayMessagesByRoom, GetMessagesByRoom } from "../components/messages/Message";
 import Create_socket from "../network/chat.socket";
 import {RoomForm} from "../components/rooms/RoomForm";
