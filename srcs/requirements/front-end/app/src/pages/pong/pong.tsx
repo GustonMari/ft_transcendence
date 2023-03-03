@@ -1,4 +1,4 @@
-import React, { CSSProperties, useEffect } from "react";
+import React, { CSSProperties, useEffect, useRef } from "react";
 import { useState } from "react";
 import io, { Socket } from "socket.io-client";
 import axios from "axios";
@@ -13,44 +13,21 @@ import { Ball } from "./ball";
 
 
 export default function Pong() {
-	
-			//create a new element 
-			// const ball = new Ball(document.getElementById("ball") as HTMLDivElement);
-			// const ball = new Ball(document.getElementById("ball"));
-			// console.log("creation ball = ", ball, " check document = ", document.getElementById("ball"));
-			// let lastTime: number;
-
-			// function update(time: number) {
-				
-			// 	//check for the first time
-			// 	if (lastTime != undefined || lastTime != null)
-			// 	{
-			// 		//difference between the two different frames
-			// 		const delta = time - lastTime;
-			// 		//? we use delta to prevent frame drops, because the time between each frame fluctuates
-			// 		ball.update(delta);
-			// 	}
-			// 	lastTime = time;
-			// 	// console.log(time);
-
-
-			// 	//create an infinite loop
-			// 	window.requestAnimationFrame(update);
-			// }
-			// window.requestAnimationFrame(update);
 
 			const [ball, setBall] = useState<HTMLDivElement | null>(null);
-			// const [limit, setLimit] = useState<DOMRect | undefined>(undefined);
 			const [limit, setLimit] = useState<DOMRect | undefined>(undefined);
+			// const [limit, setLimit] = useRef<DOMRect | undefined>(undefined);
+			let newLimit: DOMRect | undefined;
+			const [trigger, setTrigger] = useState<number>(0);
 
 			useEffect(() => {
-			  const ballElement = document.getElementById("ball") as HTMLDivElement;
 
-				let rect;
+			  const ballElement = document.getElementById("ball") as HTMLDivElement;
+			  let rect;
+
 				const divElement = document.getElementById("pong-body");
 				if (divElement)
 					rect = divElement?.getBoundingClientRect();
-				console.log("ta mere putain", rect);
 				
 			  if (ballElement && rect) {
 				setLimit(rect);
@@ -58,23 +35,27 @@ export default function Pong() {
 			  }
 			}, []);
 		  
-			const update = (lastTime: number, pongBall: Ball) => (time: number) => {
+			const update = (lastTime: number, pongBall: Ball, limit: DOMRect) => (time: number) => {
 			  if (lastTime != undefined || lastTime != null) {
 				const delta = time - lastTime;
-				pongBall.update(delta, limit);
+				newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
+				console.log("it dont change",newLimit);
+				if (newLimit)
+					pongBall.update(delta, newLimit);
+				// window.addEventListener('resize', () => { console.log("resize"); setTrigger(trigger + 1)});
 			  }
 			  lastTime = time;
-			  window.requestAnimationFrame(update(lastTime, pongBall));
+			  window.requestAnimationFrame(update(lastTime, pongBall, newLimit));
 			};
-		  
+			
 			useEffect(() => {
-			  if (ball) {
-				const pongBall = new Ball(ball);
-				let lastTime: number = 0;
-				window.requestAnimationFrame(update(lastTime, pongBall));
+				if (ball) {
+					console.log("ball");
+					const pongBall = new Ball(ball);
+					let lastTime: number = 0;
+					window.requestAnimationFrame(update(lastTime, pongBall, limit));
 			  }
 			}, [ball]);
-
 
 	return (
 		<div className="container-game">
