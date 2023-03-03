@@ -16,6 +16,7 @@ export default function Pong() {
 
 			const [ball, setBall] = useState<HTMLDivElement | null>(null);
 			const [limit, setLimit] = useState<DOMRect | undefined>(undefined);
+			let first: boolean = false;
 			// const [limit, setLimit] = useRef<DOMRect | undefined>(undefined);
 			let newLimit: DOMRect | undefined;
 			const [trigger, setTrigger] = useState<number>(0);
@@ -31,18 +32,24 @@ export default function Pong() {
 				
 			  if (ballElement && rect) {
 				setLimit(rect);
+				newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
 				setBall(ballElement);
 			  }
 			}, []);
 		  
-			const update = (lastTime: number, pongBall: Ball, limit: DOMRect) => (time: number) => {
+			const update = (lastTime: number, pongBall: Ball, limit?: DOMRect) => (time: number) => {
 			  if (lastTime != undefined || lastTime != null) {
 				const delta = time - lastTime;
-				newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
-				console.log("it dont change",newLimit);
+				if (first === false)
+				{
+					newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
+					first = true;
+				}
 				if (newLimit)
 					pongBall.update(delta, newLimit);
-				// window.addEventListener('resize', () => { console.log("resize"); setTrigger(trigger + 1)});
+				window.addEventListener('resize', () => {
+					 newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
+				});
 			  }
 			  lastTime = time;
 			  window.requestAnimationFrame(update(lastTime, pongBall, newLimit));
@@ -53,7 +60,7 @@ export default function Pong() {
 					console.log("ball");
 					const pongBall = new Ball(ball);
 					let lastTime: number = 0;
-					window.requestAnimationFrame(update(lastTime, pongBall, limit));
+					window.requestAnimationFrame(update(lastTime, pongBall));
 			  }
 			}, [ball]);
 
