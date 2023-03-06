@@ -97,7 +97,7 @@ const DownHandler = (e: any) => {
 			
 			
 			
-			const update = (lastTime: number, pongBall: Ball, limit?: DOMRect) => (time: number) => {
+			const update = (lastTime: number, pongBall: Ball, playerPaddleLeft: Paddle, playerPaddleRight: Paddle, limit?: DOMRect) => (time: number) => {
 				if (lastTime != undefined || lastTime != null) {
 					const delta = time - lastTime;
 					if (first === false)
@@ -105,14 +105,15 @@ const DownHandler = (e: any) => {
 						newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
 						first = true;
 					}
-					// if (newLimit)
-						// pongBall.update(delta, newLimit);
+					if (newLimit)
+						pongBall.update(delta, newLimit, playerPaddleLeft, playerPaddleRight);
 					
 					// document.addEventListener("mousemove", e => {
 					// 		// console.log("papa dans maman e.y = " + e.y);
 						
 					// 		playerPaddleLeft.position = (e.y / window.innerHeight) * 100
 					// 		})
+					// console.log("paddle left", playerPaddleLeft.rect);
 						document.addEventListener("keydown", DownHandler);
 						document.addEventListener("keyup", UpHandler);
 						window.addEventListener('resize', () => {
@@ -121,7 +122,7 @@ const DownHandler = (e: any) => {
 
 				}
 				lastTime = time;
-				window.requestAnimationFrame(update(lastTime, pongBall, newLimit));
+				window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight, newLimit));
 				
 			};
 			
@@ -131,7 +132,7 @@ const DownHandler = (e: any) => {
 					const pongBall = new Ball(ball, setLeftScore, setRightScore);
 					console.log('paddle left', playerPaddleLeft);
 					let lastTime: number = 0;
-					window.requestAnimationFrame(update(lastTime, pongBall));
+					window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight));
 			  }
 			}, [ball]);
 

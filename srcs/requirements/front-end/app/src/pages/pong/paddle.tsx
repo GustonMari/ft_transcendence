@@ -18,4 +18,8 @@ export class Paddle {
 		// console.log("position =", value);
 		   this.PaddleElem.style.setProperty('--position', value);
 	}
+
+	get rect() {
+		return this.PaddleElem.getBoundingClientRect();
+	}
 }

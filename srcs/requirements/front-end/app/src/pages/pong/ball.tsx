@@ -1,3 +1,4 @@
+import { Paddle } from "./paddle";
 
 export class Ball {
 	
@@ -75,16 +76,8 @@ export class Ball {
 		this.velocity = .025;
 	}
 
-	update(delta: number, limit: DOMRect) {
-		this.x += this.vector.x * this.velocity * delta;
-		this.y += this.vector.y * this.velocity * delta;
-		this.velocity += 0.00001 * delta;
-		const rect = this.rect();
 
-		if(rect.top <= limit.top || rect.bottom >= limit.bottom) {
-			this.vector.y *= -1;
-		}
-
+	sideColision(rect: DOMRect, limit: DOMRect) {
 		if (rect.left <= limit.left || rect.right >= limit.right) {
 			//TODO: divier cette fonction en deux pour les points, et pour le reset
 			if (rect.left <= limit.left)
@@ -101,25 +94,30 @@ export class Ball {
 		}
 	}
 
-	// update(delta: number, limit: DOMRect | undefined) {
-	// 	// this.x = 5;
-	// 	// this.y = 18;
-	// 	this.x += this.vector.x * this.velocity * delta;
-	// 	this.y += this.vector.y * this.velocity * delta;
-	// 	const rect = this.rect();
+	update(delta: number, limit: DOMRect, playerPaddleLeft: Paddle, playerPaddleRight: Paddle) {
+		this.x += this.vector.x * this.velocity * delta;
+		this.y += this.vector.y * this.velocity * delta;
+		this.velocity += 0.00001 * delta;
+		const rect = this.rect();
 
-	// 	if (rect.top <= 0 || rect.bottom >= window.innerHeight) {
-	// 		console.log("outtttt")
-	// 		console.log("delta = ", delta, " x = ", this.x, " y = ", this.y, " vectorX = ", this.vector.x, " vectorY = ", this.vector.y , " velocity = ", this.velocity, " rect= ", rect, " ball = ", this.BallElem);
+		if(rect.top <= limit.top || rect.bottom >= limit.bottom) {
+			this.vector.y *= -1;
+		}
+		if (this.isCollision(rect, playerPaddleLeft.rect) 
+			|| this.isCollision(rect, playerPaddleRight.rect))
+		{
+			this.vector.x *= -1;
+		}
+		this.sideColision(rect, limit);
 
-	// 		this.vector.y *= -1;
-	// 	}
+	}
 
-	// 	if (rect.left <= 0 || rect.right >= window.innerWidth) {
-	// 		console.log("outtttt")
-	// 		console.log("delta = ", delta, " x = ", this.x, " y = ", this.y, " vectorX = ", this.vector.x, " vectorY = ", this.vector.y , " velocity = ", this.velocity, " ball = ", this.BallElem);
-	// 		//TODO: divier cette fonction en deux pour les points, et pour le reset
-	// 		this.vector.x *= -1;
-	// 	}
-	// }
+	isCollision(rect1: DOMRect, rect2: DOMRect) {
+		return (
+		  rect1.left <= rect2.right &&
+		  rect1.right >= rect2.left &&
+		  rect1.top <= rect2.bottom &&
+		  rect1.bottom >= rect2.top
+		)
+	  }
 }
