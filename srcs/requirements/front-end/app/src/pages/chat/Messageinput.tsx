@@ -1,5 +1,5 @@
 import React from "react";
-import "./Style.message.css";
+import Style from './Style.message.module.css';
 
 export default function MessageInput({send}: {send: (value: string) => void}) {
 
@@ -19,10 +19,10 @@ export default function MessageInput({send}: {send: (value: string) => void}) {
 
 
 	return (
-	<div className="inputmessage">
-		<input className="borderbox-msg" onChange={(e) => setValue(e.target.value)} onKeyDown={handleKeyDown}  placeholder="type your message..." value={value} />
-		<button className="input-msg-button" onClick={() => sendAndClear()} /* onKeyDown={() => send(value)} */ >
-		<img className='icon-send-msg' src="./send-message.png" alt="Send message" />
+	<div className={Style["inputmessage"]}>
+		<input className={Style["borderbox-msg"]} onChange={(e) => setValue(e.target.value)} onKeyDown={handleKeyDown}  placeholder="type your message..." value={value} />
+		<button className={Style["input-msg-button"]} onClick={() => sendAndClear()} /* onKeyDown={() => send(value)} */ >
+		<img className={Style['icon-send-msg']} src="./send-message.png" alt="Send message" />
 		</button>
 	</div>
 	);

@@ -10,6 +10,7 @@ import { APP } from "../../api/app";
 import App from "../../App";
 import { RoomList } from "./navbar";
 import { HistoryDto, InfoMessage } from "./dto/chat.dto";
+import Style from './Style.message.module.css';
 
 export function ParameterChat(props: any)
 {
@@ -43,9 +44,9 @@ export function SetAdmin(props : any)
 	}
 
 	return (
-		<div className='inputparam'>
-			<input className='borderbox-param' onChange={(e) => setValue(e.target.value)} onKeyDown={handleKeyDown} placeholder="set admin login..." value={value} />
-			<button className='input-param-button' onClick={() => emitAndClear() }>Set admin</button>
+		<div className={Style['inputparam']}>
+			<input className={Style['borderbox-param']} onChange={(e) => setValue(e.target.value)} onKeyDown={handleKeyDown} placeholder="set admin login..." value={value} />
+			<button className={Style['input-param-button']} onClick={() => emitAndClear() }>Set admin</button>
 		</div>
 	)
 }
@@ -65,10 +66,10 @@ export function BanUser(props : any)
 	}
 
 	return (
-		<div className='inputparam'>
-			<input className='borderbox-param' onChange={(e) => setValue(e.target.value)} placeholder="ban user login..." value={value} />
-			<input className='borderbox-param' onChange={(e) => setDate(e.target.value)} placeholder="duration ban in min..." value={date_value} />
-				<button className='input-param-button' onClick={() => emitAndClear()}>Ban</button>
+		<div className={Style['inputparam']}>
+			<input className={Style['borderbox-param']} onChange={(e) => setValue(e.target.value)} placeholder="ban user login..." value={value} />
+			<input className={Style['borderbox-param']} onChange={(e) => setDate(e.target.value)} placeholder="duration ban in min..." value={date_value} />
+				<button className={Style['input-param-button']} onClick={() => emitAndClear()}>Ban</button>
 		</div>
 	);
 }
@@ -87,10 +88,10 @@ export function MuteUser(props: any)
 	}
 
 	return (
-		<div className='inputparam'>
-			<input className='borderbox-param' onChange={(e) => setValue(e.target.value)} placeholder="mute user login..." value={value} />
-			<input className='borderbox-param' onChange={(e) => setDate(e.target.value)} placeholder="duration mute in min..." value={date_value} />
-			<button className='input-param-button' onClick={() => emitAndClear()}>Mute</button>
+		<div className={Style['inputparam']}>
+			<input className={Style['borderbox-param']} onChange={(e) => setValue(e.target.value)} placeholder="mute user login..." value={value} />
+			<input className={Style['borderbox-param']} onChange={(e) => setDate(e.target.value)} placeholder="duration mute in min..." value={date_value} />
+			<button className={Style['input-param-button']} onClick={() => emitAndClear()}>Mute</button>
 		</div>
 	)
 }

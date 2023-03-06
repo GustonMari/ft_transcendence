@@ -11,6 +11,9 @@ import App from "../../App";
 import { RoomList } from "./navbar";
 import { ParameterChat } from "./ParameterChat";
 import { HistoryDto, InfoMessage } from "./dto/chat.dto";
+import Style from './Style.message.module.css';
+import StyleRoom from './room/Style.room.module.css';
+
 
 export default function Chat() {
 
@@ -71,8 +74,8 @@ export default function Chat() {
 				<a href="">Settings</a>
 			</nav> */}
 		</div>
-		<div className="global">
-			<div className="room-menu">
+		<div className={Style["global"]}>
+			<div className={StyleRoom["room-menu"]}>
 				<RoomForm
 					define_room={define_room}
 					current_room={room}
@@ -85,11 +88,11 @@ export default function Chat() {
 					setRoom={setRoom}
 					/>
 			</div>
-			<div className="message-box">
+			<div className={Style["message-box"]}>
 				<DisplayMessagesByRoom current_user={currentUser} socket={socket} history={history} infomessage={messages} room={room} handle_history={history_listener}/>
 				<MessageInput send={send}/>
 			</div>
-			<div className="menu-chat">
+			<div className={Style["menu-chat"]}>
 				<ParameterChat define_room={define_room} current_room={room} current_user={currentUser} socket={socket}/>
 			</div>
 		</div>

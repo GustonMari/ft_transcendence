@@ -3,7 +3,8 @@ import Popup from 'reactjs-popup';
 import io, { Socket } from "socket.io-client";
 import Create_socket from '../socket';
 import { APP } from "../../../api/app";
-import '../Style.message.css';
+import Style from '../Style.message.module.css';
+import StyleRoom from './Style.room.module.css';
 import { GetMessagesByRoom } from '../Message';
 import { setMaxIdleHTTPParsers } from 'http';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -24,19 +25,19 @@ export function PopupLeave(props: any) {
 		<Popup
 			ref={ref}
 			position='bottom center'
-			className='popup-content'
+			className={StyleRoom['popup-content']}
 			trigger={(open) => (
 				<button
 					type="submit"
-					className="line-room-button"
+					className={StyleRoom["line-room-button"]}
 					onClick={() => {}}
 					>
-					<img className="icon-room" src="./leave-room.png" alt="leave room" />
+					<img className={StyleRoom["icon-room"]} src="./leave-room.png" alt="leave room" />
 				</button>
 			)}
 		>
 		  <div>
-			<button className='line-room-button-popup'
+			<button className={StyleRoom['line-room-button-popup']}
 			  onClick={() => {
 				setMessage([]);
 				socket?.emit("leaveRoom", {
@@ -48,10 +49,10 @@ export function PopupLeave(props: any) {
 				GetMessagesByRoom(handle_history, "");
 			  }}
 			>
-				<img className="icon-room-popup" src="./accept.png" alt="leave room" />
+				<img className={StyleRoom["icon-room-popup"]} src="./accept.png" alt="leave room" />
 			</button>
-			<button className='line-room-button-popup' onClick={closeTooltip}>
-				<img className="icon-room-popup" src="./cancel.png" alt="leave room" />
+			<button className={StyleRoom['line-room-button-popup']} onClick={closeTooltip}>
+				<img className={StyleRoom["icon-room-popup"]} src="./cancel.png" alt="leave room" />
 			</button>
 		  </div>
 		</Popup>
@@ -88,16 +89,16 @@ export function PopupDelete(props: any) {
 		  trigger={(open) => (
 			<button
 			  type="submit"
-			  className="line-room-button"
+			  className={StyleRoom["line-room-button"]}
 			  id={id}
 			  onClick={() => {}}
 			>
-			  <img className="icon-room" src="./delete-room.png" alt="delete room" />
+			  <img className={StyleRoom["icon-room"]} src="./delete-room.png" alt="delete room" />
 			</button>
 		  )}
 		>
 		  <div>
-			<button className='line-room-button-popup'
+			<button className={StyleRoom['line-room-button-popup']}
 			  onClick={() => {
 				const is_owner = async () => {
 					const res = await APP.post("/chat/get_isowner_login", {room_name: room.name, login: current_user.login});
@@ -107,10 +108,10 @@ export function PopupDelete(props: any) {
 				is_owner();
 			}}
 			>
-				<img className="icon-room-popup" src="./accept.png" alt="leave room" />
+				<img className={StyleRoom["icon-room-popup"]} src="./accept.png" alt="leave room" />
 			</button>
-			<button className='line-room-button-popup' onClick={closeTooltip}>
-				<img className="icon-room-popup" src="./cancel.png" alt="leave room" />
+			<button className={StyleRoom['line-room-button-popup']} onClick={closeTooltip}>
+				<img className={StyleRoom["icon-room-popup"]} src="./cancel.png" alt="leave room" />
 			</button>
 		  </div>
 		</Popup>
@@ -150,8 +151,8 @@ export function PopupPassword(props: any) {
 
 	return (
 	<div>
-		<Button className="line-room-button" id={id} variant="primary" onClick={handleShow}>
-			<img className="icon-room" src="./lock-room.png" alt="lock room" />
+		<Button className={StyleRoom["line-room-button"]} id={id} variant="primary" onClick={handleShow}>
+			<img className={StyleRoom["icon-room"]} src="./lock-room.png" alt="lock room" />
 		</Button>
 			
 		<Modal show={show} onHide={handleClose} >

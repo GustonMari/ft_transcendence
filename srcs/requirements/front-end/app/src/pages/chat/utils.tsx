@@ -3,7 +3,8 @@ import Popup from 'reactjs-popup';
 import io, { Socket } from "socket.io-client";
 import Create_socket from './socket';
 import { APP } from "../../api/app";
-import './Style.message.css';
+import Style from './Style.message.module.css';
+import StyleUtils from './Style.utils.module.css'
 import { GetMessagesByRoom } from './Message';
 import { setMaxIdleHTTPParsers } from 'http';
 // import 'reactjs-popup/dist/index.css';
@@ -12,15 +13,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import { Modal } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
-import './utils.css'
 
 //shake_name = css name of the modal
 export function shakeIt(shake_name: string, room_name: string) {
 	const modal = document.getElementById(`shaking-${room_name}`);
+	console.log("modal", modal);
 	if (modal) {
-		modal.classList.add('shake');
+		modal.classList.add(Style.shake);
 		setTimeout(() => {
-			modal.classList.remove('shake');
+			modal.classList.remove(Style.shake);
 		}, 500);
 	}
   }
@@ -50,8 +51,8 @@ export function ProgressBar(props: any)
 	
 	
 	return (
-		<div className='container-progress-bar'>
-			<div className="filler-progress-bar">
+		<div className={StyleUtils['container-progress-bar']}>
+			<div className={StyleUtils["filler-progress-bar"]}>
 				<span /* className="progress" */>{`${progress}%`}</span>
 			</div>
 		</div>
