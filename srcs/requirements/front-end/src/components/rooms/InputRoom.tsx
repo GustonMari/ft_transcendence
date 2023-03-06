@@ -1,5 +1,5 @@
 import { APP } from "../../network/app";
-import '../../styles/messages/Style.message.css';
+import StyleRoom from "../../styles/rooms/Style.room.module.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import { Modal } from 'react-bootstrap';
@@ -84,49 +84,49 @@ export function InputRoom(props: any) {
 	const handleRoomActions = () => {
 		return (
 			<>
-				<Button className='input-room-button'  onClick={handleAddRoom}>
-				<IoEnter title="Create new room"/>
+				<Button className={StyleRoom['input-room-button']}  onClick={handleAddRoom}>
+				<img className={StyleRoom['icon-enter-room']} src="./enter-room.png" alt="create room" />
 				</Button>
-				<Button className='input-room-button' id={id_private} onClick={handleAddPrivateRoom}>
-					<RiMailLockLine title="Send private message"/>
+				<Button className={StyleRoom['input-room-button']} id={id_private} onClick={handleAddPrivateRoom}>
+					<img className={StyleRoom['icon-enter-room']} src="./private-message.png" alt="create room" />
 				</Button>
 			</>
 		)
 	}
 
 	return (
-        <div className='input-room'>
-            <input className='borderbox-room' onChange={(e) => setValue(e.target.value)} onKeyDown={handleKeyDown} placeholder="define your room..." value={value} />
-            {handleRoomActions()}
-            <Modal show={show} onHide={handleClose} id={id}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Enter the password of the room</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                            <Form.Label></Form.Label>
-                            <Form.Control
-                                type="password"
-                                placeholder="password"
-                                autoFocus
-                                onChange={(e) => setPassword(e.target.value)}
-                                onKeyDown={handleKeyDownPassword}
-                            />
-                        </Form.Group>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={() => {
-                        submitPassword();
-                    }}>
-                        Submit
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        </div>
+	<div className={StyleRoom['input-room']}>
+		<input className={StyleRoom['borderbox-room']} onChange={(e) => setValue(e.target.value)} onKeyDown={handleKeyDown} placeholder="define your room..." value={value} />
+		{handleRoomActions()}
+		<Modal show={show} onHide={handleClose} id={id}>
+			<Modal.Header closeButton>
+				<Modal.Title>Enter the password of the room</Modal.Title>
+			</Modal.Header>
+			<Modal.Body>
+				<Form>
+					<Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+						<Form.Label></Form.Label>
+						<Form.Control
+							type="password"
+							placeholder="password"
+							autoFocus
+							onChange={(e) => setPassword(e.target.value)}
+							onKeyDown={handleKeyDownPassword}
+						/>
+					</Form.Group>
+				</Form>
+			</Modal.Body>
+			<Modal.Footer>
+				<Button variant="secondary" onClick={handleClose}>
+					Close
+				</Button>
+				<Button variant="primary" onClick={() => {
+					submitPassword();
+				}}>
+					Submit
+				</Button>
+			</Modal.Footer>
+		</Modal>
+	</div>
 	);
 }

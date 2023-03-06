@@ -7,6 +7,8 @@ import {RoomForm} from "../components/rooms/RoomForm";
 import { APP } from "../network/app";
 import { ParameterChat } from "../components/chat/ParameterChat";
 import { HistoryDto, InfoMessage } from "../dtos/chat.dto";
+import Style from "../styles/messages/Style.message.module.css";
+import StyleRoom from "../styles/rooms/Style.room.module.css";
 
 export default function Chat() {
 
@@ -57,29 +59,38 @@ export default function Chat() {
 	socket?.on("message", message_listener);
 
 	return (
-        <div>
-            <div className="global">
-                <div className="room-menu">
-                    <RoomForm
-                        define_room={define_room}
-                        current_room={room}
-                        current_user={currentUser}
-                        socket={socket}
-                        handle_history={history_listener}
-                        trigger={trigger}
-                        setTrigger={setTrigger}
-                        setMessage={setMessage}
-                        setRoom={setRoom}
-                    />
-                </div>
-                <div className="message-box">
-                    <DisplayMessagesByRoom current_user={currentUser} socket={socket} history={history} infomessage={messages} room={room} handle_history={history_listener}/>
-                    <MessageInput send={send}/>
-                </div>
-                <div className="menu-chat">
-                    <ParameterChat define_room={define_room} current_room={room} current_user={currentUser} socket={socket}/>
-                </div>
-            </div>
-        </div>
+	<div>
+		<div>
+			{/* <nav className="nav-bar">
+				<a className='nav-bar-box' href="">Home</a>
+				<a href="">Rooms</a>
+				<a href="">Profile</a>
+				<a href="">Logout</a>
+				<a href="">Settings</a>
+			</nav> */}
+		</div>
+		<div className={Style["global"]}>
+			<div className={StyleRoom["room-menu"]}>
+				<RoomForm
+					define_room={define_room}
+					current_room={room}
+					current_user={currentUser}
+					socket={socket}
+					handle_history={history_listener}
+					trigger={trigger}
+					setTrigger={setTrigger}
+					setMessage={setMessage}
+					setRoom={setRoom}
+					/>
+			</div>
+			<div className={Style["message-box"]}>
+				<DisplayMessagesByRoom current_user={currentUser} socket={socket} history={history} infomessage={messages} room={room} handle_history={history_listener}/>
+				<MessageInput send={send}/>
+			</div>
+			<div className={Style["menu-chat"]}>
+				<ParameterChat define_room={define_room} current_room={room} current_user={currentUser} socket={socket}/>
+			</div>
+		</div>
+	</div>
 	);
 }
