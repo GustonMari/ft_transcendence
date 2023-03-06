@@ -13,10 +13,11 @@
     top: 50%;
     left: 50%;
     width: 600px;
+    min-height: ;
     height: 350px;
     border-radius: 10px;
     overflow-wrap: break-word;
-    border: rgb(100, 69, 108, 0.2) 3px solid;
+    border: rgba(24, 17, 26, 0.2) 3px solid;
     padding: 0 20px;
 
     background-color: rgb(89, 56, 97);
@@ -66,7 +67,7 @@
     border-radius: 10px;
     cursor: pointer;
     z-index: 10;
-    border: rgb(100, 69, 108, 0.15) 2px solid;
+    border: rgba(31, 21, 33, 0.15) 2px solid;
 
     background-color: rgb(235, 235, 235);
 }
@@ -104,7 +105,7 @@
     width: 150px;
     height: 150px;
     border-radius: 20px;
-    border: rgb(100, 69, 108, 0.2) 3px solid;
+    border: rgba(27, 19, 29, 0.2) 3px solid;
 }
 
 .name_section {

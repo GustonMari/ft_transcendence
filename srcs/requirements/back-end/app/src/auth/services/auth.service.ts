@@ -29,7 +29,7 @@ export class AuthService {
     async register(
         dto: RegisterDTO
     ): Promise<Tokens> {
-        if (dto.login.length < 9) throw new UnauthorizedException('Password is too short');
+        if (dto.login.length < 9) throw new UnauthorizedException('Username is too short');
         if (
             await this.userService.findUniqueUser({
                 email: dto.email

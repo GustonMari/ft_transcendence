@@ -82,6 +82,7 @@ export const Result = (props: any) => {
                                             <td className={s.user_description}>{(user.description ? user.description : "No Description")}</td>
                                             <td className={s.user_action_buttons}>
                                                 <a className={s.btn_see_profile} onClick={(e: any) => {
+                                                    e.preventDefault();
                                                     setShow(true);
                                                     setUser(user);
                                                 }}>

@@ -11,24 +11,24 @@ export default function PrivateRoute ({children} : any) {
     const [logged, setLogged] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(true);
 
-    const {user, setUser}: any = React.useContext(UserContext);
+    const {me, setMe}: any = React.useContext(UserContext);
 
     useLayoutEffect(() => {
         
         API.checkAuth(
             (u: any) => {
-                setUser(u);
+                setMe(u);
                 setLogged(true);
             },
             () => {
                 setIsLoading(false);
-                setUser(null);
+                setMe(null);
             }
         );
     }, []);
 
     return (
-        (logged ? React.cloneElement(children, {user}) : (isLoading ? <Loading/> : <Navigate to={'/signin'}></Navigate>))
+        (logged ? React.cloneElement(children, {me}) : (isLoading ? <Loading/> : <Navigate to={'/signin'}></Navigate>))
     );
 
 };

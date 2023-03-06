@@ -17,7 +17,7 @@ import { AlertContext } from "../../contexts/Alert.context";
 
 export const NavBar = ({ onProfile, profilePic }: any) => {
 
-  const {user}: any = useContext(UserContext)
+  const {me}: any = useContext(UserContext)
   const {setUser, setShow} : any = useContext(ProfilePopUpContext);
   const {handleSuccess, handleError} : any = useContext(AlertContext);
   
@@ -92,7 +92,7 @@ export const NavBar = ({ onProfile, profilePic }: any) => {
             <a onClick={
                 (e) => {
                     e.preventDefault();
-                    setUser(user);
+                    setUser(me);
                     setShow(true);
                 }
             }>
@@ -100,7 +100,7 @@ export const NavBar = ({ onProfile, profilePic }: any) => {
                     <img src={profilePic} />
                 </div>
                 <div className={styles.profile_info}>
-                    <a>{user.login}</a>
+                    <a>{me.login}</a>
                     <div className={styles.match_history}>
                     <span>W : 5 | L : 2</span>
                     </div>

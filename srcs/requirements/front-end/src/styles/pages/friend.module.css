@@ -1,0 +1,14 @@
+.container {
+
+}
+
+.btn_lists {
+    display: flex;;
+    justify-content: space-between;
+    /* margin: 40px 0 0 160px ; */
+    width: 300px;
+}
+
+.lists {
+    /* margin-left: 60px */
+}
