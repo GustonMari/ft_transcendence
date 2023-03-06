@@ -226,6 +226,7 @@ MESSAGE
 
 /*Button to send message*/
 .input-msg-button{
+	color: white;
 	display: flex;
 	border-radius: 50%;
 	width: 24px;
