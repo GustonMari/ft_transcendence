@@ -105,8 +105,8 @@ const DownHandler = (e: any) => {
 						newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
 						first = true;
 					}
-					if (newLimit)
-						pongBall.update(delta, newLimit);
+					// if (newLimit)
+						// pongBall.update(delta, newLimit);
 					
 					// document.addEventListener("mousemove", e => {
 					// 		// console.log("papa dans maman e.y = " + e.y);
