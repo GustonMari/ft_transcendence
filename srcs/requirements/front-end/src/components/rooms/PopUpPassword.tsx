@@ -43,7 +43,8 @@ export function PopupPassword(props: any) {
 	return (
 	<div>
 		<Button className={StyleRoom["line-room-button"]} id={id} variant="primary" onClick={handleShow}>
-			<img className={StyleRoom["icon-room"]} src="./lock-room.png" alt="lock room" />
+			{/* <img className={StyleRoom["icon-room"]} src="./lock-room.png" alt="lock room" /> */}
+			<AiFillLock title="Lock the room"/>
 		</Button>
 			
 		<Modal show={show} onHide={handleClose} >

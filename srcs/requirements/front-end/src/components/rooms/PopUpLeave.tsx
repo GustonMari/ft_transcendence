@@ -28,7 +28,8 @@ export function PopupLeave(props: any) {
 					className={StyleRoom["line-room-button"]}
 					onClick={() => {}}
 					>
-					<img className={StyleRoom["icon-room"]} src="./leave-room.png" alt="leave room" />
+					{/* <img className={StyleRoom["icon-room"]} src="./leave-room.png" alt="leave room" /> */}
+					<TbDoorExit title="Leave the room"/>
 				</button>
 			)}
 		>
@@ -45,10 +46,12 @@ export function PopupLeave(props: any) {
 				GetMessagesByRoom(handle_history, "");
 			  }}
 			>
-				<img className={StyleRoom["icon-room-popup"]} src="./accept.png" alt="leave room" />
+				{/* <img className={StyleRoom["icon-room-popup"]} src="./accept.png" alt="leave room" /> */}
+				<SlCheck title="Accept"/>
 			</button>
 			<button className={StyleRoom['line-room-button-popup']} onClick={closeTooltip}>
-				<img className={StyleRoom["icon-room-popup"]} src="./cancel.png" alt="leave room" />
+				{/* <img className={StyleRoom["icon-room-popup"]} src="./cancel.png" alt="leave room" /> */}
+				<SlBan title="Refuse"/>
 			</button>
 		  </div>
 		</Popup>

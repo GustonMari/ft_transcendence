@@ -85,10 +85,12 @@ export function InputRoom(props: any) {
 		return (
 			<>
 				<Button className={StyleRoom['input-room-button']}  onClick={handleAddRoom}>
-				<img className={StyleRoom['icon-enter-room']} src="./enter-room.png" alt="create room" />
+				{/* <img className={StyleRoom['icon-enter-room']} src="./enter-room.png" alt="create room" /> */}
+				<IoEnter title="Create new room"/>
 				</Button>
 				<Button className={StyleRoom['input-room-button']} id={id_private} onClick={handleAddPrivateRoom}>
-					<img className={StyleRoom['icon-enter-room']} src="./private-message.png" alt="create room" />
+					{/* <img className={StyleRoom['icon-enter-room']} src="./private-message.png" alt="create room" /> */}
+					<RiMailLockLine title="Send private message"/>
 				</Button>
 			</>
 		)

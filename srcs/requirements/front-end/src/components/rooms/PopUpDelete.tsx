@@ -42,7 +42,8 @@ export function PopupDelete(props: any) {
 			  id={id}
 			  onClick={() => {}}
 			>
-			  <img className={StyleRoom["icon-room"]} src="./delete-room.png" alt="delete room" />
+			  {/* <img className={StyleRoom["icon-room"]} src="./delete-room.png" alt="delete room" /> */}
+			  <RiDeleteBinLine title="Delete the room"/>
 			</button>
 		  )}
 		>
@@ -57,10 +58,12 @@ export function PopupDelete(props: any) {
 				is_owner();
 			}}
 			>
-				<img className={StyleRoom["icon-room-popup"]} src="./accept.png" alt="leave room" />
+				{/* <img className={StyleRoom["icon-room-popup"]} src="./accept.png" alt="leave room" /> */}
+				<SlCheck title="Accept"/>
 			</button>
 			<button className={StyleRoom['line-room-button-popup']} onClick={closeTooltip}>
-				<img className={StyleRoom["icon-room-popup"]} src="./cancel.png" alt="leave room" />
+				{/* <img className={StyleRoom["icon-room-popup"]} src="./cancel.png" alt="leave room" /> */}
+				<SlBan title="Refuse"/>
 			</button>
 		  </div>
 		</Popup>
