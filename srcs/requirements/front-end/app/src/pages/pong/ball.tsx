@@ -82,11 +82,17 @@ export class Ball {
 			//TODO: divier cette fonction en deux pour les points, et pour le reset
 			if (rect.left <= limit.left)
 			{
+				//trigger animation for the ball
+				// this.BallElem.classList.add('scored')
+				// document?.getElementById('collision').classList.add('scored');
+				
 				this.setLeftScore((prevScore: number) => prevScore + 1);
 				this.reset();
 			}
 			if (rect.right >= limit.right)
 			{
+				//trigger animation for the ball
+				// this.BallElem.classList.add('scored');
 				this.setLeftScore((prevScore: number) => prevScore + 1);
 				this.reset();
 			}

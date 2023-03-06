@@ -31,11 +31,12 @@ export default function Pong() {
 			let leftDownPressed : boolean = false;
 			let rightUpPressed : boolean = false;
 			let rightDownPressed : boolean = false;
+			let collision = document.getElementById("collision");
 			
 			  useEffect(() => {
 
 			  const ballElement = document.getElementById("ball") as HTMLDivElement;
-				
+			
 			  let rect;
 			  
 			  const divElement = document.getElementById("pong-body");
@@ -46,6 +47,7 @@ export default function Pong() {
 				  setLimit(rect);
 				  newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
 				  setBall(ballElement);
+		
 				}
 			}, []);
 
@@ -106,14 +108,18 @@ const DownHandler = (e: any) => {
 						first = true;
 					}
 					// if (newLimit)
-						// pongBall.update(delta, newLimit, playerPaddleLeft, playerPaddleRight);
-					
-					// document.addEventListener("mousemove", e => {
-					// 		// console.log("papa dans maman e.y = " + e.y);
-						
-					// 		playerPaddleLeft.position = (e.y / window.innerHeight) * 100
-					// 		})
-					// console.log("paddle left", playerPaddleLeft.rect);
+					// 	pongBall.update(delta, newLimit, playerPaddleLeft, playerPaddleRight);
+
+
+						// ball?.classList.add('scored');
+						// ball?.animate([
+						// 	{ transform: 'translateX(0)' },
+						// 	{ transform: 'translateX(1000px)' },
+						// ], {
+						// 	duration: 10000,
+						// 	fill: 'forwards',
+						// });
+
 						document.addEventListener("keydown", DownHandler);
 						document.addEventListener("keyup", UpHandler);
 						window.addEventListener('resize', () => {
@@ -140,32 +146,19 @@ const DownHandler = (e: any) => {
 		<div className={Style['container-game']}>
 		<h1>Pong game</h1>
 			<div className={Style['pong-body']} id="pong-body">
+				<span id="collision"></span>
 				<title>Pong</title>
 				<div className={Style.score}>
 					<div className={Style['left-score']}>{leftscore}</div>
 					<div className={Style['right-score']}>{rightscore}</div>
 				</div>
-				<div className={Style.ball} id="ball"></div>
+				<div className={`${Style.ball} `} id="ball"></div>
 				<div className={`${Style.paddle} ${Style.left}`} id="player-paddle-left"></div>
 				<div className={`${Style.paddle} ${Style.right}`} id="player-paddle-right"></div>
 			</div>
 		</div>
 	);
-	// return (
-	// 	<div className="container-game">
-	// 	<h1>Pong game</h1>
-	// 		<div className="pong-body" id="pong-body">
-	// 			<title>Pong</title>
-	// 			<div className="score">
-	// 				<div className="left-score">0</div>
-	// 				<div className="right-score">0</div>
-	// 			</div>
-	// 			<div className="ball" id="ball"></div>
-	// 			<div className="paddle left" id="player-paddle-left"></div>
-	// 			<div className="paddle right" id="player-paddle-right"></div>
-	// 		</div>
-	// 	</div>
-	// );
+
 }
 
 

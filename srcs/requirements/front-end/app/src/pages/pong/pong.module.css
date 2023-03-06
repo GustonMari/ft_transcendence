@@ -229,3 +229,27 @@
 .score > :first-child {
 	text-align: right;
 }
+
+
+@keyframes scored-animation {
+	0% {
+			width: 20vh;
+		height: 20vh;
+	}
+	50% {
+			width: 30vh;
+		height: 30vh;
+	}
+	100% {
+			width: 20vh;
+	height: 20vh;
+	}
+}
+
+.scored {
+	background-color: red;
+	width: 5vh;
+	height: 5vh;
+	/* animation: scored-animation 2s ease-in-out; */
+	/* background-color: red !important; */
+}
