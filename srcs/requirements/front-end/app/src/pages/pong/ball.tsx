@@ -4,12 +4,16 @@ export class Ball {
 	BallElem: any;
 	vector: {x: number, y: number}/*  = {x: 0, y: 0} */;
 	velocity: number = 0.25;
+	setLeftScore: any;
+	setRightScore: any;
 
-	constructor(BallElem: any)
+	constructor(BallElem: any, setLeftScore: any, setRightScore: any)
 	{
 		this.vector = {x: 0.1, y: 0.1};
 		this.BallElem = BallElem;
 		this.reset();
+		this.setLeftScore = setLeftScore;
+		this.setRightScore = setRightScore;
 		// console.log('constructor =', this.BallElem);
 	}
 	
@@ -61,7 +65,6 @@ export class Ball {
 		this.vector = { x: 0, y: 0};
 		
 		// make random direction, but not too much up or down
-		// while (1)
 		while (Math.abs(this.vector.x) <= .2 || Math.abs(this.vector.x) >= .9)
 		{
 			//generate a random number between 0 and 2PI (360 degrees)
@@ -70,7 +73,6 @@ export class Ball {
 		}
 		//initial velocity
 		this.velocity = .025;
-		// this.velocity = .1;
 	}
 
 	update(delta: number, limit: DOMRect) {
@@ -80,16 +82,21 @@ export class Ball {
 		const rect = this.rect();
 
 		if(rect.top <= limit.top || rect.bottom >= limit.bottom) {
-			// console.log("outtttt")
-			// console.log("delta = ", delta, " x = ", this.x, " y = ", this.y, " vectorX = ", this.vector.x, " vectorY = ", this.vector.y , " velocity = ", this.velocity, " rect= ", rect, " ball = ", this.BallElem);
-
 			this.vector.y *= -1;
 		}
 
 		if (rect.left <= limit.left || rect.right >= limit.right) {
-			// console.log("outtttt")
-			// console.log("delta = ", delta, " x = ", this.x, " y = ", this.y, " vectorX = ", this.vector.x, " vectorY = ", this.vector.y , " velocity = ", this.velocity, " ball = ", this.BallElem);
 			//TODO: divier cette fonction en deux pour les points, et pour le reset
+			if (rect.left <= limit.left)
+			{
+				this.setLeftScore((prevScore: number) => prevScore + 1);
+				this.reset();
+			}
+			if (rect.right >= limit.right)
+			{
+				this.setLeftScore((prevScore: number) => prevScore + 1);
+				this.reset();
+			}
 			this.vector.x *= -1;
 		}
 	}
