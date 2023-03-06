@@ -36,8 +36,8 @@
 .pong-body {
 	
 	/* TODO: il faudra remettre le overflow */
-	/* overflow: hidden; */ 
-	background-color: black;
+	overflow: hidden; 
+	background-color: rgb(0, 0, 0);
 	position : absolute;
 	width: 90vh;
 	height: 55vh;
@@ -48,12 +48,13 @@
 
 .paddle {
 	--position: 25;
+	--glowingpaddle:0.3;
 
 	position: absolute;
 	top: 50%;
 	top: calc(var(--position) * 1vh);
 	transform: translateY(-50%);
-	background-color: var(--foreground-color);
+	/* background-color: var(--foreground-color); */
 	/* background-color: blue; */
 	width: 2vh;
 	height: 13vh;
@@ -63,7 +64,21 @@
 .paddle.left {
 
 	left: 1vh;
-
+	background-color: white;
+	box-shadow:  
+	0 0 calc(var(--glowingpaddle) * 7px) white,
+	0 0 calc(var(--glowingpaddle) * 10px) white,
+	0 0 calc(var(--glowingpaddle) * 21px) white,
+	0 0 calc(var(--glowingpaddle) * 42px) #f09,
+	0 0 calc(var(--glowingpaddle) * 82px) #f09,
+	0 0 calc(var(--glowingpaddle) * 92px) #f09,
+	0 0 calc(var(--glowingpaddle) * 102px) #f09,
+	0 0 calc(var(--glowingpaddle) * 151px) #f09,
+	0 0 calc(var(--glowingpaddle) * 171px) #f09,
+	0 0 calc(var(--glowingpaddle) * 180px) #f09,
+	0 0 calc(var(--glowingpaddle) * 200px) #f09;
+	/* animation: pulse 1s infinite; */
+	animation: glow 0.50s ease-in-out infinite alternate;
 	/* background-color: white;
 	width: 20px;
 	height: 100px;
@@ -73,7 +88,21 @@
 
 .paddle.right {
 	right: 1vh;
-
+	background-color: white;
+	box-shadow:  
+	0 0 calc(var(--glowingpaddle) * 7px) white,
+	0 0 calc(var(--glowingpaddle) * 10px) white,
+	0 0 calc(var(--glowingpaddle) * 21px) white,
+	0 0 calc(var(--glowingpaddle) * 42px) blue,
+	0 0 calc(var(--glowingpaddle) * 82px) blue,
+	0 0 calc(var(--glowingpaddle) * 92px) blue,
+	0 0 calc(var(--glowingpaddle) * 102px) blue,
+	0 0 calc(var(--glowingpaddle) * 151px) blue,
+	0 0 calc(var(--glowingpaddle) * 171px) blue,
+	0 0 calc(var(--glowingpaddle) * 180px) blue,
+	0 0 calc(var(--glowingpaddle) * 200px) blue;
+	/* animation: pulse 1s infinite; */
+	animation: glow 0.50s ease-in-out infinite alternate;
 	/* background-color: white;
 	width: 20px;
 	height: 100px;
@@ -112,20 +141,83 @@
   }
 
 .score {
+	--glowing: 0.15;
+	display: flex;
+	justify-content: center;
+	font-weight: bold;
+	font-size: 7vh;
+	color: white;
+	text-shadow: 
+	0 0 calc(var(--glowing) * 7px) white,
+	0 0 calc(var(--glowing) * 10px) white,
+	0 0 calc(var(--glowing) * 21px) white,
+	0 0 calc(var(--glowing) * 42px) #f09,
+	0 0 calc(var(--glowing) * 82px) #f09,
+	0 0 calc(var(--glowing) * 92px) #f09,
+	0 0 calc(var(--glowing) * 102px) #f09,
+	0 0 calc(var(--glowing) * 151px) #f09,
+	0 0 calc(var(--glowing) * 171px) #f09,
+	0 0 calc(var(--glowing) * 180px) #f09,
+	0 0 calc(var(--glowing) * 200px) #f09;
+	/* animation: pulse 1s infinite; */
+	animation: glow 0.50s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+	100% {
+		text-shadow: 
+		0 0 calc(var(--glowing) * 7px) white,
+		0 0 calc(var(--glowing) * 10px) white,
+		0 0 calc(var(--glowing) * 21px) white,
+		0 0 calc(var(--glowing) * 42px) #f09,
+		0 0 calc(var(--glowing) * 82px) #f09,
+		0 0 calc(var(--glowing) * 92px) #f09,
+		0 0 calc(var(--glowing) * 102px) #f09,
+		0 0 calc(var(--glowing) * 151px) #f09,
+		0 0 calc(var(--glowing) * 171px) #f09,
+		0 0 calc(var(--glowing) * 180px) #f09,
+		0 0 calc(var(--glowing) * 200px) #f09;
+	}
+	0% {
+		text-shadow: 
+		0 0 calc(var(--glowing) * 4px) white,
+		0 0 calc(var(--glowing) * 10px) white,
+		0 0 calc(var(--glowing) * 18px) white,
+		0 0 calc(var(--glowing) * 38px) #f09,
+		0 0 calc(var(--glowing) * 73px) #f09,
+		0 0 calc(var(--glowing) * 80px) #f09,
+		0 0 calc(var(--glowing) * 94px) #f09,
+		0 0 calc(var(--glowing) * 140px) #f09,
+		0 0 calc(var(--glowing) * 151px) #f09,
+		0 0 calc(var(--glowing) * 168px) #f09,
+		0 0 calc(var(--glowing) * 188px) #f09;
+	}
+	
+}
+
+/* .score {
 	display: flex;
 	justify-content: center;
 	font-weight: bold;
 	font-size: 3vh;
 	color: var(--foreground-color);
-}
+	text-shadow: 
+	0 0 7px var(--foreground-color),
+	0 0 10px var(--foreground-color),
+	0 0 21px var(--foreground-color),
+	0 0 42px var(--foreground-color),
+	0 0 42px var(--foreground-color),
+	0 0 42px var(--foreground-color),
+	0 0 42px var(--foreground-color),
+
+} */
 
 .score > * {
 	margin: 0 1vh;
 	flex-grow: 1;
 	flex-basis: 0;
 	padding: 0 2vh;
-	opacity: 0.5;
-	/* flex-basis: 0; */
+	/* opacity: 0.5; */
 }
 
 .score > :first-child {
