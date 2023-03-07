@@ -142,6 +142,19 @@ export function ExecutePong() {
 						newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
 						first = true;
 					}
+					// if (newLimit)
+					// 	pongBall.update(delta, newLimit, playerPaddleLeft, playerPaddleRight);
+
+
+						// ball?.classList.add('scored');
+						// ball?.animate([
+						// 	{ transform: 'translateX(0)' },
+						// 	{ transform: 'translateX(1000px)' },
+						// ], {
+						// 	duration: 10000,
+						// 	fill: 'forwards',
+						// });
+
 					document.addEventListener("keydown", DownHandler);
 					document.addEventListener("keyup", UpHandler);
 					window.addEventListener('resize', () => {
