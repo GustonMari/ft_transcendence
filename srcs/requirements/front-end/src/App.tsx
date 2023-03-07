@@ -15,6 +15,7 @@ import PublicRoute from "./components/routes/PublicRoute";
 import TFA from "./pages/tfa";
 import Chat from "./pages/chat";
 import { AlertProvider } from "./contexts/Alert.context";
+import { Welcome } from "./pages/welcome";
 
 function App() {
   return (
@@ -23,8 +24,13 @@ function App() {
       <Routes>
         {/* <UserProvider> */}
 
-        <Route path="/" element={<Navigate to="/home"/>} />
+        <Route path="/" element={<Navigate to="/welcome"/>} />
 
+        <Route path="/welcome" element={
+            <PublicRoute>
+                <Welcome/>
+            </PublicRoute>
+        } />
         <Route path="/register" element={
             <PublicRoute>
                 <Register/>
