@@ -60,8 +60,12 @@ model User {
     outgoing Relation[]    @relation("outgoing")
 
     rooms UsersOnRooms[]
-    
 	messages Message[]
+	UserInGame UserInGame[]
+
+	// GameMaster Game	@relation("master")
+	// GameSlave Game	@relation("slave")
+    // Game Game[]			@relation("watchers")
 
     @@map("users")
 }
@@ -123,19 +127,39 @@ model Message {
 	@@map("messages")
 }
 
+model UserInGame {
+	id Int @id @unique @default(autoincrement())
+	created_at DateTime @default(now())
+	updated_at DateTime @updatedAt
+	role Role @default(USER)
+
+	user User @relation(fields: [user_id], references: [id])
+	user_id Int
+	game Game @relation(fields: [game_id], references: [id])
+	game_id Int
+
+	master Game? @relation("master")
+	slave Game? @relation("slave")
+
+	@@map("users_in_game")
+}
+
 model Game {
 	id Int @id @unique @default(autoincrement())
+	name String @unique
 	created_at DateTime @default(now())
 	updated_at DateTime @updatedAt
 	score_left Int @default(0)
 	score_right Int @default(0)
-	
 
-	master User @relation("master", fields: [master_id], references: [id])
-	master_id Int
-	slave User @relation(fields: [slave_id], references: [id])
-	slave_id Int
-	watchers User[] @relation("watchers")
+	master UserInGame @relation("master", fields: [master_id], references: [id])
+	master_id Int @unique
+	slave UserInGame @relation("slave", fields: [slave_id], references: [id])
+	slave_id Int @unique
+
+	UserInGame UserInGame[]
+
+	@@map("games")
 }
 
 enum Role {

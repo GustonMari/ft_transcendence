@@ -6,7 +6,7 @@
 #    By: ndormoy <ndormoy@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/02 10:42:00 by mamaurai          #+#    #+#              #
-#    Updated: 2023/03/07 11:19:55 by ndormoy          ###   ########.fr        #
+#    Updated: 2023/03/07 13:25:48 by ndormoy          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -94,20 +94,19 @@ studio:
 migrate:
 		@${DOCKER_EXEC} -d ${BACK_NAME} ${MIGRATE_CMD}
 	
+super-clean:
+		make stop 2>/dev/null
+		sudo rm -rf srcs/requirements/back-end/node_modules
+		sudo rm -rf srcs/requirements/front-end/node_modules
+		sudo rm -rf srcs/requirements/back-end/app/prisma/migrations
+		make drestart
+	
 endif
 
 ifeq ($(MODE), workspace-42)
 
 ssh-keygen:
 		@ssh-keygen -R localhost
-
-super-clean:
-	make stop
-	sudo rm -rf srcs/requirements/back-end/node_modules/
-	sudo rm -rf srcs/requirements/front-end/node_modules/
-	sudo rm -rf srcs/requirements/back-end/app/prisma/migrations/
-	make drestart
-	
 
 endif
 

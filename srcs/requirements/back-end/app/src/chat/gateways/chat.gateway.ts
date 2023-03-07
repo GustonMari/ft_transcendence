@@ -48,7 +48,6 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 
 	handleConnection(client: Socket, ...args: any[]) {
-		
 		client.emit('connected');
 		client.join('all');
 	}
