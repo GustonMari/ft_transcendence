@@ -123,6 +123,21 @@ model Message {
 	@@map("messages")
 }
 
+model Game {
+	id Int @id @unique @default(autoincrement())
+	created_at DateTime @default(now())
+	updated_at DateTime @updatedAt
+	score_left Int @default(0)
+	score_right Int @default(0)
+	
+
+	master User @relation("master", fields: [master_id], references: [id])
+	master_id Int
+	slave User @relation(fields: [slave_id], references: [id])
+	slave_id Int
+	watchers User[] @relation("watchers")
+}
+
 enum Role {
     ADMIN
     USER
