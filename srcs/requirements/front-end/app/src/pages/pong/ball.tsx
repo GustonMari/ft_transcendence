@@ -86,7 +86,7 @@ export class Ball {
 				// this.BallElem.classList.add('scored')
 				// document?.getElementById('collision').classList.add('scored');
 				
-				this.setLeftScore((prevScore: number) => prevScore + 1);
+				this.setRightScore((prevScore: number) => prevScore + 1);
 				this.reset();
 			}
 			if (rect.right >= limit.right)

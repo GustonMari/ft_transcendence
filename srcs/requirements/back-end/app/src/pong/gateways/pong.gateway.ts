@@ -43,12 +43,13 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		console.log('disconnect');
 	}
 
-	@SubscribeMessage('createGame') // Subscribe to the event 'joinGame'
-	async joinGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-		console.log("pilouuuuuu");
-		// socket.
-
-		socket.emit('gameCreated', 'pilouuuuuu');
+	// @SubscribeMessage('createGame') // Subscribe to the event 'joinGame'
+	// async joinGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+	// 	console.log("pilouuuuuu");
 		
-	}
+	// 	await this.pongService.createGame(data.master, data.slave);
+	// 	console.log("isusermaster = ", await this.pongService.isUserMaster(data.master.login));
+	// 	socket.emit('gameCreated', 'pilouuuuuu');
+
+	// }
 }

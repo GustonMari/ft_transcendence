@@ -1,4 +1,7 @@
 -- CreateEnum
+CREATE TYPE "GameType" AS ENUM ('MASTER', 'SLAVE', 'WATCHER');
+
+-- CreateEnum
 CREATE TYPE "Role" AS ENUM ('ADMIN', 'USER');
 
 -- CreateEnum
@@ -86,15 +89,14 @@ CREATE TABLE "messages" (
 );
 
 -- CreateTable
-CREATE TABLE "users_in_game" (
-    "id" SERIAL NOT NULL,
+CREATE TABLE "UserInGame" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
-    "role" "Role" NOT NULL DEFAULT 'USER',
+    "role" "GameType" NOT NULL DEFAULT 'WATCHER',
     "user_id" INTEGER NOT NULL,
     "game_id" INTEGER NOT NULL,
 
-    CONSTRAINT "users_in_game_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "UserInGame_pkey" PRIMARY KEY ("user_id","game_id")
 );
 
 -- CreateTable
@@ -139,9 +141,6 @@ CREATE UNIQUE INDEX "Room_name_key" ON "Room"("name");
 CREATE UNIQUE INDEX "messages_id_key" ON "messages"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "users_in_game_id_key" ON "users_in_game"("id");
-
--- CreateIndex
 CREATE UNIQUE INDEX "games_id_key" ON "games"("id");
 
 -- CreateIndex
@@ -172,13 +171,7 @@ ALTER TABLE "messages" ADD CONSTRAINT "messages_sender_id_fkey" FOREIGN KEY ("se
 ALTER TABLE "messages" ADD CONSTRAINT "messages_room_id_fkey" FOREIGN KEY ("room_id") REFERENCES "Room"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "users_in_game" ADD CONSTRAINT "users_in_game_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "UserInGame" ADD CONSTRAINT "UserInGame_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "users_in_game" ADD CONSTRAINT "users_in_game_game_id_fkey" FOREIGN KEY ("game_id") REFERENCES "games"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "games" ADD CONSTRAINT "games_master_id_fkey" FOREIGN KEY ("master_id") REFERENCES "users_in_game"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "games" ADD CONSTRAINT "games_slave_id_fkey" FOREIGN KEY ("slave_id") REFERENCES "users_in_game"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "UserInGame" ADD CONSTRAINT "UserInGame_game_id_fkey" FOREIGN KEY ("game_id") REFERENCES "games"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

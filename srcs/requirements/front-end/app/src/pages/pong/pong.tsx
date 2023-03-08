@@ -33,23 +33,70 @@ export default function Pong() {
 					},
 				});
 				setUserTo(res2.data);
+
+				// console.log("============= currentUser = ", res.data, " userTo = ", res2.data);
+				const create_game = await APP.post("/pong/create_game", {
+						master: res.data,
+						slave: res2.data,
+					});
+				// const create_game = await APP.post("/pong/create_game", {
+				// 	params: {
+				// 		master: res.data,
+				// 		slave: res2.data,
+				// 		}});
+				console.log("create_game = ", create_game);
 			} catch (error) {
 				console.error(error);
 			}
 		};
 		getUsers();
 	}, []);
-	console.log("currentUser = ", currentUser);
-	console.log("userTo = ", userTo);
+	// console.log("-currentUser = ", currentUser);
+	// console.log("-userTo = ", userTo);
 
-	// useEffect(() => {
-		socket?.on('gameCreated', (data) => {
-			console.log("gameCreated = ", data);
-		});
-	// }, []);
+
 
 	
-	socket?.emit('createGame', {user1: currentUser, user2: userTo});
+	// socket?.emit('createGame', {master: currentUser, slave: userTo});
+	// // socket?.on('gameCreated', (data) => {
+	// 	// console.log("gameCreated = ", data);
+	// 	//TODO: enlever ce qui a en dur ici
+	// 	useEffect(() => {
+	// 		const start_master_game = async () => {
+	// 			const isMaster = await APP.get("/pong/is_user_master", {
+	// 				params: {
+	// 					login: currentUser.login,
+	// 				},
+	// 			});
+	// 			if (isMaster) {
+	// 				// return (
+	// 				// 	<>
+	// 				// 		{/* <PongContext.Provider value={socket}> */}
+	// 				// 			{/* <ExecutePong /> */}
+	// 				// 			<div>
+	// 				// 				<h1>je suis master: {currentUser.login}</h1>
+	// 				// 			</div>
+	// 				// 		{/* </PongContext.Provider> */}
+	// 				// 	</>
+	// 				// )
+	// 				console.log("JE SUIS MASTER FDP");
+	// 			}
+	// 			else {
+	// 				// return (
+	// 				// 	<div>
+	// 				// 		<h1>je suis slave: {userTo.login}</h1>
+	// 				// 	</div>
+	// 				// );
+	// 				console.log("JE SUIS SLAVE FDP");
+	// 			}
+	// 		};
+	// 		start_master_game();
+	// 	}, []);
+
+
+	// // });
+
+
 
 
 	return (

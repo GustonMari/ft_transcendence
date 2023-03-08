@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ndormoy <ndormoy@student.42.fr>            +#+  +:+       +#+         #
+#    By: gmary <gmary@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/02 10:42:00 by mamaurai          #+#    #+#              #
-#    Updated: 2023/03/07 13:25:48 by ndormoy          ###   ########.fr        #
+#    Updated: 2023/03/08 10:32:59 by gmary            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -96,9 +96,9 @@ migrate:
 	
 super-clean:
 		make stop 2>/dev/null
-		sudo rm -rf srcs/requirements/back-end/node_modules
-		sudo rm -rf srcs/requirements/front-end/node_modules
-		sudo rm -rf srcs/requirements/back-end/app/prisma/migrations
+		rm -rf srcs/requirements/back-end/node_modules
+		rm -rf srcs/requirements/front-end/node_modules
+		rm -rf srcs/requirements/back-end/app/prisma/migrations
 		make drestart
 	
 endif
