@@ -40,7 +40,7 @@ export class RelationController {
   }
 
   @ApiOperation({
-    description: 'Create a new relation between two users',
+    summary: 'Create a new relation between two users',
   })
   @ApiBody({
     type: CreateRelationDTO,
@@ -62,7 +62,7 @@ export class RelationController {
   }
 
   @ApiOperation({
-    description: 'Create a new friend request',
+    summary: 'Create a new friend request',
   })
   @HttpCode(HttpStatus.CREATED)
   @Redirect('/api/relation/create')
@@ -74,7 +74,7 @@ export class RelationController {
   }
 
   @ApiOperation({
-    description: 'Block a user',
+    summary: 'Block a user',
   })
   @HttpCode(HttpStatus.CREATED)
   @Redirect('/api/relation/create')
@@ -85,16 +85,8 @@ export class RelationController {
     return ({ id_target: id, relation_type: 'BLOCKED' });
   }
 
-  /*
-  Remove relations :
-    [x] Remove by RelationID (check if state === "BLOCKED, user must be the owner of this relation)
-  Getter :
-    [x] GetRelations (friend, incomming, outgoing);
-  DTO: ReturnRelationDTO
-*/
-
   @ApiOperation({
-    description: 'Remove a relation between two users by user ID',
+    summary: 'Remove a relation between two users by user ID',
   })
   @HttpCode(HttpStatus.OK)
   @Delete('delete/userid/:id')
@@ -106,7 +98,7 @@ export class RelationController {
       throw new BadRequestException('The target ID and the current ID are eguals.');
     }
 
-    const relation = await this.relationService.findRelationByTwoUsers(user_id, id);
+    const relation = await this.relationService.findRelationByTwoUserID(user_id, id);
     if (!relation) {
       throw new NotFoundException('The relation has not been found');
     }
@@ -120,7 +112,7 @@ export class RelationController {
   }
 
   @ApiOperation({
-    description: 'Remove a relation by relation ID',
+    summary: 'Remove a relation by relation ID',
   })
   @HttpCode(HttpStatus.OK)
   @Delete('delete/relationid/:id')
@@ -140,7 +132,7 @@ export class RelationController {
   }
 
   @ApiOperation({
-    description: 'Return a list of relations',
+    summary: 'Return a list of relations',
   })
   @Get('get/:string')
   @TransformPlainToInstance(ReturnRelationDTO, {
@@ -153,7 +145,7 @@ export class RelationController {
     if (type !== 'outgoing' && type !== 'incomming' && type !== 'friend') {
       throw new BadRequestException('Invalid parameter request');
     }
-    const relations = await this.relationService.findRelationByOneUsers(id);
+    const relations = await this.relationService.findRelationByOneUserID(id);
     const filtered = relations.filter((obj) => {
       if (type === 'friend') {
         return (obj.state === 'FRIEND');
@@ -170,6 +162,29 @@ export class RelationController {
         user: (obj.from_id === id ? obj.to : obj.from),
       };
     }));
+  }
+
+  @ApiOperation({
+    summary: 'Return the relation between two users',
+  })
+  @Get('get/relation/:id')
+  @TransformPlainToInstance(ReturnRelationDTO, {
+    excludeExtraneousValues: true,
+  })
+  async getRelationBetweenTwoUSer(
+    @Param('id', ParseIntPipe) id: number,
+    @GetMe('id') me_id: number,
+  ) {
+    const relation = await this.relationService.findRelationByTwoUserID(id, me_id) as any;
+    if (!relation) {
+      throw new NotFoundException('No relation has been found between those two users');
+    }
+
+    return ({
+      id: relation.id,
+      created_at: relation.created_at;
+      user: (relation.from_id === me_id ? relation.to : relation.from),
+    });
   }
 
 

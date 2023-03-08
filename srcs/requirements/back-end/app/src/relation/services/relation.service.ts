@@ -23,7 +23,7 @@ export class RelationService {
     dto: CreateRelationDTO,
     id: number,
   ) {
-    const check_relation = await this.findRelationByTwoUsers(dto.id_target, id);
+    const check_relation = await this.findRelationByTwoUserID(dto.id_target, id);
     if (check_relation && check_relation.state === 'BLOCKED') {
       throw new UnauthorizedException('Cannot interact with this user, he blocked you.');
     }
@@ -73,7 +73,7 @@ export class RelationService {
     return undefined;
   }
 
-  async findRelationByTwoUsers(
+  async findRelationByTwoUserID(
     first_id: number,
     second_id: number,
   ) {
@@ -97,7 +97,7 @@ export class RelationService {
     return undefined;
   }
 
-  async findRelationByOneUsers(
+  async findRelationByOneUserID(
     id: number,
   ): Promise<Relation[]> {
     const relation = await this.prisma.relation.findMany({

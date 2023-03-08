@@ -128,7 +128,7 @@ export default class API {
         errorFunc: (err: ApiError) => void
     ) {
         try {
-            const res = await APP.get("/relation/friend/get/list");
+            const res = await APP.get("/relation/friend/get/friend");
             successFunc(res.data);
         } catch (err) {
             if (axios.isAxiosError(err)) {

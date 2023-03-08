@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
 import API from "../network/api"
-import { NavBar } from "../components/communs/NavBar"
-import { FriendList } from "../components/relations/FriendList"
 import s from "../styles/pages/friend.module.css"
 import { ButtonChangeList } from "../components/relations/ButtonChangeList"
 import { RelationList } from "../components/relations/RelationList"
+import { FriendElement } from "../components/relations/FriendElement"
+import { AlertContext } from "../contexts/Alert.context"
+import { FriendList } from "../components/relations/FriendList"
 
 
 export const Friends = ({user}: any) => {
@@ -14,11 +15,32 @@ export const Friends = ({user}: any) => {
     const [outgoing, setOutgoing] = useState<any[]>([]);
     const [list, setList] = useState<number>(1);
 
-    useEffect(
-        () => {
+    const {handleError} = useContext<any>(AlertContext);
 
-        },
-        [friends, incomming, outgoing]
+    useLayoutEffect(
+        () => {
+			API.getFriends(
+                (d: any) => {
+                    setFriends(d);
+                }, () => {
+                    handleError("Error while fetching friends");
+                }
+            )
+            // API.getIncomingRequest(
+            //     (d: any) => {
+            //         setIncomming(d);
+            //     }, () => {
+            //         handleError("Error while fetching incomming friends");
+            //     }
+            // )
+            // API.getOutgoinRequest(
+            //     (d: any) => {
+            //         setOutgoing(d);
+            //     }, () => {
+            //         handleError("Error while fetching outgoing friends");
+            //     }
+            // )
+        }, []
     )
 
 
@@ -31,9 +53,10 @@ export const Friends = ({user}: any) => {
                     <ButtonChangeList title="Outgoing" setList={setList} listNumber={3}/>
                 </div>
                 <div className={s.lists}>
-                    {list === 1 && <RelationList className={s.list} relations={friends} changeRelation={setFriends}/>}
-                    {list === 2 && <RelationList className={s.list} relations={incomming} changeRelation={setIncomming}/>}
-                    {list === 3 && <RelationList className={s.list} relations={outgoing} changeRelation={setOutgoing}/>}
+                    {/* {list === 1 && <RelationList className={s.list} relations={friends} setRelation={setFriends} cpnt={FriendElement}/>} */}
+                    {list === 1 && <FriendList relations={friends}/>}
+                    {list === 2 && <RelationList className={s.list} relations={incomming} setRelation={setIncomming} cpnt={FriendElement}/>}
+                    {list === 3 && <RelationList className={s.list} relations={outgoing} setRelation={setOutgoing} cpnt={FriendElement}/>}
                 </div>
             </div>
         </>
