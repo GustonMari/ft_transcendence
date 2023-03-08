@@ -21,8 +21,9 @@ export default function Chat() {
 	const [currentUser, setCurrentUser] = useState<any>(null);
 	const [history, setHistory] = useState<any>([]);
 	const [trigger, setTrigger] = React.useState(0);
-	const [popup_pong, setPopup_pong] = useState(false);
+	const [popup_pong, setPopup_pong] = useState<any>(null);
 
+	
 	useEffect(() => {
 		const getCurrentUser = async () => {
 			try {
@@ -34,13 +35,13 @@ export default function Chat() {
 		};
 		getCurrentUser();
 	}, []);
-
+	
 	useEffect(() => {
 		socket?.on('connected', () => {
 			socket?.emit('addsocket', currentUser);
-		  });
+		});
 	}, [currentUser]);
-	
+
 	const send = (value: string) => {
 		socket?.emit("message", {room: room, message: value, current_user: currentUser});
 	}
@@ -61,10 +62,13 @@ export default function Chat() {
 	}
 
 	socket?.on("message", message_listener);
+
 	socket?.on('invite_pong_request', (data: any) => {
 		setPopup_pong(data.sender_invite);
 		console.log('barceuc chez bernard invite_pong_request', data.sender_invite);
 	});
+
+
 
 	return (
 	<div>
@@ -72,7 +76,7 @@ export default function Chat() {
 			{/* nav bar */}
 		</div>
 		<div>
-			{popup_pong ? popup_invite_pong(popup_pong) :""}
+			{popup_pong ? (<Popup_invite_pong data={popup_pong}/>) : (<div><h1>HEYHEYHYE</h1></div>)}
 		</div>
 		<div className="global">
 			<div className="room-menu">
@@ -100,11 +104,12 @@ export default function Chat() {
 	);
 }
 
-function popup_invite_pong(props : any) {
-	const { sender_invite } = props;
-	const [show, setShow] = useState(false);
+function Popup_invite_pong(props : any) {
+	const sender_invite = props.data;
+	const [show, setShow] = useState(true);
 	const handleClose = () => setShow(false);
-	const handleShow = () => setShow(true);
+	// const handleShow = () => setShow(true);
+
 	if (!sender_invite)
 		return (<div>
 			<h1>
@@ -112,9 +117,9 @@ function popup_invite_pong(props : any) {
 			</h1>
 		</div>);
 
+	// console.log("popopopopop", sender_invite);
 	return (
-	  <div>
-
+	  <>
 
 		<Modal show={show} onHide={handleClose}>
 		  <Modal.Header closeButton>
@@ -122,7 +127,7 @@ function popup_invite_pong(props : any) {
 		  </Modal.Header>
 		  <Modal.Body className="text-center">
 			<h1>
-				{sender_invite} want to play with you
+				{sender_invite.login} want to play with you
 			</h1>
 		  </Modal.Body>
 		  <Modal.Footer>
@@ -131,6 +136,9 @@ function popup_invite_pong(props : any) {
 			</Button>
 		  </Modal.Footer>
 		</Modal>
-	  </div>
+	  </>
 	);
+
+
+
 }
