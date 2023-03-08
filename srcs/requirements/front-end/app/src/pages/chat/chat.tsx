@@ -76,7 +76,7 @@ export default function Chat() {
 			{/* nav bar */}
 		</div>
 		<div>
-			{popup_pong ? (<Popup_invite_pong data={popup_pong}/>) : (<div><h1>HEYHEYHYE</h1></div>)}
+			{popup_pong ? (<Popup_invite_pong sender_invite={popup_pong} setPopup_pong={setPopup_pong} /> ) : (<></>)}
 		</div>
 		<div className="global">
 			<div className="room-menu">
@@ -105,9 +105,12 @@ export default function Chat() {
 }
 
 function Popup_invite_pong(props : any) {
-	const sender_invite = props.data;
+	const {sender_invite, setPopup_pong} = props;
 	const [show, setShow] = useState(true);
-	const handleClose = () => setShow(false);
+	const handleClose = () => {
+		setShow(false)
+		setPopup_pong(null);
+	};
 	// const handleShow = () => setShow(true);
 
 	if (!sender_invite)
@@ -117,7 +120,8 @@ function Popup_invite_pong(props : any) {
 			</h1>
 		</div>);
 
-	// console.log("popopopopop", sender_invite);
+	
+
 	return (
 	  <>
 
