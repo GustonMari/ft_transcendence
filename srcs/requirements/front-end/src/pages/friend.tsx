@@ -26,20 +26,20 @@ export const Friends = ({user}: any) => {
                     handleError("Error while fetching friends");
                 }
             )
-            // API.getIncomingRequest(
-            //     (d: any) => {
-            //         setIncomming(d);
-            //     }, () => {
-            //         handleError("Error while fetching incomming friends");
-            //     }
-            // )
-            // API.getOutgoinRequest(
-            //     (d: any) => {
-            //         setOutgoing(d);
-            //     }, () => {
-            //         handleError("Error while fetching outgoing friends");
-            //     }
-            // )
+            API.getIncomingRequest(
+                (d: any) => {
+                    setIncomming(d);
+                }, () => {
+                    handleError("Error while fetching incomming friends");
+                }
+            )
+            API.getOutgoinRequest(
+                (d: any) => {
+                    setOutgoing(d);
+                }, () => {
+                    handleError("Error while fetching outgoing friends");
+                }
+            )
         }, []
     )
 

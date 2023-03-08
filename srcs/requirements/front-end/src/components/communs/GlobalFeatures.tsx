@@ -11,7 +11,7 @@ export const GlobalFeatures = ({children}: any) => {
 
     return (
         <>
-            {/* <NavBar/> */}
+            <NavBar/>
             {children}
         </>
     );

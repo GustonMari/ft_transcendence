@@ -9,11 +9,19 @@ import {
   ParseIntPipe,
   Redirect,
   Delete,
-  Post, NotFoundException, UnauthorizedException,
+  Post,
+  NotFoundException,
+  UnauthorizedException,
+  UseGuards,
+  Put,
+	Res,
 } from '@nestjs/common';
 import {
+	Response
+} from 'express';
+import {
   ApiOperation,
-  ApiBody, ApiParam,
+  ApiBody,
 } from '@nestjs/swagger';
 import {
   CreateRelationDTO,
@@ -25,19 +33,16 @@ import {
 import {
   GetMe,
 } from '../../auth/decorators';
-import {
-  AuthGuard,
-} from '@nestjs/passport';
 import { TransformPlainToInstance } from 'class-transformer';
+import { AccessGuard } from '../../auth/guards';
 
-//@UseGuards(AuthGuard())
+@UseGuards(AccessGuard)
 @Controller('relation')
 export class RelationController {
 
   constructor(
     private relationService: RelationService,
-  ) {
-  }
+  ) { }
 
   @ApiOperation({
     summary: 'Create a new relation between two users',
@@ -45,7 +50,7 @@ export class RelationController {
   @ApiBody({
     type: CreateRelationDTO,
   })
-  @Post('/create')
+  @Put('/create')
   @HttpCode(HttpStatus.CREATED)
   async createRelation(
     @Body() dto: CreateRelationDTO,
@@ -58,19 +63,22 @@ export class RelationController {
       throw new BadRequestException('The target ID and the current ID are eguals.');
     }
     await this.relationService.createRelation(dto, id);
-    return { message: '' };
+    return { message: "Relation has been created" };
   }
 
   @ApiOperation({
     summary: 'Create a new friend request',
   })
   @HttpCode(HttpStatus.CREATED)
-  @Redirect('/api/relation/create')
-  @Get('friend/create/id/:id')
+  @Put('create/friend/id/:id')
   async sendFriendRequest(
     @Param('id', ParseIntPipe) id: number,
+	@GetMe('id') me_id: number,
   ) {
-    return ({ id_target: id, relation_type: 'PENDING' });
+	  return (await this.createRelation({
+		  id_target: id,
+		  relation_type: "PENDING"
+	  }, me_id));
   }
 
   @ApiOperation({
@@ -182,7 +190,7 @@ export class RelationController {
 
     return ({
       id: relation.id,
-      created_at: relation.created_at;
+      created_at: relation.created_at,
       user: (relation.from_id === me_id ? relation.to : relation.from),
     });
   }

@@ -29,7 +29,6 @@ export default class API {
     successFunc: () => void,
     errorFunc: (err: ApiError) => void
   ) {
-    
     try {
       await APP.post("/auth/register", opt);
       successFunc();
@@ -128,7 +127,7 @@ export default class API {
         errorFunc: (err: ApiError) => void
     ) {
         try {
-            const res = await APP.get("/relation/friend/get/friend");
+            const res = await APP.get("/relation/get/friend");
             successFunc(res.data);
         } catch (err) {
             if (axios.isAxiosError(err)) {
@@ -146,7 +145,7 @@ export default class API {
         errorFunc: (err: ApiError) => void
     ) {
         try {
-            const res = await APP.get("/relation/friend/request/get/incoming");
+            const res = await APP.get("/relation/get/incoming");
             successFunc(res.data);
         } catch (err) {
             if (axios.isAxiosError(err)) {
@@ -164,7 +163,7 @@ export default class API {
         errorFunc: (err: ApiError) => void
     ) {
         try {
-            const res = await APP.get("/relation/friend/request/get/incoming");
+            const res = await APP.get("/relation/get/incoming");
             successFunc(res.data);
         } catch (err) {
             if (axios.isAxiosError(err)) {
@@ -183,7 +182,7 @@ export default class API {
         errorFunc: (err: any) => void
     ) {
         try {
-            await APP.put("/relation/friend/request/add/id/" + uid);
+            await APP.put("/relation/create/friend/id/" + uid);
             successFunc();
         } catch (err) {
             if (axios.isAxiosError(err)) {

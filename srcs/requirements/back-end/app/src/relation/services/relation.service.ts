@@ -28,7 +28,7 @@ export class RelationService {
       throw new UnauthorizedException('Cannot interact with this user, he blocked you.');
     }
 
-    if (check_relation.state === 'PENDING' && dto.relation_type === 'PENDING') {
+    if (check_relation && check_relation.state === 'PENDING' && dto.relation_type === 'PENDING') {
       throw new UnauthorizedException('Request in pending has already been sent.');
     }
     if (check_relation) {
