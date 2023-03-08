@@ -11,6 +11,7 @@ import App from "../../App";
 import { RoomList } from "./navbar";
 import { ParameterChat } from "./ParameterChat";
 import { HistoryDto, InfoMessage } from "./dto/chat.dto";
+import { Button, Modal } from "react-bootstrap";
 
 export default function Chat() {
 
@@ -20,6 +21,7 @@ export default function Chat() {
 	const [currentUser, setCurrentUser] = useState<any>(null);
 	const [history, setHistory] = useState<any>([]);
 	const [trigger, setTrigger] = React.useState(0);
+	const [popup_pong, setPopup_pong] = useState(false);
 
 	useEffect(() => {
 		const getCurrentUser = async () => {
@@ -59,17 +61,18 @@ export default function Chat() {
 	}
 
 	socket?.on("message", message_listener);
+	socket?.on('invite_pong_request', (data: any) => {
+		setPopup_pong(data.sender_invite);
+		console.log('barceuc chez bernard invite_pong_request', data.sender_invite);
+	});
 
 	return (
 	<div>
 		<div>
-			{/* <nav className="nav-bar">
-				<a className='nav-bar-box' href="">Home</a>
-				<a href="">Rooms</a>
-				<a href="">Profile</a>
-				<a href="">Logout</a>
-				<a href="">Settings</a>
-			</nav> */}
+			{/* nav bar */}
+		</div>
+		<div>
+			{popup_pong ? popup_invite_pong(popup_pong) :""}
 		</div>
 		<div className="global">
 			<div className="room-menu">
@@ -94,5 +97,40 @@ export default function Chat() {
 			</div>
 		</div>
 	</div>
+	);
+}
+
+function popup_invite_pong(props : any) {
+	const { sender_invite } = props;
+	const [show, setShow] = useState(false);
+	const handleClose = () => setShow(false);
+	const handleShow = () => setShow(true);
+	if (!sender_invite)
+		return (<div>
+			<h1>
+				salut ta mere
+			</h1>
+		</div>);
+
+	return (
+	  <div>
+
+
+		<Modal show={show} onHide={handleClose}>
+		  <Modal.Header closeButton>
+			<Modal.Title>Profile</Modal.Title>
+		  </Modal.Header>
+		  <Modal.Body className="text-center">
+			<h1>
+				{sender_invite} want to play with you
+			</h1>
+		  </Modal.Body>
+		  <Modal.Footer>
+			<Button variant="secondary" onClick={handleClose}>
+			  Close
+			</Button>
+		  </Modal.Footer>
+		</Modal>
+	  </div>
 	);
 }

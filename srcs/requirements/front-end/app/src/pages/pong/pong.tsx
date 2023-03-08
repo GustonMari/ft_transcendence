@@ -1,4 +1,4 @@
-import React, { CSSProperties, useEffect, useRef } from "react";
+import React, { CSSProperties, useEffect, useLayoutEffect, useRef } from "react";
 import { useState } from "react";
 import io, { Socket } from "socket.io-client";
 import axios from "axios";
@@ -10,22 +10,24 @@ import App from "../../App";
 import Style from "./pong.module.css";
 import { Ball } from "./ball";
 import { Paddle } from "./paddle";
+import { User } from "../chat/dto/chat.dto";
 
 
 export default function Pong() {
 
+	//TODO: peut etre il faudra changer le dto pour ajouter userInGame
 	const [currentUser, setCurrentUser] = useState<any>(null);
 	const [userTo, setUserTo] = useState<any>(null);
+	const [isMaster, setIsMaster] = useState<boolean>(false);
 	const socket = Create_socket();
 
 	
 
-	useEffect(() => {
+	useLayoutEffect (() => {
 		const getUsers = async () => {
 			try {
 				const res = await APP.get("/user/me");
 				setCurrentUser(res.data);
-
 				const res2 = await APP.get("/user/get", {
 					params: {
 						// login: userTo.login,
@@ -33,17 +35,32 @@ export default function Pong() {
 					},
 				});
 				setUserTo(res2.data);
-
-				// console.log("============= currentUser = ", res.data, " userTo = ", res2.data);
 				const create_game = await APP.post("/pong/create_game", {
 						master: res.data,
 						slave: res2.data,
 					});
-				// const create_game = await APP.post("/pong/create_game", {
-				// 	params: {
-				// 		master: res.data,
-				// 		slave: res2.data,
-				// 		}});
+				const is_master = await APP.post("/pong/is_user_master", { login: res.data.login });
+				if (is_master) {
+					setIsMaster(true);
+					console.log("master zooo")
+					// return (
+					// 	<>
+					// 		{/* <PongContext.Provider value={socket}> */}
+					// 			<ExecutePong />
+					// 		{/* </PongContext.Provider> */}
+					// 	</>
+					// )
+				}
+				else
+				{
+					setIsMaster(false);
+					console.log("slave zooo")
+					// return (
+					// 	<>
+					// 		<h1>LOLILOL</h1>
+					// 	</>
+					// )
+				}
 				console.log("create_game = ", create_game);
 			} catch (error) {
 				console.error(error);
@@ -51,61 +68,38 @@ export default function Pong() {
 		};
 		getUsers();
 	}, []);
-	// console.log("-currentUser = ", currentUser);
-	// console.log("-userTo = ", userTo);
 
+	if (currentUser && isMaster)
+	{
+		return (
+			<>
+				{/* <PongContext.Provider value={socket}> */}
+					<ExecutePong />
+				{/* </PongContext.Provider> */}
+			</>
+		)
+	}
+	else if( currentUser && !isMaster)
+	{
 
-
-	
-	// socket?.emit('createGame', {master: currentUser, slave: userTo});
-	// // socket?.on('gameCreated', (data) => {
-	// 	// console.log("gameCreated = ", data);
-	// 	//TODO: enlever ce qui a en dur ici
-	// 	useEffect(() => {
-	// 		const start_master_game = async () => {
-	// 			const isMaster = await APP.get("/pong/is_user_master", {
-	// 				params: {
-	// 					login: currentUser.login,
-	// 				},
-	// 			});
-	// 			if (isMaster) {
-	// 				// return (
-	// 				// 	<>
-	// 				// 		{/* <PongContext.Provider value={socket}> */}
-	// 				// 			{/* <ExecutePong /> */}
-	// 				// 			<div>
-	// 				// 				<h1>je suis master: {currentUser.login}</h1>
-	// 				// 			</div>
-	// 				// 		{/* </PongContext.Provider> */}
-	// 				// 	</>
-	// 				// )
-	// 				console.log("JE SUIS MASTER FDP");
-	// 			}
-	// 			else {
-	// 				// return (
-	// 				// 	<div>
-	// 				// 		<h1>je suis slave: {userTo.login}</h1>
-	// 				// 	</div>
-	// 				// );
-	// 				console.log("JE SUIS SLAVE FDP");
-	// 			}
-	// 		};
-	// 		start_master_game();
-	// 	}, []);
-
-
-	// // });
-
-
-
-
-	return (
-		<>
-			{/* <PongContext.Provider value={socket}> */}
-				<ExecutePong />
-			{/* </PongContext.Provider> */}
-		</>
-	)
+		return (
+			<>
+				{/* <PongContext.Provider value={socket}> */}
+					{/* <ExecutePong /> */}
+					<div>
+						<h1>lioioli</h1>
+					</div>
+				{/* </PongContext.Provider> */}
+			</>
+		)
+	}else 
+	{
+		return(
+			<div>
+				<h1>watcher</h1>
+			</div>
+		)
+	}
 
 }
 

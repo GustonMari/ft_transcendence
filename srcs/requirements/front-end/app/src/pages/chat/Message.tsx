@@ -55,14 +55,14 @@ function IsSenderOrReceiver(props: any)
 					{historyItem.sender_name} : {historyItem.current_message}
 					<span className="chat-date"> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
 				</div>
-				<PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass="img-message-right" current_user={current_user} socket={socket}/>
+				<PopupImageSelf imageSrc="https://cutt.ly/v8wcluh" classPass="img-message-right" user={current_user} socket={socket}/>
 			</div>
 		);
 	else
 		return (
 			<div>
 				<div className="wrapper-message">	
-					<PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass="img-message-left" current_user={historyItem.sender} socket={socket}/>
+					<PopupImageOther imageSrc="https://cutt.ly/v8wcluh" classPass="img-message-left" user={historyItem.sender} current_user={current_user} socket={socket}/>
 					<div className="message-sender">
 						{historyItem.sender_name} : {historyItem.current_message}
 						<span className="chat-date"> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
@@ -85,14 +85,14 @@ function IsSenderOrReceiver_socket(props: any)
 		 			{infomessage.current_user.login} : {infomessage.message}
 	 				<span className="chat-date"> {dayjs(infomessage.created_at).format("DD MMM YYYY À H:mm")} </span>
 				</div>
-				<PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass="img-message-right" current_user={current_user} socket={socket}/>
+				<PopupImageSelf imageSrc="https://cutt.ly/v8wcluh" classPass="img-message-right" user={current_user} socket={socket}/>
 			</div>
 		);
 	else
 		return (
 			<div>
 				<div className="wrapper-message">	
-					<PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass="img-message-left" current_user={infomessage.current_user} socket={socket}/>
+					<PopupImageOther imageSrc="https://cutt.ly/v8wcluh" classPass="img-message-left" user={infomessage.current_user} current_user={current_user} socket={socket}/>
 					<div className="message-sender">
 						{infomessage.current_user.login} : {infomessage.message}
 						<span className="chat-date"> {dayjs(infomessage.created_at).format("DD MMM YYYY À H:mm")} </span>
@@ -132,26 +132,16 @@ export function DisplayMessagesByRoom(props: any) {
 }
 
 
-function PopupImage(props: any) {
-	const { imageSrc, classPass, current_user, socket} = props;
-  
+function PopupImageSelf(props: any) {
+	const { imageSrc, classPass, user, socket} = props;
 	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
-	let [value, setValue] = React.useState("");
   
-	function InviteFriend(event: any) {
-		// if (event.key === "Enter") {
-			// event.preventDefault();
-			socket.emit("invite_pong", {current_user: current_user});
-			// handleSetPassword(value);
-		// }
-	}
-
-	if (current_user === undefined || current_user === null)
+	if (user === undefined || user === null)
 		return (
 			<div>
-				<h1>PROBLEM TA MERE</h1>
+				<h1>PROBLEM</h1>
 			</div>
 		);
 
@@ -160,9 +150,6 @@ function PopupImage(props: any) {
 		<a href="#" onClick={handleShow}>
 			<img src={ imageSrc } className={classPass}/>
 		</a>
-		{/* <Button id="bootstrap-overrides" variant="primary" onClick={handleShow} >
-		  <img src={ imageSrc } className={classPass}/>
-		</Button> */}
 
 		<Modal show={show} onHide={handleClose}>
 		  <Modal.Header closeButton>
@@ -175,25 +162,70 @@ function PopupImage(props: any) {
 			<ProgressBar progress={70}/>
 			<h4>LVL :</h4>
 			<br />
-			<h4>Login : {current_user.login}</h4>
-			<h4>First Name : {current_user.first_name}</h4>
-			<h4>Last Name : {current_user.last_name}</h4>
-			<h4>Email : {current_user.email}</h4>
-			<h4>State : {current_user.state}</h4>
+			<h4>Login : {user.login}</h4>
+			<h4>First Name : {user.first_name}</h4>
+			<h4>Last Name : {user.last_name}</h4>
+			<h4>Email : {user.email}</h4>
+			<h4>State : {user.state}</h4>
+		  </Modal.Body>
+		  <Modal.Footer>
+			<Button variant="secondary" onClick={handleClose}>
+			  Close
+			</Button>
+		  </Modal.Footer>
+		</Modal>
+	  </div>
+	);
+  }
+
+  function PopupImageOther(props: any) {
+	const { imageSrc, classPass, user, current_user, socket} = props;
+	const [show, setShow] = useState(false);
+	const handleClose = () => setShow(false);
+	const handleShow = () => setShow(true);
+	let [value, setValue] = React.useState("");
+  
+	function InviteFriend(event: any) {
+		// if (event.key === "Enter") {
+			// event.preventDefault();
+			socket.emit("invite_pong", {user_to: user, current_user: current_user});
+			// handleSetPassword(value);
+		// }
+	}
+
+	if (user === undefined || user === null)
+		return (
+			<div>
+				<h1>PROBLEM TA MERE</h1>
+			</div>
+		);
+
+	return (
+	  <div>
+		<a href="#" onClick={handleShow}>
+			<img src={ imageSrc } className={classPass}/>
+		</a>
+
+		<Modal show={show} onHide={handleClose}>
+		  <Modal.Header closeButton>
+			<Modal.Title>Profile</Modal.Title>
+		  </Modal.Header>
+		  <Modal.Body className="text-center">
+			<img src={ imageSrc } className="img-popup-user"/>
+			<br />
+			<br />
+			<ProgressBar progress={70}/>
+			<h4>LVL :</h4>
+			<br />
+			<h4>Login : {user.login}</h4>
+			<h4>First Name : {user.first_name}</h4>
+			<h4>Last Name : {user.last_name}</h4>
+			<h4>Email : {user.email}</h4>
+			<h4>State : {user.state}</h4>
 			<hr />
 			<Button variant="secondary" onClick={InviteFriend}>
 			  Invite to Pong
 			</Button>
-			{/* <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label></Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Invite to pong"
-                autoFocus
-				onChange={(e) => setValue(e.target.value)}
-				onKeyDown={handleKeyDown}
-              />
-            </Form.Group> */}
 		  </Modal.Body>
 		  <Modal.Footer>
 			<Button variant="secondary" onClick={handleClose}>

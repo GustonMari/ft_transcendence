@@ -12,10 +12,7 @@ export class PongController {
 
 		@Post('create_game') // Subscribe to the event 'joinGame'
 		async create_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
-		console.log("Pilaxxxxxxxxxxxxxxxxxxxxxxxxxxx info = ", info);
 		await this.pongService.createGame(info.master, info.slave);
-		console.log("isusermaster = ", await this.pongService.isUserMaster(info.master.login));
-		console.log("login slave --> isusermaster = ", await this.pongService.isUserMaster(info.slave.login));
 		response.send("Created game");
 
 	}
