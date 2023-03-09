@@ -210,7 +210,8 @@ function PopupImageSelf(props: any) {
 		  <Modal.Header closeButton>
 			<Modal.Title>Profile</Modal.Title>
 		  </Modal.Header>
-		  <Modal.Body className={Style["text-center"]}>
+		  {/* <Modal.Body className={Style["text-center"]}> */}
+		  <Modal.Body className="text-center">
 			<img src={ imageSrc } className={Style["img-popup-user"]}/>
 			<br />
 			<br />

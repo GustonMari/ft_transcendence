@@ -132,10 +132,16 @@ function Popup_invite_pong(props : any) {
 		  <Modal.Header closeButton>
 			<Modal.Title>Profile</Modal.Title>
 		  </Modal.Header>
-		  <Modal.Body className="text-center">
+		  <Modal.Body className={Style["text-center"]}>
 			<h1>
 				{sender_invite.login} want to play with you
 			</h1>
+		  	{/* <Button variant="primary" onClick={InviteToPong}>
+							  Accept
+			</Button>
+			<Button variant="primary" onClick={handleClose}>
+							  Refuse
+			</Button> */}
 		  </Modal.Body>
 		  <Modal.Footer>
 			<Button variant="secondary" onClick={handleClose}>
