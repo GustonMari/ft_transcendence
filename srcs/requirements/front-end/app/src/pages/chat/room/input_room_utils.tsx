@@ -3,7 +3,6 @@ import Popup from 'reactjs-popup';
 import io, { Socket } from "socket.io-client";
 import Create_socket from '../socket';
 import { APP } from "../../../api/app";
-import '../Style.message.css';
 import { GetMessagesByRoom } from '../Message';
 import { setMaxIdleHTTPParsers } from 'http';
 import 'bootstrap/dist/css/bootstrap.min.css';

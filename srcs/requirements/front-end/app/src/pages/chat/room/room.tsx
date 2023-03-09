@@ -3,8 +3,8 @@ import Popup from 'reactjs-popup';
 import io, { Socket } from "socket.io-client";
 import Create_socket from '../socket';
 import { APP } from "../../../api/app";
-// import '../Style.message.css';
-import './Style.room.css';
+import StyleRoom from './Style.room.module.css';
+// import './Style.room.css';
 import { GetMessagesByRoom } from '../Message';
 import { setMaxIdleHTTPParsers } from 'http';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -45,14 +45,14 @@ export function RoomForm(props : any)
 	socket?.on('renderReact', render_react);
 	
 	return (
-		<div className='between-room-input'>
-			<span ref={roomContainer} className='room-list'>
+		<div className={StyleRoom['between-room-input']}>
+			<span ref={roomContainer} className={StyleRoom['room-list']}>
 				{rooms.map(room => (
 					<li key={room.id}>
-						<span className="line-room">
-							<div className='split'>
-								<img className='line-room-img' src="" alt="" />
-								<button className='line-room-button' onClick={() => {
+						<span className={StyleRoom["line-room"]}>
+							<div className={StyleRoom['split']}>
+								<img className={StyleRoom['line-room-img']} src="" alt="" />
+								<button className={StyleRoom['line-room-button']} onClick={() => {
 									
 									const is_ban = async () => {
 										const res = await APP.post("/chat/get_isban_user", {room_name: room.name, id_user: current_user.id});
@@ -65,7 +65,7 @@ export function RoomForm(props : any)
 									}}>{ ShortedName(room.name) }
 								</button>
 							</div>
-							<div className='split'>
+							<div className={StyleRoom['split']}>
 								<PopupLeave setMessage={setMessage} socket={socket} room={room} current_user={current_user} render_react={render_react} GetMessagesByRoom={GetMessagesByRoom} handle_history={handle_history}></PopupLeave>
 								<PopupDelete setMessage={setMessage} socket={socket} room={room} current_user={current_user} render_react={render_react} GetMessagesByRoom={GetMessagesByRoom} handle_history={handle_history}></PopupDelete>
 								<PopupPassword setMessage={setMessage} socket={socket} room={room} current_user={current_user} render_react={render_react}></PopupPassword>

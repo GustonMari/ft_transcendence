@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { HistoryDto, InfoMessage } from "./dto/chat.dto";
 import { APP } from "../../api/app";
-import './Style.message.css';
+import Style from './Style.message.module.css';
 import dayjs from "dayjs";
 import 'dayjs/locale/fr';
 import { Button, Modal, Form } from 'react-bootstrap';
@@ -50,24 +50,24 @@ function IsSenderOrReceiver(props: any)
 
 	if(historyItem.sender_id == current_user.id)
 		return (
-			<div className='wrapper-message'>
-				<div className="message-receiver">
+			<div className={Style['wrapper-message']}>
+				<div className={Style["message-receiver"]}>
 					{historyItem.sender_name} : {historyItem.current_message}
-					<span className="chat-date"> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
+					<span className={Style["chat-date"]}> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
 				</div>
-				<PopupImageSelf imageSrc="https://cutt.ly/v8wcluh" classPass="img-message-right" user={current_user} socket={socket}/>
+				<PopupImageSelf imageSrc="https://cutt.ly/v8wcluh" classPass={Style["img-message-right"]} user={current_user} socket={socket}/>
 			</div>
 		);
 	else
 		return (
 			<div>
-				<div className="wrapper-message">	
-					<PopupImageOther imageSrc="https://cutt.ly/v8wcluh" classPass="img-message-left" user={historyItem.sender} current_user={current_user} socket={socket}/>
-					<div className="message-sender">
+				<div className={Style["wrapper-message"]}>	
+					<PopupImageOther imageSrc="https://cutt.ly/v8wcluh" classPass={Style["img-message-left"]} user={historyItem.sender} current_user={current_user} socket={socket}/>
+					<div className={Style["message-sender"]}>
 						{historyItem.sender_name} : {historyItem.current_message}
-						<span className="chat-date"> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
+						<span className={Style["chat-date"]}> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
 					</div>
-					{/* <img className="img-message-right" src="https://cutt.ly/v8wcluh"/> */}
+					{/* <img className={Style["img-message-right"]} src="https://cutt.ly/v8wcluh"/> */}
 				</div>
 			</div>
 	);
@@ -80,22 +80,22 @@ function IsSenderOrReceiver_socket(props: any)
 
 	if (infomessage.current_user.id == current_user.id)
 		return (
-			<div className='wrapper-message'>
-				<div className="message-receiver">
+			<div className={Style['wrapper-message']}>
+				<div className={Style["message-receiver"]}>
 		 			{infomessage.current_user.login} : {infomessage.message}
-	 				<span className="chat-date"> {dayjs(infomessage.created_at).format("DD MMM YYYY À H:mm")} </span>
+	 				<span className={Style["chat-date"]}> {dayjs(infomessage.created_at).format("DD MMM YYYY À H:mm")} </span>
 				</div>
-				<PopupImageSelf imageSrc="https://cutt.ly/v8wcluh" classPass="img-message-right" user={current_user} socket={socket}/>
+				<PopupImageSelf imageSrc="https://cutt.ly/v8wcluh" classPass={Style["img-message-right"]} user={current_user} socket={socket}/>
 			</div>
 		);
 	else
 		return (
 			<div>
-				<div className="wrapper-message">	
-					<PopupImageOther imageSrc="https://cutt.ly/v8wcluh" classPass="img-message-left" user={infomessage.current_user} current_user={current_user} socket={socket}/>
-					<div className="message-sender">
+				<div className={Style["wrapper-message"]}>	
+					<PopupImageOther imageSrc="https://cutt.ly/v8wcluh" classPass={Style["img-message-left"]} user={infomessage.current_user} current_user={current_user} socket={socket}/>
+					<div className={Style["message-sender"]}>
 						{infomessage.current_user.login} : {infomessage.message}
-						<span className="chat-date"> {dayjs(infomessage.created_at).format("DD MMM YYYY À H:mm")} </span>
+						<span className={Style["chat-date"]}> {dayjs(infomessage.created_at).format("DD MMM YYYY À H:mm")} </span>
 					</div>
 				</div>
 			</div>
@@ -115,7 +115,7 @@ export function DisplayMessagesByRoom(props: any) {
 
 
 	return (
-	  <div ref={messagesContainer} className='print-message'>
+	  <div ref={messagesContainer} className={Style['print-message']}>
 		{!history ? "" : history.map((historyItem: HistoryDto, index: number) => (
 		  <div key={index}>
 			{ IsSenderOrReceiver({historyItem, current_user, socket}) }
@@ -210,8 +210,8 @@ function PopupImageSelf(props: any) {
 		  <Modal.Header closeButton>
 			<Modal.Title>Profile</Modal.Title>
 		  </Modal.Header>
-		  <Modal.Body className="text-center">
-			<img src={ imageSrc } className="img-popup-user"/>
+		  <Modal.Body className={Style["text-center"]}>
+			<img src={ imageSrc } className={Style["img-popup-user"]}/>
 			<br />
 			<br />
 			<ProgressBar progress={70}/>

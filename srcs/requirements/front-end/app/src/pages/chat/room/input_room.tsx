@@ -3,7 +3,8 @@ import Popup from 'reactjs-popup';
 import io, { Socket } from "socket.io-client";
 import Create_socket from '../socket';
 import { APP } from "../../../api/app";
-import '../Style.message.css';
+import Style from '../Style.message.module.css';
+import StyleRoom from './Style.room.module.css';
 import { GetMessagesByRoom } from '../Message';
 import { setMaxIdleHTTPParsers } from 'http';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -87,19 +88,19 @@ export function InputRoom(props: any) {
 	const handleRoomActions = () => {
 		return (
 			<>
-				<Button className='input-room-button'  onClick={handleAddRoom}>
-				<img className='icon-enter-room' src="./enter-room.png" alt="create room" />
+				<Button className={StyleRoom['input-room-button']}  onClick={handleAddRoom}>
+				<img className={StyleRoom['icon-enter-room']} src="./enter-room.png" alt="create room" />
 				</Button>
-				<Button className='input-room-button' id={id_private} onClick={handleAddPrivateRoom}>
-					<img className='icon-enter-room' src="./private-message.png" alt="create room" />
+				<Button className={StyleRoom['input-room-button']} id={id_private} onClick={handleAddPrivateRoom}>
+					<img className={StyleRoom['icon-enter-room']} src="./private-message.png" alt="create room" />
 				</Button>
 			</>
 		)
 	}
 
 	return (
-	<div className='input-room'>
-		<input className='borderbox-room' onChange={(e) => setValue(e.target.value)} onKeyDown={handleKeyDown} placeholder="define your room..." value={value} />
+	<div className={StyleRoom['input-room']}>
+		<input className={StyleRoom['borderbox-room']} onChange={(e) => setValue(e.target.value)} onKeyDown={handleKeyDown} placeholder="define your room..." value={value} />
 		{handleRoomActions()}
 		<Modal show={show} onHide={handleClose} id={id}>
 			<Modal.Header closeButton>
