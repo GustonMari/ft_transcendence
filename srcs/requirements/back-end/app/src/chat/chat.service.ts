@@ -10,42 +10,6 @@ export class ChatService {
 
 	constructor(private readonly prisma: PrismaService) { }
 
-	// async createChatRoom(room_name: string, user_id: number) {
-	// 	const current_user = await this.prisma.user.findUnique({ where: { id: user_id } });
-	// 	if (!current_user) {
-	// 	  throw new Error('User not found');
-	// 	}
-	  
-	// 	try {
-	// 	  await this.prisma.room.create({
-	// 		data: {
-	// 		  name: room_name,
-	// 		  owner: current_user.login,
-	// 		  owner_id: current_user.id,
-	// 		},
-	// 	  });
-	  
-	// 	  await this.prisma.usersOnRooms.create({
-	// 		data: {
-	// 		  room: {
-	// 			connect: { name: room_name },
-	// 		  },
-	// 		  user: {
-	// 			connect: { id: current_user.id },
-	// 		  },
-	// 		},
-	// 	  });
-	  
-	// 	  console.log(`Created room with name ${room_name}`);
-	// 	} catch (err) {
-	// 	  if (err.code === 'P2002') {
-	// 		console.log('Error: Name already exists');
-	// 	  } else {
-	// 		console.error(err);
-	// 	  }
-	// 	}
-	//   }
-
 	async createChatRoom(room_name: string, user_id: number )
 	{
 		const current_user = await this.prisma.user.findUnique({ where: { id: user_id } });
@@ -527,5 +491,14 @@ export class ChatService {
 			return true;
 		}
 		return false;
+	}
+
+	async getSocketIdByUserId (user_id: number): Promise<string> {
+		const user = await this.prisma.user.findUnique({
+			where: {
+				id: user_id,
+			},
+		})
+		return user.socket_id;
 	}
 }

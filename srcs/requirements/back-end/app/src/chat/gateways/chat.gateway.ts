@@ -53,13 +53,12 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 
 	handleDisconnect(client: Socket) {
+		console.log('Client disconnected');
 	}
 
 	@SubscribeMessage('addsocket')
 	async addSocketToUser(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-		
 		await this.chatService.addSocketToUser(data.id, socket.id);
-	
 	}
 
 	@SubscribeMessage('getSocketById')
@@ -110,21 +109,21 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 
 	@SubscribeMessage('leaveRoom')
-	async handleLeaveRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket) {
+	async handleLeaveRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket): Promise<void> {
 		await this.chatService.leaveRoom(data.room_name, data.id_user);
 		await socket.leave(data.room_name);
 		socket.emit('renderReact', 'renderReact');
 	}
 
 	@SubscribeMessage('changeRoom')
-	async handleChangeRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket) {
+	async handleChangeRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket): Promise<void> {
 		await socket.leave(data.room_name);
 		socket.emit('renderReact', 'renderReact');
 	}
 
 
 	@SubscribeMessage('deleteRoom')
-	async handleDeleteRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket) {
+	async handleDeleteRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket): Promise<void> {
 		if (!await this.chatService.IsOwnerOfRoomById(data.room_name, data.id_user))
 			return ;
 		await this.chatService.deleteRoom(data.room_name, data.id_user);
@@ -184,16 +183,17 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 
 	@SubscribeMessage('invite_pong')
-	async handleInvitePong(@MessageBody() data: any, @ConnectedSocket() socket: Socket) {
+	async handleInvitePong(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
 		//TODO rajouter check pour pas s'auto inviter
 		const sockets = this.myserver.sockets.sockets;
-		const client_socket = sockets.get(data.user_to.socket_id);
-		// console.log('invite pong ', data.user_to.login, " socket user_to =", client_socket);
+		const client_socket_id = await this.chatService.getSocketIdByUserId(data.user_to.id);
+		// const client_socket = sockets.get(data.user_to.socket_id);
+		const client_socket = sockets.get(client_socket_id);
 		client_socket.emit('invite_pong_request', {sender_invite: data.current_user});
 	}
 
 	@SubscribeMessage('message') // Subscribe to the message event send by the client (front end) called 'message'
-	async handleMessage(@MessageBody() data: InfoMessage, @ConnectedSocket() socket: Socket) {
+	async handleMessage(@MessageBody() data: InfoMessage, @ConnectedSocket() socket: Socket): Promise<void> {
 		if (data.current_user === undefined )
 			return ;
 		if (await this.chatService.isUserBannedInRoom(data.room, data.current_user.id))
@@ -202,6 +202,16 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			await this.chatService.stockMessage(data);
 			this.myserver.to(data.room).emit('message', data); // Emit the message event to the client, for every user
 		}
+	}
+	
+
+	@SubscribeMessage('invite_pong_response')
+	async handleInvitePongResponse(@MessageBody() data: any, @ConnectedSocket() socket: Socket) : Promise<void> {
+		const sockets = this.myserver.sockets.sockets;
+		const client_socket_id = await this.chatService.getSocketIdByUserId(data.sender_invite.id);
+		const client_socket = sockets.get(client_socket_id);
+		console.log('client socket ===============', client_socket_id, "           all sockets ===============", sockets);
+		client_socket.emit('redirect_to_pong', {user_to: data.currentUser});
 	}
 }
 
