@@ -97,25 +97,32 @@ export default function Chat() {
 
 
 
-	if (triggerPong == true) {
-		// console.log("zeubi la mouche")
-		// try{
-		// 		const navigate = useNavigate();
-		// 		navigate('/pong');
-		// 	// const navigate = useNavigate();
-		// 	// navigate('/pong', { replace: true });
-		// }
-		// catch (error) {
-		// 	console.log(error);
-		// }
-		// redirect('/pong');
-		// return (
-		// 	// <NavigateToPong />
+	// if (triggerPong == true) {
+	// 	// console.log("zeubi la mouche")
+	// 	// try{
+	// 	// 		const navigate = useNavigate();
+	// 	// 		navigate('/pong');
+	// 	// 	// const navigate = useNavigate();
+	// 	// 	// navigate('/pong', { replace: true });
+	// 	// }
+	// 	// catch (error) {
+	// 	// 	console.log(error);
+	// 	// }
+	// 	// redirect('/pong');
+	// 	// return (
+	// 	// 	// <NavigateToPong />
 			
-		// )
+	// 	// )
+	// 	return (
+	// 		<div>
+	// 			<h1>
+	// 				Heyyy
+	// 			</h1>
+	// 		</div>
+	// 	)
 		
-	}
-	else {
+	// }
+	// else {
 		return (
 			<div>
 				<div>
@@ -148,7 +155,7 @@ export default function Chat() {
 				</div>
 			</div>
 		);
-	}
+	// }
 
 	
 }

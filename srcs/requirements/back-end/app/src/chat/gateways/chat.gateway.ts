@@ -210,7 +210,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		const sockets = this.myserver.sockets.sockets;
 		const client_socket_id = await this.chatService.getSocketIdByUserId(data.sender_invite.id);
 		const client_socket = sockets.get(client_socket_id);
-		console.log('client socket ===============', client_socket_id, "           all sockets ===============", sockets);
+		console.log('client socket ===============', client_socket_id,/*  "           all sockets ===============", sockets */);
 		client_socket.emit('redirect_to_pong', {user_to: data.currentUser});
 	}
 }
