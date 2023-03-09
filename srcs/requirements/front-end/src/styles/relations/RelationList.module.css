@@ -1,13 +1,53 @@
 .container {
 	width: 95%;
+    height: 100%;
+    padding: 16px;
+    font-size: 14px;
+    line-height: 20px;
     position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 10px;
-    border-radius: 7px;
-    text-align: center;
-    justify-content: center;
+    margin-left: 70px;
+}
+
+.table_warp {
+    margin: 24px;
+    overflow-x: auto;
+    border-radius: 6px;
+    border-width: 1px;
+    border-color: rgb(156, 156, 156);
+}
+
+table {
+    width: 100%;
+    background-color: white;
+    border-radius: 6px;
+    text-align: left;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+tbody {
     display: flex;
     flex-direction: column;
-	background-color: rgb(230, 230, 230);
+    padding: 20px 0px;
+    border-radius: 6px;
 }
+
+th {
+    padding: 12px 24px;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+tr {
+    height: 80px;
+    position: relative;
+    padding: 8px;
+    border-radius: 6px;
+    display: flex;
+}
+
+.empty_msg {
+    margin: 24px;
+}
+

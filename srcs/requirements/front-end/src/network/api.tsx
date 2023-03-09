@@ -163,7 +163,7 @@ export default class API {
         errorFunc: (err: ApiError) => void
     ) {
         try {
-            const res = await APP.get("/relation/get/incoming");
+            const res = await APP.get("/relation/get/outgoing");
             successFunc(res.data);
         } catch (err) {
             if (axios.isAxiosError(err)) {
@@ -214,13 +214,13 @@ export default class API {
         }
     }
 
-    static async removeRequest(
+    static async removeRelation(
         rid: number,
         successFunc: (list: any) => void,
         errorFunc: (err: ApiError) => void
     ) {
         try {
-            const res = await APP.delete("/relation/friend/request/remove/id/" + rid);
+            const res = await APP.delete("/relation/delete/userid/" + rid);
             successFunc(res.data);
         } catch (err) {
             if (axios.isAxiosError(err)) {

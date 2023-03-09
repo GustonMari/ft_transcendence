@@ -1,33 +1,132 @@
-.line {
-    background-color: #d81a1a;
-    position: relative;
-    width: 100%;
+
+p {
+    color: black;
 }
 
-.name_section {
+.first_part {
     display: flex;
     flex-direction: row;
-    padding: 24px 12px;
+    padding: 24px 24px;
     font-size: 14px;
     line-height: 20px;
     align-items: center;
-
+    min-width: 300px;
+    
+    overflow: hidder;
 }
 
-.profile_picture {
-    width: 32px;
+.profile_pic {
     height: 32px;
-    border-radius: 50%;
-    margin-right: 12px;
+    width: 32px;
+    border-radius: 1000px;
+    margin-right: 16px;
 }
 
 .names {
     display: flex;
     flex-direction: column;
+    gap:5px
+    
 }
 
-.login {
-    color: #000000;
+.fl_names {
     font-size: 14px;
-    font-weight: 500;
+    line-height: 20px;
+    font-size: normal;
+    text-transform: capitalize;
+    color: rgb(84, 84, 84);
+    font-weight: 700;
+}
+
+.status_wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 100px;
+}
+
+.status_online_wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: 1000px;
+    background-color: #d6f5d6;
+    padding: 4px 8px;
+    height: 24px;
+    font-size: 14px;
+
+    line-height: 20px;
+}
+
+.status_cercle_online {
+    height: 6px;
+    width: 6px;
+    background-color:#33cc33;
+    border-radius: 1000px;
+}
+
+.status_text_online {
+    font-weight: 600;
+    color: #33cc33;
+}
+
+.status_offline_wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: 1000px;
+    background-color: #ffcccc;
+    padding: 4px 8px;
+    height: 24px;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.status_cercle_offline {
+    height: 6px;
+    width: 6px;
+    background-color: #ff0000;
+    border-radius: 1000px;
+}
+
+.status_text_offline {
+    font-weight: 600;
+    color: #ff0000
+}
+
+.description {
+    padding: 24px 12px;
+    color:rgb(84, 84, 84);
+    white-space: nowrap;
+    overflow: hidden;
+    margin-left: 30px;
+    width: 100%;
+}
+
+.buttons_wrap {
+    padding: 24px 24px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+}
+
+
+.profile_btn, .remove_btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 1000px;
+}
+
+.profile_btn:hover, .profile_btn:focus {
+    background-color: #f5ed0a;
+}
+
+.remove_btn:hover, .remove_btn:focus {
+    background-color: #ff0000;
+}
+
+.icones {
+    width: 24px;
+    height: 24px;
 }

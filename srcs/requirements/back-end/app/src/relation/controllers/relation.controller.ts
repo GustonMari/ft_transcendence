@@ -14,10 +14,10 @@ import {
   UnauthorizedException,
   UseGuards,
   Put,
-	Res,
+  Res,
 } from '@nestjs/common';
 import {
-	Response
+  Response,
 } from 'express';
 import {
   ApiOperation,
@@ -42,7 +42,8 @@ export class RelationController {
 
   constructor(
     private relationService: RelationService,
-  ) { }
+  ) {
+  }
 
   @ApiOperation({
     summary: 'Create a new relation between two users',
@@ -63,7 +64,7 @@ export class RelationController {
       throw new BadRequestException('The target ID and the current ID are eguals.');
     }
     await this.relationService.createRelation(dto, id);
-    return { message: "Relation has been created" };
+    return { message: 'Relation has been created' };
   }
 
   @ApiOperation({
@@ -73,12 +74,12 @@ export class RelationController {
   @Put('create/friend/id/:id')
   async sendFriendRequest(
     @Param('id', ParseIntPipe) id: number,
-	@GetMe('id') me_id: number,
+    @GetMe('id') me_id: number,
   ) {
-	  return (await this.createRelation({
-		  id_target: id,
-		  relation_type: "PENDING"
-	  }, me_id));
+    return (await this.createRelation({
+      id_target: id,
+      relation_type: 'PENDING',
+    }, me_id));
   }
 
   @ApiOperation({
@@ -150,7 +151,7 @@ export class RelationController {
     @Param('string') type: string,
     @GetMe('id') id: number,
   ) {
-    if (type !== 'outgoing' && type !== 'incomming' && type !== 'friend') {
+    if (type !== 'outgoing' && type !== 'incoming' && type !== 'friend') {
       throw new BadRequestException('Invalid parameter request');
     }
     const relations = await this.relationService.findRelationByOneUserID(id);

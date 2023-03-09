@@ -23,19 +23,22 @@ export class RelationService {
     dto: CreateRelationDTO,
     id: number,
   ) {
-    const check_relation = await this.findRelationByTwoUserID(dto.id_target, id);
-    if (check_relation && check_relation.state === 'BLOCKED') {
-      throw new UnauthorizedException('Cannot interact with this user, he blocked you.');
-    }
-
-    if (check_relation && check_relation.state === 'PENDING' && dto.relation_type === 'PENDING') {
-      throw new UnauthorizedException('Request in pending has already been sent.');
-    }
-    if (check_relation) {
-      await this.prisma.relation.update({
-        where: { id: check_relation.id },
-        data: { state: dto.relation_type as any },
-      });
+    const r = await this.findRelationByTwoUserID(dto.id_target, id);
+    if (r) {
+      if (r.state === 'BLOCKED') {
+        throw new UnauthorizedException('Cannot interact with this user, he blocked you.');
+      }
+      if (dto.relation_type === 'PENDING') {
+        throw new UnauthorizedException('Request in pending has already been sent or it is your friend.');
+      }
+      if (dto.relation_type === 'FRIEND' && r.state !== 'FRIEND') {
+        await this.prisma.relation.update({
+          where: { id: r.id },
+          data: { state: dto.relation_type as any },
+        });
+      }
+    } else if (dto.relation_type === 'FRIEND') {
+      throw new UnauthorizedException('Cannot create frient relation if no request has been sent');
     } else {
       await this.prisma.relation.create(
         {

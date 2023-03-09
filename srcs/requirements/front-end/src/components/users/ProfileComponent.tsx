@@ -41,7 +41,7 @@ export const ProfileComponent = () => {
                     </a>
                 </div>
                 <div className={s.picture_section}>
-                    <img src="https://placehold.co/150x150"></img>
+                    <img src={user.avatar_url}></img>
                 </div>
                 <div className={s.name_section}>
                     <h1>{user.login?.substring(0, 25)}</h1>

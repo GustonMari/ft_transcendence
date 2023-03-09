@@ -99,7 +99,7 @@ export const Result = (props: any) => {
                                                                 handleSuccess("Friend Request has been sent");
                                                             },
                                                             (err: any) => {
-                                                                handleError("Cannot send friend request, please try later");
+                                                                handleError(err.message);
                                                             });
                                                     }
                                                 }>

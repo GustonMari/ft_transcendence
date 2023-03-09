@@ -2,16 +2,17 @@ import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 
 import API from "../network/api"
 import s from "../styles/pages/friend.module.css"
 import { ButtonChangeList } from "../components/relations/ButtonChangeList"
-import { RelationList } from "../components/relations/RelationList"
-import { FriendElement } from "../components/relations/FriendElement"
 import { AlertContext } from "../contexts/Alert.context"
 import { FriendList } from "../components/relations/FriendList"
+import { RequestList } from "../components/relations/RequestList"
+import { RelationList } from "../components/relations/RelationList"
+import { FriendElement } from "../components/relations/FriendElement"
 
 
 export const Friends = ({user}: any) => {
 
     const [friends, setFriends] = useState<any[]>([]);
-    const [incomming, setIncomming] = useState<any[]>([]);
+    const [incoming, setIncomming] = useState<any[]>([]);
     const [outgoing, setOutgoing] = useState<any[]>([]);
     const [list, setList] = useState<number>(1);
 
@@ -21,6 +22,7 @@ export const Friends = ({user}: any) => {
         () => {
 			API.getFriends(
                 (d: any) => {
+                    console.log(d);
                     setFriends(d);
                 }, () => {
                     handleError("Error while fetching friends");
@@ -53,10 +55,11 @@ export const Friends = ({user}: any) => {
                     <ButtonChangeList title="Outgoing" setList={setList} listNumber={3}/>
                 </div>
                 <div className={s.lists}>
-                    {/* {list === 1 && <RelationList className={s.list} relations={friends} setRelation={setFriends} cpnt={FriendElement}/>} */}
-                    {list === 1 && <FriendList relations={friends}/>}
-                    {list === 2 && <RelationList className={s.list} relations={incomming} setRelation={setIncomming} cpnt={FriendElement}/>}
-                    {list === 3 && <RelationList className={s.list} relations={outgoing} setRelation={setOutgoing} cpnt={FriendElement}/>}
+                    {/* {list === 1 && <FriendList relations={friends}/>}
+                    {list === 2 && <RequestList relation={incoming}/>}
+                    {list === 3 && <RequestList relation={outgoing}/>} */}
+                    
+                    <RelationList relations={friends} setRelation={setFriends} cpnt={FriendElement}/>
                 </div>
             </div>
         </>
