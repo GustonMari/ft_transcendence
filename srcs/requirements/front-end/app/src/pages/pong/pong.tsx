@@ -120,7 +120,7 @@ export function ExecutePong() {
 	let collision = document.getElementById("collision");
 	
 	useEffect(() => {
-
+		console.log('init the game');
 		const ballElement = document.getElementById("ball") as HTMLDivElement;
 		
 		let rect;

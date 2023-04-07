@@ -43,6 +43,11 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		console.log('disconnect');
 	}
 
+	@SubscribeMessage('InitGame')
+	async initGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+		
+	}
+
 	// @SubscribeMessage('createGame') // Subscribe to the event 'joinGame'
 	// async joinGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
 	// 	console.log("pilouuuuuu");
