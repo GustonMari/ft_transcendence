@@ -55,13 +55,13 @@ export default function Chat() {
 		getCurrentUser();
 	}, []);
 	
-	useEffect(() => {
-		socket?.on('connected', () => {
-			socket?.emit('addsocket', currentUser);
-		});
-	}, [currentUser]);
-
-
+	// useEffect(() => {
+	// 	socket?.on('connected', () => {
+	// 		console.log('refresh socket');
+	// 		socket?.emit('addsocket', currentUser);
+	// 	});
+	// }, [currentUser]);
+		socket?.emit('addsocket', currentUser);
 
 	const send = (value: string) => {
 		socket?.emit("message", {room: room, message: value, current_user: currentUser});
@@ -179,6 +179,7 @@ function Popup_invite_pong(props : any) {
 
 	function InviteToPong()
 	{
+		
 		socket?.emit('invite_pong_response', {sender_invite: sender_invite, currentUser: currentUser});
 		// handleClose();
 	}

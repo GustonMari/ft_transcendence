@@ -164,7 +164,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			const id_user_to = await this.chatService.getIdUser(data.login_user_to);
 			await this.chatService.unbanUser(data.room_name, data.id_user_from, id_user_to);
 		}
-	}
+	}Ufz2vaUKqUZFLhW0AAAB
 
 	@SubscribeMessage('muteUser')
 	async handleMuteUser(@MessageBody() data: InfoMuteTo): Promise<void> {
@@ -210,8 +210,10 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		const sockets = this.myserver.sockets.sockets;
 		const client_socket_id = await this.chatService.getSocketIdByUserId(data.sender_invite.id);
 		const client_socket = sockets.get(client_socket_id);
-		console.log('client socket ===============', client_socket_id,/*  "           all sockets ===============", sockets */);
-		client_socket.emit('redirect_to_pong', {user_to: data.currentUser});
+		// console.log('client socket ===============', client_socket_id, "           all sockets ===============", sockets);
+		// if (client_socket === undefined || client_socket === null)
+		// 	console.log('client socket undefined');
+		client_socket.emit('redirect_to_pong', {user_to: data.currentUser}); 
 	}
 }
 
