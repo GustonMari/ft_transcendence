@@ -16,7 +16,7 @@ import Style from './Style.message.module.css';
 import StyleRoom from './room/Style.room.module.css';
 import StyleUtils from './Style.utils.module.css';
 import PrivateRoute from "../../components/PrivateRoute";
-import { Navigate, redirect, Route, Routes, useNavigate } from "react-router-dom";
+import { Navigate, redirect, Route, Router, Routes, useNavigate } from "react-router-dom";
 import Pong from "../pong/pong";
 
 
@@ -92,37 +92,34 @@ export default function Chat() {
 		console.log('piscine chez paulette invite_pong_response', data);
 
 		setTriggerPong(true);
+
+
+		
 		
 	});
 
 
 
-	// if (triggerPong == true) {
-	// 	// console.log("zeubi la mouche")
-	// 	// try{
-	// 	// 		const navigate = useNavigate();
-	// 	// 		navigate('/pong');
-	// 	// 	// const navigate = useNavigate();
-	// 	// 	// navigate('/pong', { replace: true });
-	// 	// }
-	// 	// catch (error) {
-	// 	// 	console.log(error);
-	// 	// }
-	// 	// redirect('/pong');
-	// 	// return (
-	// 	// 	// <NavigateToPong />
+	if (triggerPong == true) {
+		// console.log("zeubi la mouche")
+		// try{
+		// 		const navigate = useNavigate();
+		// 		navigate('/pong');
+		// 	// const navigate = useNavigate();
+		// 	// navigate('/pong', { replace: true });
+		// }
+		// catch (error) {
+		// 	console.log(error);
+		// }
+		// redirect('/pong');
+		// return (
+		// 	// <NavigateToPong />
 			
-	// 	// )
-	// 	return (
-	// 		<div>
-	// 			<h1>
-	// 				Heyyy
-	// 			</h1>
-	// 		</div>
-	// 	)
-		
-	// }
-	// else {
+		return (
+			<Navigate to="/pong" />
+		  );
+	}
+	else {
 		return (
 			<div>
 				<div>
@@ -155,7 +152,7 @@ export default function Chat() {
 				</div>
 			</div>
 		);
-	// }
+	}
 
 	
 }
@@ -163,6 +160,7 @@ export default function Chat() {
 function Popup_invite_pong(props : any) {
 	const {sender_invite, currentUser, setPopup_pong, socket} = props;
 	const [show, setShow] = useState(true);
+	const [triggerPong, setTriggerPong] = React.useState(false);
 	const handleClose = () => {
 		setShow(false)
 		setPopup_pong(null);
@@ -181,37 +179,48 @@ function Popup_invite_pong(props : any) {
 	{
 		
 		socket?.emit('invite_pong_response', {sender_invite: sender_invite, currentUser: currentUser});
+		// return (
+		// 	<Navigate to="/pong" />
+		// );
+		setTriggerPong(true);
 		// handleClose();
 	}
 
-	return (
-	  <>
+	if (triggerPong == true) {
+		return (
+			<Navigate to="/pong" />
+		);
+	}
+	else {
+		return (
+		  <>
 
-		<Modal show={show} onHide={handleClose}>
-		  <Modal.Header closeButton>
-			<Modal.Title>Invite</Modal.Title>
-		  </Modal.Header>
-		  <Modal.Body className="text-center">
-			<h1>
-				{sender_invite.login} want to play with you
-			</h1>
-			<div>
-				<Button className={StyleUtils["between-button"]} variant="primary" onClick={InviteToPong}>
-								Accept
+			<Modal show={show} onHide={handleClose}>
+			  <Modal.Header closeButton>
+				<Modal.Title>Invite</Modal.Title>
+			  </Modal.Header>
+			  <Modal.Body className="text-center">
+				<h1>
+					{sender_invite.login} want to play with you
+				</h1>
+				<div>
+					<Button className={StyleUtils["between-button"]} variant="primary" onClick={InviteToPong}>
+									Accept
+					</Button>
+					<Button className={StyleUtils["between-button"]} variant="primary" onClick={handleClose}>
+									Refuse
+					</Button>
+				</div>
+			  </Modal.Body>
+			  <Modal.Footer>
+				<Button variant="secondary" onClick={handleClose}>
+				  Close
 				</Button>
-				<Button className={StyleUtils["between-button"]} variant="primary" onClick={handleClose}>
-								Refuse
-				</Button>
-			</div>
-		  </Modal.Body>
-		  <Modal.Footer>
-			<Button variant="secondary" onClick={handleClose}>
-			  Close
-			</Button>
-		  </Modal.Footer>
-		</Modal>
-	  </>
-	);
+			  </Modal.Footer>
+			</Modal>
+		  </>
+		);
+	}
 
 
 
