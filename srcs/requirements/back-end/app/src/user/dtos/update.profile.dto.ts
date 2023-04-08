@@ -17,28 +17,13 @@ export class UpdateProfileDTO {
     public readonly lastName: string;
 
     @IsString()
-    @IsNotEmpty()
     @IsOptional()
-    @Length(1, 50)
+    @Length(0, 50)
     public readonly password: string;
 
     @IsString()
-    @IsNotEmpty()
     @IsOptional()
-    @Length(1, 50)
-    public readonly passwordConfirm: string;
-
-    @IsString()
-    @IsNotEmpty()
-    @IsOptional()
-    @Length(1, 50)
-    public readonly oldPassword: string;
-
-
-    @IsString()
-    @IsNotEmpty()
-    @IsOptional()
-    @Length(1, 2000)
+    @Length(0, 2000)
     public readonly description: string;
 
     // @IsNotEmpty()

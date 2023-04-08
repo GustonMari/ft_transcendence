@@ -15,23 +15,10 @@ export class ProfileService {
         obj: UpdateProfileDTO,
     ) : Promise<void> {
 
-        /* Check if all password fiels are fill or empty */
-        if (!((obj.password === undefined && obj.passwordConfirm === undefined && obj.oldPassword === undefined) ||
-            (obj.password !== undefined && obj.passwordConfirm !== undefined && obj.oldPassword !== undefined))) {
-            throw (new Error("Password and password confirmation must be set together"));
-        }
-
-        /* Get the current user */
         const user_raw = await this.userService.findUniqueUser({
             id: id,
         });
-        if (obj.oldPassword) {
-            const passwordMatch = await argon.verify(user_raw.password, obj.oldPassword);
-            if (!passwordMatch) throw new UnauthorizedException('Invalid password');
-        }
 
-        /* Update the current user */
-        console.log(obj);
         await this.userService.updateUser({
             id: id,
         },
@@ -42,5 +29,17 @@ export class ProfileService {
             description: obj.description,
         });
         return (null);
+    }
+
+    async updatePP (
+        id : number,
+        file: any
+    ) {
+        await this.userService.updateUser({
+            id: id,
+        },
+        {
+            avatar_url: file.path,
+        });
     }
 }

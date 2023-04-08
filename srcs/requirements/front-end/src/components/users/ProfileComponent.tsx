@@ -19,7 +19,6 @@ export const ProfileComponent = () => {
             () => {
                 handleSuccess("Friend request sent successfully.")
             }, (err: any) => {
-                console.log(err);
                 handleError(err.message)
             }
         )

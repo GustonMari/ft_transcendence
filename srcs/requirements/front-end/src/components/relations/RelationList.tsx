@@ -17,33 +17,6 @@ export const RelationList = ({relations, setRelation, cpnt}: any) => {
             });
     }
 
-    let relatio = [
-        {
-            id: 1,
-            login: "user1",
-            first_name: "user",
-            last_name: "user",
-            state: true,
-            description: "je suis un test !je suis un test !"
-        },
-        {
-            id: 2,
-            login: "user2",
-            first_name: "user",
-            last_name: "user",
-            state: true,
-            description: "je suis un test !je suis un test !je suis un test !je suis un test !je suis un test !je suis un test !je suis un test !je suis un test !je suis un test !je suis un test !je suis un test !je suis un test !je suis un test !je suis un test !je suis un test !je suis un test !je suis un test !je suis un test !je suis un test !je suis un test !je suis un test !je suis un test !"
-        },
-        {
-            id: 3,
-            login: "user3",
-            first_name: "user",
-            last_name: "user",
-            state: false,
-            description: "je suis un test !je suis un test !je suis un test !je suis un test !je suis un test !je suis un test !je suis un test !je suis un test !"
-        },
-    ]
-
     return (
         <>
             <div className={s.container}>

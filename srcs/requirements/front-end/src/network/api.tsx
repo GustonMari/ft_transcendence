@@ -289,4 +289,27 @@ export default class API {
             };
         }
     }
+
+    static async changePP (
+        opt: FormData,
+        successFunc: (r: any) => void,
+        errorFunc: (err: ApiError) => void
+    ) {
+        try {
+            const r = await APP.post("/user/profile/upload", opt, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            successFunc(r.data);
+        } catch (err) {
+            if (axios.isAxiosError(err)) {
+                const error = err as any;
+                errorFunc({
+                    code: error.code,
+                    message: error.response?.data?.message,
+                });
+            };
+        }
+    }
 }

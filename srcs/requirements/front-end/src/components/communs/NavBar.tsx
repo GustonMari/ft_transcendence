@@ -81,7 +81,7 @@ export const NavBar = ({ onProfile, profilePic }: any) => {
               </a>
             </li>
             <li>
-              <a href="/register">
+              <a href="/profile">
                 <BiUser className={styles.icons} />
                 <span>My Profile</span>
               </a>

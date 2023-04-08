@@ -5,7 +5,7 @@ import Home from "./pages/home";
 import SignIn from "./pages/signin";
 import PrivateRoute from "./components/routes/PrivateRoute";
 import { Friends } from "./pages/friend";
-import { Profile } from "./pages/profile";
+import Profile from "./pages/profile";
 import { Result } from "./pages/search";
 import { NotFound } from "./errors/NotFound";
 import { UserProvider } from "./contexts/User.context";
@@ -81,7 +81,7 @@ function App() {
             <WrapContext components={
                 <PrivateRoute>
                         <GlobalFeatures>
-                    <Profile/>
+                            <Profile/>
                         </GlobalFeatures>
                 </PrivateRoute>
             } />

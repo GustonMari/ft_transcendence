@@ -43,6 +43,7 @@
     "crypto": "^1.0.1",
     "expressjs": "^1.0.1",
     "ls-stat": "^1.0.1",
+    "multer": "^1.4.5-lts.1",
     "node-match-path": "^0.6.3",
     "pactum": "^3.2.3",
     "passport-42": "^1.2.6",
