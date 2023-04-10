@@ -74,7 +74,7 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	@SubscribeMessage('updateGame')
 	async updateGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
 		console.log("updateGame");
-		this.pongService.updateGame(data);
+		// this.pongService.updateGame(data);
 		// this.x += this.vector.x * this.velocity * data.delta;
 		// this.y += this.vector.y * this.velocity * data.delta;
 		// // console.log('x =', this.x);
