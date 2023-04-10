@@ -20,6 +20,7 @@ export default function Pong() {
 	const [userTo, setUserTo] = useState<any>(null);
 	const [isMaster, setIsMaster] = useState<boolean>(false);
 	const socket = Create_socket();
+	const PongContext = React.createContext<Socket | null>(null);
 
 	
 
@@ -71,27 +72,35 @@ export default function Pong() {
 
 	if (currentUser && isMaster)
 	{
+		// return (
+		// 	<>
+		// 		<PongContext.Provider value={socket}>
+		// 			<ExecutePong />
+		// 		</PongContext.Provider>
+		// 	</>
+		// )
 		return (
 			<>
-				{/* <PongContext.Provider value={socket}> */}
-					<ExecutePong />
-				{/* </PongContext.Provider> */}
+			  {socket && (
+				<PongContext.Provider value={socket}>
+				  <ExecutePong />
+				</PongContext.Provider>
+			  )}
 			</>
-		)
+		  );
 	}
 	else if( currentUser && !isMaster)
 	{
 
 		return (
 			<>
-				{/* <PongContext.Provider value={socket}> */}
-					{/* <ExecutePong /> */}
-					<div>
-						<h1>lioioli</h1>
-					</div>
-				{/* </PongContext.Provider> */}
+			  {socket && (
+				<PongContext.Provider value={socket}>
+				  <ExecutePong />
+				</PongContext.Provider>
+			  )}
 			</>
-		)
+		  );
 	}else 
 	{
 		return(
@@ -133,6 +142,8 @@ export function ExecutePong() {
 			setLimit(rect);
 			newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
 			setBall(ballElement);
+			console.log("ball = ", ballElement);
+			console.log("limit = ", newLimit);
 		}
 	}, []);
 

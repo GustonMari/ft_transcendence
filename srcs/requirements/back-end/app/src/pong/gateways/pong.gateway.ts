@@ -48,6 +48,17 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		
 	}
 
+
+	@SubscribeMessage('defineBall')
+	async defineBall(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+		console.log("defineBall");
+	}
+
+	@SubscribeMessage('defineLimit')
+	async defineLimit(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+		console.log("defineLimit", );
+	}
+
 	// @SubscribeMessage('createGame') // Subscribe to the event 'joinGame'
 	// async joinGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
 	// 	console.log("pilouuuuuu");
