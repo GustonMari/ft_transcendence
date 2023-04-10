@@ -17,6 +17,8 @@ export class Ball {
 		this.vector = {x: 0.1, y: 0.1};
 		this.BallElem = BallElem;
 		this.socket = socket;
+		this.x = 50;
+		this.y = 50;
 		// this.reset();
 		// socket.emit('resetGame');
 		this.setLeftScore = setLeftScore;
@@ -118,7 +120,7 @@ export class Ball {
 			// this.vector = data.vector;
 			// this.velocity = data.velocity;
 			// console.log('updateGame      ===== ', this.rect());
-		console.log('x =', this.x, 'y =', this.y);
+		console.log('x =', this.x, 'y =', this.y, ' rect = ', this.rect());
 
 		});
 		// this.x += this.vector.x * this.velocity * delta;

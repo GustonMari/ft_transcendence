@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { exit } from 'process';
 
 @Injectable()
 export class PongService {
@@ -19,7 +20,7 @@ export class PongService {
 		this.vector = { x: 0.1, y: 0.1};
 		this.setLeftScore = 0;
 		this.setRightScore = 0;
-		// this.velocity = 0.25;
+		this.velocity = .25;
 		this.reset();
 	 }
 	
@@ -99,6 +100,7 @@ export class PongService {
 	async updateGame(data: any): Promise<{x: number, y: number}>
 	{
 		// console.log('vector.x =', this.vector.x, 'vector.y =', this.vector.y, 'velocity =', this.velocity);
+		console.log()
 		this.x += this.vector.x * this.velocity * data.delta;
 		this.y += this.vector.y * this.velocity * data.delta;
 		// console.log('x =', this.x);
@@ -106,13 +108,18 @@ export class PongService {
 		this.velocity += 0.00001 * data.delta;
 		const rect = data.ballRect;
 		if(rect.top <= data.limit.top || rect.bottom >= data.limit.bottom) {
-			this.vector.y *= -1;
+			this.vector.y *= -1;	
+			console.log("piscine chez paulette part 2", rect)
+			// console.log("exited bitch")
+			// exit(1);
 		}
 		if (this.isCollision(rect, data.playerPaddleLeft) 
 		|| this.isCollision(rect, data.playerPaddleRight))
-		{
-			console.log('collision !!!');
-			this.vector.x *= -1;
+		{ 
+			console.log('collision !!! rect =', rect, ' player left =', data.playerPaddleLeft, ' player right = ', data.playerPaddleRight );
+			// exit(1);
+			
+			this.vector.x *= -1; 
 		}
 		// this.sideColision(rect, data.limit);
 		return ({x: this.x, y: this.y});
@@ -121,7 +128,7 @@ export class PongService {
 	
 	
 	async isCollision(rect1: DOMRect, rect2: DOMRect): Promise<boolean> {
-		console.log('rect1 =', rect1, 'rect2 =', rect2);
+		// console.log('rect1 =', rect1, 'rect2 =', rect2);
 		return (
 			rect1.left <= rect2.right &&
 			rect1.right >= rect2.left &&

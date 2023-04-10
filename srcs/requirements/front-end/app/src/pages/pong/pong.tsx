@@ -202,9 +202,9 @@ export function ExecutePong() {
 					if (newLimit)
 					{
 						// setTimeout(() => {
-							// console.log("update", Date.now());
-							pongBall.update(delta, newLimit, playerPaddleLeft, playerPaddleRight);
-						// }, 2000);
+							// if (newLimit)
+								pongBall.update(delta, newLimit, playerPaddleLeft, playerPaddleRight);
+						// }, 20	);
 					}
 
 

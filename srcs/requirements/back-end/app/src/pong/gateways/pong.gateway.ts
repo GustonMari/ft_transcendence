@@ -92,7 +92,6 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		// 	this.vector.x *= -1;
 		// }    
 		// this.pongService.sideColision(rect, data.limit);
-
 	}
 
 
