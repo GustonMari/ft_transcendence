@@ -190,14 +190,22 @@ export function ExecutePong() {
 			}
 
 			const update = (lastTime: number, pongBall: Ball, playerPaddleLeft: Paddle, playerPaddleRight: Paddle, limit?: DOMRect) => (time: number) => {
+				
+				
+
 				if (lastTime != undefined || lastTime != null) {
 					const delta = time - lastTime;
 					if (first === false) {
 						newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
 						first = true;
 					}
-					// if (newLimit)
-						// pongBall.update(delta, newLimit, playerPaddleLeft, playerPaddleRight);
+					if (newLimit)
+					{
+						setTimeout(() => {
+							console.log("update", Date.now());
+							pongBall.update(delta, newLimit, playerPaddleLeft, playerPaddleRight);
+						}, 2000);
+					}
 
 
 						// ball?.classList.add('scored');

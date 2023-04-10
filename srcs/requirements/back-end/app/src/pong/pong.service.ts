@@ -101,8 +101,8 @@ export class PongService {
 		// console.log('x =', this.x);
 		// console.log('y =', this.y);
 		this.velocity += 0.00001 * data.delta;
-		const rect = this.rect();
-
+		const rect = data.ballRect;
+		console.log('rect ==================', rect, '');
 		if(rect.top <= data.limit.top || rect.bottom >= data.limit.bottom) {
 			this.vector.y *= -1;
 		}

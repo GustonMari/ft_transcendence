@@ -1,5 +1,6 @@
 import { Socket } from "socket.io-client";
 import { Paddle } from "./paddle";
+import { useEffect } from "react";
 
 export class Ball {
 	
@@ -83,31 +84,31 @@ export class Ball {
 	}
 
 
-	sideColision(rect: DOMRect, limit: DOMRect) {
-		if (rect.left <= limit.left || rect.right >= limit.right) {
-			//TODO: divier cette fonction en deux pour les points, et pour le reset
-			if (rect.left <= limit.left)
-			{
-				//trigger animation for the ball
-				// this.BallElem.classList.add('scored')
-				// document?.getElementById('collision').classList.add('scored');
+	// sideColision(rect: DOMRect, limit: DOMRect) {
+	// 	if (rect.left <= limit.left || rect.right >= limit.right) {
+	// 		//TODO: divier cette fonction en deux pour les points, et pour le reset
+	// 		if (rect.left <= limit.left)
+	// 		{
+	// 			//trigger animation for the ball
+	// 			// this.BallElem.classList.add('scored')
+	// 			// document?.getElementById('collision').classList.add('scored');
 				
-				this.setRightScore((prevScore: number) => prevScore + 1);
-				this.reset();
-			}
-			if (rect.right >= limit.right)
-			{
-				//trigger animation for the ball
-				// this.BallElem.classList.add('scored');
-				this.setLeftScore((prevScore: number) => prevScore + 1);
-				this.reset();
-			}
-			this.vector.x *= -1;
-		}
-	}
+	// 			this.setRightScore((prevScore: number) => prevScore + 1);
+	// 			this.reset();
+	// 		}
+	// 		if (rect.right >= limit.right)
+	// 		{
+	// 			//trigger animation for the ball
+	// 			// this.BallElem.classList.add('scored');
+	// 			this.setLeftScore((prevScore: number) => prevScore + 1);
+	// 			this.reset();
+	// 		}
+	// 		this.vector.x *= -1;
+	// 	}
+	// }
 
-	update(delta: number, limit: DOMRect, playerPaddleLeft: Paddle, playerPaddleRight: Paddle) {
-		this.socket.emit('updateGame', {delta: delta, limit: limit, playerPaddleLeft: playerPaddleLeft, playerPaddleRight: playerPaddleRight, ballrect: this.rect()});
+	update(delta: number, limit: DOMRect | undefined, playerPaddleLeft: Paddle, playerPaddleRight: Paddle) {
+		this.socket.emit('updateGame', {delta: delta, limit: limit, playerPaddleLeft: playerPaddleLeft, playerPaddleRight: playerPaddleRight, ballRect: this.rect()});
 		// this.x += this.vector.x * this.velocity * delta;
 		// this.y += this.vector.y * this.velocity * delta;
 		// // console.log('x =', this.x);
