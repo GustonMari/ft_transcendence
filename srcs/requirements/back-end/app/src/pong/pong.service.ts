@@ -19,6 +19,8 @@ export class PongService {
 		this.vector = { x: 0.1, y: 0.1};
 		this.setLeftScore = 0;
 		this.setRightScore = 0;
+		// this.velocity = 0.25;
+		this.reset();
 	 }
 	
 	get all()
@@ -94,29 +96,32 @@ export class PongService {
 		return (true);
 	}
 
-	async updateGame(data: any): Promise<void>
+	async updateGame(data: any): Promise<{x: number, y: number}>
 	{
+		// console.log('vector.x =', this.vector.x, 'vector.y =', this.vector.y, 'velocity =', this.velocity);
 		this.x += this.vector.x * this.velocity * data.delta;
 		this.y += this.vector.y * this.velocity * data.delta;
 		// console.log('x =', this.x);
 		// console.log('y =', this.y);
 		this.velocity += 0.00001 * data.delta;
 		const rect = data.ballRect;
-		console.log('rect ==================', rect, '');
 		if(rect.top <= data.limit.top || rect.bottom >= data.limit.bottom) {
 			this.vector.y *= -1;
 		}
-		if (this.isCollision(rect, data.playerPaddleLeft.rect) 
-			|| this.isCollision(rect, data.playerPaddleRight.rect))
+		if (this.isCollision(rect, data.playerPaddleLeft) 
+		|| this.isCollision(rect, data.playerPaddleRight))
 		{
+			console.log('collision !!!');
 			this.vector.x *= -1;
 		}
-		this.sideColision(rect, data.limit);
-
+		// this.sideColision(rect, data.limit);
+		return ({x: this.x, y: this.y});
+		
 	}
-
-
+	
+	
 	async isCollision(rect1: DOMRect, rect2: DOMRect): Promise<boolean> {
+		console.log('rect1 =', rect1, 'rect2 =', rect2);
 		return (
 			rect1.left <= rect2.right &&
 			rect1.right >= rect2.left &&
@@ -147,11 +152,13 @@ export class PongService {
 			//TODO: divier cette fonction en deux pour les points, et pour le reset
 			if (rect.left <= limit.left)
 			{
+				console.log("scored!!");
 				this.setRightScore((prevScore: number) => prevScore + 1);
 				this.reset();
 			}
 			if (rect.right >= limit.right)
 			{
+				console.log("scored!!");
 				this.setLeftScore((prevScore: number) => prevScore + 1);
 				this.reset();
 			}

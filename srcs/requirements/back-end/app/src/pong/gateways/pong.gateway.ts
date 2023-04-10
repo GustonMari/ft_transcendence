@@ -68,13 +68,14 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		console.log("resetGame");
 		let all = this.pongService.all;
 
-		socket.send('resetGame', {x: all.x, y: all.y, vector: all.vector, velocity: all.velocity});
+		socket.emit('resetGame', {x: all.x, y: all.y, vector: all.vector, velocity: all.velocity});
 	}
 
 	@SubscribeMessage('updateGame')
 	async updateGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-		console.log("updateGame");
-		// this.pongService.updateGame(data);
+		// console.log("updateGame");
+		let ret = await this.pongService.updateGame(data);
+		socket.emit('GameUpdated', ret);
 		// this.x += this.vector.x * this.velocity * data.delta;
 		// this.y += this.vector.y * this.velocity * data.delta;
 		// // console.log('x =', this.x);
@@ -89,7 +90,7 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		// 	|| this.pongService.isCollision(rect, data.playerPaddleRight.rect))
 		// {
 		// 	this.vector.x *= -1;
-		// }
+		// }    
 		// this.pongService.sideColision(rect, data.limit);
 
 	}

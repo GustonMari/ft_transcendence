@@ -53,7 +53,7 @@ export class Ball {
 	set y(value: number) {
 	 if (this.BallElem === null)
 	 {
-		console
+		// console
 		 return;
 	 }
 		this.BallElem.style.setProperty('--y', value.toString());
@@ -109,8 +109,18 @@ export class Ball {
 
 	update(delta: number, limit: DOMRect, playerPaddleLeft: Paddle, playerPaddleRight: Paddle) {
 		this.socket.emit('updateGame', {delta: delta, limit: limit, playerPaddleLeft: playerPaddleLeft.rect, playerPaddleRight: playerPaddleRight.rect, ballRect: this.rect()});
-		// console.log('player paddle left =', playerPaddleLeft.rect);
-		// this.socket.emit('updateGame', {delta: delta, limit: limit, ballRect: this.rect()}); 
+		this.socket?.on('GameUpdated', (data: any) => {
+			// console.log('data = ', data);
+			// this.x = 20;
+			// this.y = 50;
+			this.x = data.x;
+			this.y = data.y;
+			// this.vector = data.vector;
+			// this.velocity = data.velocity;
+			// console.log('updateGame      ===== ', this.rect());
+		console.log('x =', this.x, 'y =', this.y);
+
+		});
 		// this.x += this.vector.x * this.velocity * delta;
 		// this.y += this.vector.y * this.velocity * delta;
 		// // console.log('x =', this.x);
