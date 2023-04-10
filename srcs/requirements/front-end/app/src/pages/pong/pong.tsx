@@ -1,4 +1,4 @@
-import React, { CSSProperties, useEffect, useLayoutEffect, useRef } from "react";
+import React, { CSSProperties, useContext, useEffect, useLayoutEffect, useRef } from "react";
 import { useState } from "react";
 import io, { Socket } from "socket.io-client";
 import axios from "axios";
@@ -12,6 +12,7 @@ import { Ball } from "./ball";
 import { Paddle } from "./paddle";
 import { User } from "../chat/dto/chat.dto";
 
+const PongContext = React.createContext<Socket | null>(null);
 
 export default function Pong() {
 
@@ -20,7 +21,6 @@ export default function Pong() {
 	const [userTo, setUserTo] = useState<any>(null);
 	const [isMaster, setIsMaster] = useState<boolean>(false);
 	const socket = Create_socket();
-	const PongContext = React.createContext<Socket | null>(null);
 
 	
 
@@ -127,7 +127,8 @@ export function ExecutePong() {
 	let rightUpPressed : boolean = false;
 	let rightDownPressed : boolean = false;
 	let collision = document.getElementById("collision");
-	
+	const socket = useContext(PongContext);
+
 	useEffect(() => {
 		console.log('init the game');
 		const ballElement = document.getElementById("ball") as HTMLDivElement;
@@ -142,8 +143,9 @@ export function ExecutePong() {
 			setLimit(rect);
 			newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
 			setBall(ballElement);
-			console.log("ball = ", ballElement);
-			console.log("limit = ", newLimit);
+			// console.log("ball = ", ballElement);
+			// console.log("limit = ", newLimit);
+			// console.log('socket = ', socket);
 		}
 	}, []);
 
@@ -195,7 +197,7 @@ export function ExecutePong() {
 						first = true;
 					}
 					// if (newLimit)
-					// 	pongBall.update(delta, newLimit, playerPaddleLeft, playerPaddleRight);
+						// pongBall.update(delta, newLimit, playerPaddleLeft, playerPaddleRight);
 
 
 						// ball?.classList.add('scored');
@@ -219,9 +221,9 @@ export function ExecutePong() {
 			};
 			
 			useEffect(() => {
-				if (ball) {
+				if (ball && socket) {
 					console.log("ball");
-					const pongBall = new Ball(ball, setLeftScore, setRightScore);
+					const pongBall = new Ball(ball, setLeftScore, setRightScore, socket);
 					console.log('paddle left', playerPaddleLeft);
 					let lastTime: number = 0;
 					window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight));

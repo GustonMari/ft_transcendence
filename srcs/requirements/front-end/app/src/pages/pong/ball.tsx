@@ -1,3 +1,4 @@
+import { Socket } from "socket.io-client";
 import { Paddle } from "./paddle";
 
 export class Ball {
@@ -7,12 +8,16 @@ export class Ball {
 	velocity: number = 0.25;
 	setLeftScore: any;
 	setRightScore: any;
+	socket: Socket;
 
-	constructor(BallElem: any, setLeftScore: any, setRightScore: any)
+	constructor(BallElem: any, setLeftScore: any, setRightScore: any, socket: Socket)
 	{
+		socket.emit('defineBall');
 		this.vector = {x: 0.1, y: 0.1};
 		this.BallElem = BallElem;
-		this.reset();
+		this.socket = socket;
+		// this.reset();
+		// socket.emit('resetGame');
 		this.setLeftScore = setLeftScore;
 		this.setRightScore = setRightScore;
 		// console.log('constructor =', this.BallElem);
@@ -61,19 +66,20 @@ export class Ball {
 	}
 
 	reset() {
-		this.x = 50;
-		this.y = 50;
-		this.vector = { x: 0, y: 0};
 		
-		// make random direction, but not too much up or down
-		while (Math.abs(this.vector.x) <= .2 || Math.abs(this.vector.x) >= .9)
-		{
-			//generate a random number between 0 and 2PI (360 degrees)
-			const heading = Math.random() * 2 * Math.PI;
-			this.vector = { x: Math.cos(heading), y: Math.sin(heading) };
-		}
-		//initial velocity
-		this.velocity = .025;
+		// this.x = 50;
+		// this.y = 50;
+		// this.vector = { x: 0, y: 0};
+		
+		// // make random direction, but not too much up or down
+		// while (Math.abs(this.vector.x) <= .2 || Math.abs(this.vector.x) >= .9)
+		// {
+		// 	//generate a random number between 0 and 2PI (360 degrees)
+		// 	const heading = Math.random() * 2 * Math.PI;
+		// 	this.vector = { x: Math.cos(heading), y: Math.sin(heading) };
+		// }
+		// //initial velocity
+		// this.velocity = .025;
 	}
 
 
@@ -101,29 +107,31 @@ export class Ball {
 	}
 
 	update(delta: number, limit: DOMRect, playerPaddleLeft: Paddle, playerPaddleRight: Paddle) {
-		this.x += this.vector.x * this.velocity * delta;
-		this.y += this.vector.y * this.velocity * delta;
-		this.velocity += 0.00001 * delta;
-		const rect = this.rect();
+		this.socket.emit('updateGame', {delta: delta, limit: limit, playerPaddleLeft: playerPaddleLeft, playerPaddleRight: playerPaddleRight, ballrect: this.rect()});
+		// this.x += this.vector.x * this.velocity * delta;
+		// this.y += this.vector.y * this.velocity * delta;
+		// // console.log('x =', this.x);
+		// // console.log('y =', this.y);
+		// this.velocity += 0.00001 * delta;
+		// const rect = this.rect();
 
-		if(rect.top <= limit.top || rect.bottom >= limit.bottom) {
-			this.vector.y *= -1;
-		}
-		if (this.isCollision(rect, playerPaddleLeft.rect) 
-			|| this.isCollision(rect, playerPaddleRight.rect))
-		{
-			this.vector.x *= -1;
-		}
-		this.sideColision(rect, limit);
-
+		// if(rect.top <= limit.top || rect.bottom >= limit.bottom) {
+		// 	this.vector.y *= -1;
+		// }
+		// if (this.isCollision(rect, playerPaddleLeft.rect) 
+		// 	|| this.isCollision(rect, playerPaddleRight.rect))
+		// {
+		// 	this.vector.x *= -1;
+		// }
+		// this.sideColision(rect, limit);
 	}
 
-	isCollision(rect1: DOMRect, rect2: DOMRect) {
-		return (
-		  rect1.left <= rect2.right &&
-		  rect1.right >= rect2.left &&
-		  rect1.top <= rect2.bottom &&
-		  rect1.bottom >= rect2.top
-		)
-	  }
+	// isCollision(rect1: DOMRect, rect2: DOMRect) {
+	// 	return (
+	// 	  rect1.left <= rect2.right &&
+	// 	  rect1.right >= rect2.left &&
+	// 	  rect1.top <= rect2.bottom &&
+	// 	  rect1.bottom >= rect2.top
+	// 	)
+	//   }
 }

@@ -5,8 +5,27 @@ import { PrismaService } from '../prisma/prisma.service';
 @Injectable()
 export class PongService {
 
-	constructor(private readonly prisma: PrismaService) { }
+	BallElem: any;
+	vector: {x: number, y: number};
+	velocity: number;
+	setLeftScore: any;
+	setRightScore: any;
+	x: number;
+	y: number;
 
+	constructor(private readonly prisma: PrismaService) {
+		this.x = 50;
+		this.y = 50;
+		this.vector = { x: 0.1, y: 0.1};
+		this.setLeftScore = 0;
+		this.setRightScore = 0;
+	 }
+	
+	get all()
+	{
+		let all = {BallElem: this.BallElem, vector: this.vector, velocity: this.velocity, setLeftScore: this.setLeftScore, SetRightScore: this.setRightScore, x: this.x, y: this.y};
+		return (all);
+	}
 
 	async createGame(master: User, slave: User): Promise<boolean> {
 
@@ -73,5 +92,70 @@ export class PongService {
 		if (game == null)
 			return (false);
 		return (true);
+	}
+
+	async updateGame(data: any): Promise<void>
+	{
+		this.x += this.vector.x * this.velocity * data.delta;
+		this.y += this.vector.y * this.velocity * data.delta;
+		// console.log('x =', this.x);
+		// console.log('y =', this.y);
+		this.velocity += 0.00001 * data.delta;
+		const rect = this.rect();
+
+		if(rect.top <= data.limit.top || rect.bottom >= data.limit.bottom) {
+			this.vector.y *= -1;
+		}
+		if (this.isCollision(rect, data.playerPaddleLeft.rect) 
+			|| this.isCollision(rect, data.playerPaddleRight.rect))
+		{
+			this.vector.x *= -1;
+		}
+		this.sideColision(rect, data.limit);
+
+	}
+
+
+	async isCollision(rect1: DOMRect, rect2: DOMRect): Promise<boolean> {
+		return (
+			rect1.left <= rect2.right &&
+			rect1.right >= rect2.left &&
+			rect1.top <= rect2.bottom &&
+			rect1.bottom >= rect2.top
+		)
+	}
+
+	async reset(): Promise<void>
+	{
+		this.x = 50;
+		this.y = 50;
+		this.vector = { x: 0, y: 0};
+		
+		// make random direction, but not too much up or down
+		while (Math.abs(this.vector.x) <= .2 || Math.abs(this.vector.x) >= .9)
+		{
+			//generate a random number between 0 and 2PI (360 degrees)
+			const heading = Math.random() * 2 * Math.PI;
+			this.vector = { x: Math.cos(heading), y: Math.sin(heading) };
+		}
+		//initial velocity
+		this.velocity = .025;
+	}
+
+	async sideColision(rect: DOMRect, limit: DOMRect): Promise<void> {
+		if (rect.left <= limit.left || rect.right >= limit.right) {
+			//TODO: divier cette fonction en deux pour les points, et pour le reset
+			if (rect.left <= limit.left)
+			{
+				this.setRightScore((prevScore: number) => prevScore + 1);
+				this.reset();
+			}
+			if (rect.right >= limit.right)
+			{
+				this.setLeftScore((prevScore: number) => prevScore + 1);
+				this.reset();
+			}
+			this.vector.x *= -1;
+		}
 	}
 }

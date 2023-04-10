@@ -24,7 +24,11 @@ import { PongService } from '../pong.service';
 })
 export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 
-	constructor(private pongService: PongService){}
+
+
+	constructor(private pongService: PongService){
+
+	 }
 
 	@WebSocketServer() // Create a instance of the server
 	myserver: Server;
@@ -59,13 +63,37 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		console.log("defineLimit", );
 	}
 
-	// @SubscribeMessage('createGame') // Subscribe to the event 'joinGame'
-	// async joinGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-	// 	console.log("pilouuuuuu");
-		
-	// 	await this.pongService.createGame(data.master, data.slave);
-	// 	console.log("isusermaster = ", await this.pongService.isUserMaster(data.master.login));
-	// 	socket.emit('gameCreated', 'pilouuuuuu');
+	@SubscribeMessage('resetGame')
+	async resetGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+		console.log("resetGame");
+		let all = this.pongService.all;
 
-	// }
+		socket.send('resetGame', {x: all.x, y: all.y, vector: all.vector, velocity: all.velocity});
+	}
+
+	@SubscribeMessage('updateGame')
+	async updateGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+		console.log("updateGame");
+		this.pongService.updateGame(data);
+		// this.x += this.vector.x * this.velocity * data.delta;
+		// this.y += this.vector.y * this.velocity * data.delta;
+		// // console.log('x =', this.x);
+		// // console.log('y =', this.y);
+		// this.velocity += 0.00001 * data.delta;
+		// const rect = this.rect();
+
+		// if(rect.top <= data.limit.top || rect.bottom >= data.limit.bottom) {
+		// 	this.vector.y *= -1;
+		// }
+		// if (this.pongService.isCollision(rect, data.playerPaddleLeft.rect) 
+		// 	|| this.pongService.isCollision(rect, data.playerPaddleRight.rect))
+		// {
+		// 	this.vector.x *= -1;
+		// }
+		// this.pongService.sideColision(rect, data.limit);
+
+	}
+
+
+
 }
