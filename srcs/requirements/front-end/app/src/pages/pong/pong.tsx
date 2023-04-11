@@ -17,61 +17,61 @@ const PongContext = React.createContext<Socket | null>(null);
 export default function Pong() {
 
 	//TODO: peut etre il faudra changer le dto pour ajouter userInGame
-	const [currentUser, setCurrentUser] = useState<any>(null);
-	const [userTo, setUserTo] = useState<any>(null);
-	const [isMaster, setIsMaster] = useState<boolean>(false);
+	// const [currentUser, setCurrentUser] = useState<any>(null);
+	// const [userTo, setUserTo] = useState<any>(null);
+	// const [isMaster, setIsMaster] = useState<boolean>(false);
 	const socket = Create_socket();
 
 	
 
-	useLayoutEffect (() => {
-		const getUsers = async () => {
-			try {
-				const res = await APP.get("/user/me");
-				setCurrentUser(res.data);
-				const res2 = await APP.get("/user/get", {
-					params: {
-						// login: userTo.login,
-						login: "gus",
-					},
-				});
-				setUserTo(res2.data);
-				const create_game = await APP.post("/pong/create_game", {
-						master: res.data,
-						slave: res2.data,
-					});
-				const is_master = await APP.post("/pong/is_user_master", { login: res.data.login });
-				if (is_master) {
-					setIsMaster(true);
-					console.log("master zooo")
-					// return (
-					// 	<>
-					// 		{/* <PongContext.Provider value={socket}> */}
-					// 			<ExecutePong />
-					// 		{/* </PongContext.Provider> */}
-					// 	</>
-					// )
-				}
-				else
-				{
-					setIsMaster(false);
-					console.log("slave zooo")
-					// return (
-					// 	<>
-					// 		<h1>LOLILOL</h1>
-					// 	</>
-					// )
-				}
-				console.log("create_game = ", create_game);
-			} catch (error) {
-				console.error(error);
-			}
-		};
-		getUsers();
-	}, []);
+	// useLayoutEffect (() => {
+	// 	const getUsers = async () => {
+	// 		try {
+	// 			const res = await APP.get("/user/me");
+	// 			setCurrentUser(res.data);
+	// 			const res2 = await APP.get("/user/get", {
+	// 				params: {
+	// 					// login: userTo.login,
+	// 					login: "gus",
+	// 				},
+	// 			});
+	// 			setUserTo(res2.data);
+	// 			const create_game = await APP.post("/pong/create_game", {
+	// 					master: res.data,
+	// 					slave: res2.data,
+	// 				});
+	// 			const is_master = await APP.post("/pong/is_user_master", { login: res.data.login });
+	// 			if (is_master) {
+	// 				setIsMaster(true);
+	// 				console.log("master zooo")
+	// 				// return (
+	// 				// 	<>
+	// 				// 		{/* <PongContext.Provider value={socket}> */}
+	// 				// 			<ExecutePong />
+	// 				// 		{/* </PongContext.Provider> */}
+	// 				// 	</>
+	// 				// )
+	// 			}
+	// 			else
+	// 			{
+	// 				setIsMaster(false);
+	// 				console.log("slave zooo")
+	// 				// return (
+	// 				// 	<>
+	// 				// 		<h1>LOLILOL</h1>
+	// 				// 	</>
+	// 				// )
+	// 			}
+	// 			console.log("create_game = ", create_game);
+	// 		} catch (error) {
+	// 			console.error(error);
+	// 		}
+	// 	};
+	// 	getUsers();
+	// }, []);
 
-	if (currentUser && isMaster)
-	{
+	// if (currentUser && isMaster)
+	// {
 		// return (
 		// 	<>
 		// 		<PongContext.Provider value={socket}>
@@ -88,27 +88,27 @@ export default function Pong() {
 			  )}
 			</>
 		  );
-	}
-	else if( currentUser && !isMaster)
-	{
+	// }
+	// else if( currentUser && !isMaster)
+	// {
 
-		return (
-			<>
-			  {socket && (
-				<PongContext.Provider value={socket}>
-				  <ExecutePong />
-				</PongContext.Provider>
-			  )}
-			</>
-		  );
-	}else 
-	{
-		return(
-			<div>
-				<h1>watcher</h1>
-			</div>
-		)
-	}
+	// 	return (
+	// 		<>
+	// 		  {socket && (
+	// 			<PongContext.Provider value={socket}>
+	// 			  <ExecutePong />
+	// 			</PongContext.Provider>
+	// 		  )}
+	// 		</>
+	// 	  );
+	// }else 
+	// {
+	// 	return(
+	// 		<div>
+	// 			<h1>watcher</h1>
+	// 		</div>
+	// 	)
+	// }
 
 }
 
@@ -130,7 +130,7 @@ export function ExecutePong() {
 	const socket = useContext(PongContext);
 
 	useEffect(() => {
-		console.log('init the game');
+		// console.log('init the game');
 		const ballElement = document.getElementById("ball") as HTMLDivElement;
 		
 		let rect;
@@ -190,8 +190,6 @@ export function ExecutePong() {
 			}
 
 			const update = (lastTime: number, pongBall: Ball, playerPaddleLeft: Paddle, playerPaddleRight: Paddle, limit?: DOMRect) => (time: number) => {
-				
-				
 
 				if (lastTime != undefined || lastTime != null) {
 					const delta = time - lastTime;
@@ -204,9 +202,11 @@ export function ExecutePong() {
 						// setTimeout(() => {
 							// if (newLimit)
 								pongBall.update(delta, newLimit, playerPaddleLeft, playerPaddleRight);
-						// }, 20	);
+						// }, 1000	);
 					}
-
+						// setTimeout(() => {
+						// 	socket?.emit('reset', {});
+						// }, 3000	);
 
 						// ball?.classList.add('scored');
 						// ball?.animate([
@@ -227,16 +227,17 @@ export function ExecutePong() {
 				window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight, newLimit));
 				
 			};
+
+
 			
-			useEffect(() => {
+			// useEffect(() => {
 				if (ball && socket) {
-					console.log("ball");
+					// console.log('init the game');
 					const pongBall = new Ball(ball, setLeftScore, setRightScore, socket);
-					console.log('paddle left', playerPaddleLeft);
 					let lastTime: number = 0;
 					window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight));
 			  }
-			}, [ball]);
+			// }, []);
 
 	return (
 		<div className={Style['container-game']}>
@@ -255,3 +256,146 @@ export function ExecutePong() {
 		</div>
 	);
 }
+
+
+// export function ExecutePong() {
+// 	const [ball, setBall] = useState<HTMLDivElement | null>(null);
+// 	const [limit, setLimit] = useState<DOMRect | undefined>(undefined);
+// 	const [trigger, setTrigger] = useState<number>(0);
+// 	const [leftscore, setLeftScore] = useState<number>(0);
+// 	const [rightscore, setRightScore] = useState<number>(0);
+// 	let newLimit: DOMRect | undefined;
+// 	let first: boolean = false;
+// 	let playerPaddleLeft = new Paddle(document.getElementById("player-paddle-left") as HTMLDivElement);
+// 	let playerPaddleRight = new Paddle(document.getElementById("player-paddle-right") as HTMLDivElement);
+// 	let	leftUpPressed : boolean = false;
+// 	let leftDownPressed : boolean = false;
+// 	let rightUpPressed : boolean = false;
+// 	let rightDownPressed : boolean = false;
+// 	let collision = document.getElementById("collision");
+// 	const socket = useContext(PongContext);
+
+// 	useEffect(() => {
+// 		console.log('init the game');
+// 		const ballElement = document.getElementById("ball") as HTMLDivElement;
+		
+// 		let rect;
+		
+// 		const divElement = document.getElementById("pong-body");
+// 		if (divElement)
+// 		rect = divElement?.getBoundingClientRect();
+		
+// 		if (ballElement && rect) {
+// 			setLimit(rect);
+// 			newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
+// 			setBall(ballElement);
+// 			// console.log("ball = ", ballElement);
+// 			// console.log("limit = ", newLimit);
+// 			// console.log('socket = ', socket);
+// 		}
+// 	}, []);
+
+
+// 	const DownHandler = (e: any) => {
+// 		if (e.keyCode == 87) {
+// 			leftUpPressed = true;
+// 			if (newLimit && playerPaddleLeft) {
+// 				playerPaddleLeft.position -= 2;
+// 			}
+// 		}
+// 					else if (e.keyCode == 83) {
+// 						leftDownPressed = true;
+// 						if (newLimit && playerPaddleLeft) {
+// 							playerPaddleLeft.position += 2;
+// 						}
+// 					}
+// 					if (e.keyCode == 38) {
+// 						rightUpPressed = true;
+// 						console.log("up");
+// 					}
+// 					else if (e.keyCode == 40) {
+// 						rightDownPressed = true;
+// 						console.log("down");
+// 					}
+// 					e.preventDefault();
+// 	}
+			
+// 			const UpHandler = (e: any) => {
+// 				if (e.keyCode == 87) {
+// 					leftUpPressed = false;
+// 				}
+// 				else if (e.keyCode == 83) {
+// 					leftDownPressed = false;
+// 				}
+// 				if (e.keyCode == 38) {
+// 					rightUpPressed = false;
+// 				}
+// 				else if (e.keyCode == 40) {
+// 					rightDownPressed = false;
+// 				}
+// 			}
+
+// 			const update = (lastTime: number, pongBall: Ball, playerPaddleLeft: Paddle, playerPaddleRight: Paddle, limit?: DOMRect) => (time: number) => {
+
+// 				if (lastTime != undefined || lastTime != null) {
+// 					const delta = time - lastTime;
+// 					if (first === false) {
+// 						newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
+// 						first = true;
+// 					}
+// 					if (newLimit)
+// 					{
+// 						// setTimeout(() => {
+// 							// if (newLimit)
+// 								pongBall.update(delta, newLimit, playerPaddleLeft, playerPaddleRight);
+// 						// }, 20	);
+// 					}
+
+
+// 						// ball?.classList.add('scored');
+// 						// ball?.animate([
+// 						// 	{ transform: 'translateX(0)' },
+// 						// 	{ transform: 'translateX(1000px)' },
+// 						// ], {
+// 						// 	duration: 10000,
+// 						// 	fill: 'forwards',
+// 						// });
+
+// 					document.addEventListener("keydown", DownHandler);
+// 					document.addEventListener("keyup", UpHandler);
+// 					window.addEventListener('resize', () => {
+// 						newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
+// 					});
+// 				}
+// 				lastTime = time;
+// 				window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight, newLimit));
+				
+// 			};
+
+
+			
+// 			useEffect(() => {
+// 				if (ball && socket) {
+// 					const pongBall = new Ball(ball, setLeftScore, setRightScore, socket);
+// 					let lastTime: number = 0;
+// 					window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight));
+// 			  }
+// 			}, [ball]);
+
+// 	return (
+// 		<div className={Style['container-game']}>
+// 		<h1>Pong game</h1>
+// 			<div className={Style['pong-body']} id="pong-body">
+// 				<span id="collision"></span>
+// 				<title>Pong</title>
+// 				<div className={Style.score}>
+// 					<div className={Style['left-score']}>{leftscore}</div>
+// 					<div className={Style['right-score']}>{rightscore}</div>
+// 				</div>
+// 				<div className={`${Style.ball} `} id="ball"></div>
+// 				<div className={`${Style.paddle} ${Style.left}`} id="player-paddle-left"></div>
+// 				<div className={`${Style.paddle} ${Style.right}`} id="player-paddle-right"></div>
+// 			</div>
+// 		</div>
+// 	);
+// }

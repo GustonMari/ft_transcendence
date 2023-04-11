@@ -5,7 +5,8 @@ import { useEffect } from "react";
 export class Ball {
 	
 	BallElem: any;
-	vector: {x: number, y: number}/*  = {x: 0, y: 0} */;
+	ballRect: DOMRect;
+	// vector: {x: number, y: number};
 	velocity: number = 0.25;
 	setLeftScore: any;
 	setRightScore: any;
@@ -15,11 +16,12 @@ export class Ball {
 	{
 		console.log('constructor ball');
 		socket.emit('defineBall');
-		this.vector = {x: 0.1, y: 0.1};
+		// this.vector = {x: 0, y: 0};
 		this.BallElem = BallElem;
 		this.socket = socket;
-		this.x = 50;
-		this.y = 50;
+		// this.x = 50;
+		// this.y = 50;
+		this.ballRect = this.rect();
 		// this.reset();
 		// socket.emit('resetGame');
 		this.setLeftScore = setLeftScore;
@@ -45,6 +47,7 @@ export class Ball {
 	 {
 		 return;
 	 }
+	 	// console.log('value x = ', value);
 		this.BallElem.style.setProperty('--x', value.toString());
 	}
 
@@ -52,13 +55,14 @@ export class Ball {
 		//convert into a float
 		return parseFloat(getComputedStyle(this.BallElem).getPropertyValue('--y'));
 	}
-
+	
 	set y(value: number) {
-	 if (this.BallElem === null)
-	 {
-		// console
-		 return;
-	 }
+		if (this.BallElem === null)
+		{
+			// console
+			return;
+		}
+		// console.log('value y = ', value);
 		this.BallElem.style.setProperty('--y', value.toString());
 	}
 
@@ -110,19 +114,24 @@ export class Ball {
 	// 	}
 	// }
 
+	
+	
 	update(delta: number, limit: DOMRect, playerPaddleLeft: Paddle, playerPaddleRight: Paddle) {
 		this.socket.emit('updateGame', {delta: delta, limit: limit, playerPaddleLeft: playerPaddleLeft.rect, playerPaddleRight: playerPaddleRight.rect, ballRect: this.rect()});
+		// this.socket.emit('updateGame', {delta: delta, limit: limit, playerPaddleLeft: playerPaddleLeft.rect, playerPaddleRight: playerPaddleRight.rect, ballRect: this.ballRect});
 		this.socket?.on('GameUpdated', (data: any) => {
 			// console.log('data = ', data);
 			// this.x = 20;
 			// this.y = 50;
+	
+			// console.log('data.x = ', data);
 			this.x = data.x;
 			this.y = data.y;
 			// this.vector = data.vector;
 			// this.velocity = data.velocity;
 			// console.log('updateGame      ===== ', this.rect());
 		// console.log('x =', this.x, 'y =', this.y, ' rect = ', this.rect());
-
+	
 		});
 		// this.x += this.vector.x * this.velocity * delta;
 		// this.y += this.vector.y * this.velocity * delta;
@@ -144,7 +153,9 @@ export class Ball {
 
 	// isCollision(rect1: DOMRect, rect2: DOMRect) {
 	// 	return (
-	// 	  rect1.left <= rect2.right &&
+	// 	  rect1.left <= rect2.right &&			// setTimeout(() => {
+						// 	socket?.emit('reset', {});
+						// }, 2000	);
 	// 	  rect1.right >= rect2.left &&
 	// 	  rect1.top <= rect2.bottom &&
 	// 	  rect1.bottom >= rect2.top

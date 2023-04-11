@@ -13,15 +13,20 @@ export class PongService {
 	setRightScore: any;
 	x: number;
 	y: number;
+	back_width: number;
+	back_height: number;
 
 	constructor(private readonly prisma: PrismaService) {
-		this.x = 50;
-		this.y = 50;
-		this.vector = { x: 0.1, y: 0.1};
+		// this.x = 50;
+		// this.y = 50;
+		this.back_width = 900;
+		this.back_height = 550;
+		// this.vector = { x: 0.1, y: 0.1};
 		this.setLeftScore = 0;
 		this.setRightScore = 0;
-		this.velocity = .25;
-		this.reset();
+		// this.velocity = .25;
+		//BUG: ATTENTION: ici ce n'est pas await car dans le constucteur on ne peut pas mettre await
+		 this.reset();
 	 }
 	
 	get all()
@@ -99,43 +104,39 @@ export class PongService {
 
 	async updateGame(data: any): Promise<{x: number, y: number}>
 	{
-		// this.x += this.vector.x * this.velocity * data.delta;
-		// this.y += this.vector.y * this.velocity * data.delta;
-		this.x += this.vector.x * 0.25;
-		this.y += this.vector.y * 0.25;
-		// console.log('x =', this.x);
-		// console.log('y =', this.y);
+		this.x += this.vector.x * this.velocity * data.delta;
+		this.y += this.vector.y * this.velocity * data.delta;
 		this.velocity += 0.00001 * data.delta;
 		const rect = data.ballRect;
-		console.log('rect =', rect, 'limit terrain =', data.limit, 'this.vector y =', this.vector.y);
+
 		if(rect.top <= data.limit.top || rect.bottom >= data.limit.bottom) {
 			this.vector.y *= -1;	
-			console.log('vector y =', this.vector.y);
+			// console.log('vector y =', this.vector.y);
 			// console.log("piscine chez paulette part 2", rect)
-			console.log("exited bitch")
-			this.reset();// exit(1);
+			// console.log("exited bitch")
+			this.reset();
 		}
-		if (this.isCollision(rect, data.playerPaddleLeft) 
-		|| this.isCollision(rect, data.playerPaddleRight))
+		if (await this.isCollision(rect, data.playerPaddleLeft)
+		|| await this.isCollision(rect, data.playerPaddleRight))
 		{ 
 			// console.log('collision !!! rect =', rect, ' player left =', data.playerPaddleLeft, ' player right = ', data.playerPaddleRight );
 			// exit(1);
-			
-			this.vector.x *= -1; 
+			// console.log('ball = ', rect, ' paddle  left = ', data.playerPaddleLeft, 'paddle right = ', data.playerPaddleRight );
+			this.vector.x *= -1;
+			// exit(1);
 		}
-		// this.sideColision(rect, data.limit);
+		await this.sideColision(rect, data.limit);
 		return ({x: this.x, y: this.y});
 		
 	}
 	
 	
-	async isCollision(rect1: DOMRect, rect2: DOMRect): Promise<boolean> {
-		// console.log('rect1 =', rect1, 'rect2 =', rect2);
+	async isCollision(ball: DOMRect, paddle: DOMRect): Promise<boolean> {
 		return (
-			rect1.left <= rect2.right &&
-			rect1.right >= rect2.left &&
-			rect1.top <= rect2.bottom &&
-			rect1.bottom >= rect2.top
+			(ball.left <= paddle.right &&
+			ball.right >= paddle.left &&
+			ball.top <= paddle.bottom &&
+			ball.bottom >= paddle.top)
 		)
 	}
 
@@ -143,13 +144,14 @@ export class PongService {
 	{
 		this.x = 50;
 		this.y = 50;
-		this.vector = { x: 0, y: 0};
+		this.vector = { x: 0.1, y: 0.1};
 		
 		// make random direction, but not too much up or down
 		while (Math.abs(this.vector.x) <= .2 || Math.abs(this.vector.x) >= .9)
 		{
 			//generate a random number between 0 and 2PI (360 degrees)
 			const heading = Math.random() * 2 * Math.PI;
+			console.log('heading =', heading, ' x = ', Math.cos(heading), ' y = ', Math.sin(heading));
 			this.vector = { x: Math.cos(heading), y: Math.sin(heading) };
 		}
 		//initial velocity
@@ -162,16 +164,32 @@ export class PongService {
 			if (rect.left <= limit.left)
 			{
 				console.log("scored!!");
-				this.setRightScore((prevScore: number) => prevScore + 1);
-				this.reset();
+				await this.setRightScore((prevScore: number) => prevScore + 1);
+				await this.reset();
 			}
 			if (rect.right >= limit.right)
 			{
 				console.log("scored!!");
-				this.setLeftScore((prevScore: number) => prevScore + 1);
-				this.reset();
+				await this.setLeftScore((prevScore: number) => prevScore + 1);
+				await this.reset();
 			}
 			this.vector.x *= -1;
 		}
 	}
+
+	// async convert_front_to_back(new_witdh: number, new_height: number): Promise<any> {
+	// 	let ratio_x = new_witdh / this.back_width;
+	// 	let ratio_y = new_height / this.back_height;
+	// 	let new_x = this.x * ratio_x;
+	// 	let new_y = this.y * ratio_y;
+	// 	return ({x: new_x, y: new_y});
+	// }
+
+	// async convert_back_to_front(new_witdh: number, new_height: number): Promise<any> {
+	// 	let ratio_x = this.back_width / new_witdh;
+	// 	let ratio_y = this.back_height / new_height;
+	// 	let new_x = this.x * ratio_x;
+	// 	let new_y = this.y * ratio_y;
+	// 	return ({x: new_x, y: new_y});
+	// }
 }
