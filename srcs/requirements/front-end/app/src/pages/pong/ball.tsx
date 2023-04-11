@@ -127,38 +127,18 @@ export class Ball {
 			// console.log('data.x = ', data);
 			this.x = data.x;
 			this.y = data.y;
-			// this.vector = data.vector;
-			// this.velocity = data.velocity;
-			// console.log('updateGame      ===== ', this.rect());
-		// console.log('x =', this.x, 'y =', this.y, ' rect = ', this.rect());
-	
-		});
-		// this.x += this.vector.x * this.velocity * delta;
-		// this.y += this.vector.y * this.velocity * delta;
-		// // console.log('x =', this.x);
-		// // console.log('y =', this.y);
-		// this.velocity += 0.00001 * delta;
-		// const rect = this.rect();
 
-		// if(rect.top <= limit.top || rect.bottom >= limit.bottom) {
-		// 	this.vector.y *= -1;
-		// }
-		// if (this.isCollision(rect, playerPaddleLeft.rect) 
-		// 	|| this.isCollision(rect, playerPaddleRight.rect))
-		// {
-		// 	this.vector.x *= -1;
-		// }
-		// this.sideColision(rect, limit);
+			// this.setLeftScore(data.leftScore);
+			// this.setRightScore(data.rightScore);
+
+
+		});
+
+		this.socket?.on('updateScore', (data: any) => {
+			// console.log('leftScore = ', data.leftScore, 'rightScore = ', data.rightScore)
+			// this.setLeftScore(data.leftScore);
+			// this.setRightScore(data.rightScore);
+		});
 	}
 
-	// isCollision(rect1: DOMRect, rect2: DOMRect) {
-	// 	return (
-	// 	  rect1.left <= rect2.right &&			// setTimeout(() => {
-						// 	socket?.emit('reset', {});
-						// }, 2000	);
-	// 	  rect1.right >= rect2.left &&
-	// 	  rect1.top <= rect2.bottom &&
-	// 	  rect1.bottom >= rect2.top
-	// 	)
-	//   }
 }

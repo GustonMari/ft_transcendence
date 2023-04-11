@@ -9,8 +9,8 @@ export class PongService {
 	BallElem: any;
 	vector: {x: number, y: number};
 	velocity: number;
-	setLeftScore: any;
-	setRightScore: any;
+	leftScore: number;
+	rightScore: number;
 	x: number;
 	y: number;
 	back_width: number;
@@ -22,8 +22,8 @@ export class PongService {
 		this.back_width = 900;
 		this.back_height = 550;
 		// this.vector = { x: 0.1, y: 0.1};
-		this.setLeftScore = 0;
-		this.setRightScore = 0;
+		this.leftScore = 0;
+		this.rightScore = 0;
 		// this.velocity = .25;
 		//BUG: ATTENTION: ici ce n'est pas await car dans le constucteur on ne peut pas mettre await
 		 this.reset();
@@ -31,7 +31,7 @@ export class PongService {
 	
 	get all()
 	{
-		let all = {BallElem: this.BallElem, vector: this.vector, velocity: this.velocity, setLeftScore: this.setLeftScore, SetRightScore: this.setRightScore, x: this.x, y: this.y};
+		let all = {BallElem: this.BallElem, vector: this.vector, velocity: this.velocity, leftScore: this.leftScore, rightScore: this.rightScore , x: this.x, y: this.y};
 		return (all);
 	}
 
@@ -102,23 +102,42 @@ export class PongService {
 		return (true);
 	}
 
-	async updateGame(data: any): Promise<{x: number, y: number}>
+	async updateGame(data: any): Promise<{x: number, y: number, leftScore: number, rightScore: number}>
 	{
 		this.x += this.vector.x * this.velocity * data.delta;
 		this.y += this.vector.y * this.velocity * data.delta;
 		this.velocity += 0.00001 * data.delta;
 		const rect = data.ballRect;
 
-		if(rect.top <= data.limit.top || rect.bottom >= data.limit.bottom) {
+		// if(rect.top <= data.limit.top || rect.bottom >= data.limit.bottom) {
+		// 	this.vector.y *= -1;
+		// }
+		if(rect.top <= data.limit.top) {
 			this.vector.y *= -1;
+			this.y += 3;
 		}
-		if (await this.isCollision(rect, data.playerPaddleLeft)
-		|| await this.isCollision(rect, data.playerPaddleRight))
-		{ 
+		else if ( rect.bottom >= data.limit.bottom)
+		{
+			this.vector.y *= -1;
+			this.y -= 3;
+		}
+		// if (await this.isCollision(rect, data.playerPaddleLeft)
+		// || await this.isCollision(rect, data.playerPaddleRight))
+		// { 
+		// 	this.vector.x *= -1;
+		// }
+		if (await this.isCollision(rect, data.playerPaddleLeft))
+		{
 			this.vector.x *= -1;
+			this.x += 1.5;
+		}
+		else if (await this.isCollision(rect, data.playerPaddleRight))
+		{
+			this.vector.x *= -1;
+			this.x -= 1.5;
 		}
 		await this.sideColision(rect, data.limit);
-		return ({x: this.x, y: this.y});
+		return ({x: this.x, y: this.y, leftScore: this.leftScore, rightScore: this.rightScore});
 		
 	}
 	
@@ -143,26 +162,34 @@ export class PongService {
 		{
 			//generate a random number between 0 and 2PI (360 degrees)
 			const heading = Math.random() * 2 * Math.PI;
-			console.log('heading =', heading, ' x = ', Math.cos(heading), ' y = ', Math.sin(heading));
 			this.vector = { x: Math.cos(heading), y: Math.sin(heading) };
 		}
 		//initial velocity
 		this.velocity = .025;
 	}
 
+	async incrLeftScore() {
+		this.leftScore += 1;
+	}
+
+	async incrRightScore() {
+		this.rightScore += 1;
+	}
+
+
 	async sideColision(rect: DOMRect, limit: DOMRect): Promise<void> {
 		if (rect.left <= limit.left || rect.right >= limit.right) {
 			//TODO: divier cette fonction en deux pour les points, et pour le reset
 			if (rect.left <= limit.left)
 			{
-				console.log("scored!!");
-				// await this.setRightScore((prevScore: number) => prevScore + 1);
+				console.log("scored left!!", this.leftScore, "scored right!!", this.rightScore);
+				await this.incrRightScore();
 				await this.reset();
 			}
 			if (rect.right >= limit.right)
 			{
-				console.log("scored!!");
-				// await this.setLeftScore((prevScore: number) => prevScore + 1);
+				console.log("scored left!!", this.leftScore, "scored right!!", this.rightScore);
+				await this.incrLeftScore();
 				await this.reset();
 			}
 			this.vector.x *= -1;
