@@ -27,10 +27,13 @@ export const NavBar = ({ onProfile, profilePic }: any) => {
 
   useEffect(() => {
     const handleMouseMove = (event: any) => {
+      const nav = document.getElementById('navbar');
       if (event.clientX < 80) {
         setStyles(s);
+          nav?.focus();
       } else if (event.clientX > 240) {
         setStyles(sa);
+        nav?.focus();
       }
     };
     window.addEventListener("mousemove", handleMouseMove);
@@ -43,7 +46,7 @@ export const NavBar = ({ onProfile, profilePic }: any) => {
 
   return (
     <>
-      <div className={styles.container}>
+      <div id="navbar" className={styles.container}>
         <nav className={styles.navbar}>
           <ul className={styles.list}>
             <li>

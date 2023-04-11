@@ -1,9 +1,12 @@
 import LoginForm from "../components/forms/LoginForm";
+import s from "../styles/pages/signin.module.css";
 
 export default function SignIn () {
     return (
         <div>
-            <LoginForm/>
+            <section className={s.section}>
+                <LoginForm/>
+            </section>
         </div>
     );
 }

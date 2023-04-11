@@ -139,7 +139,7 @@ export class AuthService {
         const [at, rt] = [
             this.jwtService.sign(plain_user, {
                 secret: 'secret',
-                expiresIn: '60s',
+                expiresIn: '10m',
             }),
             this.jwtService.sign(plain_user, {
                 secret: 'secret',
@@ -153,18 +153,18 @@ export class AuthService {
     }
 
 
-    // TODO: remove this function if not needed
-    verifyToken(
-        token: string
-    ): TokenPayloadRO {
-        const payload_raw = this.jwtService.verify(token, {
-            secret: 'secret',
-        });
-        const payload: TokenPayloadRO = plainToClass(TokenPayloadRO, payload_raw, {
-            excludeExtraneousValues: true,
-        });
-        return (payload);
-    }
+    // // TODO: remove this function if not needed
+    // verifyToken(
+    //     token: string
+    // ): TokenPayloadRO {
+    //     const payload_raw = this.jwtService.verify(token, {
+    //         secret: 'secret',
+    //     });
+    //     const payload: TokenPayloadRO = plainToClass(TokenPayloadRO, payload_raw, {
+    //         excludeExtraneousValues: true,
+    //     });
+    //     return (payload);
+    // }
 
     async callback(
         profile: ProfileField
