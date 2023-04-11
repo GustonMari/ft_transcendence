@@ -2,7 +2,13 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: rgb(123, 123, 123);
+    background-image: url(../public/back.png);
+    backdrop-filter: blur(1000px);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    /*filter: blur(3px);*/
 }
 
 /* @config "./../tailwind.config.js"; */

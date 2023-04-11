@@ -27,6 +27,7 @@ export class ProfileService {
             first_name: obj.firstName,
             last_name: obj.lastName,
             description: obj.description,
+            tfa: obj.tfa,
         });
         return (null);
     }

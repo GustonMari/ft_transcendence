@@ -52,6 +52,10 @@ export class UserRO {
     @Expose()
     @ApiProperty({ description: 'User lose number', type: 'number' })
     loses: number;
+
+    @Expose()
+    @ApiProperty({ description: 'TFA', type: 'boolean' })
+    tfa: boolean;
 }
 
 

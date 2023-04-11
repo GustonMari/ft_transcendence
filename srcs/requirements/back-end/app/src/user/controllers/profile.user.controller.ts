@@ -19,7 +19,7 @@ import { MulterConfig } from '../middlewares';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as process from 'process';
 
-//@UseGuards(AccessGuard)
+@UseGuards(AccessGuard)
 @Controller('user/profile')
 export class ProfileController {
 
@@ -33,6 +33,7 @@ export class ProfileController {
         @Body() update: UpdateProfileDTO,
         @GetMe('id') id: number,
     ) {
+        console.log(update);
         return (await this.ProfileService.updateMe(id, update));
     }
 
@@ -47,17 +48,6 @@ export class ProfileController {
         await this.ProfileService.updatePP(id, file);
     }
 
-    @Get('picture/:string')
-    @UseGuards()
-    async getProfilePicture (
-        @Param('string') username: string,
-        @Res() res,
-    ) {
-        const filename = await this.ProfileService.findPP(username);
-        if (!filename) {
-            throw new BadRequestException('Invalid username this login doesnt exist');
-        }
-        res.sendFile(process.cwd() + '/' + filename);
-    }
+
 
 }

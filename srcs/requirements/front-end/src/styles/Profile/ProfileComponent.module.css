@@ -106,6 +106,7 @@
     height: 150px;
     border-radius: 20px;
     border: rgba(27, 19, 29, 0.2) 3px solid;
+    background-color: rgb(255, 255, 255);
 }
 
 .name_section {

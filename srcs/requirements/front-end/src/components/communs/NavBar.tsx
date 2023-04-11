@@ -97,10 +97,10 @@ export const NavBar = ({ onProfile, profilePic }: any) => {
                 }
             }>
                 <div className={styles.avatar}>
-                    <img src={profilePic} />
+                    <img src={"http://localhost:3000/api/public/picture/" + me.login} />
                 </div>
                 <div className={styles.profile_info}>
-                    <a>{me.login}</a>
+                    <a>{me.login}</a> {/*TODO: Error here*/}
                     <div className={styles.match_history}>
                     <span>W : 5 | L : 2</span>
                     </div>

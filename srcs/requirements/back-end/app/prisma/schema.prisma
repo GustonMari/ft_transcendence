@@ -35,7 +35,7 @@ model User {
     login      String   @unique
     first_name String?
     last_name  String?
-    avatar_url String?
+    avatar_url String?  @default("/storage/default/user.png")
     email      String   @unique
     state      Boolean  @default(false)
     password   String   @default(cuid())

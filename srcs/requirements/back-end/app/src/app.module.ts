@@ -7,6 +7,8 @@ import { AuthController } from './auth/controllers/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { RelationModule } from "./relation/relation.module";
+import { PublicController } from './public/controllers/public.controller';
+import { PublicModule } from './public/public.module';
 
 @Module({
     imports: [
@@ -15,6 +17,7 @@ import { RelationModule } from "./relation/relation.module";
         UserModule,
         ChatModule,
 		RelationModule,
+		PublicModule,
     ],
     providers: [
         PrismaService

@@ -10,9 +10,9 @@ import { UserContext } from "../../contexts/User.context";
 
 export const ProfileComponent = () => {
 
-    const {user, setShow} : any = (ProfilePopUpContext);
+    const {user, setShow} : any = useContext(ProfilePopUpContext);
     const {handleError, handleSuccess} : any = useContext(AlertContext);
-    const { me } : any = useContext(UserContext);
+    const {me}: any = useContext(UserContext)
 
     const handleSendFriendRequest = () => {
         API.sendFriendRequest(user.id,
@@ -26,21 +26,24 @@ export const ProfileComponent = () => {
 
   return (
     <>
+        {/*{console.log(me.id)}*/}
         <div className={s.container}>
             <div className={s.pop_up}>
                 <a className={s.close_button} onClick={() => setShow(false)} title="Close the window">
                     <BsXLg/>
-                </a>  
-                <div className={s.action_buttons}>
-                    <a className={s.send_message} title="Send message to this person">
-                        <FiSend/>
-                    </a>
-                    <a className={s.friend_request} title="Send friend request to this person"  onClick={() => handleSendFriendRequest()}>
-                        <AiOutlineUsergroupAdd/>
-                    </a>
-                </div>
+                </a>
+                {me?.login !== user?.login &&
+                    <div className={s.action_buttons}>
+                        <a className={s.send_message} title="Send message to this person">
+                            <FiSend/>
+                        </a>
+                        <a className={s.friend_request} title="Send friend request to this person"  onClick={() => handleSendFriendRequest()}>
+                            <AiOutlineUsergroupAdd/>
+                        </a>
+                    </div>
+                }
                 <div className={s.picture_section}>
-                    <img src={"http://localhost:3000/api/user/profile/picture/" + user.login}></img>
+                    <img src={"http://localhost:3000/api/public/picture/" + user.login}></img>
                 </div>
                 <div className={s.name_section}>
                     <h1>{user.login?.substring(0, 25)}</h1>

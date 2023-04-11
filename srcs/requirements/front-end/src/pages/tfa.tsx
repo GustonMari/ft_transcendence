@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { BackGroundForm } from "../components/forms/BackGroundForm";
 import TFAForm from "../components/forms/TFAForm";
 import { AlertContext } from "../contexts/Alert.context";
 
@@ -22,11 +21,9 @@ export default function TFA () {
 
     return (
         <>
-            <BackGroundForm>
-                {username && code &&
-                    <TFAForm code={code} username={username}/>
-                }
-            </BackGroundForm>
+            {username && code &&
+                <TFAForm code={code} username={username}/>
+            }
         </>
     );
 }

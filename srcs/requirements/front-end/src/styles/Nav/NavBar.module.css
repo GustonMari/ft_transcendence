@@ -120,6 +120,7 @@ body {
     height: 50px;
     border-radius: 12px;
     background-color: rgb(214, 214, 214);
+    object-fit: contain;
 }
 
 .container .profile_footer .profile_info a  {

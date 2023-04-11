@@ -5,10 +5,10 @@ import { UserProvider } from "./User.context";
 export default function WrapContext ({components}: any) {
 
     return (
-        <ProfilePopUpProvider>
         <UserProvider>
+        <ProfilePopUpProvider>
             {components}
-        </UserProvider>
         </ProfilePopUpProvider>
+        </UserProvider>
     )
 } 
