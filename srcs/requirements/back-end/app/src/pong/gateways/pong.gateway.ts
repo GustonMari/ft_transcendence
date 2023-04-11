@@ -27,7 +27,7 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 
 	constructor(private pongService: PongService){
-
+		console.log("PongGateway");
 	 }
 
 	@WebSocketServer() // Create a instance of the server
@@ -75,7 +75,8 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	async updateGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
 		// console.log("updateGame");
 		let ret = await this.pongService.updateGame(data);
-		socket.emit('GameUpdated', ret);
+
+		socket.emit('GameUpdated', ret);  
 		// this.x += this.vector.x * this.velocity * data.delta;
 		// this.y += this.vector.y * this.velocity * data.delta;
 		// // console.log('x =', this.x);

@@ -99,24 +99,26 @@ export class PongService {
 
 	async updateGame(data: any): Promise<{x: number, y: number}>
 	{
-		// console.log('vector.x =', this.vector.x, 'vector.y =', this.vector.y, 'velocity =', this.velocity);
-		console.log()
-		this.x += this.vector.x * this.velocity * data.delta;
-		this.y += this.vector.y * this.velocity * data.delta;
+		// this.x += this.vector.x * this.velocity * data.delta;
+		// this.y += this.vector.y * this.velocity * data.delta;
+		this.x += this.vector.x * 0.25;
+		this.y += this.vector.y * 0.25;
 		// console.log('x =', this.x);
 		// console.log('y =', this.y);
 		this.velocity += 0.00001 * data.delta;
 		const rect = data.ballRect;
+		console.log('rect =', rect, 'limit terrain =', data.limit, 'this.vector y =', this.vector.y);
 		if(rect.top <= data.limit.top || rect.bottom >= data.limit.bottom) {
 			this.vector.y *= -1;	
-			console.log("piscine chez paulette part 2", rect)
-			// console.log("exited bitch")
-			// exit(1);
+			console.log('vector y =', this.vector.y);
+			// console.log("piscine chez paulette part 2", rect)
+			console.log("exited bitch")
+			this.reset();// exit(1);
 		}
 		if (this.isCollision(rect, data.playerPaddleLeft) 
 		|| this.isCollision(rect, data.playerPaddleRight))
 		{ 
-			console.log('collision !!! rect =', rect, ' player left =', data.playerPaddleLeft, ' player right = ', data.playerPaddleRight );
+			// console.log('collision !!! rect =', rect, ' player left =', data.playerPaddleLeft, ' player right = ', data.playerPaddleRight );
 			// exit(1);
 			
 			this.vector.x *= -1; 

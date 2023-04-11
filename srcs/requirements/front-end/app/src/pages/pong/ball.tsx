@@ -13,6 +13,7 @@ export class Ball {
 
 	constructor(BallElem: any, setLeftScore: any, setRightScore: any, socket: Socket)
 	{
+		console.log('constructor ball');
 		socket.emit('defineBall');
 		this.vector = {x: 0.1, y: 0.1};
 		this.BallElem = BallElem;
@@ -120,7 +121,7 @@ export class Ball {
 			// this.vector = data.vector;
 			// this.velocity = data.velocity;
 			// console.log('updateGame      ===== ', this.rect());
-		console.log('x =', this.x, 'y =', this.y, ' rect = ', this.rect());
+		// console.log('x =', this.x, 'y =', this.y, ' rect = ', this.rect());
 
 		});
 		// this.x += this.vector.x * this.velocity * delta;
