@@ -110,20 +110,12 @@ export class PongService {
 		const rect = data.ballRect;
 
 		if(rect.top <= data.limit.top || rect.bottom >= data.limit.bottom) {
-			this.vector.y *= -1;	
-			// console.log('vector y =', this.vector.y);
-			// console.log("piscine chez paulette part 2", rect)
-			// console.log("exited bitch")
-			this.reset();
+			this.vector.y *= -1;
 		}
 		if (await this.isCollision(rect, data.playerPaddleLeft)
 		|| await this.isCollision(rect, data.playerPaddleRight))
 		{ 
-			// console.log('collision !!! rect =', rect, ' player left =', data.playerPaddleLeft, ' player right = ', data.playerPaddleRight );
-			// exit(1);
-			// console.log('ball = ', rect, ' paddle  left = ', data.playerPaddleLeft, 'paddle right = ', data.playerPaddleRight );
 			this.vector.x *= -1;
-			// exit(1);
 		}
 		await this.sideColision(rect, data.limit);
 		return ({x: this.x, y: this.y});
@@ -164,13 +156,13 @@ export class PongService {
 			if (rect.left <= limit.left)
 			{
 				console.log("scored!!");
-				await this.setRightScore((prevScore: number) => prevScore + 1);
+				// await this.setRightScore((prevScore: number) => prevScore + 1);
 				await this.reset();
 			}
 			if (rect.right >= limit.right)
 			{
 				console.log("scored!!");
-				await this.setLeftScore((prevScore: number) => prevScore + 1);
+				// await this.setLeftScore((prevScore: number) => prevScore + 1);
 				await this.reset();
 			}
 			this.vector.x *= -1;

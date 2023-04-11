@@ -143,9 +143,6 @@ export function ExecutePong() {
 			setLimit(rect);
 			newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
 			setBall(ballElement);
-			// console.log("ball = ", ballElement);
-			// console.log("limit = ", newLimit);
-			// console.log('socket = ', socket);
 		}
 	}, []);
 
@@ -199,23 +196,8 @@ export function ExecutePong() {
 					}
 					if (newLimit)
 					{
-						// setTimeout(() => {
-							// if (newLimit)
 								pongBall.update(delta, newLimit, playerPaddleLeft, playerPaddleRight);
-						// }, 1000	);
 					}
-						// setTimeout(() => {
-						// 	socket?.emit('reset', {});
-						// }, 3000	);
-
-						// ball?.classList.add('scored');
-						// ball?.animate([
-						// 	{ transform: 'translateX(0)' },
-						// 	{ transform: 'translateX(1000px)' },
-						// ], {
-						// 	duration: 10000,
-						// 	fill: 'forwards',
-						// });
 
 					document.addEventListener("keydown", DownHandler);
 					document.addEventListener("keyup", UpHandler);
@@ -256,146 +238,3 @@ export function ExecutePong() {
 		</div>
 	);
 }
-
-
-// export function ExecutePong() {
-// 	const [ball, setBall] = useState<HTMLDivElement | null>(null);
-// 	const [limit, setLimit] = useState<DOMRect | undefined>(undefined);
-// 	const [trigger, setTrigger] = useState<number>(0);
-// 	const [leftscore, setLeftScore] = useState<number>(0);
-// 	const [rightscore, setRightScore] = useState<number>(0);
-// 	let newLimit: DOMRect | undefined;
-// 	let first: boolean = false;
-// 	let playerPaddleLeft = new Paddle(document.getElementById("player-paddle-left") as HTMLDivElement);
-// 	let playerPaddleRight = new Paddle(document.getElementById("player-paddle-right") as HTMLDivElement);
-// 	let	leftUpPressed : boolean = false;
-// 	let leftDownPressed : boolean = false;
-// 	let rightUpPressed : boolean = false;
-// 	let rightDownPressed : boolean = false;
-// 	let collision = document.getElementById("collision");
-// 	const socket = useContext(PongContext);
-
-// 	useEffect(() => {
-// 		console.log('init the game');
-// 		const ballElement = document.getElementById("ball") as HTMLDivElement;
-		
-// 		let rect;
-		
-// 		const divElement = document.getElementById("pong-body");
-// 		if (divElement)
-// 		rect = divElement?.getBoundingClientRect();
-		
-// 		if (ballElement && rect) {
-// 			setLimit(rect);
-// 			newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
-// 			setBall(ballElement);
-// 			// console.log("ball = ", ballElement);
-// 			// console.log("limit = ", newLimit);
-// 			// console.log('socket = ', socket);
-// 		}
-// 	}, []);
-
-
-// 	const DownHandler = (e: any) => {
-// 		if (e.keyCode == 87) {
-// 			leftUpPressed = true;
-// 			if (newLimit && playerPaddleLeft) {
-// 				playerPaddleLeft.position -= 2;
-// 			}
-// 		}
-// 					else if (e.keyCode == 83) {
-// 						leftDownPressed = true;
-// 						if (newLimit && playerPaddleLeft) {
-// 							playerPaddleLeft.position += 2;
-// 						}
-// 					}
-// 					if (e.keyCode == 38) {
-// 						rightUpPressed = true;
-// 						console.log("up");
-// 					}
-// 					else if (e.keyCode == 40) {
-// 						rightDownPressed = true;
-// 						console.log("down");
-// 					}
-// 					e.preventDefault();
-// 	}
-			
-// 			const UpHandler = (e: any) => {
-// 				if (e.keyCode == 87) {
-// 					leftUpPressed = false;
-// 				}
-// 				else if (e.keyCode == 83) {
-// 					leftDownPressed = false;
-// 				}
-// 				if (e.keyCode == 38) {
-// 					rightUpPressed = false;
-// 				}
-// 				else if (e.keyCode == 40) {
-// 					rightDownPressed = false;
-// 				}
-// 			}
-
-// 			const update = (lastTime: number, pongBall: Ball, playerPaddleLeft: Paddle, playerPaddleRight: Paddle, limit?: DOMRect) => (time: number) => {
-
-// 				if (lastTime != undefined || lastTime != null) {
-// 					const delta = time - lastTime;
-// 					if (first === false) {
-// 						newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
-// 						first = true;
-// 					}
-// 					if (newLimit)
-// 					{
-// 						// setTimeout(() => {
-// 							// if (newLimit)
-// 								pongBall.update(delta, newLimit, playerPaddleLeft, playerPaddleRight);
-// 						// }, 20	);
-// 					}
-
-
-// 						// ball?.classList.add('scored');
-// 						// ball?.animate([
-// 						// 	{ transform: 'translateX(0)' },
-// 						// 	{ transform: 'translateX(1000px)' },
-// 						// ], {
-// 						// 	duration: 10000,
-// 						// 	fill: 'forwards',
-// 						// });
-
-// 					document.addEventListener("keydown", DownHandler);
-// 					document.addEventListener("keyup", UpHandler);
-// 					window.addEventListener('resize', () => {
-// 						newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
-// 					});
-// 				}
-// 				lastTime = time;
-// 				window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight, newLimit));
-				
-// 			};
-
-
-			
-// 			useEffect(() => {
-// 				if (ball && socket) {
-// 					const pongBall = new Ball(ball, setLeftScore, setRightScore, socket);
-// 					let lastTime: number = 0;
-// 					window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight));
-// 			  }
-// 			}, [ball]);
-
-// 	return (
-// 		<div className={Style['container-game']}>
-// 		<h1>Pong game</h1>
-// 			<div className={Style['pong-body']} id="pong-body">
-// 				<span id="collision"></span>
-// 				<title>Pong</title>
-// 				<div className={Style.score}>
-// 					<div className={Style['left-score']}>{leftscore}</div>
-// 					<div className={Style['right-score']}>{rightscore}</div>
-// 				</div>
-// 				<div className={`${Style.ball} `} id="ball"></div>
-// 				<div className={`${Style.paddle} ${Style.left}`} id="player-paddle-left"></div>
-// 				<div className={`${Style.paddle} ${Style.right}`} id="player-paddle-right"></div>
-// 			</div>
-// 		</div>
-// 	);
-// }
