@@ -24,9 +24,14 @@ export default function LoginForm() {
         login: login,
         password: pw,
       },
-      () => {
-        navigate("/home");
-        handleSuccess("You are now connected");
+      (d: string) => {
+        if (d) {
+          navigate('/' + d);
+          handleSuccess("Please check with TFA");
+        } else {
+          navigate("/home");
+          handleSuccess("You are now connected");
+        }
       },
       (err: any) => {
         handleError("Wrong login or password");

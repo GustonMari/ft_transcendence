@@ -10,9 +10,9 @@ import { UserContext } from "../../contexts/User.context";
 
 export const ProfileComponent = () => {
 
-    const {user, setShow} : any = useContext(ProfilePopUpContext);
+    const {user, setShow} : any = (ProfilePopUpContext);
     const {handleError, handleSuccess} : any = useContext(AlertContext);
-    const {me} : any = useContext(UserContext);
+    const { me } : any = useContext(UserContext);
 
     const handleSendFriendRequest = () => {
         API.sendFriendRequest(user.id,
@@ -40,7 +40,7 @@ export const ProfileComponent = () => {
                     </a>
                 </div>
                 <div className={s.picture_section}>
-                    <img src={user.avatar_url}></img>
+                    <img src={"http://localhost:3000/api/user/profile/picture/" + user.login}></img>
                 </div>
                 <div className={s.name_section}>
                     <h1>{user.login?.substring(0, 25)}</h1>

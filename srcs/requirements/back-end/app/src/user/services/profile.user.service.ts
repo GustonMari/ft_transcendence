@@ -42,4 +42,12 @@ export class ProfileService {
             avatar_url: file.path,
         });
     }
+
+    async findPP (
+        username: string,
+    ) {
+        return ((await this.userService.findUniqueUser({
+            login: username,
+        }))?.avatar_url);
+    }
 }

@@ -7,12 +7,12 @@ export default class API {
 
   static async signIn(
     opt: SignInOptions,
-    successFunc: () => void,
+    successFunc: (url: string) => void,
     errorFunc: (err: ApiError) => void
   ) {
     try {
-      await APP.post("/auth/signin", opt);
-      successFunc();
+      const d: any = await (await APP.post("/auth/signin", opt)).data;
+      successFunc(d.url);
     } catch (err) {
         if (axios.isAxiosError(err)) {
                 const error = err as any;

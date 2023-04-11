@@ -8,12 +8,10 @@ import { Friends } from "./pages/friend";
 import Profile from "./pages/profile";
 import { Result } from "./pages/search";
 import { NotFound } from "./errors/NotFound";
-import { UserProvider } from "./contexts/User.context";
 import WrapContext from "./contexts/wrap.context";
 import { GlobalFeatures } from "./components/communs/GlobalFeatures";
 import PublicRoute from "./components/routes/PublicRoute";
 import TFA from "./pages/tfa";
-import Chat from "./pages/chat";
 import { AlertProvider } from "./contexts/Alert.context";
 import { Welcome } from "./pages/welcome";
 

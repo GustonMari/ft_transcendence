@@ -73,6 +73,14 @@ export class AuthService {
         const passwordMatch = await argon.verify(user_raw.password, dto.password);
         if (!passwordMatch) throw new UnauthorizedException('Invalid password');
 
+        if (user_raw.tfa === true) {
+            const url = await this.generateTFA(user_raw.login);
+            return ({
+                access_token: url,
+                refresh_token: undefined,
+            });
+        }
+
         const user_token: TokenPayloadRO = plainToClass(
             TokenPayloadRO,
             user_raw,

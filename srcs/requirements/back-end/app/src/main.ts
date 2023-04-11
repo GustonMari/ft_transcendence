@@ -8,7 +8,6 @@ import * as cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe({
-    // Remove every elements not defined in the DTO
     whitelist: true,
   }));
 
