@@ -7,7 +7,7 @@ export function Welcome() {
 
     return (
         <>
-            <section>
+            <section className={s.section}>
                 <div className={s.content}>
                     <h1 className={s.content__title}>ft_transcendence</h1>
                     <p className={s.content__info}>

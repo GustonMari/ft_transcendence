@@ -37,7 +37,6 @@ export const Result = (props: any) => {
 
     return (
         <>
-            <NavBar/>
             <div className={s.container}>
                     <div className={s.search_input}>
                             <input type="text" placeholder="Search" onChange={

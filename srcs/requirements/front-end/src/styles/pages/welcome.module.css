@@ -157,7 +157,7 @@ body * {
 
 }
 
-section {
+.section {
     background: url(../../../public/back.png) no-repeat center;
     transform-style: revert;
     position: relative;

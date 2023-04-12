@@ -38,6 +38,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "full.screen.before.presentation.mode": "true",
+    "git-widget-placeholder": "navbar",
     "last_opened_file_path": "/Users/mathias.mrsn/42/ft_transcendence",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
@@ -63,6 +64,21 @@
       <recent name="$PROJECT_DIR$/srcs/requirements/back-end/app/src/public/controllers" />
     </key>
   </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="ft_transcendence" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="ft_transcendence" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -77,7 +93,8 @@
       <workItem from="1681059857607" duration="47000" />
       <workItem from="1681059912129" duration="6718000" />
       <workItem from="1681161817474" duration="27684000" />
-      <workItem from="1681285512879" duration="5336000" />
+      <workItem from="1681285512879" duration="5400000" />
+      <workItem from="1681293760863" duration="201000" />
     </task>
     <task id="LOCAL-00001" summary="TFA works for basic login but idk why the upload of PP dont work and the GetMe cannot find the user">
       <created>1681196835068</created>
