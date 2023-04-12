@@ -58,7 +58,8 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 	@SubscribeMessage('addsocket')
 	async addSocketToUser(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-		await this.chatService.addSocketToUser(data.id, socket.id);
+		if (data && data.id && data.id != null && data.id != undefined)
+			await this.chatService.addSocketToUser(data.id, socket.id);
 	}
 
 	@SubscribeMessage('getSocketById')

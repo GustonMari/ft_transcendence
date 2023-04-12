@@ -166,7 +166,7 @@ function Popup_invite_pong(props : any) {
 		setPopup_pong(null);
 	};
 	// const handleShow = () => setShow(true);
-	console.log('oooooooooooooooooooo =', sender_invite, "aaaaaaaaaaaaaaaaaaaaa = ", currentUser);
+	// console.log('oooooooooooooooooooo =', sender_invite, "aaaaaaaaaaaaaaaaaaaaa = ", currentUser);
 
 	if (!sender_invite)
 		return (<div>
@@ -187,6 +187,7 @@ function Popup_invite_pong(props : any) {
 	}
 
 	if (triggerPong == true) {
+		
 		return (
 			<Navigate to="/pong" />
 		);

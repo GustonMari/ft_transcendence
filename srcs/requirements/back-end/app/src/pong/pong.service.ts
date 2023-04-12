@@ -17,6 +17,7 @@ export class PongService {
 	y: number;
 	back_width: number;
 	back_height: number;
+	back_ball: {width: number, height: number, left: number, right: number, top: number, bottom: number};
 	// socket: Socket;
 
 	constructor(private readonly prisma: PrismaService) {
@@ -24,6 +25,7 @@ export class PongService {
 		// this.y = 50;
 		this.back_width = 900;
 		this.back_height = 550;
+		this.back_ball = {width: 40, height: 40, left: 0, right: 0, top: 0, bottom: 0};
 		// this.vector = { x: 0.1, y: 0.1};
 		this.leftScore = 0;
 		this.rightScore = 0;
@@ -110,6 +112,22 @@ export class PongService {
 		return (true);
 	}
 
+	// async bounceBallTop(): Promise<{x: number, y: number}> {
+	// 	let new_vector = this.vector.y * -1;
+	// 	this.vector.y = new_vector;
+	// 	let new_y = this.y + 5;
+	// 	this.y = new_y;
+	// 	return ({x: this.x, y: this.y});
+	// }
+
+	// async bounceBallBottom(): Promise<{x: number, y: number}> {
+	// 	let new_vector = this.vector.y * -1;
+	// 	this.vector.y = new_vector;
+	// 	let new_y = this.y - 5;
+	// 	this.y = new_y;
+	// 	return ({x: this.x, y: this.y});
+	// }
+
 	async updateGame(data: any): Promise<{x: number, y: number, leftScore: number, rightScore: number}>
 	{
 		if (this.leftScore == 11 || this.rightScore == 11)
@@ -121,13 +139,18 @@ export class PongService {
 		this.velocity += 0.00001 * data.delta;
 		const rect = data.ballRect;
 		if(rect.top <= data.limit.top) {
+			// await this.bounceBallTop();
+			this.y += 5;
 			this.vector.y *= -1;
-			this.y += 3;
+			// console.log('1 this y = ', this.y, 'vector y =', this.vector.y);
+
 		}
 		else if ( rect.bottom >= data.limit.bottom)
 		{
+			// await this.bounceBallBottom();
+			this.y -= 5;
 			this.vector.y *= -1;
-			this.y -= 3;
+			// console.log('2 this y = ', this.y, 'vector y =', this.vector.y);
 		}
 		if (await this.isCollision(rect, data.playerPaddleLeft))
 		{
@@ -140,6 +163,10 @@ export class PongService {
 			this.x -= 1.5;
 		}
 		await this.sideColision(rect, data.limit);
+		if (this.x < 0)
+			this.x *= -1;
+		if (this.y < 0)
+			this.y *= -1;
 		return ({x: this.x, y: this.y, leftScore: this.leftScore, rightScore: this.rightScore});
 		
 	}
@@ -202,6 +229,7 @@ export class PongService {
 		this.rightScore = 0;
 		await this.reset();
 	}
+
 
 	// async convert_front_to_back(new_witdh: number, new_height: number): Promise<any> {
 	// 	let ratio_x = new_witdh / this.back_width;
