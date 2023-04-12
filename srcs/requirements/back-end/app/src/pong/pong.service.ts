@@ -137,8 +137,8 @@ export class PongService {
 
 	async calculateBallLimmit()
 	{
-		this.back_ball.left = (this.x - ((this.back_width * 2) / 90));
-		this.back_ball.right = (this.x + ((this.back_width * 2) / 90));
+		this.back_ball.left = (this.x - ((this.back_width * 2) / 90) + 3);
+		this.back_ball.right = (this.x + ((this.back_width * 2) / 90) - 3);
 		// this.back_ball.top = (this.y - ((100 * 2) / 55));
 		// this.back_ball.bottom = (this.y + ((100 * 2) / 55));
 		this.back_ball.top = (this.y - ((100 * 2) / 55));
@@ -191,6 +191,7 @@ export class PongService {
 
 			// this.x -= 1.5;
 		}
+		//TODO: faire en sorte que la ball sorte entierement pour marquer un point
 		await this.sideColision(this.back_ball, this.back_limit);
 		return ({x: this.x, y: this.y, leftScore: this.leftScore, rightScore: this.rightScore});
 		
