@@ -26,7 +26,11 @@ export class PongService {
 		this.y = 50;
 		this.back_width = 100;
 		this.back_height = 100;
-		this.back_ball = {width: ((100 * 4) / 90), height: ((100 * 4) * 55), left: (50 - ((100 * 4) * 90)) , right: (50 + ((100 * 4) * 90)), top: (50 - ((100 * 4) * 55)), bottom: (50 + ((100 * 4) * 55))};
+		this.back_ball = {width: ((100 * 2) / 90), height: ((100 * 2) * 55), left: (50 - ((100 * 2) * (90 - 3))) , right: (50 + ((100 * 2) * 90)), top: (50 - ((100 * 2) * (55 - 3))), bottom: (50 + ((100 * 2) * 55))};
+		// this.back_ball = {width: ((100 * 2) / 90), height: ((100 * 2) * 55), left: (50 - ((100 * 2) * 90)) , right: (50 + ((100 * 2) * 90)), top: (50 - ((100 * 2) * 55)), bottom: (50 + ((100 * 2) * 55))};
+		
+
+
 		// this.back_ball = {width: 4.44444, height: 7.2727, left: 47.77778, right: 53.6363, top: 0, bottom: 0};
 		// this.vector = { x: 0.1, y: 0.1};
 		this.back_limit = {top: 0, bottom: 100, left: 0, right: 100};
@@ -133,10 +137,12 @@ export class PongService {
 
 	async calculateBallLimmit()
 	{
-		this.back_ball.left = (this.x - ((this.back_width * 4) / 90));
-		this.back_ball.right = (this.x + ((this.back_width * 4) / 90));
-		this.back_ball.top = (this.y - ((100 * 4) / 55));
-		this.back_ball.bottom = (this.y + ((100 * 4) / 55));
+		this.back_ball.left = (this.x - ((this.back_width * 2) / 90));
+		this.back_ball.right = (this.x + ((this.back_width * 2) / 90));
+		// this.back_ball.top = (this.y - ((100 * 2) / 55));
+		// this.back_ball.bottom = (this.y + ((100 * 2) / 55));
+		this.back_ball.top = (this.y - ((100 * 2) / 55));
+		this.back_ball.bottom = (this.y + ((100 * 2) / 55) - 7.27);
 	}
 
 	async updateGame(data: any): Promise<{x: number, y: number, leftScore: number, rightScore: number}>
@@ -155,7 +161,7 @@ export class PongService {
 		// this.back_ball.right = (this.x + ((this.back_width * 4) / 90));
 		// this.back_ball.top = (this.y - ((100 * 4) / 55));
 		// this.back_ball.bottom = (this.y + ((100 * 4) / 55));
-		console.log(' x = ', this.x, ' y = ', this.y, ' ball left =', this.back_ball.left, ' ball right =', this.back_ball.right, ' ball top =', this.back_ball.top, ' ball bottom =', this.back_ball.bottom);
+		// console.log(' x = ', this.x, ' y = ', this.y, ' ball left =', this.back_ball.left, ' ball right =', this.back_ball.right, ' ball top =', this.back_ball.top, ' ball bottom =', this.back_ball.bottom);
 		// const rect = this.back_ball;
 		if(this.back_ball.top && this.back_ball.top <= this.back_limit.top) {
 			// await this.bounceBallTop();
@@ -168,6 +174,7 @@ export class PongService {
 		{
 			// await this.bounceBallBottom();
 			// this.y -= 5;
+			console.log('this y = ', this.y, "back_ball bottom = ", this.back_ball.bottom, "| back_ball_top = ", this.back_ball.top)
 			this.vector.y *= -1;
 
 			// console.log('2 this y = ', this.y, 'vector y =', this.vector.y);

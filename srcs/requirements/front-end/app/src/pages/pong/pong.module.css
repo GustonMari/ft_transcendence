@@ -124,8 +124,10 @@
 	--insideball: 0.2;
 	--outsideball: 0.5;
 	position: absolute;
-	top: calc(var(--y) * (55vh - 3vh) / 100);
-	left: calc(var(--x) * (90vh - 3vh) / 100);
+	top: calc(var(--y) * (55vh - 4vh) / 100);
+	left: calc(var(--x) * (90vh - 4vh) / 100);
+	/* top: calc(var(--y) * (55vh - 3vh) / 100); */
+	/* left: calc(var(--x) * (90vh - 3vh) / 100); */
 	transform: translateY(-50%);
 	/* background-color: var(--foreground-color); */
 	background-color: #121212;
@@ -152,14 +154,14 @@
 
 @keyframes balldesign {
 	0%{
-		transform: rotate(0);
-		filter: hue-rotate(0deg);
+		/* transform: rotate(0); */
+		/* filter: hue-rotate(0deg); */
 	}
 	50%{
-		filter: hue-rotate(100deg);
+		/* filter: hue-rotate(100deg); */
 	}
 	100%{
-		transform: rotate(360deg);
+		/* transform: rotate(360deg); */
 	}
 }
 
