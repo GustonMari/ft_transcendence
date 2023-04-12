@@ -223,7 +223,7 @@ export function ExecutePong() {
 
 	return (
 		<div className={Style['container-game']}>
-		<h1>Pong game</h1>
+		{/* <h1>Pong game</h1> */}
 			<div className={Style['pong-body']} id="pong-body">
 				<span id="collision"></span>
 				<title>Pong</title>

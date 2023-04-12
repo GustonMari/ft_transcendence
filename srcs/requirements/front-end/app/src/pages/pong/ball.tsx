@@ -5,7 +5,7 @@ import { useEffect } from "react";
 export class Ball {
 	
 	BallElem: any;
-	ballRect: DOMRect;
+	ballRect: any;
 	// vector: {x: number, y: number};
 	velocity: number = 0.25;
 	setLeftScore: any;
