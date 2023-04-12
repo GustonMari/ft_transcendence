@@ -120,11 +120,6 @@ export class PongService {
 		this.y += this.vector.y * this.velocity * data.delta;
 		this.velocity += 0.00001 * data.delta;
 		const rect = data.ballRect;
-		console.log("rect = ", data.ballRect, "limit = ", data.limit);
-		exit(1);
-		// if(rect.top <= data.limit.top || rect.bottom >= data.limit.bottom) {
-		// 	this.vector.y *= -1;
-		// }
 		if(rect.top <= data.limit.top) {
 			this.vector.y *= -1;
 			this.y += 3;
@@ -134,11 +129,6 @@ export class PongService {
 			this.vector.y *= -1;
 			this.y -= 3;
 		}
-		// if (await this.isCollision(rect, data.playerPaddleLeft)
-		// || await this.isCollision(rect, data.playerPaddleRight))
-		// { 
-		// 	this.vector.x *= -1;
-		// }
 		if (await this.isCollision(rect, data.playerPaddleLeft))
 		{
 			this.vector.x *= -1;
