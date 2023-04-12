@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { exit } from 'process';
+import { Socket } from 'socket.io';
+
 
 @Injectable()
 export class PongService {
@@ -15,6 +17,7 @@ export class PongService {
 	y: number;
 	back_width: number;
 	back_height: number;
+	// socket: Socket;
 
 	constructor(private readonly prisma: PrismaService) {
 		// this.x = 50;
@@ -34,6 +37,11 @@ export class PongService {
 		let all = {BallElem: this.BallElem, vector: this.vector, velocity: this.velocity, leftScore: this.leftScore, rightScore: this.rightScore , x: this.x, y: this.y};
 		return (all);
 	}
+
+	// async assignSocket(socket: Socket)
+	// {
+	// 	this.socket = socket;
+	// }
 
 	async createGame(master: User, slave: User): Promise<boolean> {
 
@@ -169,11 +177,11 @@ export class PongService {
 	}
 
 	async incrLeftScore() {
-		this.leftScore += 1;
+		this.leftScore++;
 	}
 
 	async incrRightScore() {
-		this.rightScore += 1;
+		this.rightScore++;
 	}
 
 
@@ -183,16 +191,18 @@ export class PongService {
 			if (rect.left <= limit.left)
 			{
 				console.log("scored left!!", this.leftScore, "scored right!!", this.rightScore);
-				await this.incrRightScore();
+				console.log('ball left = ', rect.left, 'limit left = ', limit.left)
 				await this.reset();
+				await this.incrRightScore();
 			}
-			if (rect.right >= limit.right)
+			else if (rect.right >= limit.right)
 			{
 				console.log("scored left!!", this.leftScore, "scored right!!", this.rightScore);
-				await this.incrLeftScore();
+				console.log('ball right = ', rect.right, 'limit right = ', limit.right);
 				await this.reset();
+				await this.incrLeftScore();
 			}
-			this.vector.x *= -1;
+			// this.vector.x *= -1;
 		}
 	}
 

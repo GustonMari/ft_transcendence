@@ -127,18 +127,18 @@ export class Ball {
 			// console.log('data.x = ', data);
 			this.x = data.x;
 			this.y = data.y;
-
-			// this.setLeftScore(data.leftScore);
-			// this.setRightScore(data.rightScore);
+			// console.log('score =', data.leftScore, ' | ', data.rightScore);
+			this.setLeftScore(data.leftScore);
+			this.setRightScore(data.rightScore);
 
 
 		});
 
-		this.socket?.on('updateScore', (data: any) => {
+		// this.socket?.on('updateScore', (data: any) => {
 			// console.log('leftScore = ', data.leftScore, 'rightScore = ', data.rightScore)
 			// this.setLeftScore(data.leftScore);
 			// this.setRightScore(data.rightScore);
-		});
+		// });
 	}
 
 }
