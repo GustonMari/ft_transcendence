@@ -1,5 +1,5 @@
 import { APP } from "../../network/app";
-import '../../styles/messages/Style.message.css';
+import StyleRoom from "../../styles/rooms/Style.room.module.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import { Modal } from 'react-bootstrap';
@@ -38,16 +38,17 @@ export function PopupDelete(props: any) {
 		  trigger={(open) => (
 			<button
 			  type="submit"
-			  className="line-room-button"
+			  className={StyleRoom["line-room-button"]}
 			  id={id}
 			  onClick={() => {}}
 			>
+			  {/* <img className={StyleRoom["icon-room"]} src="./delete-room.png" alt="delete room" /> */}
 			  <RiDeleteBinLine title="Delete the room"/>
 			</button>
 		  )}
 		>
 		  <div>
-			<button className='line-room-button-popup'
+			<button className={StyleRoom['line-room-button-popup']}
 			  onClick={() => {
 				const is_owner = async () => {
 					const res = await APP.post("/chat/get_isowner_login", {room_name: room.name, login: current_user.login});
@@ -57,10 +58,12 @@ export function PopupDelete(props: any) {
 				is_owner();
 			}}
 			>
-                <SlCheck title="Accept"/>
+				{/* <img className={StyleRoom["icon-room-popup"]} src="./accept.png" alt="leave room" /> */}
+				<SlCheck title="Accept"/>
 			</button>
-			<button className='line-room-button-popup' onClick={closeTooltip}>
-                <SlBan title="Refuse"/>
+			<button className={StyleRoom['line-room-button-popup']} onClick={closeTooltip}>
+				{/* <img className={StyleRoom["icon-room-popup"]} src="./cancel.png" alt="leave room" /> */}
+				<SlBan title="Refuse"/>
 			</button>
 		  </div>
 		</Popup>

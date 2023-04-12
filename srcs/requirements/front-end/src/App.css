@@ -18,3 +18,7 @@ body {
 @import "tailwindcss/components";
 
 @import "tailwindcss/utilities";
+
+body::-webkit-scrollbar {
+	display: none;
+  }

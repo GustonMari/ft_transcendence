@@ -1,0 +1,406 @@
+/******************************************************
+GLOBAL
+******************************************************/
+
+@import "bootstrap";
+
+
+/* For all */
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+
+.global {
+  display: flex;
+  justify-content: space-between;
+  height: 100vh;
+  min-width: 120vh;
+  flex-direction: row;
+  outline: solid yellow;
+  overflow-x: hidden;
+
+  margin-left: 80px;
+
+   /* background-image: url("../../../static/chat/background-trans.jpg");
+  background-size: cover;
+  background-position: center center; */
+
+}
+
+.global::before {
+  content: "";
+  /* background-image: url("../../../public/chat/background-trans.jpg"); */
+  background-size: cover;
+  background-position: left top;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  z-index: -1;
+  animation: blur 20s infinite; 
+  background-attachment: fixed;
+}
+
+@keyframes blur {
+  0% {
+    filter: saturate(100%);
+  }
+  50% {
+    filter: saturate(200%);
+  }
+  100% {
+    filter: saturate(100%);
+  }
+}
+
+
+/******************************************************
+MESSAGE
+*******************************************************/
+
+/*Global of middle menu*/
+.message-box {
+
+	display: flex;
+	flex-direction: column;
+	/* outline: solid black; */
+	min-height: 100vh;
+	min-width: 60vh;
+	flex: 1;
+	overflow: auto;
+	overflow-wrap: break-word;
+	overflow-x: hidden;
+	overflow-y: hidden;
+
+}
+
+
+.borderbox-msg/* , .borderbox-param */{
+	display: flex;
+	flex: 1;
+	background-color:  rgba(39, 6, 47, 0.764);
+	border-radius: 10px;
+	color: white;
+	padding: 3px;
+	border: 2px solid rgba(39, 6, 47, 0.2);
+	box-shadow: 0px 0px 10px 2px rgba(39, 6, 47, 0.13);
+
+}
+
+/* input of a message */
+.inputmessage{
+	display: flex;
+	margin: 1px;
+  margin-right: 5px;
+	/* margin: 7px; */
+	padding: 7px;
+  align-items: center;
+  background: rgba(39, 6, 47, 0.358);
+  border-radius: 5px;
+  /* outline: red solid 1px; */
+	/* justify-content: space-between; */
+	/* align-items: flex-end; */
+	/* overflow-wrap: break-word; */
+}
+
+/* List of message, combine history and real time socket message*/
+.print-message {
+	flex: 1;
+	overflow-y: scroll;
+	display: flex;
+	flex-direction: column;
+	/* outline: solid red; */
+  /* background: rgba(39, 6, 47, 0.358); */
+
+	
+}
+
+/*Wrapp message receiver to put the box to the right*/
+.wrapper-message {
+	display: flex;
+	align-items: flex-end;
+	/* justify-content: flex-end; */
+}
+
+.wrapper-msg-and-img-left {
+	display: flex;
+	align-items: flex-end;
+	/* flex-direction: column; */
+	/* outline: solid red; */
+}
+
+.wrapper-msg-and-img-right {
+	display: flex;
+	align-items: flex-end;
+	/* flex-direction: column; */
+	/* outline: solid red; */
+}
+
+.img-message-left {
+	height: 30px;
+	width: 30px;
+	border-radius: 50%;
+	/* margin-right: 10px; */
+	margin-left: 3px;
+	margin-bottom: 4px;
+
+	animation:  slide-message 0.4s forwards;
+	transform: translateX(-100%);
+	transition: opacity 0.4s ease-in-out;
+}
+
+.img-message-right {
+	height: 30px;
+	width: 30px;
+	border-radius: 50%;
+	margin-right: 10px;
+	/* margin-left: 10px; */
+	margin-bottom: 4px;
+
+	animation:  slide-message 0.4s forwards;
+	transform: translateX(+100%);
+	transition: opacity 0.4s ease-in-out;
+}
+
+.img-popup-user {
+	height: 50px;
+	width: 50px;
+	border-radius: 50%;
+	/* margin-right: 10px; */
+	/* margin-left: 10px; */
+	/* margin-bottom: 4px; */
+}
+
+/*Your message, (left)*/
+.message-sender {
+	color: rgb(255, 255, 255);
+	max-width: 70%;
+	margin: 0.3rem 0.7rem 0.3rem;
+	padding: 0.5rem 1.5rem;
+	border-radius: 1.125rem 1.125rem 1.125rem 0;
+	box-shadow: 1px 1px 20px 5px rgba(39, 6, 47, 0.27);
+	background-color: rgba(102, 14, 124, 0.643);
+	width: fit-content;
+	opacity: 0.2;
+	overflow: hidden;
+	
+	animation:  slide-message 0.3s forwards;
+	transform: translateX(-100%);
+	transition: opacity 0.3s ease-in-out;
+
+}
+
+@keyframes slide-message {
+	to {
+		transform:translateX(0);
+		opacity: 1;
+	}
+	
+}
+
+/*Message of other user (right)*/
+.message-receiver {
+	color: rgb(255, 255, 255);
+	max-width: 70%;
+	margin: 0.3rem 0.7rem 0.3rem auto; /*BUG: Peut etre que auto bug, a tester*/
+	padding: 0.5rem 1.5rem;
+	border-radius: 1.125rem 1.125rem 0 1.125rem;
+	box-shadow: 1px 1px 20px 5px rgba(39, 6, 47, 0.27);
+	background-color: rgba(39, 6, 47, 0.643);
+
+	opacity: 0.2;
+	overflow: hidden;
+	
+	animation:  slide-message 0.3s forwards;
+	transform: translateX(+100%);
+	transition: opacity 0.3s ease-in-out;
+}
+
+
+
+
+/*Button to send message*/
+.input-msg-button{
+	color: white;
+	display: flex;
+	border-radius: 50%;
+	width: 24px;
+	height: 24px;
+	padding: 3.5px;
+	border: none;
+	margin-left: 2px;
+	background-color: rgba(39, 6, 47, 0.643);
+}
+
+.input-msg-button:hover {
+	background-color: rgba(39, 6, 47, 0.305);
+	transition: background-color 0.3s;
+}
+
+.input-msg-button:hover .icon-send-msg {
+	filter: invert(100%);
+	-webkit-filter: invert(100%);
+	transition: filter  0.3s;
+}
+
+/*Icon of the button to send message*/
+.icon-send-msg {
+	display: flex;
+	justify-content: center;
+	margin: auto;
+	align-items: center;
+	width: 15px;
+	height: 15px;
+}
+
+.chat-date {
+	display: flex;
+	justify-content: end;
+	font-size: 10px;
+	font-style: italic;
+}
+
+/******************************************************
+MENU CHAT
+******************************************************/
+
+/*Global for right menu*/
+.menu-chat {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	margin-right: 5px;
+	flex: 0 0 330px;
+  background: rgba(39, 6, 47, 0.358);
+  border-radius: 10px;
+}
+
+/*Global for the button to open the menu*/
+
+/* unique button by line for each param*/
+
+.input-param-button {
+  display: flex;
+  align-items: center;
+	border-radius: 5px;
+	/* width: 24px;
+	height: 24px; */
+  color: white;
+	padding: 2px;
+	border: none;
+	margin-left: 2px;
+	background-color: rgba(39, 6, 47, 0.643);
+}
+
+.borderbox-param {
+  display: flex;
+	flex: 1;
+	background-color:  rgba(39, 6, 47, 0.764);
+	border-radius: 10px;
+	color: white;
+	padding: 3px;
+  margin: 2px;
+	border: 2px solid rgba(39, 6, 47, 0.2);
+	box-shadow: 0px 0px 10px 2px rgba(39, 6, 47, 0.13);
+
+}
+
+
+.input-param-button:hover {
+	background-color: rgba(39, 6, 47, 0.305);
+	transition: background-color 0.3s;
+  /* background-color: rgba(236, 236, 236, 0.372); */
+  color: rgb(176, 100, 154);
+}
+
+.inputparam {
+	display: flex;
+	margin: 7px;
+	padding: 2px;
+  align-items: center;
+	/* justify-content: space-between; */
+	/* align-items: flex-end; */
+	/* overflow-wrap: break-word; */
+}
+
+/*Animations*/
+
+.shake {
+	animation: shake 0.5s;
+}
+
+@keyframes shake {
+	0% { transform: translateX(0); }
+	20% { transform: translateX(-10px); }
+	40% { transform: translateX(10px); }
+	60% { transform: translateX(-10px); }
+	80% { transform: translateX(10px); }
+	100% { transform: translateX(0); }
+} 
+
+@keyframes shake {
+	0% {
+	  transform: translateX(0);
+	}
+	10% {
+	  transform: translateX(-5px);
+	}
+	20% {
+	  transform: translateX(5px);
+	}
+	30% {
+	  transform: translateX(-5px);
+	}
+	40% {
+	  transform: translateX(5px);
+	}
+	50% {
+	  transform: translateX(-5px);
+	}
+	60% {
+	  transform: translateX(5px);
+	}
+	70% {
+	  transform: translateX(-5px);
+	}
+	80% {
+	  transform: translateX(5px);
+	}
+	90% {
+	  transform: translateX(-5px);
+	}
+	100% {
+	  transform: translateX(0);
+	}
+}
+  
+  .shake {
+	animation: shake 0.5s;
+  }
+
+  .shake-button {
+	animation: shake-button 0.82s cubic-bezier(.36,.07,.19,.97) both;
+  }
+  
+  @keyframes shake-button {
+	10%, 90% {
+	  transform: translate3d(-1px, 0, 0);
+	}
+  
+	20%, 80% {
+	  transform: translate3d(2px, 0, 0);
+	}
+  
+	30%, 50%, 70% {
+	  transform: translate3d(-4px, 0, 0);
+	}
+  
+	40%, 60% {
+	  transform: translate3d(4px, 0, 0);
+	}
+  }

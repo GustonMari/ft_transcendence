@@ -1,5 +1,5 @@
 import { APP } from "../../network/app";
-import '../../styles/messages/Style.message.css';
+import StyleRoom from "../../styles/rooms/Style.room.module.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import { Modal } from 'react-bootstrap';
@@ -21,19 +21,20 @@ export function PopupLeave(props: any) {
 		<Popup
 			ref={ref}
 			position='bottom center'
-			className='popup-content'
+			className={StyleRoom['popup-content']}
 			trigger={(open) => (
 				<button
 					type="submit"
-					className="line-room-button"
+					className={StyleRoom["line-room-button"]}
 					onClick={() => {}}
 					>
+					{/* <img className={StyleRoom["icon-room"]} src="./leave-room.png" alt="leave room" /> */}
 					<TbDoorExit title="Leave the room"/>
 				</button>
 			)}
 		>
 		  <div>
-			<button className='line-room-button-popup'
+			<button className={StyleRoom['line-room-button-popup']}
 			  onClick={() => {
 				setMessage([]);
 				socket?.emit("leaveRoom", {
@@ -45,10 +46,12 @@ export function PopupLeave(props: any) {
 				GetMessagesByRoom(handle_history, "");
 			  }}
 			>
+				{/* <img className={StyleRoom["icon-room-popup"]} src="./accept.png" alt="leave room" /> */}
 				<SlCheck title="Accept"/>
 			</button>
-			<button className='line-room-button-popup' onClick={closeTooltip}>
-                <SlBan title="Refuse"/>
+			<button className={StyleRoom['line-room-button-popup']} onClick={closeTooltip}>
+				{/* <img className={StyleRoom["icon-room-popup"]} src="./cancel.png" alt="leave room" /> */}
+				<SlBan title="Refuse"/>
 			</button>
 		  </div>
 		</Popup>

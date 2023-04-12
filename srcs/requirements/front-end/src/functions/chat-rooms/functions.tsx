@@ -1,13 +1,16 @@
 import { Socket } from "socket.io-client";
 import { APP } from "../../network/app";
-import '../../styles/messages/Style.message.css';
+
 import { GetMessagesByRoom } from '../../components/messages/Message';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import StyleProgres from '../../styles/profile/Style.progressBar.module.css';
+import Style from "../../styles/messages/Style.message.module.css";
+
+
 
 /*
 	InputRoom functions
 */
-
 
 export async function checkIsPassword(value: string) {
 	const res = await APP.post("/chat/is_room_has_password", {room_name: value});
@@ -31,13 +34,14 @@ export async function addRoom(setMessage: any, define_room: any, socket: Socket,
 
 export function shakeIt(shake_name: string, room_name: string) {
 	const modal = document.getElementById(`shaking-${room_name}`);
+	console.log("modal", modal);
 	if (modal) {
-		modal.classList.add('shake');
+		modal.classList.add(Style.shake);
 		setTimeout(() => {
-			modal.classList.remove('shake');
+			modal.classList.remove(Style.shake);
 		}, 500);
 	}
-  }
+}
 
 export async function AuthorizeUser(props : any) : Promise<void>
 {
@@ -61,10 +65,11 @@ export function ProgressBar(props: any)
 	let {progress} = props;
 
 	document.documentElement.style.setProperty('--progress-percentage', `${progress}%`);
-
+	
+	
 	return (
-		<div className='container-progress-bar'>
-			<div className="filler-progress-bar">
+		<div className={StyleProgres['container-progress-bar']}>
+			<div className={StyleProgres["filler-progress-bar"]}>
 				<span /* className="progress" */>{`${progress}%`}</span>
 			</div>
 		</div>

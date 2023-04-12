@@ -1,8 +1,8 @@
 // @typescript-eslint/no-unused-expressions
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Key } from 'react';
 import { APP } from "../../network/app";
-import '../../styles/rooms/Style.room.css';
+import StyleRoom from "../../styles/rooms/Style.room.module.css";
 import { GetMessagesByRoom } from '../messages/Message';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { AuthorizeUser, shakeIt, ShortedName } from '../../functions/chat-rooms/functions';
@@ -40,30 +40,30 @@ export function RoomForm(props : any)
 	socket?.on('renderReact', render_react);
 	
 	return (
-		<div className='between-room-input'>
-			<span ref={roomContainer} className='room-list'>
-				{rooms.map((room: any) => (
+		<div className={StyleRoom['between-room-input']}>
+			<span ref={roomContainer} className={StyleRoom['room-list']}>
+				{rooms.map((room : any) => (
 					<li key={room.id}>
-						<span className="line-room">
-							<div className='split'>
-								<img className='line-room-img' src="" alt="" />
-								<button className='line-room-button' onClick={() => {
+						<span className={StyleRoom["line-room"]}>
+							<div className={StyleRoom['split']}>
+								<img className={StyleRoom['line-room-img']} src="" alt="" />
+								<button className={StyleRoom['line-room-button']} onClick={() => {
 									
 									const is_ban = async () => {
 										const res = await APP.post("/chat/get_isban_user", {room_name: room.name, id_user: current_user.id});
 										let ban = res.data;
-                                        if (ban) {
-                                            socket?.emit("changeRoom", { room_name: current_room, id_user: current_user.id});
-                                        }
+										// ban ? "" : socket?.emit("changeRoom", { room_name: current_room, id_user: current_user.id});
+										if (!ban) {
+											socket?.emit("changeRoom", { room_name: current_room, id_user: current_user.id});
+										}
 										AuthorizeUser({ban, setMessage, GetMessagesByRoom, define_room, room, handle_history})
-
 									}
 									is_ban();
 									socket?.on('renderReact', render_react);
 									}}>{ ShortedName(room.name) }
 								</button>
 							</div>
-							<div className='split'>
+							<div className={StyleRoom['split']}>
 								<PopupLeave setMessage={setMessage} socket={socket} room={room} current_user={current_user} render_react={render_react} GetMessagesByRoom={GetMessagesByRoom} handle_history={handle_history}></PopupLeave>
 								<PopupDelete setMessage={setMessage} socket={socket} room={room} current_user={current_user} render_react={render_react} GetMessagesByRoom={GetMessagesByRoom} handle_history={handle_history}></PopupDelete>
 								<PopupPassword setMessage={setMessage} socket={socket} room={room} current_user={current_user} render_react={render_react}></PopupPassword>
