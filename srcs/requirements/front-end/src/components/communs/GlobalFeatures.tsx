@@ -13,9 +13,6 @@ export const GlobalFeatures = ({children}: any) => {
         <>
             <NavBar/>
             {children}
-            <div>
-                    {show && <ProfileComponent/>}
-            </div>
         </>
     );
 }

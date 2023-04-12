@@ -1,60 +1,70 @@
 import { useContext } from "react";
 import { BsXLg } from "react-icons/bs";
+import { FiSend } from "react-icons/fi";
+import { AiOutlineUsergroupAdd } from "react-icons/ai";
 import { ProfilePopUpContext } from "../../contexts/ProfilePopUp.context";
+import s from "../../styles/profile/ProfileComponent.module.css";
+import API from "../../network/api";
+import { AlertContext } from "../../contexts/Alert.context";
+import { UserContext } from "../../contexts/User.context";
 
 export const ProfileComponent = () => {
 
     const {user, setShow} : any = useContext(ProfilePopUpContext);
+    const {handleError, handleSuccess} : any = useContext(AlertContext);
+    const {me}: any = useContext(UserContext)
+
+    const handleSendFriendRequest = () => {
+        API.sendFriendRequest(user.id,
+            () => {
+                handleSuccess("Friend request sent successfully.")
+            }, (err: any) => {
+                handleError(err.message)
+            }
+        )
+    }
 
   return (
     <>
-        <div className="container max-w-md mx-auto md:max-w-2xl bg-white w-full rounded-lg p-2 mt-32">
-            <div className="relative px-6 flex flex-wrap flex-col justify-center w-full h-full"
-                style={{width: '600px'}}>
-                <div className="w-full absolute left-1/2 -top-2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl"
-                    style={{height: '150px', width: '150px'}}>
-                    <img className="w-full h-full rounded-xl" src="https://placehold.co/150x150"></img>
-                </div>
-                <a className="absolute top-2 left-3"
-                    onClick={(e) => {
-                        e.preventDefault();
-                        setShow(false);
-                    }}
-                >
+        {/*{console.log(me.id)}*/}
+        <div className={s.container}>
+            <div className={s.pop_up}>
+                <a className={s.close_button} onClick={() => setShow(false)} title="Close the window">
                     <BsXLg/>
                 </a>
-                <div className="w-full">
-                    <div className="text-2xl font-bold text-center mt-20">
-                        <h2 className="font-open">{user.login}</h2>
+                {me?.login !== user?.login &&
+                    <div className={s.action_buttons}>
+                        <a className={s.send_message} title="Send message to this person">
+                            <FiSend/>
+                        </a>
+                        <a className={s.friend_request} title="Send friend request to this person"  onClick={() => handleSendFriendRequest()}>
+                            <AiOutlineUsergroupAdd/>
+                        </a>
                     </div>
-                    <div className="text-center text-sm font-bold text-gray-500 m-2">
-                        <h3>{(!user.first_name ? "" : user.first_name) + " " + (!user.last_name ? "" : user.last_name)}</h3>
+                }
+                <div className={s.picture_section}>
+                    <img src={"http://localhost:3000/api/public/picture/" + user.login}></img>
+                </div>
+                <div className={s.name_section}>
+                    <h1>{user.login?.substring(0, 25)}</h1>
+                    <h2>{user.first_name?.substring(0, 25)} {user.last_name?.substring(0, 25)}</h2>
+                    <div className={s.stats}>
+                        <div className={s.stats_wins}>
+                            <h3>Wins</h3>
+                            <h3>{user.wins}</h3>
+                        </div>
+                        <div className={s.stats_losses}>
+                            <h3>Losses</h3>
+                            <h3>{user.loses}</h3>
+                        </div>
                     </div>
-                    <div className="flex flex-row justify-center m-6 text-xs">
-                        <div className="flex flex-col text-center mr-4">
-                            <span className="text-xl font-bold">{user.wins}</span>
-                            <span className="text-gray-500">Wins</span>
-                        </div>
-                        <div className="flex flex-col text-center ml-4">
-                            <span className="text-xl font-bold font">{user.loses}</span>
-                            <span className="text-gray-500">Loses</span>
-                        </div>
+                    <div className={s.separator}></div>
+                    <div className={s.bio_section}>
+                        <p>{
+                            user.description ? user.description?.substring(0, 250) : "No description"}</p>
                     </div>
                 </div>
             </div>
-            {user.description ? 
-            <div>
-                <div className="border mx-12 rounded mb-3"></div>
-                <div className="p-4 text-center text-sm overflow-hidden">
-                    <p>{user.description}</p>
-                    {/* <p>Lorem pfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffLorem pfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffLorem pfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffLorem pfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff</p> */}
-                </div>
-            </div>
-            : ""
-            }
-            
-
-
         </div>
     </>
   );

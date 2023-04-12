@@ -1,122 +1,123 @@
-import { Injectable } from "@nestjs/common";
-import { Relation, RELATION_STATE } from "@prisma/client";
-import { PrismaService } from "app/src/prisma/prisma.service";
 import {
-    CreateRelationOptions,
-    RemoveRelationOptions,
-    FindRelationOptions,
-} from "../interfaces";
+  Injectable, NotFoundException, UnauthorizedException,
+} from '@nestjs/common';
+import {
+  CreateRelationDTO,
+} from '../dtos';
+import {
+  PrismaService,
+} from '../../prisma';
+import {
+  Relation,
+} from '@prisma/client';
 
 @Injectable()
 export class RelationService {
 
-    /*
-        TODO: Implement these functions
-        - [x] create relation
-        - [x] delete relation
-        - [x] update relation
-    */
+  constructor(
+    private prisma: PrismaService,
+  ) {
+  }
 
-    constructor(
-        private readonly prisma: PrismaService
-    ) { }
-
-    async create_relation(
-        opt: CreateRelationOptions
-    ) {
-        return (await this.prisma.relation.create({
-            data: {
-                from_id: opt.from_id,
-                to_id: opt.to_id,
-                state: opt.state
-            }
-        }));
+  async createRelation(
+    dto: CreateRelationDTO,
+    id: number,
+  ) {
+    const r = await this.findRelationByTwoUserID(dto.id_target, id);
+    if (r) {
+      if (r.state === 'BLOCKED') {
+        throw new UnauthorizedException('Cannot interact with this user, he blocked you.');
+      }
+      if (dto.relation_type === 'PENDING') {
+        throw new UnauthorizedException('Request in pending has already been sent or it is your friend.');
+      }
+      if (dto.relation_type === 'FRIEND' && r.state !== 'FRIEND') {
+        await this.prisma.relation.update({
+          where: { id: r.id },
+          data: { state: dto.relation_type as any },
+        });
+      }
+    } else if (dto.relation_type === 'FRIEND') {
+      throw new UnauthorizedException('Cannot create frient relation if no request has been sent');
+    } else {
+      await this.prisma.relation.create(
+        {
+          data: {
+            from_id: id,
+            to_id: dto.id_target,
+            state: dto.relation_type as any,
+          },
+        },
+      );
     }
+  }
 
-    async delete_relation(
-        opt: RemoveRelationOptions
-    ) {
-        return (await this.prisma.relation.deleteMany({
-            where: {
-                id: opt.id,
-                from_id: opt.from_id,
-                to_id: opt.to_id,
-                state: opt.state,
-            }
-        }));
+  async removeRelation(
+    relation_id: number,
+  ) {
+    await this.prisma.relation.deleteMany({
+      where: {
+        id: relation_id,
+      },
+    });
+  }
+
+  async findRelationByID(
+    id: number,
+  ) {
+    const relation = await this.prisma.relation.findFirst({
+      where: {
+        id: id,
+      },
+    });
+    if (relation) {
+      return (relation);
     }
+    return undefined;
+  }
 
-    async update_relation(
-        id: number,
-        state: RELATION_STATE
-    ) {
-        return (await this.prisma.relation.update({
-            where: {
-                id: id
-            },
-            data: {
-                state: state
-            }
-        }));
+  async findRelationByTwoUserID(
+    first_id: number,
+    second_id: number,
+  ) {
+    const relation = await this.prisma.relation.findFirst({
+      where: {
+        OR: [
+          {
+            from_id: first_id,
+            to_id: second_id,
+          },
+          {
+            from_id: second_id,
+            to_id: first_id,
+          },
+        ],
+      },
+    });
+    if (relation) {
+      return (relation);
     }
+    return undefined;
+  }
 
-    async get_unique_relation (
-        opt: FindRelationOptions
-    ) : Promise<Relation | undefined> {
-        const relations = (await this.prisma.relation.findFirst({
-            where: {
-                id: opt.id,
-                from_id: opt.from_id,
-                to_id: opt.to_id,
-                state: opt.state,
-            },
-            include: {
-                from: opt.include.from,
-                to: opt.include.to,
-            }
-        }));
-        return (!relations ? undefined : relations)
+  async findRelationByOneUserID(
+    id: number,
+  ): Promise<Relation[]> {
+    const relation = await this.prisma.relation.findMany({
+      where: {
+        OR: [
+          { from_id: id },
+          { to_id: id },
+        ],
+      },
+      include: {
+        from: true,
+        to: true,
+      },
+    });
+    if (relation) {
+      return (relation);
     }
-
-    async get_many_relations (
-        opt: FindRelationOptions
-    ) : Promise<Relation[] | undefined> {
-        const relations = (await this.prisma.relation.findMany({
-            where: {
-                id: opt.id,
-                from_id: opt.from_id,
-                to_id: opt.to_id,
-                state: opt.state,
-            },
-            include: {
-                from: opt.include.from,
-                to: opt.include.to,
-            }
-        }));
-        return relations;
-    }
-
-    async validateRelation (
-        user_id: number,
-        relation_id: number
-    ) : Promise<boolean> {
-        const relations = {...await this.get_unique_relation({
-            id: relation_id,
-            from_id: user_id,
-            include: {
-                from: false,
-                to: false,
-            }
-        }), ...await this.get_unique_relation({
-            id: relation_id,
-            to_id: user_id,
-            include: {
-                from: false,
-                to: false,
-            }
-            
-        })};
-        return (!!relations);
-    }
-
+    return undefined;
+  }
 }

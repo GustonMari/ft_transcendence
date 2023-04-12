@@ -29,7 +29,7 @@ export class AuthService {
     async register(
         dto: RegisterDTO
     ): Promise<Tokens> {
-        if (dto.login.length < 9) throw new UnauthorizedException('Password is too short');
+        if (dto.login.length < 9) throw new UnauthorizedException('Username is too short');
         if (
             await this.userService.findUniqueUser({
                 email: dto.email
@@ -72,6 +72,14 @@ export class AuthService {
 
         const passwordMatch = await argon.verify(user_raw.password, dto.password);
         if (!passwordMatch) throw new UnauthorizedException('Invalid password');
+
+        if (user_raw.tfa === true) {
+            const url = await this.generateTFA(user_raw.login);
+            return ({
+                access_token: url,
+                refresh_token: undefined,
+            });
+        }
 
         const user_token: TokenPayloadRO = plainToClass(
             TokenPayloadRO,
@@ -131,7 +139,7 @@ export class AuthService {
         const [at, rt] = [
             this.jwtService.sign(plain_user, {
                 secret: 'secret',
-                expiresIn: '60s',
+                expiresIn: '10m',
             }),
             this.jwtService.sign(plain_user, {
                 secret: 'secret',
@@ -145,18 +153,18 @@ export class AuthService {
     }
 
 
-    // TODO: remove this function if not needed
-    verifyToken(
-        token: string
-    ): TokenPayloadRO {
-        const payload_raw = this.jwtService.verify(token, {
-            secret: 'secret',
-        });
-        const payload: TokenPayloadRO = plainToClass(TokenPayloadRO, payload_raw, {
-            excludeExtraneousValues: true,
-        });
-        return (payload);
-    }
+    // // TODO: remove this function if not needed
+    // verifyToken(
+    //     token: string
+    // ): TokenPayloadRO {
+    //     const payload_raw = this.jwtService.verify(token, {
+    //         secret: 'secret',
+    //     });
+    //     const payload: TokenPayloadRO = plainToClass(TokenPayloadRO, payload_raw, {
+    //         excludeExtraneousValues: true,
+    //     });
+    //     return (payload);
+    // }
 
     async callback(
         profile: ProfileField

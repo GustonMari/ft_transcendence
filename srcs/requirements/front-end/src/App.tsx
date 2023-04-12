@@ -5,16 +5,15 @@ import Home from "./pages/home";
 import SignIn from "./pages/signin";
 import PrivateRoute from "./components/routes/PrivateRoute";
 import { Friends } from "./pages/friend";
-import { Profile } from "./pages/profile";
+import Profile from "./pages/profile";
 import { Result } from "./pages/search";
 import { NotFound } from "./errors/NotFound";
-import { UserProvider } from "./contexts/User.context";
 import WrapContext from "./contexts/wrap.context";
 import { GlobalFeatures } from "./components/communs/GlobalFeatures";
 import PublicRoute from "./components/routes/PublicRoute";
 import TFA from "./pages/tfa";
-import Chat from "./pages/chat";
 import { AlertProvider } from "./contexts/Alert.context";
+import { Welcome } from "./pages/welcome";
 
 function App() {
   return (
@@ -23,8 +22,13 @@ function App() {
       <Routes>
         {/* <UserProvider> */}
 
-        <Route path="/" element={<Navigate to="/home"/>} />
+        <Route path="/" element={<Navigate to="/welcome"/>} />
 
+        <Route path="/welcome" element={
+            <PublicRoute>
+                <Welcome/>
+            </PublicRoute>
+        } />
         <Route path="/register" element={
             <PublicRoute>
                 <Register/>
@@ -65,7 +69,7 @@ function App() {
             <WrapContext components={
                 <PrivateRoute>
                     <GlobalFeatures>
-                        <Chat/>   
+                        {/* <Chat/>    */} // TODO: fix css, conflic with differents css files
                     </GlobalFeatures>
                 </PrivateRoute>
             }/>
@@ -75,7 +79,7 @@ function App() {
             <WrapContext components={
                 <PrivateRoute>
                         <GlobalFeatures>
-                    <Profile/>
+                            <Profile/>
                         </GlobalFeatures>
                 </PrivateRoute>
             } />

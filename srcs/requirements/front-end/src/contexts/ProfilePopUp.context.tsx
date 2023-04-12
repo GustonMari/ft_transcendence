@@ -1,5 +1,6 @@
 import React from "react";
 import { createContext, useState } from "react";
+import { ProfileComponent } from "../components/users/ProfileComponent";
 
 export const ProfilePopUpContext = createContext({});
 
@@ -10,6 +11,8 @@ export const ProfilePopUpProvider = ({children}: any) => {
     return (        
         <ProfilePopUpContext.Provider value={{show, setShow, user, setUser}}>
             {children}
+            {show && <ProfileComponent/>}
         </ProfilePopUpContext.Provider>
     )
 }
+

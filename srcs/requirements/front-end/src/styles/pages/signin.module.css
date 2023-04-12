@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;500;700;900&display=swap'); /** {*/
+
+.section {
+    font-family: 'Poppins', sans-serif;
+    background-image: url(../../../public/back.png);
+    backdrop-filter: blur(1000px);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}

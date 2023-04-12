@@ -7,20 +7,20 @@ export default class API {
 
   static async signIn(
     opt: SignInOptions,
-    successFunc: () => void,
+    successFunc: (url: string) => void,
     errorFunc: (err: ApiError) => void
   ) {
     try {
-      await APP.post("/auth/signin", opt);
-      successFunc();
+      const d: any = await (await APP.post("/auth/signin", opt)).data;
+      successFunc(d.url);
     } catch (err) {
-        const error = err as AxiosError;
         if (axios.isAxiosError(err)) {
-            errorFunc({
-                code: error.code,
-                message: error.message,           
-            });
-        };
+                const error = err as any;
+                errorFunc({
+                    code: error.code,
+                    message: error.response?.data?.message,           
+                });
+            };
     }
   }
 
@@ -29,18 +29,17 @@ export default class API {
     successFunc: () => void,
     errorFunc: (err: ApiError) => void
   ) {
-    
     try {
       await APP.post("/auth/register", opt);
       successFunc();
     } catch (err) {
-        const error = err as AxiosError;
         if (axios.isAxiosError(err)) {
-            errorFunc({
-                code: error.code,
-                message: error.message,           
-            });
-        };
+                const error = err as any;
+                errorFunc({
+                    code: error.code,
+                    message: error.response?.data?.message,           
+                });
+            };
     }
   }
 
@@ -52,12 +51,11 @@ export default class API {
             const data = await (await APP.get("/auth/42/connect")).data;
             successFunc(data.url);
         } catch (err) {
-            const error = err as AxiosError;
-            console.log(err);
             if (axios.isAxiosError(err)) {
+                const error = err as any;
                 errorFunc({
                     code: error.code,
-                    message: error.message,
+                    message: error.response?.data?.message,           
                 });
             };
         }
@@ -78,11 +76,11 @@ export default class API {
             });
             successFunc();
         } catch (err) {
-            const error = err as AxiosError;
             if (axios.isAxiosError(err)) {
+                const error = err as any;
                 errorFunc({
                     code: error.code,
-                    message: error.message,
+                    message: error.response?.data?.message,           
                 });
             };
         }
@@ -96,11 +94,11 @@ export default class API {
             const r = await APP.get("/user/me");
             successFunc(r.data);
         } catch (err) {
-            const error = err as AxiosError;
             if (axios.isAxiosError(err)) {
+                const error = err as any;
                 errorFunc({
                     code: error.code,
-                    message: error.message,           
+                    message: error.response?.data?.message,           
                 });
             };
         }
@@ -114,11 +112,11 @@ export default class API {
             await APP.delete("/auth/logout");
             successFunc();
         } catch (err) {
-            const error = err as AxiosError;
             if (axios.isAxiosError(err)) {
+                const error = err as any;
                 errorFunc({
                     code: error.code,
-                    message: error.message,           
+                    message: error.response?.data?.message,           
                 });
             };
         }
@@ -129,14 +127,14 @@ export default class API {
         errorFunc: (err: ApiError) => void
     ) {
         try {
-            const res = await APP.get("/relation/friend/get/list");
+            const res = await APP.get("/relation/get/friend");
             successFunc(res.data);
         } catch (err) {
-            const error = err as AxiosError;
             if (axios.isAxiosError(err)) {
+                const error = err as any;
                 errorFunc({
                     code: error.code,
-                    message: error.message,           
+                    message: error.response?.data?.message,           
                 });
             };
         }
@@ -147,14 +145,14 @@ export default class API {
         errorFunc: (err: ApiError) => void
     ) {
         try {
-            const res = await APP.get("/relation/friend/request/get/incoming");
+            const res = await APP.get("/relation/get/incoming");
             successFunc(res.data);
         } catch (err) {
-            const error = err as AxiosError;
             if (axios.isAxiosError(err)) {
+                const error = err as any;
                 errorFunc({
                     code: error.code,
-                    message: error.message,           
+                    message: error.response?.data?.message,           
                 });
             };
         }
@@ -165,14 +163,14 @@ export default class API {
         errorFunc: (err: ApiError) => void
     ) {
         try {
-            const res = await APP.get("/relation/friend/request/get/incoming");
+            const res = await APP.get("/relation/get/outgoing");
             successFunc(res.data);
         } catch (err) {
-            const error = err as AxiosError;
             if (axios.isAxiosError(err)) {
+                const error = err as any;
                 errorFunc({
                     code: error.code,
-                    message: error.message,           
+                    message: error.response?.data?.message,           
                 });
             };
         }
@@ -181,17 +179,17 @@ export default class API {
     static async sendFriendRequest(
         uid: number,
         successFunc: () => void,
-        errorFunc: (err: ApiError) => void
+        errorFunc: (err: any) => void
     ) {
         try {
-            await APP.put("/relation/friend/request/add/id/" + uid);
+            await APP.put("/relation/create/friend/id/" + uid);
             successFunc();
         } catch (err) {
-            const error = err as AxiosError;
             if (axios.isAxiosError(err)) {
+                const error = err as any;
                 errorFunc({
                     code: error.code,
-                    message: error.message,           
+                    message: error.response?.data?.message,           
                 });
             };
         }
@@ -206,30 +204,30 @@ export default class API {
             const res = await APP.patch("/relation/friend/request/accept/id/" + rid);
             successFunc(res.data);
         } catch (err) {
-            const error = err as AxiosError;
             if (axios.isAxiosError(err)) {
+                const error = err as any;
                 errorFunc({
                     code: error.code,
-                    message: error.message,           
+                    message: error.response?.data?.message,           
                 });
             };
         }
     }
 
-    static async removeRequest(
+    static async removeRelation(
         rid: number,
         successFunc: (list: any) => void,
         errorFunc: (err: ApiError) => void
     ) {
         try {
-            const res = await APP.delete("/relation/friend/request/remove/id/" + rid);
+            const res = await APP.delete("/relation/delete/userid/" + rid);
             successFunc(res.data);
         } catch (err) {
-            const error = err as AxiosError;
             if (axios.isAxiosError(err)) {
+                const error = err as any;
                 errorFunc({
                     code: error.code,
-                    message: error.message,           
+                    message: error.response?.data?.message,           
                 });
             };
         }
@@ -244,11 +242,11 @@ export default class API {
             const res = await APP.get("/user/get/" + id);
             successFunc(res.data);
         } catch (err) {
-            const error = err as AxiosError;
             if (axios.isAxiosError(err)) {
+                const error = err as any;
                 errorFunc({
                     code: error.code,
-                    message: error.message,           
+                    message: error.response?.data?.message,           
                 });
             };
         }
@@ -263,11 +261,11 @@ export default class API {
             await APP.patch("/user/profile/me/update", opt);
             successFunc();
         } catch (err) {
-            const error = err as AxiosError;
             if (axios.isAxiosError(err)) {
+                const error = err as any;
                 errorFunc({
                     code: error.code,
-                    message: error.message,           
+                    message: error.response?.data?.message,           
                 });
             };
         }
@@ -282,11 +280,34 @@ export default class API {
             const r = await APP.get("/user/match/string/" + opt);
             successFunc(r.data);
         } catch (err) {
-            const error = err as AxiosError;
             if (axios.isAxiosError(err)) {
+                const error = err as any;
                 errorFunc({
                     code: error.code,
-                    message: error.message,           
+                    message: error.response?.data?.message,           
+                });
+            };
+        }
+    }
+
+    static async changePP (
+        opt: FormData,
+        successFunc: (r: any) => void,
+        errorFunc: (err: ApiError) => void
+    ) {
+        try {
+            const r = await APP.post("/user/profile/upload", opt, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            successFunc(r.data);
+        } catch (err) {
+            if (axios.isAxiosError(err)) {
+                const error = err as any;
+                errorFunc({
+                    code: error.code,
+                    message: error.response?.data?.message,
                 });
             };
         }

@@ -3,7 +3,6 @@ import API from "../../network/api";
 import { useNavigate } from "react-router-dom";
 import s from "../../styles/forms/LoginForm.module.css";
 import { AlertContext } from "../../contexts/Alert.context";
-import { BackGroundForm } from "./BackGroundForm";
 
 export default function LoginForm() {
   const [login, setLogin] = useState("");
@@ -24,9 +23,14 @@ export default function LoginForm() {
         login: login,
         password: pw,
       },
-      () => {
-        navigate("/home");
-        handleSuccess("You are now connected");
+      (d: string) => {
+        if (d) {
+          navigate('/' + d);
+          handleSuccess("Please check with TFA");
+        } else {
+          navigate("/home");
+          handleSuccess("You are now connected");
+        }
       },
       (err: any) => {
         handleError("Wrong login or password");

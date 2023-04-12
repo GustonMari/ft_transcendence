@@ -20,12 +20,12 @@ export default function MessageInput({send}: {send: (value: string) => void}) {
 
 
 	return (
-	<div className={Style["inputmessage"]}>
-		<input className={Style["borderbox-msg"]} onChange={(e) => setValue(e.target.value)} onKeyDown={handleKeyDown}  placeholder="type your message..." value={value} />
-		<button className={Style["input-msg-button"]} onClick={() => sendAndClear()} /* onKeyDown={() => send(value)} */ >
-		{/* <img className={Style['icon-send-msg']} src="./send-message.png" alt="Send message" /> */}
-		<TbSend title="Send msg"/>
-		</button>
-	</div>
+    <div className={Style["inputmessage"]}>
+      <input className={Style["borderbox-msg"]} onChange={(e) => setValue(e.target.value)} onKeyDown={handleKeyDown}  placeholder="type your message..." value={value} />
+      <button className={Style["input-msg-button"]} onClick={() => sendAndClear()} /* onKeyDown={() => send(value)} */ >
+        {/* <img className={Style['icon-send-msg']} src="./send-message.png" alt="Send message" /> */}
+        <TbSend title="Send msg"/>
+      </button>
+    </div>
 	);
 }

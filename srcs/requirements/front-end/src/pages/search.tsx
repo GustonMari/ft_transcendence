@@ -9,6 +9,7 @@ import { useContext, useLayoutEffect, useState } from "react";
 import API from "../network/api";
 import { ProfileComponent } from "../components/users/ProfileComponent";
 import { ProfilePopUpContext } from "../contexts/ProfilePopUp.context";
+import { AlertContext } from "../contexts/Alert.context";
 
 export const Result = (props: any) => {
     const [param, setParam] = useSearchParams();
@@ -17,6 +18,7 @@ export const Result = (props: any) => {
     const [apiRes, setApiRes] = useState([] as any);
 
     const {setUser, setShow, show} : any = useContext(ProfilePopUpContext);
+    const {handleError, handleSuccess} : any = useContext(AlertContext);
 
     const navigate = useNavigate();
 
@@ -82,6 +84,7 @@ export const Result = (props: any) => {
                                             <td className={s.user_description}>{(user.description ? user.description : "No Description")}</td>
                                             <td className={s.user_action_buttons}>
                                                 <a className={s.btn_see_profile} onClick={(e: any) => {
+                                                    e.preventDefault();
                                                     setShow(true);
                                                     setUser(user);
                                                 }}>
@@ -93,10 +96,10 @@ export const Result = (props: any) => {
                                                         API.sendFriendRequest(
                                                             user.id,
                                                             () => {
-                                                                console.log("Friend request sent");
+                                                                handleSuccess("Friend Request has been sent");
                                                             },
                                                             (err: any) => {
-                                                                console.log(err);
+                                                                handleError(err.message);
                                                             });
                                                     }
                                                 }>

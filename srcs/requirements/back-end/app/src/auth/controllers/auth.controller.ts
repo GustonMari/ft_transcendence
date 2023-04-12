@@ -7,7 +7,7 @@ import {
     Req,
     UnauthorizedException
 } from '@nestjs/common';
-import { RegisterDTO } from './../dtos/register.dto';
+import { RegisterDTO } from '../dtos/register.dto';
 import LoginDTO from './../dtos/login.dto';
 import {
     Body,
@@ -79,6 +79,7 @@ export class AuthController {
 
     /* ------------------------------------------------------------------------------ */
 
+    // TODO: Apply TFA on basic login.
     @ApiOperation({
         summary: 'Sign in a user',
     })
@@ -91,6 +92,14 @@ export class AuthController {
         @Res() res: Response
     ) {
         const { access_token, refresh_token } = await this.authService.login(dto);
+
+        if (access_token !== undefined && refresh_token === undefined) {
+            res.send({
+                url: 'tfa?qrcode=' + access_token + "&username=" + dto.login,
+            })
+            return;
+        }
+
         Logger.log(dto.login + ' is logged in');
         res.cookie('access_token', access_token, {
             httpOnly: true,

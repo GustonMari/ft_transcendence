@@ -1,80 +1,67 @@
 import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
 import API from "../network/api"
-import { NavBar } from "../components/communs/NavBar"
+import s from "../styles/pages/friend.module.css"
+import { ButtonChangeList } from "../components/relations/ButtonChangeList"
+import { AlertContext } from "../contexts/Alert.context"
 import { FriendList } from "../components/relations/FriendList"
 import { RequestList } from "../components/relations/RequestList"
-import { ProfileComponent } from "../components/users/ProfileComponent"
-import { ProfilePopUpContext } from "../contexts/ProfilePopUp.context"
-import g from "../styles/background.module.css"
+import { RelationList } from "../components/relations/RelationList"
+import { FriendElement } from "../components/relations/FriendElement"
 
 
 export const Friends = ({user}: any) => {
 
-    // const friends = useRef<any[]>([]);
     const [friends, setFriends] = useState<any[]>([]);
+    const [incoming, setIncomming] = useState<any[]>([]);
+    const [outgoing, setOutgoing] = useState<any[]>([]);
+    const [list, setList] = useState<number>(1);
 
-    // const pending = useRef<any[]>([]);
-    const [pending, setPending] = useState<any[]>([]);
+    const {handleError} = useContext<any>(AlertContext);
 
-    const {show} : any = useContext(ProfilePopUpContext);
+    useLayoutEffect(
+        () => {
+			API.getFriends(
+                (d: any) => {
+                    console.log(d);
+                    setFriends(d);
+                }, () => {
+                    handleError("Error while fetching friends");
+                }
+            )
+            API.getIncomingRequest(
+                (d: any) => {
+                    setIncomming(d);
+                }, () => {
+                    handleError("Error while fetching incomming friends");
+                }
+            )
+            API.getOutgoinRequest(
+                (d: any) => {
+                    setOutgoing(d);
+                }, () => {
+                    handleError("Error while fetching outgoing friends");
+                }
+            )
+        }, []
+    )
 
-    const [popUser, setPopUser] = useState({} as any);
-
-    const [list, setList] = useState(0);
-
-    useLayoutEffect(() => {
-        API.getFriends((data: any) => {
-            // friends.current = data;
-            setFriends(data);
-            // console.log("data", friends.current);
-        }, (err: any) => {
-            console.log(err);
-        });
-
-        API.getIncomingRequest((data: any) => {
-            // pending.current = data;
-            setPending(data);
-            // console.log("request data -> ", data, " request array -> ", pending.current);
-        }, (err: any) => {
-            console.log(err);
-        });
-
-
-    }, []);
-    
 
     return (
         <>
-        <div className={g.bg}>
-            <div className="absolute flex flex-row">
-                <div className="relative w-auto ml-20">
-                    <div className="flex flex-row gap-4 mx-10 mt-10">
-                        <button type="button" className="focus:outline-none text-white bg-blue-400 hover:bg-blue-500 focus:bg-blue-900 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-blue-900"
-                            onClick={() => setList(0)}>Friends</button>
-                        <button type="button" className="focus:outline-none text-white bg-blue-400 hover:bg-blue-500 focus:bg-blue-900 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-blue-900"
-                            onClick={() => setList(1)}>Incoming Requests</button>
-                        <button type="button" className="focus:outline-none text-white bg-blue-400 hover:bg-blue-500 focus:bg-blue-900 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-blue-900"
-                            onClick={() => setList(2)}>Outgoing Requests</button>
-                    </div>
-                    {
-                        ((list === 0) ? 
-                            <FriendList relations={friends}/>
-                        : ((list === 1) ? 
-                            <RequestList relations={pending}/>
-                        :
-                            <RequestList relations={pending}/>
-                        ))
-                    }
+            <div className={s.container}>
+                <div className={s.btn_lists}>
+                    <ButtonChangeList title="Friend" setList={setList} listNumber={1}/>
+                    <ButtonChangeList title="Incomming" setList={setList} listNumber={2}/>
+                    <ButtonChangeList title="Outgoing" setList={setList} listNumber={3}/>
+                </div>
+                <div className={s.lists}>
+                    {/* {list === 1 && <FriendList relations={friends}/>}
+                    {list === 2 && <RequestList relation={incoming}/>}
+                    {list === 3 && <RequestList relation={outgoing}/>} */}
                     
-                </div>
-                <div className="relative w-auto">
-                    <NavBar/>
+                    <RelationList relations={friends} setRelation={setFriends} cpnt={FriendElement}/>
                 </div>
             </div>
-            <div className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                {show ? <ProfileComponent/> : ""}
-            </div>
-        </div>
         </>
-    )
+    ) 
 }

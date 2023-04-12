@@ -6,18 +6,17 @@ import {
 import API from "../../network/api";
 import { ProfilePopUpContext } from "../../contexts/ProfilePopUp.context";
 
+
+
 export const RequestList = ({relations}: any) => {
 
     const [rel, setRel] = useState<any[]>(relations);
 
     const {setUser, setShow} : any = useContext(ProfilePopUpContext);
 
-    console.log(rel);
-    console.log(relations);
-
     return (
         <>
-            <div className="w-full h-full p-4 text-sm">
+            <div className="w-full h-full text-sm">
                 <div className="m-6 overflow-x-auto rounded-md border border-gray-200 shadow-md">
                     <table className="w-full bg-white text-left border-collapse table-fixed">
                         <thead className="bg-gray-50">
@@ -27,7 +26,7 @@ export const RequestList = ({relations}: any) => {
                             </tr>
                         </thead>
                         <tbody className="w-full">
-                            {rel.map((relation: any) => {
+                            {rel && rel.map((relation: any) => {
                                 const user = relation.user
                                 return (
                                     <tr className="w-full hover:bg-gray-50 h-14 p-2 relative" key={relation.id}>
@@ -57,7 +56,7 @@ export const RequestList = ({relations}: any) => {
                                                 onClick={
                                                         (e) => {
                                                             // e.preventDefault();
-                                                            API.removeRequest(relation.id, () => {
+                                                            API.removeRelation(relation.id, () => {
                                                                 const id = relation.id;
                                                                 setRel(rel.filter((r: any) => r.id !== id));
                                                             }, (err: any) => {

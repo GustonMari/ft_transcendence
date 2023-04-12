@@ -1,20 +1,23 @@
 import { ChatModule } from './chat/chat.module';
 import { JwtModule } from '@nestjs/jwt';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { PrismaService } from './prisma/prisma.service';
-import { PrismaModule } from './prisma/prisma.module';
+import { PrismaService } from './prisma';
+import { PrismaModule } from './prisma';
 import { AuthController } from './auth/controllers/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
-import { FriendModule } from './relation/relation.module';
+import { RelationModule } from "./relation/relation.module";
+import { PublicController } from './public/controllers/public.controller';
+import { PublicModule } from './public/public.module';
 
 @Module({
     imports: [
         PrismaModule,
         AuthModule,
         UserModule,
-        FriendModule,
         ChatModule,
+		RelationModule,
+		PublicModule,
     ],
     providers: [
         PrismaService

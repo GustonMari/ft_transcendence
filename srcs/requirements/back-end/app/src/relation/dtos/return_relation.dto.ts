@@ -2,24 +2,24 @@ import { Expose, Type } from 'class-transformer';
 import { ApiProperty } from "@nestjs/swagger";
 import { UserRO } from "app/src/user/ros/user.full.ro";
 
-export class RelationRO {
+export class ReturnRelationDTO {
 
-    @Expose()
+	@Expose()
     @ApiProperty({
-        description: 'friend id', type: 'number'
-    })
+		description: 'friend id', type: 'number'
+	})
     id: number;
 
-    @Expose()
+	@Expose()
     @ApiProperty({
-        description: 'creation date', type: 'Date'
-    })
+		description: 'creation date', type: 'Date'
+	})
     created_at: Date;
 
-    @Expose()
+	@Expose()
     @ApiProperty({
-        description: 'friend', type: 'UserRO'
-    })
+		description: 'friend', type: 'UserRO'
+	})
     @Type(() => UserRO)
     user: UserRO;
 }

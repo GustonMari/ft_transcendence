@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, Length } from "class-validator";
+import {IsBoolean, IsNotEmpty, IsOptional, IsString, Length} from "class-validator";
 
 // TODO: add doc for swagger
 
@@ -17,29 +17,18 @@ export class UpdateProfileDTO {
     public readonly lastName: string;
 
     @IsString()
-    @IsNotEmpty()
     @IsOptional()
-    @Length(1, 50)
+    @Length(0, 50)
     public readonly password: string;
 
     @IsString()
-    @IsNotEmpty()
     @IsOptional()
-    @Length(1, 50)
-    public readonly passwordConfirm: string;
-
-    @IsString()
-    @IsNotEmpty()
-    @IsOptional()
-    @Length(1, 50)
-    public readonly oldPassword: string;
-
-
-    @IsString()
-    @IsNotEmpty()
-    @IsOptional()
-    @Length(1, 2000)
+    @Length(0, 2000)
     public readonly description: string;
+
+    @IsOptional()
+    @IsBoolean()
+    public readonly tfa: boolean;
 
     // @IsNotEmpty()
     // @IsOptional()

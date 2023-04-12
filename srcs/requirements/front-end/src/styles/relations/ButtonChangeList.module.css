@@ -1,0 +1,22 @@
+.button {
+  
+    background: linear-gradient(to bottom right, #47b7ef, #5a8eff);
+    border-radius: 8px;
+    
+    box-sizing: border-box;
+
+    color: #f2f2f2;
+    
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 2.5;
+    padding: 0px 15px;
+    text-decoration: none;
+    margin: 10px;
+    border:rgba(108, 121, 131, 0.2) 1px solid;
+}
+
+.button:hover {
+    box-shadow: 0 0 .25rem rgba(103, 103, 103, 0.5), -.125rem -.125rem 1rem rgba(71, 166, 239, 0.5), .125rem .125rem 1rem rgba(93, 90, 255, 0.5);
+}

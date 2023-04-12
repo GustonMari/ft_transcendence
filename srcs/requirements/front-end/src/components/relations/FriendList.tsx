@@ -3,9 +3,9 @@ import { CgProfile } from "react-icons/cg";
 import { useContext } from "react";
 import { ProfilePopUpContext } from "../../contexts/ProfilePopUp.context";
 
-export const FriendList = ({relations, onShow}: any) => {
+export const FriendList = ({relations}: any) => {
 
-    const {setUser, setShow} : any = useContext(ProfilePopUpContext);
+    const {setUser, setShow}: any = useContext(ProfilePopUpContext);
 
     return (
         <>

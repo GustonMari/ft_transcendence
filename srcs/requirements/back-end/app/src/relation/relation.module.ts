@@ -1,15 +1,14 @@
-import { RelationRequestService } from './services/request.relation.service';
-import { Module } from '@nestjs/common';
-import { RelationFRController } from './controllers/request.relation.controller';
-import { UserModule } from '../user/user.module';
-import { RelationService } from './services/relation.service';
-import { FriendRelationController } from './controllers/friend.relation.controller';
+import { Module } from "@nestjs/common";
+import { RelationController } from "./controllers";
+import { RelationService } from "./services";
 
 @Module({
-  controllers: [FriendRelationController, RelationFRController],
-  providers: [RelationService, RelationRequestService],
-  imports: [
-    UserModule,
+  controllers: [
+    RelationController
   ],
+  providers: [
+    RelationService
+  ]
 })
-export class FriendModule {}
+export class RelationModule {
+}
