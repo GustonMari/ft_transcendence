@@ -112,6 +112,10 @@ export class PongService {
 
 	async updateGame(data: any): Promise<{x: number, y: number, leftScore: number, rightScore: number}>
 	{
+		if (this.leftScore == 11 || this.rightScore == 11)
+		{
+			this.restartGame();
+		}
 		this.x += this.vector.x * this.velocity * data.delta;
 		this.y += this.vector.y * this.velocity * data.delta;
 		this.velocity += 0.00001 * data.delta;
@@ -190,20 +194,22 @@ export class PongService {
 			//TODO: divier cette fonction en deux pour les points, et pour le reset
 			if (rect.left <= limit.left)
 			{
-				console.log("scored left!!", this.leftScore, "scored right!!", this.rightScore);
-				console.log('ball left = ', rect.left, 'limit left = ', limit.left)
 				await this.reset();
 				await this.incrRightScore();
 			}
 			else if (rect.right >= limit.right)
 			{
-				console.log("scored left!!", this.leftScore, "scored right!!", this.rightScore);
-				console.log('ball right = ', rect.right, 'limit right = ', limit.right);
 				await this.reset();
 				await this.incrLeftScore();
 			}
 			// this.vector.x *= -1;
 		}
+	}
+
+	async restartGame(): Promise<void> {
+		this.leftScore = 0;
+		this.rightScore = 0;
+		await this.reset();
 	}
 
 	// async convert_front_to_back(new_witdh: number, new_height: number): Promise<any> {

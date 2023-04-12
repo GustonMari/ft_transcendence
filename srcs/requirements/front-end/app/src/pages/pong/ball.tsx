@@ -67,10 +67,10 @@ export class Ball {
 	}
 
 	//Get the position of the ball
-	rect() {
+	async rect() {
 		/* retourne un objet DOMRect fournissant des informations sur la taille d'un élément
 		 et sa position relative par rapport à la zone d'affichage. */
-		return this.BallElem.getBoundingClientRect();
+		return await this.BallElem.getBoundingClientRect();
 	}
 
 	reset() {
