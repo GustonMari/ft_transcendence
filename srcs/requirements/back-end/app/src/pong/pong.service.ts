@@ -18,16 +18,18 @@ export class PongService {
 	back_width: number;
 	back_height: number;
 	back_ball: {width: number, height: number, left: number, right: number, top: number, bottom: number};
+	back_limit: {top: number, bottom: number, left: number, right: number};
 	// socket: Socket;
 
 	constructor(private readonly prisma: PrismaService) {
-		// this.x = 50;
-		// this.y = 50;
+		this.x = 50;
+		this.y = 50;
 		this.back_width = 100;
 		this.back_height = 100;
 		this.back_ball = {width: ((100 * 4) / 90), height: ((100 * 4) * 55), left: (50 - ((100 * 4) * 90)) , right: (50 + ((100 * 4) * 90)), top: (50 - ((100 * 4) * 55)), bottom: (50 + ((100 * 4) * 55))};
 		// this.back_ball = {width: 4.44444, height: 7.2727, left: 47.77778, right: 53.6363, top: 0, bottom: 0};
 		// this.vector = { x: 0.1, y: 0.1};
+		this.back_limit = {top: 0, bottom: 100, left: 0, right: 100};
 		this.leftScore = 0;
 		this.rightScore = 0;
 		// this.velocity = .25;
@@ -129,6 +131,14 @@ export class PongService {
 	// 	return ({x: this.x, y: this.y});
 	// }
 
+	async calculateBallLimmit()
+	{
+		this.back_ball.left = (this.x - ((this.back_width * 4) / 90));
+		this.back_ball.right = (this.x + ((this.back_width * 4) / 90));
+		this.back_ball.top = (this.y - ((100 * 4) / 55));
+		this.back_ball.bottom = (this.y + ((100 * 4) / 55));
+	}
+
 	async updateGame(data: any): Promise<{x: number, y: number, leftScore: number, rightScore: number}>
 	{
 		if (this.leftScore == 11 || this.rightScore == 11)
@@ -137,43 +147,94 @@ export class PongService {
 		}
 		this.x += this.vector.x * this.velocity * data.delta;
 		this.y += this.vector.y * this.velocity * data.delta;
+		// this.x += this.vector.x * this.velocity;
+		// this.y += this.vector.y * this.velocity;
 		this.velocity += 0.00001 * data.delta;
-		const rect = data.ballRect;
-		if(rect.top <= data.limit.top) {
+		await this.calculateBallLimmit();
+		// this.back_ball.left = (this.x - ((this.back_width * 4) / 90));
+		// this.back_ball.right = (this.x + ((this.back_width * 4) / 90));
+		// this.back_ball.top = (this.y - ((100 * 4) / 55));
+		// this.back_ball.bottom = (this.y + ((100 * 4) / 55));
+		console.log(' x = ', this.x, ' y = ', this.y, ' ball left =', this.back_ball.left, ' ball right =', this.back_ball.right, ' ball top =', this.back_ball.top, ' ball bottom =', this.back_ball.bottom);
+		// const rect = this.back_ball;
+		if(this.back_ball.top && this.back_ball.top <= this.back_limit.top) {
 			// await this.bounceBallTop();
-			this.y += 5;
+			// this.y += 5;
 			this.vector.y *= -1;
 			// console.log('1 this y = ', this.y, 'vector y =', this.vector.y);
 
 		}
-		else if ( rect.bottom >= data.limit.bottom)
+		else if ( this.back_ball.bottom >= this.back_limit.bottom)
 		{
 			// await this.bounceBallBottom();
-			this.y -= 5;
+			// this.y -= 5;
 			this.vector.y *= -1;
+
 			// console.log('2 this y = ', this.y, 'vector y =', this.vector.y);
 		}
-		if (await this.isCollision(rect, data.playerPaddleLeft))
+		if (await this.isCollision(this.back_ball, data.playerPaddleLeft))
 		{
 			this.vector.x *= -1;
-			this.x += 1.5;
+
+			// this.x += 1.5;
 		}
-		else if (await this.isCollision(rect, data.playerPaddleRight))
+		else if (await this.isCollision(this.back_ball, data.playerPaddleRight))
 		{
 			this.vector.x *= -1;
-			this.x -= 1.5;
+
+			// this.x -= 1.5;
 		}
-		await this.sideColision(rect, data.limit);
-		if (this.x < 0)
-			this.x *= -1;
-		if (this.y < 0)
-			this.y *= -1;
+		await this.sideColision(this.back_ball, this.back_limit);
 		return ({x: this.x, y: this.y, leftScore: this.leftScore, rightScore: this.rightScore});
 		
 	}
+
+	// async updateGame(data: any): Promise<{x: number, y: number, leftScore: number, rightScore: number}>
+	// {
+	// 	if (this.leftScore == 11 || this.rightScore == 11)
+	// 	{
+	// 		this.restartGame();
+	// 	}
+	// 	this.x += this.vector.x * this.velocity * data.delta;
+	// 	this.y += this.vector.y * this.velocity * data.delta;
+	// 	this.velocity += 0.00001 * data.delta;
+	// 	const rect = data.ballRect;
+	// 	if(rect.top <= data.limit.top) {
+	// 		// await this.bounceBallTop();
+	// 		this.y += 5;
+	// 		this.vector.y *= -1;
+	// 		// console.log('1 this y = ', this.y, 'vector y =', this.vector.y);
+
+	// 	}
+	// 	else if ( rect.bottom >= data.limit.bottom)
+	// 	{
+	// 		// await this.bounceBallBottom();
+	// 		this.y -= 5;
+	// 		this.vector.y *= -1;
+	// 		// console.log('2 this y = ', this.y, 'vector y =', this.vector.y);
+	// 	}
+	// 	if (await this.isCollision(rect, data.playerPaddleLeft))
+	// 	{
+	// 		this.vector.x *= -1;
+	// 		this.x += 1.5;
+	// 	}
+	// 	else if (await this.isCollision(rect, data.playerPaddleRight))
+	// 	{
+	// 		this.vector.x *= -1;
+	// 		this.x -= 1.5;
+	// 	}
+	// 	await this.sideColision(rect, data.limit);
+	// 	if (this.x < 0)
+	// 		this.x *= -1;
+	// 	if (this.y < 0)
+	// 		this.y *= -1;
+	// 	return ({x: this.x, y: this.y, leftScore: this.leftScore, rightScore: this.rightScore});
+		
+	// }
 	
 	
-	async isCollision(ball: DOMRect, paddle: DOMRect): Promise<boolean> {
+	// async isCollision(ball: DOMRect, paddle: DOMRect): Promise<boolean> {
+	async isCollision(ball: any, paddle: any): Promise<boolean> {
 		return (
 			(ball.left <= paddle.right &&
 			ball.right >= paddle.left &&
@@ -208,7 +269,8 @@ export class PongService {
 	}
 
 
-	async sideColision(rect: DOMRect, limit: DOMRect): Promise<void> {
+	// async sideColision(rect: DOMRect, limit: DOMRect): Promise<void> {
+	async sideColision(rect: any, limit: any): Promise<void> {
 		if (rect.left <= limit.left || rect.right >= limit.right) {
 			//TODO: divier cette fonction en deux pour les points, et pour le reset
 			if (rect.left <= limit.left)

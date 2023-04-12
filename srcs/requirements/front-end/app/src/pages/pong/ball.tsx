@@ -127,7 +127,6 @@ export class Ball {
 			// console.log('data.x = ', data);
 			this.x = data.x;
 			this.y = data.y;
-			// console.log('this.x = ', this.x, 'this.y = ', this.y);
 			// console.log('score =', data.leftScore, ' | ', data.rightScore);
 			this.setLeftScore(data.leftScore);
 			this.setRightScore(data.rightScore);
