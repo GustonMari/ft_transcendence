@@ -16,15 +16,15 @@
 .navbar__active {
     display: flex;
     flex-direction: column;
-
+    
     width: 260px;
     height: 100vh;
-
+    
     background-color: rgb(39, 6, 47);
-    z-index: 9999;
-
+    
     align-items: start;
     text-align: center;
+    z-index: 9999;
 }
 
 .list {

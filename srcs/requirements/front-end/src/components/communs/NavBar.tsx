@@ -66,7 +66,7 @@ export const NavBar = ({onProfile, profilePic}: any) => {
     }
 
     return (
-        <>
+        <div className={s.position}>
             <section className={showSideBar ? s.navbar__active : s.navbar}>
                 <div className={s.show}>
                     <a onClick={handleSideBarChange}>
@@ -123,7 +123,7 @@ export const NavBar = ({onProfile, profilePic}: any) => {
                 }
 
             </section>
-        </>
+        </div>
     )
 
 };

@@ -8,6 +8,13 @@
     padding: 50px 100px;
     min-width: 450px;
 
+    margin-left: 35px;
+
+    font-family: 'Poppins', sans-serif;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 /* Search Bar */

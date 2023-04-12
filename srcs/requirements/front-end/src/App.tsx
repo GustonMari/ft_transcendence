@@ -9,7 +9,6 @@ import Profile from "./pages/profile";
 import { Result } from "./pages/search";
 import { NotFound } from "./errors/NotFound";
 import WrapContext from "./contexts/wrap.context";
-import { GlobalFeatures } from "./components/communs/GlobalFeatures";
 import PublicRoute from "./components/routes/PublicRoute";
 import TFA from "./pages/tfa";
 import { AlertProvider } from "./contexts/Alert.context";
@@ -21,47 +20,44 @@ function App() {
     <div className="App">
         <AlertProvider>
       <Routes>
-        {/* <UserProvider> */}
 
         <Route path="/" element={<Navigate to="/welcome"/>} />
 
         <Route path="/welcome" element={
-            <PublicRoute>
+            // <PublicRoute>
                 <Welcome/>
-            </PublicRoute>
+            // </PublicRoute>
         } />
         <Route path="/register" element={
-            <PublicRoute>
+            // <PublicRoute>
                 <Register/>
-            </PublicRoute>
+            // </PublicRoute>
         } />
         <Route path="/signin" element={
-            <PublicRoute>
+            // <PublicRoute>
                 <SignIn />
-            </PublicRoute>
+            // </PublicRoute>
         } />
         <Route path="/tfa" element={
-            <PublicRoute>
+            // <PublicRoute>
                 <TFA />
-            </PublicRoute>
+            // </PublicRoute>
         } />
+
+        {/* 
 
 
         <Route path="/home" element={
             <WrapContext components={
                 <PrivateRoute>
-                    <GlobalFeatures>
                         <Home/>
-                    </GlobalFeatures>
                 </PrivateRoute>
             }/>
         } />
         <Route path="/friends" element={
             <WrapContext components={
                 <PrivateRoute>
-                    <GlobalFeatures>
                         <Friends/>
-                    </GlobalFeatures>
                 </PrivateRoute>
             }/>
         } />
@@ -69,9 +65,7 @@ function App() {
         <Route path="/messages" element={
             <WrapContext components={
                 <PrivateRoute>
-                    <GlobalFeatures>
                          <Chat/>
-                    </GlobalFeatures>
                 </PrivateRoute>
             }/>
         } />
@@ -79,24 +73,19 @@ function App() {
         <Route path="/profile" element={
             <WrapContext components={
                 <PrivateRoute>
-                        <GlobalFeatures>
-                            <Profile/>
-                        </GlobalFeatures>
+                    <Profile/>
                 </PrivateRoute>
             } />
         } />
         <Route path='/search' element={
             <WrapContext components={
                 <PrivateRoute>
-                    <GlobalFeatures>
-                        <Result/>
-                    </GlobalFeatures>
+                    <Result/>
                 </PrivateRoute>
             } />
         }/>
-        {/* </UserProvider> */}
 
-        <Route path='*' element={<NotFound/>}/>
+    <Route path='*' element={<NotFound/>}/> */}
       </Routes>
         </AlertProvider>
     </div>

@@ -1,9 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
-* {
-    transition: all 0.5s ease-in-out;
-}
-
 @import "tailwindcss/base";
 
 @import "tailwindcss/components";
