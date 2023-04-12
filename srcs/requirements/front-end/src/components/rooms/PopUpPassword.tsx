@@ -1,5 +1,5 @@
 import { APP } from "../../network/app";
-import '../../styles/messages/Style.message.css';
+import StyleRoom from "../../styles/rooms/Style.room.module.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import { Modal } from 'react-bootstrap';
@@ -42,8 +42,9 @@ export function PopupPassword(props: any) {
 
 	return (
 	<div>
-		<Button className="line-room-button" id={id} variant="primary" onClick={handleShow}>
-            <AiFillLock title="Lock the room"/>
+		<Button className={StyleRoom["line-room-button"]} id={id} variant="primary" onClick={handleShow}>
+			{/* <img className={StyleRoom["icon-room"]} src="./lock-room.png" alt="lock room" /> */}
+			<AiFillLock title="Lock the room"/>
 		</Button>
 			
 		<Modal show={show} onHide={handleClose} >

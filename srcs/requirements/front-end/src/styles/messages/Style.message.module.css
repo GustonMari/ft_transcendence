@@ -22,10 +22,11 @@ GLOBAL
   outline: solid yellow;
   overflow-x: hidden;
 
+  margin-left: 80px;
+
    /* background-image: url("../../../static/chat/background-trans.jpg");
   background-size: cover;
   background-position: center center; */
-
 
 }
 
@@ -73,6 +74,8 @@ MESSAGE
 	flex: 1;
 	overflow: auto;
 	overflow-wrap: break-word;
+	overflow-x: hidden;
+	overflow-y: hidden;
 
 }
 
@@ -223,11 +226,12 @@ MESSAGE
 
 /*Button to send message*/
 .input-msg-button{
+	color: white;
 	display: flex;
 	border-radius: 50%;
 	width: 24px;
 	height: 24px;
-	padding: 2px;
+	padding: 3.5px;
 	border: none;
 	margin-left: 2px;
 	background-color: rgba(39, 6, 47, 0.643);
