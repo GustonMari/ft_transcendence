@@ -23,9 +23,10 @@ export class PongService {
 	constructor(private readonly prisma: PrismaService) {
 		// this.x = 50;
 		// this.y = 50;
-		this.back_width = 900;
-		this.back_height = 550;
-		this.back_ball = {width: 40, height: 40, left: 0, right: 0, top: 0, bottom: 0};
+		this.back_width = 100;
+		this.back_height = 100;
+		this.back_ball = {width: ((100 * 4) / 90), height: ((100 * 4) * 55), left: (50 - ((100 * 4) * 90)) , right: (50 + ((100 * 4) * 90)), top: (50 - ((100 * 4) * 55)), bottom: (50 + ((100 * 4) * 55))};
+		// this.back_ball = {width: 4.44444, height: 7.2727, left: 47.77778, right: 53.6363, top: 0, bottom: 0};
 		// this.vector = { x: 0.1, y: 0.1};
 		this.leftScore = 0;
 		this.rightScore = 0;
