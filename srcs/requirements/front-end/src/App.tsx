@@ -14,6 +14,7 @@ import PublicRoute from "./components/routes/PublicRoute";
 import TFA from "./pages/tfa";
 import { AlertProvider } from "./contexts/Alert.context";
 import { Welcome } from "./pages/welcome";
+import Chat from "./pages/chat";
 
 function App() {
   return (
@@ -69,7 +70,7 @@ function App() {
             <WrapContext components={
                 <PrivateRoute>
                     <GlobalFeatures>
-                        {/* <Chat/>    */} // TODO: fix css, conflic with differents css files
+                         <Chat/>
                     </GlobalFeatures>
                 </PrivateRoute>
             }/>

@@ -3,7 +3,7 @@ import { APP } from "../../network/app";
 
 import { GetMessagesByRoom } from '../../components/messages/Message';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import StyleProgres from '../../styles/Profile/Style.progressBar.module.css';
+import StyleProgres from '../../styles/profile/Style.progressBar.module.css';
 import Style from "../../styles/messages/Style.message.module.css";
 
 
