@@ -149,9 +149,6 @@ CREATE UNIQUE INDEX "games_name_key" ON "games"("name");
 -- CreateIndex
 CREATE UNIQUE INDEX "games_master_id_key" ON "games"("master_id");
 
--- CreateIndex
-CREATE UNIQUE INDEX "games_slave_id_key" ON "games"("slave_id");
-
 -- AddForeignKey
 ALTER TABLE "friend_request" ADD CONSTRAINT "friend_request_from_id_fkey" FOREIGN KEY ("from_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 

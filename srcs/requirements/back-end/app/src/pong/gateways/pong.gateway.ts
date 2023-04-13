@@ -79,8 +79,9 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 
 	@SubscribeMessage('updatePaddleLeft')
-	async updatePaddleLeft(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+	async updatePaddleLeft(@MessageBody() data: string, @ConnectedSocket() socket: Socket): Promise<void> {
 		console.log("updatePaddleLeft");
+		this.pongService.movePaddeLeft(data);
 	}
 
 	@SubscribeMessage('reset')

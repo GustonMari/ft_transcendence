@@ -74,7 +74,6 @@ export class ChatService {
 	async joinChatRoom(room_name: string, user_id: number )
 	{
 		//TODO: change with findOne
-		console.log("--------- room name = ", room_name, " | user_id = ", user_id, "---------")
 		const current_user = await this.prisma.user.findUnique({ where: { id: user_id } });
 		if (!current_user) {
 			throw new Error('User not found');
@@ -82,7 +81,6 @@ export class ChatService {
 
 		//on cherche si la room existe deja sinon on la creer
 		const room_exist = await this.prisma.room.findUnique({ where: { name: room_name} });
-		console.log("room_existssss = ", room_exist)
 		if (!room_exist) {
 			//! or maybe trhow something
 			console.log("on est dans joinChatRoom la room nexiste pas on createChatRoom(", room_name, ", ", user_id);

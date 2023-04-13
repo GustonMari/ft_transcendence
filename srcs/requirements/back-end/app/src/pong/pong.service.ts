@@ -36,12 +36,7 @@ export class PongService {
 		this.reset();
 		this.back_paddle_width = (100 * 2) / 90;
 		this.back_paddle_height = (100 * 12) / 55;
-
-		// this.back_paddle_left = {left: 100 / 90, right: (100 * 3) / 90, top: (100 * 21.5) / 55, bottom: (100 * 33.5) / 55, x: (100 * 2 ) / 90, y: (100 * 27.5) / 55};
-		// this.back_paddle_right = {left: 100 - (100 / 90), right: 100 - ((100 * 3) / 90), top: (100 * 21.5) / 55, bottom: (100 * 33.5) / 55, x: 100 - ((100 * 2 ) / 90), y: (100 * 27.5) / 55};
-
 		this.back_paddle_left = {left: 100 / 90, right: (100 * 3) / 90, top: (100 * 21.5) / 55, bottom: (100 * 33.5) / 55, x: (100 * 2 ) / 90, y: (100 * 27.5) / 55};
-		// this.back_paddle_right = {left: 90 - ((100 * 3) / 90), right: 90 - (100 / 90), top: (100 * 21.5) / 55, bottom: (100 * 33.5) / 55, x: ((100 * 88 ) / 90), y: (100 * 27.5) / 55};
 		this.back_paddle_right = {left: (87 * 100) / 90, right: (89 * 100) / 90, top: (100 * 21.5) / 55, bottom: (100 * 33.5) / 55, x: ((100 * 88 ) / 90), y: (100 * 27.5) / 55};
 	 }
 	
@@ -96,13 +91,16 @@ export class PongService {
 	async isUserMaster(login: string): Promise<boolean> {
 		if (!login)
 			return (false);
+		console.log("111")
 		const user = await this.prisma.user.findUnique({
 			where: {
 				login: login,
 			}
 		});
+		console.log("222")
 		if (user == null)
 			return (false);
+		console.log("333")
 		const game = await this.prisma.game.findFirst({
 			where: {
 				master_id: user.id,
@@ -113,8 +111,10 @@ export class PongService {
 				},
 			}
 		});
+		console.log("444")
 		if (game == null)
 			return (false);
+		console.log("555")
 		return (true);
 	}
 
@@ -126,18 +126,25 @@ export class PongService {
 		this.back_ball.bottom = (this.y + ((100 * 2) / 55) - 1.27);
 	}
 
-	async calculatePaddleLimitLeft()
+	async movePaddeLeft(data: string): Promise<void>
 	{
-	}
-
-	async calculatePaddleLimitRight()
-	{
-
+		if (data == 'up' && this.back_paddle_left.top > 0)
+		{
+			this.back_paddle_left.y -= 0.1;
+			this.back_paddle_left.top -= 0.1;
+			this.back_paddle_left.bottom -= 0.1;
+		}
+		else if (data == 'down' && this.back_paddle_left.bottom < 100)
+		{
+			this.back_paddle_left.y += 0.1;
+			this.back_paddle_left.top += 0.1;
+			this.back_paddle_left.bottom += 0.1;
+		}
 	}
 
 	async updateGame(data: any): Promise<{x: number, y: number, leftScore: number, rightScore: number, paddleLeftY: number, paddleRightY: number}>
 	{
-		if (this.leftScore == 11 || this.rightScore == 11)
+		if (this.leftScore >= 11 || this.rightScore >= 11)
 		{
 			this.restartGame();
 		}

@@ -156,7 +156,7 @@ model Game {
 	// master UserInGame @relation("master", fields: [master_id], references: [id])
 	master_id Int @unique
 	// slave UserInGame @relation("slave", fields: [slave_id], references: [id])
-	slave_id Int @unique
+	slave_id Int
 
 	UserInGame UserInGame[]
 

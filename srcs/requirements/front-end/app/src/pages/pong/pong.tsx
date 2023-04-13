@@ -29,14 +29,16 @@ export default function Pong() {
 		const getUsers = async () => {
 			try {
 				const res = await APP.get("/user/me");
+				console.log("res.data.login = ", res.data.login);
 				setCurrentUser(res.data);
 				const res2 = await APP.get("/user/get", {
 					params: {
 						// login: userTo.login,
-						login: "gus",
+						login: "tutu",
 					},
 				});
 				setUserTo(res2.data);
+				console.log("res2.data = ", res2.data, "res.data = ", res.data);
 				const create_game = await APP.post("/pong/create_game", {
 						master: res.data,
 						slave: res2.data,
@@ -70,7 +72,7 @@ export default function Pong() {
 		};
 		getUsers();
 	}, []);
-
+	console.log("isMasterrrr = ", isMaster);
 	if (currentUser && isMaster)
 	{
 		// return (
@@ -150,29 +152,32 @@ export function ExecutePong() {
 
 	const DownHandler = (e: any) => {
 		if (isMaster) {
+			console.log("isMaster");
 			if (e.keyCode == 87) {
 				leftUpPressed = true;
 				if (newLimit && playerPaddleLeft) {
-					playerPaddleLeft.position -= 2;
-					// socket.emit('updatePaddleLeft', 'up');
+					// playerPaddleLeft.position -= 2;
+					socket.emit('updatePaddleLeft', 'up');
+					console.log("1 up");
 				}
 			}
 			else if (e.keyCode == 83) {
 				leftDownPressed = true;
 				if (newLimit && playerPaddleLeft) {
-					playerPaddleLeft.position += 2;
+					// playerPaddleLeft.position += 2;
 					socket.emit('updatePaddleLeft', 'down');
+					console.log("1 down");
 				}
 			}
 		}
 		else {
 			if (e.keyCode == 38) {
 				rightUpPressed = true;
-				console.log("up");
+				console.log("2 up");
 			}
 			else if (e.keyCode == 40) {
 				rightDownPressed = true;
-				console.log("down");
+				console.log("2 down");
 			}
 		}
 		e.preventDefault();
@@ -180,6 +185,7 @@ export function ExecutePong() {
 			
 			const UpHandler = (e: any) => {
 				if (e.keyCode == 87) {
+
 					leftUpPressed = false;
 				}
 				else if (e.keyCode == 83) {
