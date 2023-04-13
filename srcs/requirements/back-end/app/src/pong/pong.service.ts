@@ -19,6 +19,10 @@ export class PongService {
 	back_height: number;
 	back_ball: {width: number, height: number, left: number, right: number, top: number, bottom: number};
 	back_limit: {top: number, bottom: number, left: number, right: number};
+	back_paddle_left: {left: number, right: number, top: number, bottom: number, x: number, y: number};
+	back_paddle_right: {left: number, right: number, top: number, bottom: number, x:number, y: number};
+	back_paddle_width: number;
+	back_paddle_height: number;
 
 	constructor(private readonly prisma: PrismaService) {
 		this.x = 50;
@@ -30,6 +34,15 @@ export class PongService {
 		this.leftScore = 0;
 		this.rightScore = 0;
 		this.reset();
+		this.back_paddle_width = (100 * 2) / 90;
+		this.back_paddle_height = (100 * 12) / 55;
+
+		// this.back_paddle_left = {left: 100 / 90, right: (100 * 3) / 90, top: (100 * 21.5) / 55, bottom: (100 * 33.5) / 55, x: (100 * 2 ) / 90, y: (100 * 27.5) / 55};
+		// this.back_paddle_right = {left: 100 - (100 / 90), right: 100 - ((100 * 3) / 90), top: (100 * 21.5) / 55, bottom: (100 * 33.5) / 55, x: 100 - ((100 * 2 ) / 90), y: (100 * 27.5) / 55};
+
+		this.back_paddle_left = {left: 100 / 90, right: (100 * 3) / 90, top: (100 * 21.5) / 55, bottom: (100 * 33.5) / 55, x: (100 * 2 ) / 90, y: (100 * 27.5) / 55};
+		// this.back_paddle_right = {left: 90 - ((100 * 3) / 90), right: 90 - (100 / 90), top: (100 * 21.5) / 55, bottom: (100 * 33.5) / 55, x: ((100 * 88 ) / 90), y: (100 * 27.5) / 55};
+		this.back_paddle_right = {left: (87 * 100) / 90, right: (89 * 100) / 90, top: (100 * 21.5) / 55, bottom: (100 * 33.5) / 55, x: ((100 * 88 ) / 90), y: (100 * 27.5) / 55};
 	 }
 	
 	get all()
@@ -113,7 +126,16 @@ export class PongService {
 		this.back_ball.bottom = (this.y + ((100 * 2) / 55) - 1.27);
 	}
 
-	async updateGame(data: any): Promise<{x: number, y: number, leftScore: number, rightScore: number}>
+	async calculatePaddleLimitLeft()
+	{
+	}
+
+	async calculatePaddleLimitRight()
+	{
+
+	}
+
+	async updateGame(data: any): Promise<{x: number, y: number, leftScore: number, rightScore: number, paddleLeftY: number, paddleRightY: number}>
 	{
 		if (this.leftScore == 11 || this.rightScore == 11)
 		{
@@ -130,21 +152,23 @@ export class PongService {
 		{
 			this.vector.y *= -1;
 		}
-		if (await this.isCollision(this.back_ball, data.playerPaddleLeft))
+		if (await this.isCollision(this.back_ball, this.back_paddle_left))
 		{
 			this.vector.x *= -1;
 		}
-		else if (await this.isCollision(this.back_ball, data.playerPaddleRight))
+		else if (await this.isCollision(this.back_ball, this.back_paddle_right))
 		{
 			this.vector.x *= -1;
 		}
 		//TODO: faire en sorte que la ball sorte entierement pour marquer un point
 		await this.sideColision(this.back_ball, this.back_limit);
-		return ({x: this.x, y: this.y, leftScore: this.leftScore, rightScore: this.rightScore});
+		// console.log('paddleLeft = ', this.back_paddle_left, "paddleRight = ", this.back_paddle_right);
+		return ({x: this.x, y: this.y, leftScore: this.leftScore, rightScore: this.rightScore, paddleLeftY: this.back_paddle_left.y, paddleRightY: this.back_paddle_right.y});
 		
 	}
 
 	async isCollision(ball: any, paddle: any): Promise<boolean> {
+
 		return (
 			(ball.left <= paddle.right &&
 			ball.right >= paddle.left &&

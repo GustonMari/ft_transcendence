@@ -61,7 +61,7 @@
 	/* background-color: var(--foreground-color); */
 	/* background-color: blue; */
 	width: 2vh;
-	height: 13vh;
+	height: 12vh;
 	border-radius: 5px;
 	background-color: white;
 	box-shadow:  
@@ -79,6 +79,7 @@
 	/* animation: pulse 1s infinite; */
 	animation: glowpaddle 3s ease-in-out infinite alternate;
 }
+
 
 .paddle.left {
 	left: 1vh;

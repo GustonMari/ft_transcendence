@@ -76,8 +76,11 @@ export class Ball {
 			this.y = data.y;
 			this.setLeftScore(data.leftScore);
 			this.setRightScore(data.rightScore);
+			playerPaddleLeft.position = data.paddleLeftY;
+			playerPaddleRight.position = data.paddleRightY;
 
-
+			// console.log('paddle rect left =', playerPaddleLeft.rect, 'paddle rect right =', playerPaddleRight.rect);
+			// console.log("playerPaddleLeft.position: " + data.paddleLeftY, "playerPaddleRight.position: " + data.paddleRightY);
 		});
 	}
 

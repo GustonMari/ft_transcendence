@@ -10,6 +10,7 @@ export class Paddle {
 
 	}
 
+
 	set position(value: number) {
 		if (this.PaddleElem === null)
 		{
