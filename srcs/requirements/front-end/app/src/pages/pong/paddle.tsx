@@ -15,7 +15,6 @@ export class Paddle {
 		{
 			return;
 		}
-		// console.log("position =", value);
 		   this.PaddleElem.style.setProperty('--position', value);
 	}
 

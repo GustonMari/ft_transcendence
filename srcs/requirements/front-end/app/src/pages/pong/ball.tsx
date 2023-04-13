@@ -6,7 +6,6 @@ export class Ball {
 	
 	BallElem: any;
 	ballRect: any;
-	// vector: {x: number, y: number};
 	velocity: number = 0.25;
 	setLeftScore: any;
 	setRightScore: any;
@@ -16,17 +15,11 @@ export class Ball {
 	{
 		console.log('constructor ball');
 		socket.emit('defineBall');
-		// this.vector = {x: 0, y: 0};
 		this.BallElem = BallElem;
 		this.socket = socket;
-		// this.x = 50;
-		// this.y = 50;
 		this.ballRect = this.rect();
-		// this.reset();
-		// socket.emit('resetGame');
 		this.setLeftScore = setLeftScore;
 		this.setRightScore = setRightScore;
-		// console.log('constructor =', this.BallElem);
 	}
 	
 	/*
@@ -47,7 +40,6 @@ export class Ball {
 	 {
 		 return;
 	 }
-	 	// console.log('value x = ', value);
 		this.BallElem.style.setProperty('--x', value.toString());
 	}
 
@@ -59,10 +51,8 @@ export class Ball {
 	set y(value: number) {
 		if (this.BallElem === null)
 		{
-			// console
 			return;
 		}
-		// console.log('value y = ', value);
 		this.BallElem.style.setProperty('--y', value.toString());
 	}
 
@@ -75,70 +65,20 @@ export class Ball {
 
 	reset() {
 		
-		// this.x = 50;
-		// this.y = 50;
-		// this.vector = { x: 0, y: 0};
-		
-		// // make random direction, but not too much up or down
-		// while (Math.abs(this.vector.x) <= .2 || Math.abs(this.vector.x) >= .9)
-		// {
-		// 	//generate a random number between 0 and 2PI (360 degrees)
-		// 	const heading = Math.random() * 2 * Math.PI;
-		// 	this.vector = { x: Math.cos(heading), y: Math.sin(heading) };
-		// }
-		// //initial velocity
-		// this.velocity = .025;
+
 	}
 
-
-	// sideColision(rect: DOMRect, limit: DOMRect) {
-	// 	if (rect.left <= limit.left || rect.right >= limit.right) {
-	// 		//TODO: divier cette fonction en deux pour les points, et pour le reset
-	// 		if (rect.left <= limit.left)
-	// 		{
-	// 			//trigger animation for the ball
-	// 			// this.BallElem.classList.add('scored')
-	// 			// document?.getElementById('collision').classList.add('scored');
-				
-	// 			this.setRightScore((prevScore: number) => prevScore + 1);
-	// 			this.reset();
-	// 		}
-	// 		if (rect.right >= limit.right)
-	// 		{
-	// 			//trigger animation for the ball
-	// 			// this.BallElem.classList.add('scored');
-	// 			this.setLeftScore((prevScore: number) => prevScore + 1);
-	// 			this.reset();
-	// 		}
-	// 		this.vector.x *= -1;
-	// 	}
-	// }
-
-	
-	
 	update(delta: number, limit: DOMRect, playerPaddleLeft: Paddle, playerPaddleRight: Paddle) {
-		this.socket.emit('updateGame', {delta: delta, limit: limit, playerPaddleLeft: playerPaddleLeft.rect, playerPaddleRight: playerPaddleRight.rect, ballRect: this.rect()});
-		// this.socket.emit('updateGame', {delta: delta, limit: limit, playerPaddleLeft: playerPaddleLeft.rect, playerPaddleRight: playerPaddleRight.rect, ballRect: this.ballRect});
+		// this.socket.emit('updateGame', {delta: delta, limit: limit, playerPaddleLeft: playerPaddleLeft.rect, playerPaddleRight: playerPaddleRight.rect, ballRect: this.rect()});
+		this.socket.emit('updateGame', {delta: delta, limit: limit, playerPaddleLeft: playerPaddleLeft.rect, playerPaddleRight: playerPaddleRight.rect, ballRect: this.ballRect});
 		this.socket?.on('GameUpdated', (data: any) => {
-			// console.log('data = ', data);
-			// this.x = 20;
-			// this.y = 50;
-	
-			// console.log('data.x = ', data);
 			this.x = data.x;
 			this.y = data.y;
-			// console.log('score =', data.leftScore, ' | ', data.rightScore);
 			this.setLeftScore(data.leftScore);
 			this.setRightScore(data.rightScore);
 
 
 		});
-
-		// this.socket?.on('updateScore', (data: any) => {
-			// console.log('leftScore = ', data.leftScore, 'rightScore = ', data.rightScore)
-			// this.setLeftScore(data.leftScore);
-			// this.setRightScore(data.rightScore);
-		// });
 	}
 
 }

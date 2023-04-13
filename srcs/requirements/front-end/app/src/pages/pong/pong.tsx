@@ -221,7 +221,6 @@ export function ExecutePong() {
 			
 			useEffect(() => {
 				if (ball && socket) {
-					// console.log('init the game');
 					const pongBall = new Ball(ball, setLeftScore, setRightScore, socket);
 					let lastTime: number = 0;
 					window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight));

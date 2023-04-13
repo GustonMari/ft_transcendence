@@ -128,13 +128,9 @@
 	position: absolute;
 	top: calc(var(--y) * (55vh - 1vh) / 100);
 	left: calc(var(--x) * (90vh - 4vh) / 100);
-	/* top: calc(var(--y) * (55vh - 3vh) / 100); */
-	/* left: calc(var(--x) * (90vh - 3vh) / 100); */
 	transform: translateY(-50%);
 	/* background-color: var(--foreground-color); */
 	background-color: #121212;
-	/* width: 5vh;
-	height: 5vh; */
 	width: 4vh;
 	height: 4vh;
 	border-radius: 50%;

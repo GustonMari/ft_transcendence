@@ -74,36 +74,13 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 	@SubscribeMessage('updateGame')
 	async updateGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-		// console.log("updateGame");
 		let ret = await this.pongService.updateGame(data);
-		// console.log("ret score = ", ret.leftScore, "| right = ", ret.rightScore)
 		socket.emit('GameUpdated', ret);
-		// socket.emit('updateScore', ret);
-		// this.x += this.vector.x * this.velocity * data.delta;
-		// this.y += this.vector.y * this.velocity * data.delta;
-		// // console.log('x =', this.x);
-		// // console.log('y =', this.y);
-		// this.velocity += 0.00001 * data.delta;
-		// const rect = this.rect();
-
-		// if(rect.top <= data.limit.top || rect.bottom >= data.limit.bottom) {
-		// 	this.vector.y *= -1;
-		// }
-		// if (this.pongService.isCollision(rect, data.playerPaddleLeft.rect) 
-		// 	|| this.pongService.isCollision(rect, data.playerPaddleRight.rect))
-		// {
-		// 	this.vector.x *= -1;
-		// }    
-		// this.pongService.sideColision(rect, data.limit);
 	}
 
 	@SubscribeMessage('updatePaddleLeft')
 	async updatePaddleLeft(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
 		console.log("updatePaddleLeft");
-		// if (data === "up")
-			
-		// let ret = await this.pongService.updatePaddleLeft(data);
-		// socket.emit('PaddleLeftUpdated', ret);
 	}
 
 	@SubscribeMessage('reset')
@@ -111,7 +88,4 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		console.log("reset");
 		this.pongService.reset();
 	}
-
-
-
 }
