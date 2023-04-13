@@ -156,7 +156,7 @@ function PopupImageSelf(props: any) {
 			<Modal.Title>Profile</Modal.Title>
 		  </Modal.Header>
 		  <Modal.Body className="text-center">
-			<img src={ imageSrc } className="img-popup-user"/>
+			<img src={ imageSrc } className={Style["img-popup-user"]}/>
 			<br />
 			<br />
 			<ProgressBar progress={70}/>

@@ -49,7 +49,7 @@ export class PongService {
 	async createGame(master: User, slave: User): Promise<boolean> {
 
 		let game_name = "";
-		console.log('\x1b[36m%s', "slave = ", slave, "master = ", master, '\x1b[0m');
+		// console.log('\x1b[36m%s', "slave = ", slave, "master = ", master, '\x1b[0m');
 		if (!slave || !master)
 			return (false);
 		if (slave.login.localeCompare(master.login) < 0)
@@ -91,16 +91,17 @@ export class PongService {
 	async isUserMaster(login: string): Promise<boolean> {
 		if (!login)
 			return (false);
-		console.log("111")
+		// console.log("111")
 		const user = await this.prisma.user.findUnique({
 			where: {
 				login: login,
 			}
 		});
-		console.log("222")
+		// console.log("222")
 		if (user == null)
 			return (false);
-		console.log("333")
+		// console.log("333")
+		console.log("ARGHHHHHHHH user = ", user);
 		const game = await this.prisma.game.findFirst({
 			where: {
 				master_id: user.id,
@@ -111,10 +112,12 @@ export class PongService {
 				},
 			}
 		});
-		console.log("444")
-		if (game == null)
+		console.log("ARGHHHHHHHH game = ", game);
+
+		// console.log("444")
+		if (game == null || game == undefined)
 			return (false);
-		console.log("555")
+		// console.log("555")
 		return (true);
 	}
 

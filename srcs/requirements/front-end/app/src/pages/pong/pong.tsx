@@ -29,22 +29,23 @@ export default function Pong() {
 		const getUsers = async () => {
 			try {
 				const res = await APP.get("/user/me");
-				console.log("res.data.login = ", res.data.login);
+				// console.log("res.data.login = ", res.data.login);
 				setCurrentUser(res.data);
-				const res2 = await APP.get("/user/get", {
-					params: {
-						// login: userTo.login,
-						login: "tutu",
-					},
-				});
-				setUserTo(res2.data);
-				console.log("res2.data = ", res2.data, "res.data = ", res.data);
-				const create_game = await APP.post("/pong/create_game", {
-						master: res.data,
-						slave: res2.data,
-					});
+				// const res2 = await APP.get("/user/get", {
+				// 	params: {
+				// 		// login: userTo.login,
+				// 		login: "tutu",
+				// 	},
+				// });
+				// setUserTo(res2.data);
+				// console.log("res2.data = ", res2.data, "res.data = ", res.data);
+				// const create_game = await APP.post("/pong/create_game", {
+				// 		master: res.data,
+				// 		slave: res2.data,
+				// 	});
 				const is_master = await APP.post("/pong/is_user_master", { login: res.data.login });
-				if (is_master) {
+				console.log("Bonjour ismaster.data = ", is_master.data, "res.data.login = ", res.data.login);
+				if (is_master.data) {
 					setIsMaster(true);
 					console.log("master zooo")
 					// return (
@@ -65,14 +66,14 @@ export default function Pong() {
 					// 	</>
 					// )
 				}
-				console.log("create_game = ", create_game);
+				// console.log("create_game = ", create_game);
 			} catch (error) {
 				console.error(error);
 			}
 		};
 		getUsers();
 	}, []);
-	console.log("isMasterrrr = ", isMaster);
+	// console.log("isMasterrrr = ", isMaster);
 	if (currentUser && isMaster)
 	{
 		// return (
