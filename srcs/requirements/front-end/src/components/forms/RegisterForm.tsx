@@ -21,7 +21,7 @@ export default function RegisterForm() {
         window.location.href = url;
         handleSuccess("Successfully redirected to 42");
       },
-      () => {
+      (e: any) => {
         handleError("Error while connecting to 42");
       }
     );
@@ -65,7 +65,7 @@ export default function RegisterForm() {
         handleSuccess("You are now registered");
       },
       (err: any) => {
-        handleError("Error while registering");
+        handleError(err.message);
       }
     );
   }

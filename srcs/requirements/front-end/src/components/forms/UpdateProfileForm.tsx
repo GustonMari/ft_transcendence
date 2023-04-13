@@ -10,6 +10,7 @@ import Switch from '@mui/material/Switch';
 
 import s from '../../styles/forms/UpdateProfileForm.module.css';
 import {FormControlLabel} from "@mui/material";
+import { NavBar } from '../communs/NavBar';
 
 function UpdateProfileForm(props: any) {
   const { me }: any = useContext(UserContext)
@@ -64,10 +65,9 @@ function UpdateProfileForm(props: any) {
 
   return (
     <>
+        <NavBar/>
       <form className={s.form} onSubmit={handleSubmit}>
-        {/*<input type="file" onChange={handleProfilePictureChange} />*/}
         <img className={s.profile_picture} src={"http://localhost:3000/api/public/picture/" + me.login}></img>
-        {/*<input  className={s.button} type="file" onChange={handleProfilePictureChange}/>*/}
         <input
             type="file"
             name="file-input"

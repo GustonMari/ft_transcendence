@@ -9,6 +9,7 @@ import { ParameterChat } from "../components/chat/ParameterChat";
 import { HistoryDto, InfoMessage } from "../dtos/chat.dto";
 import Style from "../styles/messages/Style.message.module.css";
 import StyleRoom from "../styles/rooms/Style.room.module.css";
+import { NavBar } from "../components/communs/NavBar";
 
 export default function Chat() {
 
@@ -59,7 +60,8 @@ export default function Chat() {
 	socket?.on("message", message_listener);
 
 	return (
-	<div>
+        <div>
+        <NavBar/>
 		<div>
 			{/* <nav className="nav-bar">
 				<a className='nav-bar-box' href="">Home</a>
