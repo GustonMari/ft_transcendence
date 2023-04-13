@@ -44,9 +44,6 @@ function App() {
             // </PublicRoute>
         } />
 
-        {/* 
-
-
         <Route path="/home" element={
             <WrapContext components={
                 <PrivateRoute>
@@ -85,7 +82,7 @@ function App() {
             } />
         }/>
 
-    <Route path='*' element={<NotFound/>}/> */}
+    <Route path='*' element={<NotFound/>}/>
       </Routes>
         </AlertProvider>
     </div>

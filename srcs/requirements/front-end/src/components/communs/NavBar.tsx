@@ -112,12 +112,14 @@ export const NavBar = ({onProfile, profilePic}: any) => {
                             }
                         }>
                             <img className={s.avatar} src={"http://localhost:3000/api/public/picture/" + me.login}/>
-                            <div className={showSideBar ? s.profile_info__active : s.profile_info}>
-                                <p>{me.login.substring(0, 20)}</p>
-                                <div className={s.match_history}>
-                                    <span>W : {me.loses} | L : {me.wins}</span>
+                            { showSideBar &&
+                                <div className={showSideBar ? s.profile_info__active : s.profile_info}>
+                                    <p>{me.login.substring(0, 20)}</p>
+                                    <div className={s.match_history}>
+                                        <span>W : {me.loses} | L : {me.wins}</span>
+                                    </div>
                                 </div>
-                            </div>
+                            }
                         </a>
                     </div>
                 }

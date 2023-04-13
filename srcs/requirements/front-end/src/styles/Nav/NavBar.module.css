@@ -6,11 +6,11 @@
     height: 100vh;
 
     background-color: rgb(39, 6, 47);
-    z-index: 9999;
+
 
     align-items: center;
     text-align: center;
-    position: relative;
+    position: absolute;
 }
 
 .navbar__active {
@@ -24,7 +24,7 @@
     
     align-items: start;
     text-align: center;
-    z-index: 9999;
+    position: absolute;
 }
 
 .list {
@@ -117,6 +117,11 @@
     border-radius: 10px;
     text-align: left;
     background-color: rgb(70, 24, 82);
+}
+
+.footer > a {
+    width: 50px;
+    height: 50px;
 }
 
 .profile_info {
