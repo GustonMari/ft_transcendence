@@ -142,7 +142,8 @@ export class PongService {
 		// this.back_ball.top = (this.y - ((100 * 2) / 55));
 		// this.back_ball.bottom = (this.y + ((100 * 2) / 55));
 		this.back_ball.top = (this.y - ((100 * 2) / 55));
-		this.back_ball.bottom = (this.y + ((100 * 2) / 55) - 7.27);
+		// this.back_ball.bottom = (this.y + ((100 * 2) / 55) - 7.27);
+		this.back_ball.bottom = (this.y + ((100 * 2) / 55) - 1.27);
 	}
 
 	async updateGame(data: any): Promise<{x: number, y: number, leftScore: number, rightScore: number}>

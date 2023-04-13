@@ -49,12 +49,14 @@
 }
 
 .paddle {
-	--position: 25;
+	/* --position: 25; */
+	--position: 50;
 	--glowingpaddle:0.3;
 
 	position: absolute;
-	top: 50%;
-	top: calc(var(--position) * 1vh);
+	/* top: 50%; */
+	top: calc(var(--position) * (55vh - 1vh) / 100 );
+	/* top: calc(var(--position) * 1vh); */
 	transform: translateY(-50%);
 	/* background-color: var(--foreground-color); */
 	/* background-color: blue; */
@@ -124,7 +126,7 @@
 	--insideball: 0.2;
 	--outsideball: 0.5;
 	position: absolute;
-	top: calc(var(--y) * (55vh - 4vh) / 100);
+	top: calc(var(--y) * (55vh - 1vh) / 100);
 	left: calc(var(--x) * (90vh - 4vh) / 100);
 	/* top: calc(var(--y) * (55vh - 3vh) / 100); */
 	/* left: calc(var(--x) * (90vh - 3vh) / 100); */
