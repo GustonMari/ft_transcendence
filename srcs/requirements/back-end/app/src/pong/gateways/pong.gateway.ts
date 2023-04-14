@@ -75,7 +75,11 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	@SubscribeMessage('updateGame')
 	async updateGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
 		let ret = await this.pongService.updateGame(data);
-		socket.emit('GameUpdated', ret);
+		if (ret.leftScore >= 11 || ret.rightScore >= 11) {
+			socket.emit('GameFinished', ret);
+		}else {
+			socket.emit('GameUpdated', ret);
+		}
 	}
 
 	@SubscribeMessage('updatePaddleLeft')

@@ -164,10 +164,17 @@ export class PongService {
 		}
 	}
 
+
+	async defineWinnerLooser()
+	{
+	
+	}
+
 	async updateGame(data: any): Promise<{x: number, y: number, leftScore: number, rightScore: number, paddleLeftY: number, paddleRightY: number}>
 	{
 		if (this.leftScore >= 11 || this.rightScore >= 11)
 		{
+			this.defineWinnerLooser();
 			this.restartGame();
 		}
 		this.x += this.vector.x * this.velocity * data.delta;
@@ -187,7 +194,6 @@ export class PongService {
 		if (await this.isCollision(this.back_ball, this.back_paddle_left))
 		{
 			this.velocity += 0.0005 * data.delta;
-
 			this.vector.x *= -1;
 		}
 		else if (await this.isCollision(this.back_ball, this.back_paddle_right))
@@ -246,11 +252,13 @@ export class PongService {
 			{
 				await this.reset();
 				await this.incrRightScore();
+				//TODO: do we have to add score to prisma ?
 			}
 			else if (rect.right >= limit.right)
 			{
 				await this.reset();
 				await this.incrLeftScore();
+				//TODO: do we have to add score to prisma ?
 			}
 		}
 	}

@@ -277,6 +277,25 @@ export function ExecutePong(props: any) {
 			  }
 			}, [ball]);
 
+			socket.on('GameFinished', (data: any) => {
+				if (isMaster && data.leftScore >= 11)
+				{
+					console.log("master won");
+				}
+				else if (!isMaster && data.rightScore >= 11)
+				{
+					console.log("slave won");
+				}
+				else if (isMaster && data.rightScore >= 11)
+				{
+					console.log('master loose');
+				}
+				else if (!isMaster && data.leftScore >= 11)
+				{
+					console.log('slave loose');
+				}
+			})
+
 	return (
 		<div className={Style['container-game']}>
 		{/* <h1>Pong game</h1> */}
