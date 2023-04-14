@@ -14,114 +14,87 @@ import { User } from "../chat/dto/chat.dto";
 
 const PongContext = React.createContext<any>(null);
 // const PongContext = React.createContext<Socket | null>(null);
-
 export default function Pong() {
-
-	//TODO: peut etre il faudra changer le dto pour ajouter userInGame
+	const [ready, setReady] = useState(false);
 	const [currentUser, setCurrentUser] = useState<any>(null);
-	const [userTo, setUserTo] = useState<any>(null);
 	const [isMaster, setIsMaster] = useState<boolean>(false);
+	const [userTo, setUserTo] = useState<any>(null);
 	const socket = Create_socket();
-
-	
-
-	useLayoutEffect (() => {
-		const getUsers = async () => {
-			try {
-				const res = await APP.get("/user/me");
-				// console.log("res.data.login = ", res.data.login);
-				setCurrentUser(res.data);
-				// const res2 = await APP.get("/user/get", {
-				// 	params: {
-				// 		// login: userTo.login,
-				// 		login: "tutu",
-				// 	},
-				// });
-				// setUserTo(res2.data);
-				// console.log("res2.data = ", res2.data, "res.data = ", res.data);
-				// const create_game = await APP.post("/pong/create_game", {
-				// 		master: res.data,
-				// 		slave: res2.data,
-				// 	});
-				const is_master = await APP.post("/pong/is_user_master", { login: res.data.login });
-				console.log("Bonjour ismaster.data = ", is_master.data, "res.data.login = ", res.data.login);
-				if (is_master.data) {
-					setIsMaster(true);
-					console.log("master zooo")
-					// return (
-					// 	<>
-					// 		{/* <PongContext.Provider value={socket}> */}
-					// 			<ExecutePong />
-					// 		{/* </PongContext.Provider> */}
-					// 	</>
-					// )
-				}
-				else
-				{
-					setIsMaster(false);
-					console.log("slave zooo")
-					// return (
-					// 	<>
-					// 		<h1>LOLILOL</h1>
-					// 	</>
-					// )
-				}
-				// console.log("create_game = ", create_game);
-			} catch (error) {
-				console.error(error);
-			}
-		};
-		getUsers();
+  
+	useLayoutEffect(() => {
+	  const getUsers = async () => {
+		try {
+		  const res = await APP.get("/user/me");
+		  setCurrentUser(res.data);
+		  const is_master = await APP.post("/pong/is_user_master", {
+			login: res.data.login,
+		  });
+		  console.log(
+			"Bonjour ismaster.data = ",
+			is_master.data,
+			"res.data.login = ",
+			res.data.login
+		  );
+		  if (is_master.data) {
+			setIsMaster(true);
+			console.log("master zooo");
+		  } else {
+			setIsMaster(false);
+			console.log("slave zooo");
+		  }
+		  setReady(true); // set ready state to true after data has been fetched
+		} catch (error) {
+		  console.error(error);
+		}
+	  };
+	  getUsers();
 	}, []);
-	// console.log("isMasterrrr = ", isMaster);
-	if (currentUser && isMaster)
-	{
-		// return (
-		// 	<>
-		// 		<PongContext.Provider value={socket}>
-		// 			<ExecutePong />
-		// 		</PongContext.Provider>
-		// 	</>
-		// )
-		return (
-			<>
-			  {socket && (
-				<PongContext.Provider value={{socket, isMaster}}>
-				  <ExecutePong />
-				</PongContext.Provider>
-			  )}
-			</>
-		  );
+  
+	if (!ready) {
+	  return (
+		<div>
+		  <h1>Loading...</h1>
+		</div>
+	  );
+	} else if (currentUser && isMaster) {
+	  console.log("MASTER =", isMaster, "date =", Date.now());
+	  return (
+		<>
+		  {socket && (
+			<PongContext.Provider value={{ socket }}>
+			  <ExecutePong isMaster={isMaster} />
+			</PongContext.Provider>
+		  )}
+		</>
+	  );
+	} else if (currentUser && !isMaster) {
+	  console.log(" NON MASTER =", isMaster, "date =", Date.now());
+	  return (
+		<>
+		  {socket && (
+			<PongContext.Provider value={{ socket }}>
+			  <ExecutePong isMaster={isMaster} />
+			</PongContext.Provider>
+		  )}
+		</>
+	  );
+	} else {
+	  return (
+		<div>
+		  <h1>watcher</h1>
+		</div>
+	  );
 	}
-	else if( currentUser && !isMaster)
-	{
+  }
+  
 
-		return (
-			<>
-			  {socket && (
-				<PongContext.Provider value={{socket, isMaster}}>
-				  <ExecutePong />
-				</PongContext.Provider>
-			  )}
-			</>
-		  );
-	}else 
-	{
-		return(
-			<div>
-				<h1>watcher</h1>
-			</div>
-		)
-	}
-
-}
-
-export function ExecutePong() {
+export function ExecutePong(props: any) {
 	const [ball, setBall] = useState<HTMLDivElement | null>(null);
 	const [limit, setLimit] = useState<DOMRect | undefined>(undefined);
 	const [trigger, setTrigger] = useState<number>(0);
 	const [leftscore, setLeftScore] = useState<number>(0);
 	const [rightscore, setRightScore] = useState<number>(0);
+	let isMaster = props.isMaster;
 	let newLimit: DOMRect | undefined;
 	let first: boolean = false;
 	let playerPaddleLeft = new Paddle(document.getElementById("player-paddle-left") as HTMLDivElement);
@@ -131,10 +104,11 @@ export function ExecutePong() {
 	let rightUpPressed : boolean = false;
 	let rightDownPressed : boolean = false;
 	let collision = document.getElementById("collision");
-	const {socket, isMaster} = useContext(PongContext);
+	const {socket} = useContext(PongContext);
 
 	useEffect(() => {
 		// console.log('init the game');
+		console.log ("isMasterrrrrrrrrrrrrrrrrrrrrrrrrrr = ", isMaster);
 		const ballElement = document.getElementById("ball") as HTMLDivElement;
 		
 		let rect;
@@ -152,34 +126,76 @@ export function ExecutePong() {
 
 
 	const DownHandler = (e: any) => {
-		if (isMaster) {
-			console.log("isMaster");
-			if (e.keyCode == 87) {
-				leftUpPressed = true;
-				if (newLimit && playerPaddleLeft) {
-					// playerPaddleLeft.position -= 2;
+		// if (isMaster) {
+		// 	console.log("isMaster");
+		// 	if (e.keyCode == 87) {
+		// 		leftUpPressed = true;
+		// 		if (newLimit && playerPaddleLeft) {
+		// 			// playerPaddleLeft.position -= 2;
+		// 			socket.emit('updatePaddleLeft', 'up');
+		// 			console.log("1 up");
+		// 		}
+		// 	}
+		// 	else if (e.keyCode == 83) {
+		// 		leftDownPressed = true;
+		// 		if (newLimit && playerPaddleLeft) {
+		// 			// playerPaddleLeft.position += 2;
+		// 			socket.emit('updatePaddleLeft', 'down');
+		// 			console.log("1 down");
+		// 		}
+		// 	}
+		// }
+		// else {
+		// 	if (e.keyCode == 38) {
+		// 		rightUpPressed = true;
+		// 		console.log("2 up");
+		// 	}
+		// 	else if (e.keyCode == 40) {
+		// 		rightDownPressed = true;
+		// 		console.log("2 down");
+		// 	}
+		// }
+
+		if (e.keyCode == 38) {
+			rightUpPressed = true;
+			if (isMaster)
+			{
+				if (newLimit && playerPaddleLeft)
+				{
 					socket.emit('updatePaddleLeft', 'up');
-					console.log("1 up");
+					console.log("master up", isMaster)
 				}
 			}
-			else if (e.keyCode == 83) {
-				leftDownPressed = true;
-				if (newLimit && playerPaddleLeft) {
-					// playerPaddleLeft.position += 2;
-					socket.emit('updatePaddleLeft', 'down');
-					console.log("1 down");
+			else
+			{
+				if (newLimit && playerPaddleRight)
+				{
+					socket.emit('updatePaddleRight', 'up');
+					console.log("slave up")
 				}
 			}
+			// console.log("2 up");
 		}
-		else {
-			if (e.keyCode == 38) {
-				rightUpPressed = true;
-				console.log("2 up");
+		else if (e.keyCode == 40) {
+			rightDownPressed = true;
+			if (isMaster)
+			{
+				if (newLimit && playerPaddleLeft)
+				{
+					socket.emit('updatePaddleLeft', 'down');
+					console.log("master down")
+				}
+				
 			}
-			else if (e.keyCode == 40) {
-				rightDownPressed = true;
-				console.log("2 down");
+			else if (!isMaster)
+			{
+				if (newLimit && playerPaddleRight)
+				{
+					socket.emit('updatePaddleRight', 'down');
+					console.log("slave down")
+				}	
 			}
+			// console.log("2 down");
 		}
 		e.preventDefault();
 	}

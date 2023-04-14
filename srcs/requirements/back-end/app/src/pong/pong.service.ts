@@ -63,7 +63,10 @@ export class PongService {
 			}
 		});
 		if (game_exist)
+		{
+			console.log('------------------------------------------------------- game exist', game_exist);
 			return (false);
+		}
 		const game = await this.prisma.game.create({
 			data: {
 				name: game_name,	
@@ -133,15 +136,15 @@ export class PongService {
 	{
 		if (data == 'up' && this.back_paddle_left.top > 0)
 		{
-			this.back_paddle_left.y -= 0.1;
-			this.back_paddle_left.top -= 0.1;
-			this.back_paddle_left.bottom -= 0.1;
+			this.back_paddle_left.y -= 2;
+			this.back_paddle_left.top -= 2;
+			this.back_paddle_left.bottom -= 2;
 		}
 		else if (data == 'down' && this.back_paddle_left.bottom < 100)
 		{
-			this.back_paddle_left.y += 0.1;
-			this.back_paddle_left.top += 0.1;
-			this.back_paddle_left.bottom += 0.1;
+			this.back_paddle_left.y += 2;
+			this.back_paddle_left.top += 2;
+			this.back_paddle_left.bottom += 2;
 		}
 	}
 

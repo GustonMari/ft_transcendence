@@ -115,7 +115,6 @@ export default function Chat() {
 		// redirect('/pong');
 		// return (
 		// 	// <NavigateToPong />
-			
 		return (
 			<Navigate to="/pong" />
 		  );
