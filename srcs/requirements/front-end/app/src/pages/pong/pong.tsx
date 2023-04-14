@@ -11,6 +11,8 @@ import Style from "./pong.module.css";
 import { Ball } from "./ball";
 import { Paddle } from "./paddle";
 import { User } from "../chat/dto/chat.dto";
+// import kd from "./keydrown";
+
 
 const PongContext = React.createContext<any>(null);
 // const PongContext = React.createContext<Socket | null>(null);
@@ -105,6 +107,8 @@ export function ExecutePong(props: any) {
 	let rightDownPressed : boolean = false;
 	let collision = document.getElementById("collision");
 	const {socket} = useContext(PongContext);
+	const kd					= useRef(require('keydrown'));
+
 
 	useEffect(() => {
 		// console.log('init the game');
@@ -125,96 +129,119 @@ export function ExecutePong(props: any) {
 	}, []);
 
 
-	const DownHandler = (e: any) => {
-		// if (isMaster) {
-		// 	console.log("isMaster");
-		// 	if (e.keyCode == 87) {
-		// 		leftUpPressed = true;
-		// 		if (newLimit && playerPaddleLeft) {
-		// 			// playerPaddleLeft.position -= 2;
-		// 			socket.emit('updatePaddleLeft', 'up');
-		// 			console.log("1 up");
-		// 		}
-		// 	}
-		// 	else if (e.keyCode == 83) {
-		// 		leftDownPressed = true;
-		// 		if (newLimit && playerPaddleLeft) {
-		// 			// playerPaddleLeft.position += 2;
-		// 			socket.emit('updatePaddleLeft', 'down');
-		// 			console.log("1 down");
-		// 		}
-		// 	}
-		// }
-		// else {
-		// 	if (e.keyCode == 38) {
-		// 		rightUpPressed = true;
-		// 		console.log("2 up");
-		// 	}
-		// 	else if (e.keyCode == 40) {
-		// 		rightDownPressed = true;
-		// 		console.log("2 down");
-		// 	}
-		// }
-
-		if (e.keyCode == 38) {
-			rightUpPressed = true;
-			if (isMaster)
-			{
-				if (newLimit && playerPaddleLeft)
-				{
-					socket.emit('updatePaddleLeft', 'up');
-					console.log("master up", isMaster)
-				}
-			}
-			else
-			{
-				if (newLimit && playerPaddleRight)
-				{
-					socket.emit('updatePaddleRight', 'up');
-					console.log("slave up")
-				}
-			}
-			// console.log("2 up");
-		}
-		else if (e.keyCode == 40) {
-			rightDownPressed = true;
-			if (isMaster)
-			{
-				if (newLimit && playerPaddleLeft)
-				{
-					socket.emit('updatePaddleLeft', 'down');
-					console.log("master down")
-				}
+	// const DownHandler = (e: any) => {
+	// 	if (e.keyCode == 38) {
+	// 		rightUpPressed = true;
+	// 		if (isMaster)
+	// 		{
+	// 			if (newLimit && playerPaddleLeft)
+	// 			{
+	// 				socket.emit('updatePaddleLeft', 'up');
+	// 				console.log("master up", isMaster)
+	// 			}
+	// 		}
+	// 		else
+	// 		{
+	// 			if (newLimit && playerPaddleRight)
+	// 			{
+	// 				socket.emit('updatePaddleRight', 'up');
+	// 				console.log("slave up")
+	// 			}
+	// 		}
+	// 		// console.log("2 up");
+	// 	}
+	// 	else if (e.keyCode == 40) {
+	// 		rightDownPressed = true;
+	// 		if (isMaster)
+	// 		{
+	// 			if (newLimit && playerPaddleLeft)
+	// 			{
+	// 				socket.emit('updatePaddleLeft', 'down');
+	// 				console.log("master down")
+	// 			}
 				
+	// 		}
+	// 		else if (!isMaster)
+	// 		{
+	// 			if (newLimit && playerPaddleRight)
+	// 			{
+	// 				socket.emit('updatePaddleRight', 'down');
+	// 				console.log("slave down")
+	// 			}	
+	// 		}
+	// 		// console.log("2 down");
+	// 	}
+	// 	e.preventDefault();
+	// }
+	const DownHandler = (e: any) => {
+	kd.current.run(function () {
+		if (kd.current.UP.isDown()) {
+		  rightUpPressed = true;
+		  if (isMaster) {
+			if (newLimit && playerPaddleLeft) {
+			  socket.emit('updatePaddleLeft', 'up');
+			  console.log('master up', isMaster);
 			}
-			else if (!isMaster)
-			{
-				if (newLimit && playerPaddleRight)
-				{
-					socket.emit('updatePaddleRight', 'down');
-					console.log("slave down")
-				}	
+		  } else {
+			if (newLimit && playerPaddleRight) {
+			  socket.emit('updatePaddleRight', 'up');
+			  console.log('slave up');
 			}
-			// console.log("2 down");
+		  }
+		  // console.log("2 up");
+		} else {
+		  rightUpPressed = false;
 		}
-		e.preventDefault();
-	}
-			
-			const UpHandler = (e: any) => {
-				if (e.keyCode == 87) {
-
-					leftUpPressed = false;
-				}
-				else if (e.keyCode == 83) {
-					leftDownPressed = false;
-				}
-				if (e.keyCode == 38) {
-					rightUpPressed = false;
-				}
-				else if (e.keyCode == 40) {
-					rightDownPressed = false;
-				}
+	  
+		if (kd.current.DOWN.isDown()) {
+		  rightDownPressed = true;
+		  if (isMaster) {
+			if (newLimit && playerPaddleLeft) {
+			  socket.emit('updatePaddleLeft', 'down');
+			  console.log('master down');
 			}
+		  } else if (!isMaster) {
+			if (newLimit && playerPaddleRight) {
+			  socket.emit('updatePaddleRight', 'down');
+			  console.log('slave down');
+			}
+		  }
+		  // console.log("2 down");
+		} else {
+		  rightDownPressed = false;
+		}
+	  
+		if (kd.current.W.isDown()) {
+		  leftUpPressed = true;
+		} else {
+		  leftUpPressed = false;
+		}
+	  
+		if (kd.current.S.isDown()) {
+		  leftDownPressed = true;
+		} else {
+		  leftDownPressed = false;
+		}
+	  });
+	  e.preventDefault();
+	}
+
+	const UpHandler = (e: any) => {
+	kd.current.W.up(() => {
+		leftUpPressed = false;
+	  });
+	  kd.current.S.up(() => {
+		leftDownPressed = false;
+	  });
+	  kd.current.UP.up(() => {
+		rightUpPressed = false;
+	  });
+	  kd.current.DOWN.up(() => {
+		rightDownPressed = false;
+	  });
+	}
+	  
+	  
 
 			const update = (lastTime: number, pongBall: Ball, playerPaddleLeft: Paddle, playerPaddleRight: Paddle, limit?: DOMRect) => (time: number) => {
 
@@ -253,16 +280,18 @@ export function ExecutePong(props: any) {
 	return (
 		<div className={Style['container-game']}>
 		{/* <h1>Pong game</h1> */}
-			<div className={Style['pong-body']} id="pong-body">
-				<span id="collision"></span>
-				<title>Pong</title>
-				<div className={Style.score}>
-					<div className={Style['left-score']}>{leftscore}</div>
-					<div className={Style['right-score']}>{rightscore}</div>
+			<div className={Style['game']}>
+				<div className={Style['pong-body']} id="pong-body">
+					<span id="collision"></span>
+					<title>Pong</title>
+					<div className={Style.score}>
+						<div className={Style['left-score']}>{leftscore}</div>
+						<div className={Style['right-score']}>{rightscore}</div>
+					</div>
+					<div className={`${Style.ball} `} id="ball"></div>
+					<div className={`${Style.paddle} ${Style.left}`} id="player-paddle-left"></div>
+					<div className={`${Style.paddle} ${Style.right}`} id="player-paddle-right"></div>
 				</div>
-				<div className={`${Style.ball} `} id="ball"></div>
-				<div className={`${Style.paddle} ${Style.left}`} id="player-paddle-left"></div>
-				<div className={`${Style.paddle} ${Style.right}`} id="player-paddle-right"></div>
 			</div>
 		</div>
 	);

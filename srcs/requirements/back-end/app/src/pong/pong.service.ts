@@ -136,15 +136,31 @@ export class PongService {
 	{
 		if (data == 'up' && this.back_paddle_left.top > 0)
 		{
-			this.back_paddle_left.y -= 2;
-			this.back_paddle_left.top -= 2;
-			this.back_paddle_left.bottom -= 2;
+			this.back_paddle_left.y -= 0.2;
+			this.back_paddle_left.top -= 0.2;
+			this.back_paddle_left.bottom -= 0.2;
 		}
 		else if (data == 'down' && this.back_paddle_left.bottom < 100)
 		{
-			this.back_paddle_left.y += 2;
-			this.back_paddle_left.top += 2;
-			this.back_paddle_left.bottom += 2;
+			this.back_paddle_left.y += 0.2;
+			this.back_paddle_left.top += 0.2;
+			this.back_paddle_left.bottom += 0.2;
+		}
+	}
+
+		async movePaddeRight(data: string): Promise<void>
+	{
+		if (data == 'up' && this.back_paddle_right.top > 0)
+		{
+			this.back_paddle_right.y -= 0.2;
+			this.back_paddle_right.top -= 0.2;
+			this.back_paddle_right.bottom -= 0.2;
+		}
+		else if (data == 'down' && this.back_paddle_right.bottom < 100)
+		{
+			this.back_paddle_right.y += 0.2;
+			this.back_paddle_right.top += 0.2;
+			this.back_paddle_right.bottom += 0.2;
 		}
 	}
 
@@ -156,21 +172,27 @@ export class PongService {
 		}
 		this.x += this.vector.x * this.velocity * data.delta;
 		this.y += this.vector.y * this.velocity * data.delta;
-		this.velocity += 0.00001 * data.delta;
+		// this.velocity += 0.00001 * data.delta;
 		await this.calculateBallLimmit();
 		if(this.back_ball.top && this.back_ball.top <= this.back_limit.top) {
+			this.velocity += 0.0005 * data.delta;
 			this.vector.y *= -1;
 		}
 		else if ( this.back_ball.bottom >= this.back_limit.bottom)
 		{
+			this.velocity += 0.0005 * data.delta;
+
 			this.vector.y *= -1;
 		}
 		if (await this.isCollision(this.back_ball, this.back_paddle_left))
 		{
+			this.velocity += 0.0005 * data.delta;
+
 			this.vector.x *= -1;
 		}
 		else if (await this.isCollision(this.back_ball, this.back_paddle_right))
 		{
+			this.velocity += 0.0005 * data.delta;
 			this.vector.x *= -1;
 		}
 		//TODO: faire en sorte que la ball sorte entierement pour marquer un point
