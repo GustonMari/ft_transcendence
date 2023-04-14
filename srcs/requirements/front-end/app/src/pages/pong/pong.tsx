@@ -173,73 +173,7 @@ export function ExecutePong(props: any) {
 	// 	}
 	// 	e.preventDefault();
 	// }
-	const DownHandler = (e: any) => {
-	kd.current.run(function () {
-		if (kd.current.UP.isDown()) {
-		  rightUpPressed = true;
-		  if (isMaster) {
-			if (newLimit && playerPaddleLeft) {
-			  socket.emit('updatePaddleLeft', 'up');
-			  console.log('master up', isMaster);
-			}
-		  } else {
-			if (newLimit && playerPaddleRight) {
-			  socket.emit('updatePaddleRight', 'up');
-			  console.log('slave up');
-			}
-		  }
-		  // console.log("2 up");
-		} else {
-		  rightUpPressed = false;
-		}
-	  
-		if (kd.current.DOWN.isDown()) {
-		  rightDownPressed = true;
-		  if (isMaster) {
-			if (newLimit && playerPaddleLeft) {
-			  socket.emit('updatePaddleLeft', 'down');
-			  console.log('master down');
-			}
-		  } else if (!isMaster) {
-			if (newLimit && playerPaddleRight) {
-			  socket.emit('updatePaddleRight', 'down');
-			  console.log('slave down');
-			}
-		  }
-		  // console.log("2 down");
-		} else {
-		  rightDownPressed = false;
-		}
-	  
-		if (kd.current.W.isDown()) {
-		  leftUpPressed = true;
-		} else {
-		  leftUpPressed = false;
-		}
-	  
-		if (kd.current.S.isDown()) {
-		  leftDownPressed = true;
-		} else {
-		  leftDownPressed = false;
-		}
-	  });
-	  e.preventDefault();
-	}
-
-	const UpHandler = (e: any) => {
-	kd.current.W.up(() => {
-		leftUpPressed = false;
-	  });
-	  kd.current.S.up(() => {
-		leftDownPressed = false;
-	  });
-	  kd.current.UP.up(() => {
-		rightUpPressed = false;
-	  });
-	  kd.current.DOWN.up(() => {
-		rightDownPressed = false;
-	  });
-	}
+	
 	  
 	  
 
@@ -256,8 +190,78 @@ export function ExecutePong(props: any) {
 								pongBall.update(delta, newLimit, playerPaddleLeft, playerPaddleRight);
 					}
 
-					document.addEventListener("keydown", DownHandler);
-					document.addEventListener("keyup", UpHandler);
+					// document.addEventListener("keydown", DownHandler);
+					// document.addEventListener("keyup", UpHandler);
+					kd.current.run(function () {
+						kd.current.tick();
+					});
+					// const DownHandler = async (e: any) => {
+				
+					
+						if (kd.current.UP.isDown()) {
+						  rightUpPressed = true;
+						  if (isMaster) {
+							if (newLimit && playerPaddleLeft) {
+							  socket.emit('updatePaddleLeft', 'up');
+							  console.log('master up', isMaster);
+							}
+						  } else {
+							if (newLimit && playerPaddleRight) {
+							  socket.emit('updatePaddleRight', 'up');
+							  console.log('slave up');
+							}
+						  }
+						  // console.log("2 up");
+						} else {
+						  rightUpPressed = false;
+						}
+					  
+						if (kd.current.DOWN.isDown()) {
+						  rightDownPressed = true;
+						  if (isMaster) {
+							if (newLimit && playerPaddleLeft) {
+							  socket.emit('updatePaddleLeft', 'down');
+							  console.log('master down');
+							}
+						  } else if (!isMaster) {
+							if (newLimit && playerPaddleRight) {
+							  socket.emit('updatePaddleRight', 'down');
+							  console.log('slave down');
+							}
+						  }
+						  // console.log("2 down");
+						} else {
+						  rightDownPressed = false;
+						}
+					  
+						if (kd.current.W.isDown()) {
+						  leftUpPressed = true;
+						} else {
+						  leftUpPressed = false;
+						}
+					  
+						if (kd.current.S.isDown()) {
+						  leftDownPressed = true;
+						} else {
+						  leftDownPressed = false;
+						}
+						// e.preventDefault();
+					// }
+				
+					// const UpHandler = async (e: any)  => {
+					kd.current.W.up(() => {
+						leftUpPressed = false;
+					  });
+					  kd.current.S.up(() => {
+						leftDownPressed = false;
+					  });
+					  kd.current.UP.up(() => {
+						rightUpPressed = false;
+					  });
+					  kd.current.DOWN.up(() => {
+						rightDownPressed = false;
+					  });
+					// }
 					window.addEventListener('resize', () => {
 						newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
 					});

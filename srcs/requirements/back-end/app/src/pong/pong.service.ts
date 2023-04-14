@@ -136,15 +136,15 @@ export class PongService {
 	{
 		if (data == 'up' && this.back_paddle_left.top > 0)
 		{
-			this.back_paddle_left.y -= 0.2;
-			this.back_paddle_left.top -= 0.2;
-			this.back_paddle_left.bottom -= 0.2;
+			this.back_paddle_left.y -= 2;
+			this.back_paddle_left.top -= 2;
+			this.back_paddle_left.bottom -= 2;
 		}
 		else if (data == 'down' && this.back_paddle_left.bottom < 100)
 		{
-			this.back_paddle_left.y += 0.2;
-			this.back_paddle_left.top += 0.2;
-			this.back_paddle_left.bottom += 0.2;
+			this.back_paddle_left.y += 2;
+			this.back_paddle_left.top += 2;
+			this.back_paddle_left.bottom += 2;
 		}
 	}
 
@@ -152,15 +152,15 @@ export class PongService {
 	{
 		if (data == 'up' && this.back_paddle_right.top > 0)
 		{
-			this.back_paddle_right.y -= 0.2;
-			this.back_paddle_right.top -= 0.2;
-			this.back_paddle_right.bottom -= 0.2;
+			this.back_paddle_right.y -= 2;
+			this.back_paddle_right.top -= 2;
+			this.back_paddle_right.bottom -= 2;
 		}
 		else if (data == 'down' && this.back_paddle_right.bottom < 100)
 		{
-			this.back_paddle_right.y += 0.2;
-			this.back_paddle_right.top += 0.2;
-			this.back_paddle_right.bottom += 0.2;
+			this.back_paddle_right.y += 2;
+			this.back_paddle_right.top += 2;
+			this.back_paddle_right.bottom += 2;
 		}
 	}
 
