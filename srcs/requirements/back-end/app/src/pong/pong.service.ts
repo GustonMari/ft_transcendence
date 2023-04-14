@@ -91,6 +91,10 @@ export class PongService {
 		return (true);
 	}
 
+	async getGameName(): Promise<any> {
+
+	}
+
 	async isUserMaster(login: string): Promise<boolean> {
 		if (!login)
 			return (false);

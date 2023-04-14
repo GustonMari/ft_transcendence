@@ -1,6 +1,7 @@
 [ ] win / lose => ++ update prisma with lvl etc... and achievvement 
-[ ] make room for different games
+[ ] make room for different games 	I NEED THIS TO FINISH THE MODAL WIN LOOSE
 [ ] make queue for different games
 [ ] make watchers
 [ ] make different map or different power up
 [ ] make stop the game when you lose
+

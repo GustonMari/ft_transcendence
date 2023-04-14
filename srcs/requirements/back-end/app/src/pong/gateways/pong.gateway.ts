@@ -76,7 +76,9 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	async updateGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
 		let ret = await this.pongService.updateGame(data);
 		if (ret.leftScore >= 11 || ret.rightScore >= 11) {
-			socket.emit('GameFinished', ret);
+			//TODO: need to change to emit to all in a room, how to get game name ??
+			this.myserver.to().emit('GameFinished', ret);
+			// socket.emit('GameFinished', ret);
 		}else {
 			socket.emit('GameUpdated', ret);
 		}

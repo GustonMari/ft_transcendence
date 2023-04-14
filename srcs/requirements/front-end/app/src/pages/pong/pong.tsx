@@ -32,6 +32,9 @@ export default function Pong() {
 		  const is_master = await APP.post("/pong/is_user_master", {
 			login: res.data.login,
 		  });
+
+		  
+
 		  console.log(
 			"Bonjour ismaster.data = ",
 			is_master.data,
