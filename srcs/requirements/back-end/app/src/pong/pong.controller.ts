@@ -22,4 +22,10 @@ export class PongController {
 			const master = await this.pongService.isUserMaster(info.login);
 			response.send(master);
 		}
+
+		@Post('is_user_slave')
+		async is_user_slave(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+			const slave = await this.pongService.isUserSlave(info.login);
+			response.send(slave);
+		}
 }

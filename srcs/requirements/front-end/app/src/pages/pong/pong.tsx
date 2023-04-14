@@ -20,6 +20,8 @@ export default function Pong() {
 	const [ready, setReady] = useState(false);
 	const [currentUser, setCurrentUser] = useState<any>(null);
 	const [isMaster, setIsMaster] = useState<boolean>(false);
+	const [isSlave, setIsSlave] = useState<boolean>(false);
+	const [isWatcher, setIsWatcher] = useState<boolean>(false);
 	const [userTo, setUserTo] = useState<any>(null);
 	const socket = Create_socket();
   
@@ -31,23 +33,31 @@ export default function Pong() {
 		  const is_master = await APP.post("/pong/is_user_master", {
 			login: res.data.login,
 		  });
-		  console.log(
-			"Bonjour ismaster.data = ",
-			is_master.data,
-			"res.data.login = ",
-			res.data.login
-		  );
+		  const is_slave = await APP.post("/pong/is_user_slave", {
+				login: res.data.login,
+			});
+
 		  if (is_master.data) {
 			setIsMaster(true);
-			console.log("master zooo");
-		  } else {
+			setIsSlave(false);
+			// console.log("master zooo");
+		} else {
 			setIsMaster(false);
-			console.log("slave zooo");
-		  }
-		  setReady(true); // set ready state to true after data has been fetched
-		} catch (error) {
-		  console.error(error);
+			
+			if (is_slave.data) {
+				setIsSlave(true);
+				// console.log("slave zooo");
+			}
+			else {
+				setIsWatcher(true);
+				// console.log("watcher zooo");
+			}
 		}
+		setReady(true); // set ready state to true after data has been fetched
+		} catch (error) {
+			console.error(error);
+		}
+		// console.log("ismaster = ", isMaster, "isSlave = ", isSlave)
 	  };
 	  getUsers();
 	}, []);
@@ -58,7 +68,7 @@ export default function Pong() {
 		  <h1>Loading...</h1>
 		</div>
 	  );
-	} else if (currentUser && isMaster) {
+	} else if (currentUser && isMaster && !isSlave && !isWatcher) {
 	  console.log("MASTER =", isMaster, "date =", Date.now());
 	  return (
 		<>
@@ -69,7 +79,7 @@ export default function Pong() {
 		  )}
 		</>
 	  );
-	} else if (currentUser && !isMaster) {
+	} else if (currentUser && isSlave && !isMaster && !isWatcher) {
 	  console.log(" NON MASTER =", isMaster, "date =", Date.now());
 	  return (
 		<>
@@ -111,7 +121,6 @@ export function ExecutePong(props: any) {
 
 
 	useEffect(() => {
-		// console.log('init the game');
 		console.log ("isMasterrrrrrrrrrrrrrrrrrrrrrrrrrr = ", isMaster);
 		const ballElement = document.getElementById("ball") as HTMLDivElement;
 		
