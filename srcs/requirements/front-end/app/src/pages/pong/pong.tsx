@@ -10,6 +10,7 @@ import App from "../../App";
 import Style from "./pong.module.css";
 import { Ball } from "./ball";
 import { Paddle } from "./paddle";
+import { PopupWinLose} from "./modalpong";
 import { User } from "../chat/dto/chat.dto";
 // import kd from "./keydrown";
 
@@ -96,6 +97,7 @@ export function ExecutePong(props: any) {
 	const [trigger, setTrigger] = useState<number>(0);
 	const [leftscore, setLeftScore] = useState<number>(0);
 	const [rightscore, setRightScore] = useState<number>(0);
+	const [popupwinlose ,setPopupWinLose] = useState<{popup: boolean, winlosemessage: string}>({popup: false, winlosemessage: ""});
 	let isMaster = props.isMaster;
 	let newLimit: DOMRect | undefined;
 	let first: boolean = false;
@@ -278,40 +280,50 @@ export function ExecutePong(props: any) {
 			}, [ball]);
 
 			socket.on('GameFinished', (data: any) => {
+				let msg_tmp = '';
+
 				if (isMaster && data.leftScore >= 11)
 				{
-					console.log("master won");
+					console.log("You won!");
+					msg_tmp = 'You won'
 				}
 				else if (!isMaster && data.rightScore >= 11)
 				{
 					console.log("slave won");
+					msg_tmp = 'You won!';
 				}
 				else if (isMaster && data.rightScore >= 11)
 				{
-					console.log('master loose');
+					console.log('master lose');
+					msg_tmp = 'You lose :(';
 				}
 				else if (!isMaster && data.leftScore >= 11)
 				{
-					console.log('slave loose');
+					console.log('slave lose');
+					msg_tmp = 'You lose :(';
 				}
+				setPopupWinLose({popup: true, winlosemessage: msg_tmp});
 			})
 
 	return (
 		<div className={Style['container-game']}>
 		{/* <h1>Pong game</h1> */}
-			<div className={Style['game']}>
-				<div className={Style['pong-body']} id="pong-body">
-					<span id="collision"></span>
-					<title>Pong</title>
-					<div className={Style.score}>
-						<div className={Style['left-score']}>{leftscore}</div>
-						<div className={Style['right-score']}>{rightscore}</div>
-					</div>
-					<div className={`${Style.ball} `} id="ball"></div>
-					<div className={`${Style.paddle} ${Style.left}`} id="player-paddle-left"></div>
-					<div className={`${Style.paddle} ${Style.right}`} id="player-paddle-right"></div>
-				</div>
+			<div>
+				{popupwinlose.popup ? (<PopupWinLose popupwinlose={popupwinlose} setPopupWinLose={setPopupWinLose} isMaster={isMaster}/> ) : (<></>)}
 			</div>
+				<div className={Style['game']}>
+					<div className={Style['pong-body']} id="pong-body">
+						<span id="collision"></span>
+						<title>Pong</title>
+						<div className={Style.score}>
+							<div className={Style['left-score']}>{leftscore}</div>
+							<div className={Style['right-score']}>{rightscore}</div>
+						</div>
+						<div className={`${Style.ball} `} id="ball"></div>
+						<div className={`${Style.paddle} ${Style.left}`} id="player-paddle-left"></div>
+						<div className={`${Style.paddle} ${Style.right}`} id="player-paddle-right"></div>
+					</div>
+				</div>
 		</div>
 	);
 }
