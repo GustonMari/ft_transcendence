@@ -1,10 +1,12 @@
 import React from 'react';
 import UpdateProfileForm from '../components/forms/UpdateProfileForm';
+import { NavBar } from '../components/communs/NavBar';
 
 function Profile() {
   return (
     <div>
-      <UpdateProfileForm/>
+        <NavBar/>
+        <UpdateProfileForm/>
     </div>
   );
 }

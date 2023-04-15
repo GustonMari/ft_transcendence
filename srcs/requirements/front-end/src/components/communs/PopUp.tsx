@@ -26,22 +26,28 @@ export const PopUp = (props: IPopUpProps) => {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"Use Google's location service?"}
+                    {props.title}
                 </DialogTitle>
                 <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    Let Google help apps determine location. This means sending anonymous
-                    location data to Google, even when no apps are running.
+                    {props.content}
                 </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                <Button onClick={props.onClose}>Disagree</Button>
-                <Button onClick={(e) => {
-                    e.preventDefault();
-                    props.onClose();
-                    props.onConfirm();
-                }} autoFocus>
-                    Agree
+                <Button
+                    onClick={props.onClose}
+                >
+                    No
+                </Button>
+                <Button
+                    onClick={(e) => {
+                        e.preventDefault();
+                        props.onClose();
+                        props.onConfirm();
+                    }} autoFocus
+                    variant="contained"
+                >
+                    Yes
                 </Button>
                 </DialogActions>
             </Dialog>

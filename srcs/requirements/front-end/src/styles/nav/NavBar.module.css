@@ -25,6 +25,7 @@
     align-items: start;
     text-align: center;
     position: absolute;
+    z-index: 1;
 }
 
 .list {
@@ -156,6 +157,7 @@
       width: 100%;
       height: 70px;
       align-items: start;
+        position: relative;
     }
 
     .navbar__active {
@@ -163,6 +165,7 @@
         width: 100%;
         height: auto;
         align-items: start;
+        position: relative;
     }
   
     .icons {

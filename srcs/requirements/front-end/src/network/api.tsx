@@ -122,48 +122,13 @@ export default class API {
         }
     }
 
-    static async getFriends(
+    static async getRelation (
+        url: string,
         successFunc: (list: any) => void,
         errorFunc: (err: ApiError) => void
     ) {
         try {
-            const res = await APP.get("/relation/get/friend");
-            successFunc(res.data);
-        } catch (err) {
-            if (axios.isAxiosError(err)) {
-                const error = err as any;
-                errorFunc({
-                    code: error.code,
-                    message: error.response?.data?.message,           
-                });
-            };
-        }
-    }
-
-    static async getIncomingRequest(
-        successFunc: (list: any) => void,
-        errorFunc: (err: ApiError) => void
-    ) {
-        try {
-            const res = await APP.get("/relation/get/incoming");
-            successFunc(res.data);
-        } catch (err) {
-            if (axios.isAxiosError(err)) {
-                const error = err as any;
-                errorFunc({
-                    code: error.code,
-                    message: error.response?.data?.message,           
-                });
-            };
-        }
-    }
-
-    static async getOutgoinRequest(
-        successFunc: (list: any) => void,
-        errorFunc: (err: ApiError) => void
-    ) {
-        try {
-            const res = await APP.get("/relation/get/outgoing");
+            const res = await APP.get(url);
             successFunc(res.data);
         } catch (err) {
             if (axios.isAxiosError(err)) {
@@ -195,47 +160,9 @@ export default class API {
         }
     }
 
-    static async acceptRequest(
-        rid: number,
-        successFunc: (list: any) => void,
-        errorFunc: (err: ApiError) => void
-    ) {
-        try {
-            const res = await APP.patch("/relation/friend/request/accept/id/" + rid);
-            successFunc(res.data);
-        } catch (err) {
-            if (axios.isAxiosError(err)) {
-                const error = err as any;
-                errorFunc({
-                    code: error.code,
-                    message: error.response?.data?.message,           
-                });
-            };
-        }
-    }
-
-    static async removeRelation(
-        rid: number,
-        successFunc: (list: any) => void,
-        errorFunc: (err: ApiError) => void
-    ) {
-        try {
-            const res = await APP.delete("/relation/delete/userid/" + rid);
-            successFunc(res.data);
-        } catch (err) {
-            if (axios.isAxiosError(err)) {
-                const error = err as any;
-                errorFunc({
-                    code: error.code,
-                    message: error.response?.data?.message,           
-                });
-            };
-        }
-    }
-
     static async getUser(
         id: number,
-        successFunc: (list: any) => void,
+        successFunc: (user: any) => void,
         errorFunc: (err: ApiError) => void
     ) : Promise<any> {
         try {

@@ -53,7 +53,7 @@ export const Result = (props: any) => {
     const [showPU, setShowPU] = useState(false);
     const [messagePU, setMessagePU] = useState("");
     const [titlePU, setTitlePU] = useState("");
-    const [onConfirm, setOnConfirm] = useState(() => {});
+    const [onConfirm, setOnConfirm] = useState<() => void>();
 
     const navigate = useNavigate();
 
@@ -70,22 +70,26 @@ export const Result = (props: any) => {
     //     );
     // }, []);
 
-    const handleRedCross = () => {}
-
     const handleProfile = (event: any, e: any) => {
         event.preventDefault();
         setShow(true);
         setUser(e);
     }
     
-    const handlePlus = () => {console.log("plus")}
+    const handleAddFriend = () => {
+        console.log("plus")
+    }
+
+    const handleBlockUser = () => {
+        console.log("moins")
+    }
 
     const createConfirmPopUp = (event: any, title: string, content:string, onConfirm: () => void) => {
         event.preventDefault();
         setTitlePU(title);
         setMessagePU(content);
         setShowPU(true);
-        setOnConfirm(onConfirm);
+        setOnConfirm(() => onConfirm);
     }
 
     return (
@@ -135,7 +139,7 @@ export const Result = (props: any) => {
                     title={titlePU}
                     content={messagePU}
                     onClose={() => {setShowPU(false)}}
-                    onConfirm={onConfirm}
+                    onConfirm={() => {if (onConfirm) {onConfirm()}}}
                 />
 
                 {/* List of users */}
@@ -146,7 +150,7 @@ export const Result = (props: any) => {
                         mt: 3,
                         padding: 3,
                         bgcolor: "white",
-                        borderRadius: 2
+                        borderRadius: 2,
                     }}
                     subheader={
                         <Typography variant="h6" component="div" sx={{ml: 2}}>
@@ -155,37 +159,47 @@ export const Result = (props: any) => {
                     }
                 >
                     { apiRes.map((user: any, idx: number) => { return (
-                    <ListItem key={idx}
-                        secondaryAction={
-                            <>
-                                <IconButton onClick={(e: any) => createConfirmPopUp(
-                                    e,
-                                    "Add friend",
-                                    "Do you want to add " + user.login + " as a friend ?",
-                                    handlePlus
-                                )}>
-                                    <AiOutlinePlusCircle/>
-                                </IconButton>
-                                <IconButton onClick={(e: any) => {handleProfile(e, user)}}>
-                                    <CgProfile/>
-                                </IconButton>
-                                <IconButton onClick={handleRedCross}>
-                                    <MdOutlineRemoveCircleOutline/>
-                                </IconButton>
-                            </>                    
-                        }
-                    >
-                        <ListItemAvatar>
-                            <Avatar  alt="jean" src="http://localhost:3000/api/public/picture/mamaurai1">
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={user.login}
-                            secondary={user.first_name + " " + user.last_name} 
-                            sx={{width: 3/4}}
-                        />
-                        
-                    </ListItem>
+                        <ListItem key={idx}
+                            secondaryAction={
+                                <>
+                                    <IconButton onClick={(e: any) => {handleProfile(e, user)}}>
+                                        <CgProfile/>
+                                    </IconButton>
+                                    <IconButton onClick={(e: any) => createConfirmPopUp(
+                                        e,
+                                        "Add friend",
+                                        "Do you want to add " + user.login + " as a friend ?",
+                                        handleAddFriend
+                                    )}>
+                                        <AiOutlinePlusCircle/>
+                                    </IconButton>
+                                    <IconButton onClick={(e: any) => createConfirmPopUp(
+                                        e,
+                                        "Block user",
+                                        "Do you want to block " + user.login + " ?",
+                                        handleBlockUser
+                                    )}>
+                                        <MdOutlineRemoveCircleOutline/>
+                                    </IconButton>
+                                </>                    
+                            }
+                            sx={{
+                                "&:hover": {
+                                    bgcolor: "grey.100",
+                                    borderRadius: 1,
+                                }
+                            }}
+                        >
+                            <ListItemAvatar>
+                                <Avatar  alt="jean" src="http://localhost:3000/api/public/picture/mamaurai1"/>
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={user.login}
+                                secondary={user.first_name + " " + user.last_name} 
+                                sx={{width: 3/4}}
+                            />
+                            
+                        </ListItem>
                     )})}
                 </List>
             </div>
