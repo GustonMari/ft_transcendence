@@ -34,7 +34,7 @@ export function PopupWinLose(props : any) {
 
 			<Modal show={show} onHide={handleClose}>
 			  <Modal.Header closeButton>
-				<Modal.Title>Invite</Modal.Title>
+				<Modal.Title>Game Finished</Modal.Title>
 			  </Modal.Header>
 			  <Modal.Body className="text-center">
 				<h1>

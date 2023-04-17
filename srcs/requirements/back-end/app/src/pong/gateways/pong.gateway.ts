@@ -24,11 +24,11 @@ import { PongService } from '../pong.service';
 })
 export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 
-
+	waiter: number;
 
 	constructor(private pongService: PongService){
 		console.log("PongGateway");
-		
+		this.waiter = 0;
 	 }
 
 	@WebSocketServer() // Create a instance of the server
@@ -95,7 +95,20 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	@SubscribeMessage('playGame')
 	async playGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
 		console.log("playGame");
-		await this.pongService.playGame();
+
+		//TODO: comment ou quoi faire lorsqu'un joueur accepte ou non de jouer
+		//TODO: vraiment changer ce systeme lorsquon aurra les queues
+		if (this.waiter == 1) // ici on mets 1 car le deuxieme joueur est le second waiter
+		{
+			console.log("2 waiters are ready");
+			this.waiter = 0;
+			await this.pongService.playGame();
+		}	else
+		{
+			console.log("1 waiter is ready");
+			this.waiter++;
+		}
+		//TODO: faire le systeme de queue, ou l'on passe au jour suivant si il y a un joueur qui veut jouer
 	}
 
 	@SubscribeMessage('updatePaddleLeft')
