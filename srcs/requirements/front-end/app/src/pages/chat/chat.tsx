@@ -89,8 +89,8 @@ export default function Chat() {
 	});
 
 	socket?.on('redirect_to_pong', async (data: any) => {
-		console.log('piscine chez paulette invite_pong_response', data);
-		console.log('currentUser = ', currentUser);
+		// console.log('piscine chez paulette invite_pong_response', data);
+		// console.log('currentUser = ', currentUser);
 		const create_game = await APP.post("/pong/create_game", {
 			master: currentUser,
 			slave: data.user_to,

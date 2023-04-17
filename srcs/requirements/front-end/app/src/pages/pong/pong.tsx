@@ -22,6 +22,8 @@ export default function Pong() {
 	const [currentUser, setCurrentUser] = useState<any>(null);
 	const [isMaster, setIsMaster] = useState<boolean>(false);
 	const [gameName, setGameName] = useState<string>("");
+	const [isSlave, setIsSlave] = useState<boolean>(false);
+	const [isWatcher, setIsWatcher] = useState<boolean>(false);
 	const [userTo, setUserTo] = useState<any>(null);
 	const socket = Create_socket();
   
@@ -34,6 +36,9 @@ export default function Pong() {
 				login: res.data.login,
 			});
 
+			const is_slave = await APP.post("/pong/is_user_slave", {
+				login: res.data.login,
+			});
 			const game_name = await APP.post("/pong/get_game_name", {
 				login: res.data.login,
 			});
@@ -46,16 +51,27 @@ export default function Pong() {
 			);
 			if (is_master.data) {
 				setIsMaster(true);
-				console.log("master zooo");
+				setIsSlave(false);
+				// console.log("master zooo");
 			} else {
 				setIsMaster(false);
-				console.log("slave zooo");
+				
+				if (is_slave.data) {
+					setIsSlave(true);
+					// console.log("slave zooo");
+				}
+				else {
+					setIsWatcher(true);
+					// console.log("watcher zooo");
+				}
 			}
 			setGameName(game_name.data);
 			setReady(true); // set ready state to true after data has been fetched
+			// console.log("is_master = ", is_master.data, "is_slave = ", is_slave.data)
 		} catch (error) {
 			console.error(error);
 		}
+		// console.log("ismaster = ", isMaster, "isSlave = ", isSlave)
 	  };
 		getUsers();
 	}, []);
@@ -66,7 +82,7 @@ export default function Pong() {
 		  <h1>Loading...</h1>
 		</div>
 	  );
-	} else if (currentUser && isMaster) {
+	} else if (currentUser && isMaster && !isSlave && !isWatcher) {
 	  console.log("MASTER =", isMaster, "date =", Date.now());
 	  return (
 		<>
@@ -77,7 +93,7 @@ export default function Pong() {
 		  )}
 		</>
 	  );
-	} else if (currentUser && !isMaster) {
+	} else if (currentUser && isSlave && !isMaster && !isWatcher) {
 	  console.log(" NON MASTER =", isMaster, "date =", Date.now());
 	  return (
 		<>
@@ -120,7 +136,6 @@ export function ExecutePong(props: any) {
 
 
 	useEffect(() => {
-		// console.log('init the game');
 		console.log ("isMasterrrrrrrrrrrrrrrrrrrrrrrrrrr = ", isMaster);
 		const ballElement = document.getElementById("ball") as HTMLDivElement;
 		
@@ -137,120 +152,63 @@ export function ExecutePong(props: any) {
 		}
 	}, []);
 
+	
+	const DownHandler = async () => {
 
-	// const DownHandler = (e: any) => {
-	// 	if (e.keyCode == 38) {
-	// 		rightUpPressed = true;
-	// 		if (isMaster)
-	// 		{
-	// 			if (newLimit && playerPaddleLeft)
-	// 			{
-	// 				socket.emit('updatePaddleLeft', 'up');
-	// 				console.log("master up", isMaster)
-	// 			}
-	// 		}
-	// 		else
-	// 		{
-	// 			if (newLimit && playerPaddleRight)
-	// 			{
-	// 				socket.emit('updatePaddleRight', 'up');
-	// 				console.log("slave up")
-	// 			}
-	// 		}
-	// 		// console.log("2 up");
-	// 	}
-	// 	else if (e.keyCode == 40) {
-	// 		rightDownPressed = true;
-	// 		if (isMaster)
-	// 		{
-	// 			if (newLimit && playerPaddleLeft)
-	// 			{
-	// 				socket.emit('updatePaddleLeft', 'down');
-	// 				console.log("master down")
-	// 			}
-				
-	// 		}
-	// 		else if (!isMaster)
-	// 		{
-	// 			if (newLimit && playerPaddleRight)
-	// 			{
-	// 				socket.emit('updatePaddleRight', 'down');
-	// 				console.log("slave down")
-	// 			}	
-	// 		}
-	// 		// console.log("2 down");
-	// 	}
-	// 	e.preventDefault();
-	// }
-	const DownHandler = (e: any) => {
-	kd.current.run(function () {
 		if (kd.current.UP.isDown()) {
-		  rightUpPressed = true;
-		  if (isMaster) {
-			if (newLimit && playerPaddleLeft) {
-			  socket.emit('updatePaddleLeft', 'up');
-			  console.log('master up', isMaster);
+			rightUpPressed = true;
+			if (isMaster) {
+				if (newLimit && playerPaddleLeft) {
+					socket.emit('updatePaddleLeft', 'up');
+				}
+			} else {
+				if (newLimit && playerPaddleRight) {
+					socket.emit('updatePaddleRight', 'up');
+				}
 			}
-		  } else {
-			if (newLimit && playerPaddleRight) {
-			  socket.emit('updatePaddleRight', 'up');
-			  console.log('slave up');
+			} else {
+				rightUpPressed = false;
 			}
-		  }
-		  // console.log("2 up");
-		} else {
-		  rightUpPressed = false;
-		}
-	  
-		if (kd.current.DOWN.isDown()) {
-		  rightDownPressed = true;
-		  if (isMaster) {
-			if (newLimit && playerPaddleLeft) {
-			  socket.emit('updatePaddleLeft', 'down');
-			  console.log('master down');
+			if (kd.current.DOWN.isDown()) {
+				rightDownPressed = true;
+				if (isMaster) {
+					if (newLimit && playerPaddleLeft) {
+						socket.emit('updatePaddleLeft', 'down');
+					}
+				} else if (!isMaster) {
+					if (newLimit && playerPaddleRight) {
+						socket.emit('updatePaddleRight', 'down');
+					}
+				}
+			} else {
+				rightDownPressed = false;
 			}
-		  } else if (!isMaster) {
-			if (newLimit && playerPaddleRight) {
-			  socket.emit('updatePaddleRight', 'down');
-			  console.log('slave down');
+			if (kd.current.W.isDown()) {
+				leftUpPressed = true;
+			} else {
+				leftUpPressed = false;
 			}
-		  }
-		  // console.log("2 down");
-		} else {
-		  rightDownPressed = false;
-		}
-	  
-		if (kd.current.W.isDown()) {
-		  leftUpPressed = true;
-		} else {
-		  leftUpPressed = false;
-		}
-	  
-		if (kd.current.S.isDown()) {
-		  leftDownPressed = true;
-		} else {
-		  leftDownPressed = false;
-		}
-	  });
-	  e.preventDefault();
+			if (kd.current.S.isDown()) {
+				leftDownPressed = true;
+			} else {
+				leftDownPressed = false;
+			}
 	}
 
-	const UpHandler = (e: any) => {
-	kd.current.W.up(() => {
-		leftUpPressed = false;
-	  });
-	  kd.current.S.up(() => {
-		leftDownPressed = false;
-	  });
-	  kd.current.UP.up(() => {
-		rightUpPressed = false;
-	  });
-	  kd.current.DOWN.up(() => {
-		rightDownPressed = false;
-	  });
+	const UpHandler = async ()  => {
+		kd.current.W.up(() => {
+			leftUpPressed = false;
+		  });
+		  kd.current.S.up(() => {
+			leftDownPressed = false;
+		  });
+		  kd.current.UP.up(() => {
+			rightUpPressed = false;
+		  });
+		  kd.current.DOWN.up(() => {
+			rightDownPressed = false;
+		  });
 	}
-	  
-	  
 
 			const update = (lastTime: number, pongBall: Ball, playerPaddleLeft: Paddle, playerPaddleRight: Paddle, limit?: DOMRect) => (time: number) => {
 
@@ -264,9 +222,13 @@ export function ExecutePong(props: any) {
 					{
 								pongBall.update(delta, newLimit, playerPaddleLeft, playerPaddleRight, gameName);
 					}
-
-					document.addEventListener("keydown", DownHandler);
-					document.addEventListener("keyup", UpHandler);
+					// document.addEventListener("keydown", DownHandler);
+					// document.addEventListener("keyup", UpHandler);
+					kd.current.run(function () {
+						kd.current.tick();
+					});
+					DownHandler()
+					UpHandler();
 					window.addEventListener('resize', () => {
 						newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
 					});

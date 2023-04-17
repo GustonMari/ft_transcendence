@@ -119,16 +119,13 @@ export class PongService {
 	async isUserMaster(login: string): Promise<boolean> {
 		if (!login)
 			return (false);
-		// console.log("111")
 		const user = await this.prisma.user.findUnique({
 			where: {
 				login: login,
 			}
 		});
-		// console.log("222")
 		if (user == null)
 			return (false);
-		// console.log("333")
 		const game = await this.prisma.game.findFirst({
 			where: {
 				master_id: user.id,
@@ -139,11 +136,33 @@ export class PongService {
 				},
 			}
 		});
-
-		// console.log("444")
 		if (game == null || game == undefined)
 			return (false);
-		// console.log("555")
+		return (true);
+	}
+
+	async isUserSlave(login: string): Promise<boolean> {
+		if (!login)
+			return (false);
+		const user = await this.prisma.user.findUnique({
+			where: {
+				login: login,
+			}
+		});
+		if (user == null)
+			return (false);
+		const game = await this.prisma.game.findFirst({
+			where: {
+				slave_id: user.id,
+				UserInGame: {
+					some: {
+						role: "SLAVE",
+					}
+				},
+			}
+		});
+		if (game == null || game == undefined)
+			return (false);
 		return (true);
 	}
 
@@ -159,15 +178,15 @@ export class PongService {
 	{
 		if (data == 'up' && this.back_paddle_left.top > 0)
 		{
-			this.back_paddle_left.y -= 0.2;
-			this.back_paddle_left.top -= 0.2;
-			this.back_paddle_left.bottom -= 0.2;
+			this.back_paddle_left.y -= 2;
+			this.back_paddle_left.top -= 2;
+			this.back_paddle_left.bottom -= 2;
 		}
 		else if (data == 'down' && this.back_paddle_left.bottom < 100)
 		{
-			this.back_paddle_left.y += 0.2;
-			this.back_paddle_left.top += 0.2;
-			this.back_paddle_left.bottom += 0.2;
+			this.back_paddle_left.y += 2;
+			this.back_paddle_left.top += 2;
+			this.back_paddle_left.bottom += 2;
 		}
 	}
 
@@ -175,15 +194,15 @@ export class PongService {
 	{
 		if (data == 'up' && this.back_paddle_right.top > 0)
 		{
-			this.back_paddle_right.y -= 0.2;
-			this.back_paddle_right.top -= 0.2;
-			this.back_paddle_right.bottom -= 0.2;
+			this.back_paddle_right.y -= 2;
+			this.back_paddle_right.top -= 2;
+			this.back_paddle_right.bottom -= 2;
 		}
 		else if (data == 'down' && this.back_paddle_right.bottom < 100)
 		{
-			this.back_paddle_right.y += 0.2;
-			this.back_paddle_right.top += 0.2;
-			this.back_paddle_right.bottom += 0.2;
+			this.back_paddle_right.y += 2;
+			this.back_paddle_right.top += 2;
+			this.back_paddle_right.bottom += 2;
 		}
 	}
 
