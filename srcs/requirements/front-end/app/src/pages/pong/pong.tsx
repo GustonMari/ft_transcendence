@@ -306,6 +306,7 @@ export function ExecutePong(props: any) {
 							// map_background.style.backgroundImage = 'url(../../../static/pong/chat.png)';
 							// pong_game.style.backgroundColor = '#ee82ee';
 							pong_game.style.backgroundColor = 'black';
+							document.documentElement.style.setProperty('--color-paddle', 'red');
 							// map_background.style.backgroundColor = 'blue';
 						// map_background?.style.setProperty('--background-image-main', 'url(\'../../../static/pong/background_pong.png\')');
 						// setGameName('map1');
@@ -313,12 +314,14 @@ export function ExecutePong(props: any) {
 						// map_background.style.backgroundColor = 'yellow';
 						console.log("map2");
 						pong_game.style.backgroundColor = '#59f7f785';
+						document.documentElement.style.setProperty('--color-paddle', '#f09');
 						// map_background.style.backgroundImage = 'url(../../../static/pong/background_pong_2.png)';
 
 						// setGameName('map2');
 					} else if (map_background && pong_game && changeMap === 3) {
 						// setGameName('map3');
 						pong_game.style.backgroundColor = 'rgba(238, 130, 238, 0.5)';
+						document.documentElement.style.setProperty('--color-paddle', '#0ff');
 					}
 			}, [changeMap])
 
@@ -331,7 +334,7 @@ export function ExecutePong(props: any) {
 			</div>
 			<button className="" onClick={() => click(1)}>Map 1</button>
 			<button className="" onClick={() => click(2)}>Map 2</button>
-			<button className="" onClick={() => click(3)}>Map 2</button>
+			<button className="" onClick={() => click(3)}>Map 3</button>
 			{/* <button className="" onClick={() => changeMap(1)}>Map 1</button> */}
 			{/* <button className="" onClick={() => changeMap(2)}>Map 2</button> */}
 			{/* <button className="" onClick={() => changeMap(3)}>Map 3</button> */}
@@ -340,8 +343,8 @@ export function ExecutePong(props: any) {
 						<span id="collision"></span>
 						<title>Pong</title>
 						<div className={Style.score}>
-							<div className={Style['left-score']}>{leftscore}</div>
-							<div className={Style['right-score']}>{rightscore}</div>
+							<div className={Style['left-score']} id="score-one">{leftscore}</div>
+							<div className={Style['right-score']} id="score-two">{rightscore}</div>
 						</div>
 						<div className={`${Style.ball} `} id="ball"></div>
 						<div className={`${Style.paddle} ${Style.left}`} id="player-paddle-left"></div>

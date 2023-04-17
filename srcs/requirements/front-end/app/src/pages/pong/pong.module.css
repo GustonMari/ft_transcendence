@@ -116,14 +116,14 @@
 	0 0 calc(var(--glowingpaddle) * 7px) white,
 	0 0 calc(var(--glowingpaddle) * 10px) white,
 	0 0 calc(var(--glowingpaddle) * 21px) white,
-	0 0 calc(var(--glowingpaddle) * 42px) #f09,
-	0 0 calc(var(--glowingpaddle) * 82px) #f09,
-	0 0 calc(var(--glowingpaddle) * 92px) #f09,
-	0 0 calc(var(--glowingpaddle) * 102px) #f09,
-	0 0 calc(var(--glowingpaddle) * 151px) #f09,
-	0 0 calc(var(--glowingpaddle) * 171px) #f09,
-	0 0 calc(var(--glowingpaddle) * 180px) #f09,
-	0 0 calc(var(--glowingpaddle) * 200px) #f09;
+	0 0 calc(var(--glowingpaddle) * 42px) var(--color-paddle),
+	0 0 calc(var(--glowingpaddle) * 82px) var(--color-paddle),
+	0 0 calc(var(--glowingpaddle) * 92px) var(--color-paddle),
+	0 0 calc(var(--glowingpaddle) * 102px) var(--color-paddle),
+	0 0 calc(var(--glowingpaddle) * 151px) var(--color-paddle),
+	0 0 calc(var(--glowingpaddle) * 171px) var(--color-paddle),
+	0 0 calc(var(--glowingpaddle) * 180px) var(--color-paddle),
+	0 0 calc(var(--glowingpaddle) * 200px) var(--color-paddle);
 	/* animation: pulse 1s infinite; */
 	animation: glowpaddle 3s ease-in-out infinite alternate;
 }
@@ -143,28 +143,28 @@
 		0 0 calc(var(--glowingpaddle) * 7px) white,
 		0 0 calc(var(--glowingpaddle) * 10px) white,
 		0 0 calc(var(--glowingpaddle) * 21px) white,
-		0 0 calc(var(--glowingpaddle) * 42px) #f09,
-		0 0 calc(var(--glowingpaddle) * 82px) #f09,
-		0 0 calc(var(--glowingpaddle) * 92px) #f09,
-		0 0 calc(var(--glowingpaddle) * 102px) #f09,
-		0 0 calc(var(--glowingpaddle) * 151px) #f09,
-		0 0 calc(var(--glowingpaddle) * 171px) #f09,
-		0 0 calc(var(--glowingpaddle) * 180px) #f09,
-		0 0 calc(var(--glowingpaddle) * 200px) #f09;
+		0 0 calc(var(--glowingpaddle) * 42px) var(--color-paddle),
+		0 0 calc(var(--glowingpaddle) * 82px) var(--color-paddle),
+		0 0 calc(var(--glowingpaddle) * 92px) var(--color-paddle),
+		0 0 calc(var(--glowingpaddle) * 102px) var(--color-paddle),
+		0 0 calc(var(--glowingpaddle) * 151px) var(--color-paddle),
+		0 0 calc(var(--glowingpaddle) * 171px) var(--color-paddle),
+		0 0 calc(var(--glowingpaddle) * 180px) var(--color-paddle),
+		0 0 calc(var(--glowingpaddle) * 200px) var(--color-paddle);
 	}
 	0% {
 		box-shadow: 
 		0 0 calc((var(--glowingpaddle) + 0.05) * 4px) white,
 		0 0 calc((var(--glowingpaddle) + 0.05) * 10px) white,
 		0 0 calc((var(--glowingpaddle) + 0.05) * 18px) white,
-		0 0 calc((var(--glowingpaddle) + 0.05) * 38px) #f09,
-		0 0 calc((var(--glowingpaddle) + 0.05) * 73px) #f09,
-		0 0 calc((var(--glowingpaddle) + 0.05) * 80px) #f09,
-		0 0 calc((var(--glowingpaddle) + 0.05) * 94px) #f09,
-		0 0 calc((var(--glowingpaddle) + 0.05) * 140px) #f09,
-		0 0 calc((var(--glowingpaddle) + 0.05) * 151px) #f09,
-		0 0 calc((var(--glowingpaddle) + 0.05) * 168px) #f09,
-		0 0 calc((var(--glowingpaddle) + 0.05) * 188px) #f09;
+		0 0 calc((var(--glowingpaddle) + 0.05) * 38px) var(--color-paddle),
+		0 0 calc((var(--glowingpaddle) + 0.05) * 73px) var(--color-paddle),
+		0 0 calc((var(--glowingpaddle) + 0.05) * 80px) var(--color-paddle),
+		0 0 calc((var(--glowingpaddle) + 0.05) * 94px) var(--color-paddle),
+		0 0 calc((var(--glowingpaddle) + 0.05) * 140px) var(--color-paddle),
+		0 0 calc((var(--glowingpaddle) + 0.05) * 151px) var(--color-paddle),
+		0 0 calc((var(--glowingpaddle) + 0.05) * 168px) var(--color-paddle),
+		0 0 calc((var(--glowingpaddle) + 0.05) * 188px) var(--color-paddle);
 	}
 	
 }
@@ -223,14 +223,14 @@
 	0 0 calc(var(--glowing) * 7px) white,
 	0 0 calc(var(--glowing) * 10px) white,
 	0 0 calc(var(--glowing) * 21px) white,
-	0 0 calc(var(--glowing) * 42px) #f09,
-	0 0 calc(var(--glowing) * 82px) #f09,
-	0 0 calc(var(--glowing) * 92px) #f09,
-	0 0 calc(var(--glowing) * 102px) #f09,
-	0 0 calc(var(--glowing) * 151px) #f09,
-	0 0 calc(var(--glowing) * 171px) #f09,
-	0 0 calc(var(--glowing) * 180px) #f09,
-	0 0 calc(var(--glowing) * 200px) #f09;
+	0 0 calc(var(--glowing) * 42px) var(--color-paddle),
+	0 0 calc(var(--glowing) * 82px) var(--color-paddle),
+	0 0 calc(var(--glowing) * 92px) var(--color-paddle),
+	0 0 calc(var(--glowing) * 102px) var(--color-paddle),
+	0 0 calc(var(--glowing) * 151px) var(--color-paddle),
+	0 0 calc(var(--glowing) * 171px) var(--color-paddle),
+	0 0 calc(var(--glowing) * 180px) var(--color-paddle),
+	0 0 calc(var(--glowing) * 200px) var(--color-paddle);
 	/* animation: pulse 1s infinite; */
 	animation: glowscore 0.5s ease-in-out infinite alternate;
 }
@@ -241,28 +241,28 @@
 		0 0 calc(var(--glowing) * 7px) white,
 		0 0 calc(var(--glowing) * 10px) white,
 		0 0 calc(var(--glowing) * 21px) white,
-		0 0 calc(var(--glowing) * 42px) #f09,
-		0 0 calc(var(--glowing) * 82px) #f09,
-		0 0 calc(var(--glowing) * 92px) #f09,
-		0 0 calc(var(--glowing) * 102px) #f09,
-		0 0 calc(var(--glowing) * 151px) #f09,
-		0 0 calc(var(--glowing) * 171px) #f09,
-		0 0 calc(var(--glowing) * 180px) #f09,
-		0 0 calc(var(--glowing) * 200px) #f09;
+		0 0 calc(var(--glowing) * 42px) var(--color-paddle),
+		0 0 calc(var(--glowing) * 82px) var(--color-paddle),
+		0 0 calc(var(--glowing) * 92px) var(--color-paddle),
+		0 0 calc(var(--glowing) * 102px) var(--color-paddle),
+		0 0 calc(var(--glowing) * 151px) var(--color-paddle),
+		0 0 calc(var(--glowing) * 171px) var(--color-paddle),
+		0 0 calc(var(--glowing) * 180px) var(--color-paddle),
+		0 0 calc(var(--glowing) * 200px) var(--color-paddle);
 	}
 	0% {
 		text-shadow: 
 		0 0 calc((var(--glowing) + 0.05) * 4px) white,
 		0 0 calc((var(--glowing) + 0.05) * 10px) white,
 		0 0 calc((var(--glowing) + 0.05) * 18px) white,
-		0 0 calc((var(--glowing) + 0.05) * 38px) #f09,
-		0 0 calc((var(--glowing) + 0.05) * 73px) #f09,
-		0 0 calc((var(--glowing) + 0.05) * 80px) #f09,
-		0 0 calc((var(--glowing) + 0.05) * 94px) #f09,
-		0 0 calc((var(--glowing) + 0.05) * 140px) #f09,
-		0 0 calc((var(--glowing) + 0.05) * 151px) #f09,
-		0 0 calc((var(--glowing) + 0.05) * 168px) #f09,
-		0 0 calc((var(--glowing) + 0.05) * 188px) #f09;
+		0 0 calc((var(--glowing) + 0.05) * 38px) var(--color-paddle),
+		0 0 calc((var(--glowing) + 0.05) * 73px) var(--color-paddle),
+		0 0 calc((var(--glowing) + 0.05) * 80px) var(--color-paddle),
+		0 0 calc((var(--glowing) + 0.05) * 94px) var(--color-paddle),
+		0 0 calc((var(--glowing) + 0.05) * 140px) var(--color-paddle),
+		0 0 calc((var(--glowing) + 0.05) * 151px) var(--color-paddle),
+		0 0 calc((var(--glowing) + 0.05) * 168px) var(--color-paddle),
+		0 0 calc((var(--glowing) + 0.05) * 188px) var(--color-paddle);
 	}
 	
 }
