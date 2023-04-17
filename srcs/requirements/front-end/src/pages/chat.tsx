@@ -11,6 +11,8 @@ import Style from "../styles/messages/Style.message.module.css";
 import StyleRoom from "../styles/rooms/Style.room.module.css";
 import { NavBar } from "../components/communs/NavBar";
 
+import g from "../styles/communs/global.module.css";
+
 export default function Chat() {
 
 	const socket = Create_socket();
@@ -60,7 +62,7 @@ export default function Chat() {
 	socket?.on("message", message_listener);
 
 	return (
-        <div>
+        <div className={g.background}>
         <NavBar/>
 		<div>
 			{/* <nav className="nav-bar">

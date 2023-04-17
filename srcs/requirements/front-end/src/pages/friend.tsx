@@ -13,6 +13,7 @@ import { MdOutlineRemoveCircleOutline } from "react-icons/md";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { RiDeleteBin5Line } from "react-icons/ri"
 import { PopUp } from "../components/communs/PopUp"
+import { IoLogoGameControllerA } from "react-icons/io"
 
 
 export interface IMenu {
@@ -57,44 +58,6 @@ const menuItems: IMenu[] = [
         icon: <FaUserFriends/>,
         url: 'blocked',
     },
-]
-
-const user: IUser[] = [
-    {
-        id: 0,
-        login: 'test',
-        first_name: 'test',
-        last_name: 'test',
-        description: 'test',
-    },
-    {
-        id: 1,
-        login: 'test2',
-        first_name: 'test2',
-        last_name: 'test2',
-        description: 'test2',
-    },
-    {
-        id: 2,
-        login: 'test3',
-        first_name: 'test3',
-        last_name: 'test3',
-        description: 'test3',
-    },
-    {
-        id: 3,
-        login: 'test4',
-        first_name: 'test4',
-        last_name: 'test4',
-        description: 'test4',
-    },
-    {
-        id: 4,
-        login: 'test5',
-        first_name: 'test5',
-        last_name: 'test5',
-        description: 'test5',
-    }
 ]
 
 export const Friends = () => {
@@ -147,8 +110,6 @@ export const Friends = () => {
         setOnConfirm(() => onConfirm);
     }
 
-    const handleRemoveFriend = (event: any, id: number) => {}
-
     const handleAcceptRequest = (rid: number) => {
         API.acceptRequest(
             rid,
@@ -173,7 +134,10 @@ export const Friends = () => {
         )
     }
 
-    const handleUnblock = (event: any, id: number) => {}
+    const launchGame = (event: any) => {
+        event.preventDefault();
+        // TODO : launch game
+    }
 
     return (
         <div className={g.background}>
@@ -214,7 +178,7 @@ export const Friends = () => {
                                         <IconButton onClick={(e: any) => {handleProfile(e, user.id)}}>
                                             <CgProfile/>
                                         </IconButton>
-                                        {menuID === 0 &&
+                                        {menuID === 0 && <>
                                             <IconButton
                                                 onClick={(e: any) => createConfirmPopUp(
                                                     e,
@@ -225,6 +189,12 @@ export const Friends = () => {
                                             >
                                                 <MdOutlineRemoveCircleOutline/>
                                             </IconButton>
+                                            <IconButton
+                                                onClick={(e: any) => launchGame(e)}
+                                            >
+                                                <IoLogoGameControllerA/>
+                                            </IconButton>
+                                            </>
                                         }
                                         { menuID === 1 &&
                                             <IconButton  
@@ -271,16 +241,9 @@ export const Friends = () => {
                                 </ListItemAvatar>
                                 <ListItemText
                                     primary={user.login}
-                                    secondary={user.first_name + " " + user.last_name}
+                                    secondary={(user.first_name ? user.first_name : "") + " " + (user.last_name ? user.last_name : "")}
                                     sx={{width: 3/4}}
                                 />
-                                {/* {menuID === 0 &&
-                                    <div>
-                                        <ListItemText
-                                            primary={item.description}
-                                        />
-                                    </div>
-                                } */}
                             </ListItem>
                         </div>
                     )
