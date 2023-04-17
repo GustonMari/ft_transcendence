@@ -51,12 +51,26 @@ export const Result = (props: any) => {
         setUser(e);
     }
     
-    const handleAddFriend = () => {
-        console.log("plus")
+    const handleAddFriend = (id: number) => {
+        API.sendFriendRequest(
+            id,
+            () => {
+                handleSuccess("Friend request sent");
+            }, (err: any) => {
+                handleError(err.message);
+            }
+        )
     }
 
-    const handleBlockUser = () => {
-        console.log("moins")
+    const handleBlockUser = (id: number) => {
+        API.blockUser(
+            id,
+            () => {
+                handleSuccess("User blocked");
+            }, (err: any) => {
+                handleError(err.message);
+            }
+        )
     }
 
     const createConfirmPopUp = (event: any, title: string, content:string, onConfirm: () => void) => {
@@ -129,6 +143,7 @@ export const Result = (props: any) => {
                 />
 
                 {/* List of users */}
+                { oriSearch &&
                 <List
                     sx={{
                         ml: 12,
@@ -155,7 +170,7 @@ export const Result = (props: any) => {
                                         e,
                                         "Add friend",
                                         "Do you want to add " + user.login + " as a friend ?",
-                                        handleAddFriend
+                                        () => handleAddFriend(user.id)
                                     )}>
                                         <AiOutlinePlusCircle/>
                                     </IconButton>
@@ -163,7 +178,7 @@ export const Result = (props: any) => {
                                         e,
                                         "Block user",
                                         "Do you want to block " + user.login + " ?",
-                                        handleBlockUser
+                                        () => handleBlockUser(user.id)
                                     )}>
                                         <MdOutlineRemoveCircleOutline/>
                                     </IconButton>
@@ -188,95 +203,8 @@ export const Result = (props: any) => {
                         </ListItem>
                     )})}
                 </List>
+                }
             </div>
         </>
     );
 }
-
-
-
-            // <div className={g.background}>
-            //     <NavBar/>
-            //     <div className={s.container}>
-            //             <div className={s.search_input}>
-            //                     <input type="text" placeholder="Search" onChange={
-            //                             (e: any) => {                                    
-            //                                 e.preventDefault();
-            //                                 setSearch(e.target.value);
-            //                             }
-            //                         }
-            //                         onKeyDown={
-            //                             (e: any) => {
-            //                                 if (e.key === "Enter") {
-            //                                     e.preventDefault();
-            //                                     navigate("/search?user=" + search);
-            //                                     window.location.reload();
-            //                             }
-            //                         }
-            //                     }/>
-            //                     <button onClick={
-            //                         (e: any) => {
-            //                             e.preventDefault();
-            //                             navigate("/search?user=" + search);
-            //                             window.location.reload();
-            //                         }
-            //                     }>
-            //                         <BiSearch className={s.search_btn}/>
-            //                     </button>
-            //             </div>
-            //             <div className={s.split_bar}></div>
-            //             {oriSearch &&
-            //                 <div>
-            //                     <p className={s.search_result_title}>Search result for "{oriSearch}"</p>
-            //                 </div>
-            //             }
-            //             <div className={s.result}>
-            //                 <table>
-            //                     <tbody>
-            //                         {
-            //                             apiRes.map((user: any) => {
-            //                                 return <tr className={s.user_row} key={user.id}>
-            //                                     <td className={s.user_login_and_pic}>
-            //                                         <img src="https://picsum.photos/200" alt="user" className={s.user_img}/>
-            //                                         <p>{user.login}</p>
-            //                                     </td>
-            //                                     <td className={s.user_description}>{(user.description ? user.description : "No Description")}</td>
-            //                                     <td className={s.user_action_buttons}>
-            //                                         <a className={s.btn_see_profile} onClick={(e: any) => {
-            //                                             e.preventDefault();Jean Dup
-            //                                             setShow(true);
-            //                                             setUser(user);
-            //                                         }}>
-            //                                             <CgProfile/>
-            //                                         </a>
-            //                                         <a className={s.btn_send_request} onClick={
-            //                                             (e: any) => {
-            //                                                 e.preventDefault();
-            //                                                 API.sendFriendRequest(
-            //                                                     user.id,
-            //                                                     () => {
-            //                                                         handleSuccess("Friend Request has been sent");
-            //                                                     },
-            //                                                     (err: any) => {
-            //                                                         handleError(err.message);
-            //                                                     });
-            //                                                 }
-            //                                             }>
-            //                                             <AiOutlinePlusCircle/>
-            //                                         </a>
-            //                                         <a className={s.btn_block}>
-            //                                             <MdOutlineRemoveCircleOutline/>
-            //                                         </a>
-            //                                     </td>
-
-            //                                 </tr>
-            //                             })
-            //                         }
-            //                     </tbody>
-            //                 </table>
-            //             </div>
-            //         <div>
-            //             {show && <ProfileComponent/>}
-            //         </div>
-            //     </div>
-            // </div>

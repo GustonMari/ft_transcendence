@@ -102,16 +102,16 @@ export class RelationService {
         id: number,
     ): Promise<Relation[]> {
         const relation = await this.prisma.relation.findMany({
-        where: {
-            OR: [
-            { from_id: id },
-            { to_id: id },
-            ],
-        },
-        include: {
-            from: true,
-            to: true,
-        },
+            where: {
+                OR: [
+                { from_id: id },
+                { to_id: id },
+                ],
+            },
+            include: {
+                from: true,
+                to: true,
+            },
         });
         if (relation) {
         return (relation);

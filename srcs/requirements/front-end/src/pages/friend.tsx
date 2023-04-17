@@ -12,6 +12,7 @@ import { CgProfile } from "react-icons/cg"
 import { MdOutlineRemoveCircleOutline } from "react-icons/md";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { RiDeleteBin5Line } from "react-icons/ri"
+import { PopUp } from "../components/communs/PopUp"
 
 
 export interface IMenu {
@@ -106,14 +107,18 @@ export const Friends = () => {
     const [titlePU, setTitlePU] = useState("");
     const [onConfirm, setOnConfirm] = useState<() => void>();
 
-    const {handleError} = useContext<any>(AlertContext);
+    const {handleError, handleSuccess} = useContext<any>(AlertContext);
     const {setShow, setUser} = useContext<any>(ProfilePopUpContext);
+
+    const _removeRelation = (id: number) => {
+        setRelations(relations.filter((item: any) => item.id !== id));
+    }
 
     useEffect(() => {
         API.getRelation(
-            "http://localhost:3000/api/relation/getlist/" + menuItems[menuID].url,
+            "http://localhost:3000/api/relation/list/" + menuItems[menuID].url,
             (res: any) => {
-                setRelations(res.data);
+                setRelations(res);
             }, (err: any) => {
                 handleError(err.message);
             }
@@ -134,9 +139,40 @@ export const Friends = () => {
         );
     }
 
+    const createConfirmPopUp = (event: any, title: string, content:string, onConfirm: () => void) => {
+        event.preventDefault();
+        setTitlePU(title);
+        setMessagePU(content);
+        setShowPU(true);
+        setOnConfirm(() => onConfirm);
+    }
+
     const handleRemoveFriend = (event: any, id: number) => {}
-    const handleAcceptRequest = (event: any, id: number) => {}
-    const handleDeclineRequest = (event: any, id: number) => {}
+
+    const handleAcceptRequest = (rid: number) => {
+        API.acceptRequest(
+            rid,
+            () => {
+                _removeRelation(rid);
+                handleSuccess("Request accepted");
+            }, (err: any) => {
+                handleError(err.message);
+            }
+        )
+    }
+
+    const handleRemoveRelation = (rid: number) => {
+        API.removeRelation(
+            rid,
+            () => {
+                _removeRelation(rid);
+                handleSuccess("Request accepted");
+            }, (err: any) => {
+                handleError(err.message);
+            }
+        )
+    }
+
     const handleUnblock = (event: any, id: number) => {}
 
     return (
@@ -149,6 +185,14 @@ export const Friends = () => {
                 listElements={menuItems}
             />
 
+            <PopUp
+                show={showPU}
+                title={titlePU}
+                content={messagePU}
+                onClose={() => {setShowPU(false)}}
+                onConfirm={() => {if (onConfirm) {onConfirm()}}}
+            />
+
             <List
                 sx={{
                     ml: 12,
@@ -159,32 +203,62 @@ export const Friends = () => {
                     borderRadius: 2,
                 }}
             >
-                { relations && relations.map((item: IUser, id: number) => {
+                { relations && relations.map((item: any, id: number) => {
+                    const user : IUser = item.user;
+                    console.log("test" + user);
                     return (
                         <div key={id}>
                             <ListItem
                                 secondaryAction={
                                     <>
-                                        <IconButton onClick={(e: any) => {handleProfile(e, item.id)}}>
+                                        <IconButton onClick={(e: any) => {handleProfile(e, user.id)}}>
                                             <CgProfile/>
                                         </IconButton>
                                         {menuID === 0 &&
-                                            <IconButton onClick={(e: any) => {handleRemoveFriend(e, item.id)}}>
+                                            <IconButton
+                                                onClick={(e: any) => createConfirmPopUp(
+                                                    e,
+                                                    "Remove friend",
+                                                    "Do you want to remove " + user.login + " from your friend list ?",
+                                                    () => handleRemoveRelation(item.id),
+                                                )}
+                                            >
                                                 <MdOutlineRemoveCircleOutline/>
                                             </IconButton>
                                         }
                                         { menuID === 1 &&
-                                            <IconButton  onClick={(e: any) => {handleAcceptRequest(e, item.id)}}>
+                                            <IconButton  
+                                                onClick={(e: any) => createConfirmPopUp(
+                                                    e,
+                                                    "Accept friend request",
+                                                    "Do you want to accept " + user.login + " friend request ?",
+                                                    () => handleAcceptRequest(item.id),
+                                                )}
+                                            >
                                                 <AiOutlinePlusCircle/>
                                             </IconButton>
                                         }
-                                        { menuID === 2 &&
-                                            <IconButton  onClick={(e: any) => {handleDeclineRequest(e, item.id)}}>
+                                        { (menuID === 2 || menuID === 1) &&
+                                            <IconButton 
+                                                onClick={(e: any) => createConfirmPopUp(
+                                                    e,
+                                                    "Decline friend request",
+                                                    "Do you want to remove " + user.login + " friend request ?",
+                                                    () => handleRemoveRelation(item.id),
+                                                )}
+                                            >
                                                 <RiDeleteBin5Line/>
                                             </IconButton>
                                         }
                                         { menuID === 3 &&
-                                            <IconButton  onClick={(e: any) => {handleUnblock(e, item.id)}}>
+                                            <IconButton 
+                                                onClick={(e: any) => createConfirmPopUp(
+                                                    e,
+                                                    "Unblock user",
+                                                    "Do you want to unblock " + user.login + " ?",
+                                                    () => handleRemoveRelation(item.id),
+                                            )}
+                                            >
                                                 <MdOutlineRemoveCircleOutline/>
                                             </IconButton>
                                         }
@@ -196,8 +270,8 @@ export const Friends = () => {
                                     <Avatar  alt="jean" src="http://localhost:3000/api/public/picture/mamaurai1"/>
                                 </ListItemAvatar>
                                 <ListItemText
-                                    primary={item.login}
-                                    secondary={item.first_name + " " + item.last_name}
+                                    primary={user.login}
+                                    secondary={user.first_name + " " + user.last_name}
                                     sx={{width: 3/4}}
                                 />
                                 {/* {menuID === 0 &&

@@ -122,6 +122,8 @@ export default class API {
         }
     }
 
+    /* ------------------------------------------------------------------------------ */
+
     static async getRelation (
         url: string,
         successFunc: (list: any) => void,
@@ -147,7 +149,72 @@ export default class API {
         errorFunc: (err: any) => void
     ) {
         try {
-            await APP.put("/relation/create/friend/id/" + uid);
+            await APP.post("/relation/create", {
+                id_target: uid,
+                relation_type: "PENDING",
+
+            });
+            successFunc();
+        } catch (err) {
+            if (axios.isAxiosError(err)) {
+                const error = err as any;
+                errorFunc({
+                    code: error.code,
+                    message: error.response?.data?.message,           
+                });
+            };
+        }
+    }
+
+    static async acceptRequest (
+        rid: number,
+        successFunc: () => void,
+        errorFunc: (err: ApiError) => void
+    ) {
+        try {
+            await APP.put("/relation/accept/id/" + rid);
+            successFunc();
+        } catch (err) {
+            if (axios.isAxiosError(err)) {
+                const error = err as any;
+                errorFunc({
+                    code: error.code,
+                    message: error.response?.data?.message,           
+                });
+            };
+        }
+    }
+
+    static async removeRelation (
+        rid: number,
+        successFunc: () => void,
+        errorFunc: (err: ApiError) => void
+    ) {
+        try {
+            await APP.delete("/relation/delete/id/" + rid);
+            successFunc();
+        } catch (err) {
+            if (axios.isAxiosError(err)) {
+                const error = err as any;
+                errorFunc({
+                    code: error.code,
+                    message: error.response?.data?.message,
+                });
+            };
+        }
+    }
+
+    static async blockUser(
+        uid: number,
+        successFunc: () => void,
+        errorFunc: (err: any) => void
+    ) {
+        try {
+            await APP.post("/relation/create", {
+                id_target: uid,
+                relation_type: "BLOCKED",
+
+            });
             successFunc();
         } catch (err) {
             if (axios.isAxiosError(err)) {

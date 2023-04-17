@@ -235,10 +235,4 @@ export class AuthController {
 
     /* ------------------------------------------------------------------------------ */
 
-    @Get('test')
-    async test() {
-        
-        console.log(process.env.CLIEND_ID);
-        return('salut')
-    }
 }
