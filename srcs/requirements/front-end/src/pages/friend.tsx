@@ -63,7 +63,7 @@ const menuItems: IMenu[] = [
 export const Friends = () => {
 
     const [relations, setRelations] = useState<IUser[]>([]);
-    const [menuID, setMenuID] = useState<number>(1);
+    const [menuID, setMenuID] = useState<number>(0);
 
     const [showPU, setShowPU] = useState(false);
     const [messagePU, setMessagePU] = useState("");
@@ -71,7 +71,7 @@ export const Friends = () => {
     const [onConfirm, setOnConfirm] = useState<() => void>();
 
     const {handleError, handleSuccess} = useContext<any>(AlertContext);
-    const {setShow, setUser} = useContext<any>(ProfilePopUpContext);
+    const {setPopUpID} = useContext<any>(ProfilePopUpContext);
 
     const _removeRelation = (id: number) => {
         setRelations(relations.filter((item: any) => item.id !== id));
@@ -90,16 +90,7 @@ export const Friends = () => {
 
     const handleProfile = (event: any, id: number) => {
         event.preventDefault();
-
-        const user = API.getUser(
-            id,
-            (res: any) => {
-                setShow(true);
-                setUser(res);
-            }, (err: any) => {
-                handleError(err.message);
-            }
-        );
+        setPopUpID(id);
     }
 
     const createConfirmPopUp = (event: any, title: string, content:string, onConfirm: () => void) => {

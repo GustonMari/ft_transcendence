@@ -47,7 +47,7 @@ const sideElems: ISideElem[] = [
 export const NavBar = ({onProfile, profilePic}: any) => {
 
     const {me}: any = useContext(UserContext)
-    const {setUser, setShow}: any = useContext(ProfilePopUpContext);
+    const {setPopUpID}: any = useContext(ProfilePopUpContext);
     const {handleSuccess, handleError}: any = useContext(AlertContext);
 
     const [showSideBar, setShowSideBar] : any = useState<boolean>(false);
@@ -107,8 +107,7 @@ export const NavBar = ({onProfile, profilePic}: any) => {
                         <a onClick={
                             (e) => {
                                 e.preventDefault();
-                                setUser(me);
-                                setShow(true);
+                                setPopUpID(me.id);
                             }
                         }>
                             <img className={s.avatar} src={"http://localhost:3000/api/public/picture/" + me.login}/>

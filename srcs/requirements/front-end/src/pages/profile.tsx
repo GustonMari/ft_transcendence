@@ -2,9 +2,11 @@ import React from 'react';
 import UpdateProfileForm from '../components/forms/UpdateProfileForm';
 import { NavBar } from '../components/communs/NavBar';
 
+import g from '../styles/communs/global.module.css';
+
 function Profile() {
   return (
-    <div>
+    <div className={g.background}>
         <NavBar/>
         <UpdateProfileForm/>
     </div>

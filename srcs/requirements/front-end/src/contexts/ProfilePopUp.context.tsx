@@ -5,13 +5,13 @@ import { ProfileComponent } from "../components/users/ProfileComponent";
 export const ProfilePopUpContext = createContext({});
 
 export const ProfilePopUpProvider = ({children}: any) => {
-    const [show, setShow] = useState(false);
-    const [user, setUser] = useState({} as any);
+    // const [show, setShow] = useState(false);
+    const [popUpID, setPopUpID] = useState<number | undefined>(undefined);
 
     return (        
-        <ProfilePopUpContext.Provider value={{show, setShow, user, setUser}}>
+        <ProfilePopUpContext.Provider value={{popUpID, setPopUpID}}>
             {children}
-            {show && <ProfileComponent/>}
+            {popUpID && <ProfileComponent/>}
         </ProfilePopUpContext.Provider>
     )
 }

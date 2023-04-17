@@ -14,14 +14,15 @@ import { ProfilePopUpContext } from "../contexts/ProfilePopUp.context";
 import { AlertContext } from "../contexts/Alert.context";
 import { Avatar, Button, IconButton, Input, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Typography } from '@mui/material';
 import { PopUp } from "../components/communs/PopUp";
+import { IUser } from "./friend";
 
 export const Result = (props: any) => {
     const [param, setParam] = useSearchParams();
     const [search, setSearch] = useState("");
     const [oriSearch, setOriSearch] = useState(param.get('user'));
-    const [apiRes, setApiRes] = useState([]);
+    const [apiRes, setApiRes] = useState<IUser[]>([]);
 
-    const {setUser, setShow, show} : any = useContext(ProfilePopUpContext);
+    const {setPopUpID} : any = useContext(ProfilePopUpContext);
     const {handleError, handleSuccess} : any = useContext(AlertContext);
 
     // Informations used by the popup component
@@ -45,10 +46,9 @@ export const Result = (props: any) => {
         );
     }, []);
 
-    const handleProfile = (event: any, e: any) => {
+    const handleProfile = (event: any, id: number) => {
         event.preventDefault();
-        setShow(true);
-        setUser(e);
+        setPopUpID(id);
     }
     
     const handleAddFriend = (id: number) => {
@@ -163,7 +163,7 @@ export const Result = (props: any) => {
                         <ListItem key={idx}
                             secondaryAction={
                                 <>
-                                    <IconButton onClick={(e: any) => {handleProfile(e, user)}}>
+                                    <IconButton onClick={(e: any) => {handleProfile(e, user.id)}}>
                                         <CgProfile/>
                                     </IconButton>
                                     <IconButton onClick={(e: any) => createConfirmPopUp(
