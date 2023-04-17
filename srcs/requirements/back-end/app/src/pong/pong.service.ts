@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '@prisma/client';
+import { Game, User } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { exit } from 'process';
 import { Socket } from 'socket.io';
@@ -63,10 +63,7 @@ export class PongService {
 			}
 		});
 		if (game_exist)
-		{
-			console.log('------------------------------------------------------- game exist', game_exist);
 			return (false);
-		}
 		const game = await this.prisma.game.create({
 			data: {
 				name: game_name,	
@@ -91,8 +88,32 @@ export class PongService {
 		return (true);
 	}
 
-	async getGameName(): Promise<any> {
+	async getGameName(login:string): Promise<any> {
+		if (!login)
+			return ('Error: problem with login');
+		const user = await this.prisma.user.findUnique({
+			where: {
+				login: login,
+			}
+		});
 
+		const game: Game = await this.prisma.game.findFirst({
+			where: {
+				OR: [
+					{
+						master_id: user.id,
+					},
+					{
+						slave_id: user.id,
+					}
+				]
+
+			}
+		});
+		if (game == null || game == undefined)
+			return ('Error game dont exist');
+		console.log("GAME NAME = ", game.name);
+		return (game.name);
 	}
 
 	async isUserMaster(login: string): Promise<boolean> {
@@ -108,7 +129,6 @@ export class PongService {
 		if (user == null)
 			return (false);
 		// console.log("333")
-		console.log("ARGHHHHHHHH user = ", user);
 		const game = await this.prisma.game.findFirst({
 			where: {
 				master_id: user.id,
@@ -119,7 +139,6 @@ export class PongService {
 				},
 			}
 		});
-		console.log("ARGHHHHHHHH game = ", game);
 
 		// console.log("444")
 		if (game == null || game == undefined)

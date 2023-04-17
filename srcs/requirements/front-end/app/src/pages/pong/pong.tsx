@@ -21,39 +21,43 @@ export default function Pong() {
 	const [ready, setReady] = useState(false);
 	const [currentUser, setCurrentUser] = useState<any>(null);
 	const [isMaster, setIsMaster] = useState<boolean>(false);
+	const [gameName, setGameName] = useState<string>("");
 	const [userTo, setUserTo] = useState<any>(null);
 	const socket = Create_socket();
   
 	useLayoutEffect(() => {
 	  const getUsers = async () => {
 		try {
-		  const res = await APP.get("/user/me");
-		  setCurrentUser(res.data);
-		  const is_master = await APP.post("/pong/is_user_master", {
-			login: res.data.login,
-		  });
+			const res = await APP.get("/user/me");
+			setCurrentUser(res.data);
+			const is_master = await APP.post("/pong/is_user_master", {
+				login: res.data.login,
+			});
 
-		  
+			const game_name = await APP.post("/pong/get_game_name", {
+				login: res.data.login,
+			});
 
-		  console.log(
-			"Bonjour ismaster.data = ",
-			is_master.data,
-			"res.data.login = ",
-			res.data.login
-		  );
-		  if (is_master.data) {
-			setIsMaster(true);
-			console.log("master zooo");
-		  } else {
-			setIsMaster(false);
-			console.log("slave zooo");
-		  }
-		  setReady(true); // set ready state to true after data has been fetched
+			console.log(
+				"Bonjour ismaster.data = ",
+				is_master.data,
+				"res.data.login = ",
+				res.data.login
+			);
+			if (is_master.data) {
+				setIsMaster(true);
+				console.log("master zooo");
+			} else {
+				setIsMaster(false);
+				console.log("slave zooo");
+			}
+			setGameName(game_name.data);
+			setReady(true); // set ready state to true after data has been fetched
 		} catch (error) {
-		  console.error(error);
+			console.error(error);
 		}
 	  };
-	  getUsers();
+		getUsers();
 	}, []);
   
 	if (!ready) {
@@ -68,7 +72,7 @@ export default function Pong() {
 		<>
 		  {socket && (
 			<PongContext.Provider value={{ socket }}>
-			  <ExecutePong isMaster={isMaster} />
+			  <ExecutePong isMaster={isMaster} gameName={gameName}/>
 			</PongContext.Provider>
 		  )}
 		</>
@@ -79,7 +83,7 @@ export default function Pong() {
 		<>
 		  {socket && (
 			<PongContext.Provider value={{ socket }}>
-			  <ExecutePong isMaster={isMaster} />
+			  <ExecutePong isMaster={isMaster} gameName={gameName}/>
 			</PongContext.Provider>
 		  )}
 		</>
@@ -101,7 +105,7 @@ export function ExecutePong(props: any) {
 	const [leftscore, setLeftScore] = useState<number>(0);
 	const [rightscore, setRightScore] = useState<number>(0);
 	const [popupwinlose ,setPopupWinLose] = useState<{popup: boolean, winlosemessage: string}>({popup: false, winlosemessage: ""});
-	let isMaster = props.isMaster;
+	let {isMaster, gameName} = props;
 	let newLimit: DOMRect | undefined;
 	let first: boolean = false;
 	let playerPaddleLeft = new Paddle(document.getElementById("player-paddle-left") as HTMLDivElement);
@@ -258,7 +262,7 @@ export function ExecutePong(props: any) {
 					}
 					if (newLimit)
 					{
-								pongBall.update(delta, newLimit, playerPaddleLeft, playerPaddleRight);
+								pongBall.update(delta, newLimit, playerPaddleLeft, playerPaddleRight, gameName);
 					}
 
 					document.addEventListener("keydown", DownHandler);

@@ -22,4 +22,10 @@ export class PongController {
 			const master = await this.pongService.isUserMaster(info.login);
 			response.send(master);
 		}
+
+		@Post('get_game_name')
+		async get_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+			const game = await this.pongService.getGameName(info.login);
+			response.send(game);
+		}
 }

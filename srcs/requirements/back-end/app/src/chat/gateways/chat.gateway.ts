@@ -165,7 +165,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			const id_user_to = await this.chatService.getIdUser(data.login_user_to);
 			await this.chatService.unbanUser(data.room_name, data.id_user_from, id_user_to);
 		}
-	}Ufz2vaUKqUZFLhW0AAAB
+	}
 
 	@SubscribeMessage('muteUser')
 	async handleMuteUser(@MessageBody() data: InfoMuteTo): Promise<void> {

@@ -77,9 +77,13 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		let ret = await this.pongService.updateGame(data);
 		if (ret.leftScore >= 11 || ret.rightScore >= 11) {
 			//TODO: need to change to emit to all in a room, how to get game name ??
-			this.myserver.to().emit('GameFinished', ret);
+			console.log('game stopped');
+			this.myserver.to(data.gameName).emit('GameFinished', ret);
 			// socket.emit('GameFinished', ret);
-		}else {
+		} else {
+			// this.myserver.to(data.gameName).emit('GameUpdated', ret);
+			console.log('')
+			socket.join(data.gameName);
 			socket.emit('GameUpdated', ret);
 		}
 	}

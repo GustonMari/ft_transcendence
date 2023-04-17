@@ -68,9 +68,9 @@ export class Ball {
 
 	}
 
-	update(delta: number, limit: DOMRect, playerPaddleLeft: Paddle, playerPaddleRight: Paddle) {
+	update(delta: number, limit: DOMRect, playerPaddleLeft: Paddle, playerPaddleRight: Paddle, gameName: string) {
 		// this.socket.emit('updateGame', {delta: delta, limit: limit, playerPaddleLeft: playerPaddleLeft.rect, playerPaddleRight: playerPaddleRight.rect, ballRect: this.rect()});
-		this.socket.emit('updateGame', {delta: delta, limit: limit, playerPaddleLeft: playerPaddleLeft.rect, playerPaddleRight: playerPaddleRight.rect, ballRect: this.ballRect});
+		this.socket.emit('updateGame', {delta: delta, limit: limit, playerPaddleLeft: playerPaddleLeft.rect, playerPaddleRight: playerPaddleRight.rect, ballRect: this.ballRect, gameName: gameName});
 		this.socket?.on('GameUpdated', (data: any) => {
 			this.x = data.x;
 			this.y = data.y;
