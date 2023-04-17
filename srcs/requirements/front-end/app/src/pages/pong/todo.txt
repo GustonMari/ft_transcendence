@@ -1,7 +1,8 @@
-[ ] win / lose => ++ update prisma with lvl etc... and achievvement 
-[ ] make room for different games 	I NEED THIS TO FINISH THE MODAL WIN LOOSE
+[ ] win / lose => ++ update prisma with lvl etc... and achievvement + link avec la queue quand on refuse une revanche
+[x] make room for different games, MAYBE THERE IS SOME THINGS TO DO WHEN YOU SWITCH GAME
 [ ] make queue for different games
 [ ] make watchers
 [ ] make different map or different power up
-[ ] make stop the game when you lose
+[X] make stop the game when you lose, NEED TO CONNECT TO QUEUE
+
 
