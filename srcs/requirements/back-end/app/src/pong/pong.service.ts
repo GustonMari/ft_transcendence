@@ -8,6 +8,7 @@ import { Socket } from 'socket.io';
 @Injectable()
 export class PongService {
 
+	PausePlay: boolean;
 	BallElem: any;
 	vector: {x: number, y: number};
 	velocity: number;
@@ -25,6 +26,7 @@ export class PongService {
 	back_paddle_height: number;
 
 	constructor(private readonly prisma: PrismaService) {
+		this.PausePlay = true;
 		this.x = 50;
 		this.y = 50;
 		this.back_width = 100;
@@ -188,6 +190,18 @@ export class PongService {
 	}
 
 
+	async PauseGame(): Promise<void>
+	{
+		//TODO: check si l'on est en pause est ce que la partie stop d'autre partie en cours
+		// this.PausePlay = !this.PausePlay;
+		this.PausePlay = false;
+	}
+
+	async playGame(): Promise<void>
+	{
+		this.PausePlay = true;
+	}
+
 	async defineWinnerLooser()
 	{
 	
@@ -195,6 +209,8 @@ export class PongService {
 
 	async updateGame(data: any): Promise<{x: number, y: number, leftScore: number, rightScore: number, paddleLeftY: number, paddleRightY: number}>
 	{
+		if (this.PausePlay == false)
+			return ({x: this.x, y: this.y, leftScore: this.leftScore, rightScore: this.rightScore, paddleLeftY: this.back_paddle_left.y, paddleRightY: this.back_paddle_right.y});
 		if (this.leftScore >= 11 || this.rightScore >= 11)
 		{
 			this.defineWinnerLooser();
@@ -239,6 +255,12 @@ export class PongService {
 			ball.top <= paddle.bottom &&
 			ball.bottom >= paddle.top)
 		)
+	}
+
+	async resetScore(): Promise<void>
+	{
+		this.leftScore = 0;
+		this.rightScore = 0;
 	}
 
 	async reset(): Promise<void>

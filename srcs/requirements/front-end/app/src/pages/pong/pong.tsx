@@ -316,7 +316,7 @@ export function ExecutePong(props: any) {
 		<div className={Style['container-game']}>
 		{/* <h1>Pong game</h1> */}
 			<div>
-				{popupwinlose.popup ? (<PopupWinLose popupwinlose={popupwinlose} setPopupWinLose={setPopupWinLose} isMaster={isMaster}/> ) : (<></>)}
+				{popupwinlose.popup ? (<PopupWinLose popupwinlose={popupwinlose} setPopupWinLose={setPopupWinLose} isMaster={isMaster} socket={socket}/> ) : (<></>)}
 			</div>
 				<div className={Style['game']}>
 					<div className={Style['pong-body']} id="pong-body">
