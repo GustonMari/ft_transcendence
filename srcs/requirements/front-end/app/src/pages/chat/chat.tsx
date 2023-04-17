@@ -55,13 +55,7 @@ export default function Chat() {
 		getCurrentUser();
 	}, []);
 	
-	// useEffect(() => {
-	// 	socket?.on('connected', () => {
-	// 		console.log('refresh socket');
-	// 		socket?.emit('addsocket', currentUser);
-	// 	});
-	// }, [currentUser]);
-		socket?.emit('addsocket', currentUser);
+	socket?.emit('addsocket', currentUser);
 
 	const send = (value: string) => {
 		socket?.emit("message", {room: room, message: value, current_user: currentUser});
@@ -91,10 +85,10 @@ export default function Chat() {
 	socket?.on('redirect_to_pong', async (data: any) => {
 		// console.log('piscine chez paulette invite_pong_response', data);
 		// console.log('currentUser = ', currentUser);
-		const create_game = await APP.post("/pong/create_game", {
-			master: currentUser,
-			slave: data.user_to,
-		});
+		// const create_game = await APP.post("/pong/create_game", {
+		// 	master: currentUser,
+		// 	slave: data.user_to,
+		// });
 		setTriggerPong(true);
 
 	});
@@ -175,15 +169,15 @@ function Popup_invite_pong(props : any) {
 			</h1>
 		</div>);
 
-	function InviteToPong()
+	async function InviteToPong()
 	{
-		
-		socket?.emit('invite_pong_response', {sender_invite: sender_invite, currentUser: currentUser});
-		// return (
-		// 	<Navigate to="/pong" />
-		// );
+		await APP.post("/pong/create_game", {
+				master: sender_invite,
+				slave: currentUser,
+			});
 		setTriggerPong(true);
-		// handleClose();
+		socket?.emit('invite_pong_response', {sender_invite: sender_invite, currentUser: currentUser});
+		
 	}
 
 	if (triggerPong == true) {
