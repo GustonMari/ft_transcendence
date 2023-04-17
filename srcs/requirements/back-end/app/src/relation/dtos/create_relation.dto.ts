@@ -15,6 +15,6 @@ export class CreateRelationDTO {
 		type: String,
 		description: "Type of this relation (request or blocked)"
 	})
-	relation_type: string;
+	relation_type: "BLOCKED" | "PENDING";
 
 }

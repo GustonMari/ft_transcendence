@@ -35,26 +35,26 @@ const menuItems: IMenu[] = [
         id: 0,
         title: 'Friends',
         icon: <FaUserFriends/>,
-        url: '/get/friends',
+        url: 'friend',
     },
     {
         id: 1,
-        title: 'Incomming',
+        title: 'Incoming',
         icon: <FaUserFriends/>,
-        url: '/get/incomming',
+        url: 'incoming',
     },
     {
         id: 2,
         title: 'Outgoing',
         icon: <FaUserFriends/>,
         separator: true,
-        url: '/get/outgoing',
+        url: 'outgoing',
     },
     {
         id: 3,
         title: 'Blocked',
         icon: <FaUserFriends/>,
-        url: '/get/blocked',
+        url: 'blocked',
     },
 ]
 
@@ -98,7 +98,7 @@ const user: IUser[] = [
 
 export const Friends = () => {
 
-    const [relations, setRelations] = useState<IUser[]>(user);
+    const [relations, setRelations] = useState<IUser[]>([]);
     const [menuID, setMenuID] = useState<number>(1);
 
     const [showPU, setShowPU] = useState(false);
@@ -109,16 +109,16 @@ export const Friends = () => {
     const {handleError} = useContext<any>(AlertContext);
     const {setShow, setUser} = useContext<any>(ProfilePopUpContext);
 
-    // useEffect(() => {
-    //     API.getRelation(
-    //         menuItems[menuID].url,
-    //         (res: any) => {
-    //             setRelations(res.data);
-    //         }, (err: any) => {
-    //             handleError(err.message);
-    //         }
-    //     )
-    // }, [menuID])
+    useEffect(() => {
+        API.getRelation(
+            "http://localhost:3000/api/relation/getlist/" + menuItems[menuID].url,
+            (res: any) => {
+                setRelations(res.data);
+            }, (err: any) => {
+                handleError(err.message);
+            }
+        )
+    }, [menuID])
 
     const handleProfile = (event: any, id: number) => {
         event.preventDefault();
@@ -138,7 +138,6 @@ export const Friends = () => {
     const handleAcceptRequest = (event: any, id: number) => {}
     const handleDeclineRequest = (event: any, id: number) => {}
     const handleUnblock = (event: any, id: number) => {}
-
 
     return (
         <div className={g.background}>
@@ -160,7 +159,7 @@ export const Friends = () => {
                     borderRadius: 2,
                 }}
             >
-                { relations.map((item: IUser, id: number) => {
+                { relations && relations.map((item: IUser, id: number) => {
                     return (
                         <div key={id}>
                             <ListItem

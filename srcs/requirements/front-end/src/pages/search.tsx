@@ -3,7 +3,6 @@ import { CgProfile } from "react-icons/cg";
 import { MdOutlineRemoveCircleOutline } from "react-icons/md";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 
-import s from "./../styles/search/result.module.css";
 import g from "./../styles/communs/global.module.css";
 
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -16,35 +15,11 @@ import { AlertContext } from "../contexts/Alert.context";
 import { Avatar, Button, IconButton, Input, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Typography } from '@mui/material';
 import { PopUp } from "../components/communs/PopUp";
 
-const db: any[] = [
-    {
-        id: 1,
-        login: "mamaurai1",
-        description: "je suis mamaurai",
-        first_name: "Jean",
-        last_name: "Dupont",
-    },
-    {
-        id: 2,
-        login: "mamaurai2",
-        description: "je suis mamaurai2",
-        first_name: "Jean",
-        last_name: "Dupont",
-    },
-    {
-        id: 3,
-        login: "mamaurai3",
-        description: "je suis mamaurai3",
-        first_name: "Jean",
-        last_name: "Dupont",
-    },
-]
-
 export const Result = (props: any) => {
     const [param, setParam] = useSearchParams();
     const [search, setSearch] = useState("");
     const [oriSearch, setOriSearch] = useState(param.get('user'));
-    const [apiRes, setApiRes] = useState(db);
+    const [apiRes, setApiRes] = useState([]);
 
     const {setUser, setShow, show} : any = useContext(ProfilePopUpContext);
     const {handleError, handleSuccess} : any = useContext(AlertContext);
@@ -57,18 +32,18 @@ export const Result = (props: any) => {
 
     const navigate = useNavigate();
 
-    // useLayoutEffect(() => {
-    //     API.searchUser(
-    //         oriSearch,
-    //         (u: any) => {
-    //             console.log(u);
-    //             setApiRes(u);
-    //         },
-    //         (err: any) => {
-    //             console.log(err);
-    //         }
-    //     );
-    // }, []);
+    useLayoutEffect(() => {
+        API.searchUser(
+            oriSearch,
+            (u: any) => {
+                console.log(u);
+                setApiRes(u);
+            },
+            (err: any) => {
+                console.log(err);
+            }
+        );
+    }, []);
 
     const handleProfile = (event: any, e: any) => {
         event.preventDefault();
@@ -104,7 +79,18 @@ export const Result = (props: any) => {
                     (e: any) => {   
                         e.preventDefault();
                         setSearch(e.target.value);
+
+                        if (e.key === "Enter") {
+                            navigate("/search?user=" + search);
+                            window.location.reload();
+                        }
                     }}
+                    onKeyDown={ (e: any) => {
+                        if (e.key === "Enter") {
+                            navigate("/search?user=" + search);
+                            window.location.reload();
+                        }}
+                    }
                     placeholder="Search"
                     sx={{
                         ml: 20,
