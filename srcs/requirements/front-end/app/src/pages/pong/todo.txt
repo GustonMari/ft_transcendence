@@ -4,5 +4,5 @@
 [ ] make watchers
 [ ] make different map or different power up
 [X] make stop the game when you lose, NEED TO CONNECT TO QUEUE
-
+[ ] match history
 

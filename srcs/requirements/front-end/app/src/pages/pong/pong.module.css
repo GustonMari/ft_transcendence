@@ -18,10 +18,12 @@
 	--saturation: 75%;
 	--foreground-color: hsl(var(--hue), var(--saturation), 75%);
 	--glowing: 0.15;
+	--color-paddle: #f09;
 
 }
 
 .container-game {
+	/* --background-image-main: 'url(\'../../../static/pong/background_pong.png\')'); */
 	border: blueviolet 2px solid;
 	/* display: flex; */
 	/* flex-direction: column; */
@@ -32,7 +34,9 @@
 	/* justify-content: center; */
 	/* align-items: center; */
 
+	/* background-color: red; */
 	background-image: url('../../../static/pong/background_pong.png');
+	/* background-image: var(--background-image-main); */
 	background-repeat: no-repeat;
 	background-size: cover;
 	/* background-size: 100vw 100vh; */

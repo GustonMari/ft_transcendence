@@ -120,6 +120,7 @@ export function ExecutePong(props: any) {
 	const [trigger, setTrigger] = useState<number>(0);
 	const [leftscore, setLeftScore] = useState<number>(0);
 	const [rightscore, setRightScore] = useState<number>(0);
+	const [changeMap, setChangeMap] = useState<number>(0);
 	const [popupwinlose ,setPopupWinLose] = useState<{popup: boolean, winlosemessage: string}>({popup: false, winlosemessage: ""});
 	let {isMaster, gameName} = props;
 	let newLimit: DOMRect | undefined;
@@ -274,13 +275,67 @@ export function ExecutePong(props: any) {
 				setPopupWinLose({popup: true, winlosemessage: msg_tmp});
 			})
 
+			// function changeMap(map: number) {
+
+			// 	const map_background = document.getElementById("main-window");
+			// 	if (map_background && map === 1) {
+			// 		console.log("map1");
+			// 			map_background.style.backgroundImage = 'url("../../../static/pong/background_pong_2.png")';
+				
+			// 		// map_background?.style.setProperty('--background-image-main', 'url(\'../../../static/pong/background_pong.png\')');
+			// 		// setGameName('map1');
+			// 	} else if (map_background && map === 2) {
+			// 		console.log("map2");
+			// 		map_background.style.backgroundImage = 'url("../../../static/pong/background_pong_2.png")';
+
+			// 		// setGameName('map2');
+			// 	} else if (map_background && map === 3) {
+			// 		// setGameName('map3');
+			// 	}
+			// }
+			const click = (map: number) => {
+				setChangeMap(map);
+			}
+
+			useEffect(() => {
+				const map_background = document.getElementById("main-window");
+				const pong_game = document.getElementById("pong-body");
+				if (map_background && pong_game && changeMap === 1) {
+						console.log("map1");
+							// map_background.style.backgroundImage = 'url(../../../static/pong/background_pong_2.png)';
+							// map_background.style.backgroundImage = 'url(../../../static/pong/chat.png)';
+							// pong_game.style.backgroundColor = '#ee82ee';
+							pong_game.style.backgroundColor = 'black';
+							// map_background.style.backgroundColor = 'blue';
+						// map_background?.style.setProperty('--background-image-main', 'url(\'../../../static/pong/background_pong.png\')');
+						// setGameName('map1');
+					} else if (map_background && pong_game && changeMap === 2) {
+						// map_background.style.backgroundColor = 'yellow';
+						console.log("map2");
+						pong_game.style.backgroundColor = '#59f7f785';
+						// map_background.style.backgroundImage = 'url(../../../static/pong/background_pong_2.png)';
+
+						// setGameName('map2');
+					} else if (map_background && pong_game && changeMap === 3) {
+						// setGameName('map3');
+						pong_game.style.backgroundColor = 'rgba(238, 130, 238, 0.5)';
+					}
+			}, [changeMap])
+
+
 	return (
-		<div className={Style['container-game']}>
+		<div className={Style['container-game']} id="main-window">
 		{/* <h1>Pong game</h1> */}
 			<div>
 				{popupwinlose.popup ? (<PopupWinLose popupwinlose={popupwinlose} setPopupWinLose={setPopupWinLose} isMaster={isMaster} socket={socket}/> ) : (<></>)}
 			</div>
-				<div className={Style['game']}>
+			<button className="" onClick={() => click(1)}>Map 1</button>
+			<button className="" onClick={() => click(2)}>Map 2</button>
+			<button className="" onClick={() => click(3)}>Map 2</button>
+			{/* <button className="" onClick={() => changeMap(1)}>Map 1</button> */}
+			{/* <button className="" onClick={() => changeMap(2)}>Map 2</button> */}
+			{/* <button className="" onClick={() => changeMap(3)}>Map 3</button> */}
+				<div className={Style['game']} >
 					<div className={Style['pong-body']} id="pong-body">
 						<span id="collision"></span>
 						<title>Pong</title>
