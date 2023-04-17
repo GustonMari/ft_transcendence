@@ -28,14 +28,15 @@ export default function Pong() {
 	useLayoutEffect(() => {
 	  const getUsers = async () => {
 		try {
-		  const res = await APP.get("/user/me");
-		  setCurrentUser(res.data);
-		  const is_master = await APP.post("/pong/is_user_master", {
+			const res = await APP.get("/user/me");
+			setCurrentUser(res.data);
+			const is_master = await APP.post("/pong/is_user_master", {
 			login: res.data.login,
-		  });
-		  const is_slave = await APP.post("/pong/is_user_slave", {
+			});
+			const is_slave = await APP.post("/pong/is_user_slave", {
 				login: res.data.login,
 			});
+			// console.log("is_master = ", is_master.data, "is_slave = ", is_slave.data)
 
 		  if (is_master.data) {
 			setIsMaster(true);
