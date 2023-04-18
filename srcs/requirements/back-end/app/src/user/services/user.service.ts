@@ -8,6 +8,11 @@ import {
     UpdateUserOptions
 } from 'app/src/auth/interfaces';
 import { PrismaService } from 'app/src/prisma/prisma.service';
+import { AddGameDTO } from 'app/src/history/dtos';
+
+const DRAW_XP = 10;
+const WIN_XP = 20;
+const LOSE_XP = 5;
 
 @Injectable()
 export class UserService {
@@ -149,5 +154,40 @@ export class UserService {
         });
         if (found) { return (found);}
         return (undefined);
+    }
+
+    async winGame (
+        dto: AddGameDTO,
+    ) {
+        if (dto.user_1_score === dto.user_2_score) {
+            await this.addXP(dto.user_1_id, DRAW_XP);
+            await this.addXP(dto.user_2_id, DRAW_XP);
+        } else {
+            await this.addXP((dto.user_1_score < dto.user_2_score ? dto.user_1_id : dto.user_2_id), LOSE_XP);
+            await this.addXP((dto.user_1_score > dto.user_2_score ? dto.user_1_id : dto.user_2_id), WIN_XP);
+        }
+    }
+
+    async addXP (
+        id: number,
+        xp: number,
+    ) {
+        const u: User = await this.getUserWithId(id);
+        if (!u) {
+            throw new NotFoundException('user not found');
+        }
+        const newXp = u.xp + xp; 
+        const level = (Math.log10(newXp / 10) * 2) + 1; 
+        await this.prisma.user.update({
+            where: {
+                id: id
+            },
+            data: {
+                xp: newXp,
+                level: level,
+                wins: (xp === WIN_XP ? u.wins + 1 : u.wins),
+                loses: (xp === LOSE_XP ? u.loses + 1 : u.loses),
+            }
+        });
     }
 }

@@ -38,13 +38,17 @@ model User {
     avatar_url String?  @default("/storage/default/user.png")
     email      String   @unique
     state      Boolean  @default(false)
+    description String? @db.VarChar(240)
+
     password   String   @default(cuid())
     rt         String?
-    description String? @db.VarChar(240)
-    wins       Int      @default(0)
-    loses      Int      @default(0)
     tfa        Boolean  @default(false)
     tfa_secret String?
+
+    wins       Int      @default(0)
+    loses      Int      @default(0)
+    xp         Int      @default(10)
+    level      Float      @default(1)
 
     incoming Relation[]    @relation("incoming")
     outgoing Relation[]    @relation("outgoing")
@@ -54,6 +58,7 @@ model User {
 
     rooms UsersOnRooms[]
 	messages Message[]
+
     socket_id  String?  @unique
 
     @@map("users")

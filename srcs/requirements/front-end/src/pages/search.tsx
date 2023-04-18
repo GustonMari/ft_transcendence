@@ -192,11 +192,11 @@ export const Result = (props: any) => {
                             }}
                         >
                             <ListItemAvatar>
-                                <Avatar  alt="jean" src="http://localhost:3000/api/public/picture/mamaurai1"/>
+                                <Avatar  alt={user.login} src={"http://localhost:3000/api/public/picture/" + user.login}/>
                             </ListItemAvatar>
                             <ListItemText
                                 primary={user.login}
-                                secondary={user.first_name + " " + user.last_name} 
+                                secondary={(user.first_name ? user.first_name : "") + " " + (user.last_name ? user.last_name : "")}
                                 sx={{width: 3/4}}
                             />
                             

@@ -1,3 +1,4 @@
+import { UserService } from 'app/src/user/services/user.service';
 import { PrismaService } from 'app/src/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { GameHistory } from '@prisma/client';
@@ -8,8 +9,9 @@ export class HistoryService {
 
     constructor(
         private readonly prisma: PrismaService,
+        private readonly userService: UserService
     ) {}
-    
+
     async getHistory (
         id: number,
     ): Promise<GameHistory[] | undefined> {
@@ -51,7 +53,7 @@ export class HistoryService {
                     user_2_score: dto.user_2_score,
                 }
             });
-            // TODO : use the UserService to update the level, wins-loses...
+            await this.userService.winGame(dto);
             return (true);
         }
     }

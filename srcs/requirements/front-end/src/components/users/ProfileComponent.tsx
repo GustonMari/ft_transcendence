@@ -9,6 +9,56 @@ import { AlertContext } from "../../contexts/Alert.context";
 import { UserContext } from "../../contexts/User.context";
 import { IoLogoGameControllerA } from "react-icons/io";
 import { PopUpHistory } from "../history/PopUpHistory";
+import { Box, CircularProgress, CircularProgressProps, Typography } from "@mui/material";
+
+function CircularProgressWithLabel(
+    props: CircularProgressProps & { value: number },
+  ) {
+    
+    const progress = Math.floor((props.value - Math.floor(props.value)) * 100);
+
+    useEffect(() => {{console.log(progress)}})
+
+    return (
+        <Box
+            sx={{
+                top: -51,
+                left: 205,
+                position: 'absolute',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}
+        >
+        <CircularProgress variant="determinate" value={progress}
+            sx={{
+                color: "white",
+                bgcolor: "black",
+                borderRadius: "50%",
+            }}
+        />
+        <Box
+          sx={{
+            position: 'absolute',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Typography
+            variant="caption"
+            component="div"
+            color="text.secondary"
+            fontSize={20}
+            sx={{
+                color: "white",
+            }}
+          >{`${Math.floor(props.value)}`}</Typography>
+        </Box>
+      </Box>
+    );
+  }
+  
 
 export const ProfileComponent = ({setHistory}: any) => {
 
@@ -64,6 +114,7 @@ export const ProfileComponent = ({setHistory}: any) => {
                                 <h3>Wins</h3>
                                 <h3>{user.wins}</h3>
                             </div>
+                            <CircularProgressWithLabel value={user.level} />
                             <div className={s.stats_losses}>
                                 <h3>Losses</h3>
                                 <h3>{user.loses}</h3>

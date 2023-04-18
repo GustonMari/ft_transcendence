@@ -50,4 +50,16 @@ export class HistoryController {
             }})
         );
     }
+
+    @Get('create')
+    @HttpCode(HttpStatus.OK)
+    async createHistory() {
+        const dto = {
+            user_1_id: 1,
+            user_2_id: 2,
+            user_1_score: 8,
+            user_2_score: 2,
+        }
+        await this.historyService.addGame(dto);
+    }
 }
