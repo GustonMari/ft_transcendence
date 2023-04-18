@@ -215,14 +215,14 @@ export function ExecutePong(props: any) {
 
 				if (lastTime != undefined || lastTime != null) {
 					const delta = time - lastTime;
-					// if (first === false) {
-					// 	newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
-					// 	first = true;
-					// }
-					// if (newLimit)
-					// {
+					if (first === false) {
+						newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
+						first = true;
+					}
+					if (newLimit)
+					{
 								pongBall.update(delta, playerPaddleLeft, playerPaddleRight, gameName);
-					// }
+					}
 					// document.addEventListener("keydown", DownHandler);
 					// document.addEventListener("keyup", UpHandler);
 					kd.current.run(function () {

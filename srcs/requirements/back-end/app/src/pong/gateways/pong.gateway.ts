@@ -46,6 +46,7 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 	handleDisconnect(client: Socket) {
 		console.log('disconnect');
+		client.disconnect();
 	}
 
 	@SubscribeMessage('InitGame')
