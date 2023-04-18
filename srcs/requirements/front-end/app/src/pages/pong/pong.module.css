@@ -7,10 +7,15 @@
 	border-radius: 5px;
 } */
 
+
 *{
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+	/* its to improve gpu cpu */
+	transform: translateZ(0);
+	/* will-change: transform; */
+
 }
 
 :root {
@@ -101,6 +106,7 @@
 	--position: 50;
 	--glowingpaddle:0.3;
 
+	will-change: transform;
 	position: absolute;
 	/* top: 50%; */
 	top: calc(var(--position) * (55vh - 1vh) / 100 );
@@ -174,6 +180,8 @@
 	--y: 50;
 	--insideball: 0.2;
 	--outsideball: 0.5;
+	transform: transale3d(0,0,0);
+	will-change: transform;
 	position: absolute;
 	top: calc(var(--y) * (55vh - 1vh) / 100);
 	left: calc(var(--x) * (90vh - 4vh) / 100);
