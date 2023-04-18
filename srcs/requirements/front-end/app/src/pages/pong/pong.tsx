@@ -237,11 +237,10 @@ export function ExecutePong(props: any) {
 					});
 				}
 				lastTime = time;
-				setTimeout(() => {
+				// setTimeout(() => {
 					window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight, newLimit));
 
-					// requestAnimationFrame(animate);
-				  }, 1000 / 45);
+				//   }, 1000 / 45);
 				// window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight, newLimit));
 				
 			};
