@@ -5,6 +5,7 @@ import { Button } from "react-bootstrap";
 import { RxCross1 } from "react-icons/rx";
 import { ProfilePopUpContext } from "../../contexts/ProfilePopUp.context";
 import API from "../../network/api";
+import { AlertContext } from "../../contexts/Alert.context";
 
 interface IPopUpHistoryProps {
     show: boolean;
@@ -40,9 +41,16 @@ export const PopUpHistory  = (props: IPopUpHistoryProps) => {
 
     const [matches, setMatches] = useState<IMatch[] | undefined>(undefined);
     const {setPopUpID} = useContext<any>(ProfilePopUpContext);
+    const {handleError} = useContext<any>(AlertContext);
 
     useEffect(() => {
-        API.getHistory(props.id, (r: any) => {}, (err: any) => {});
+        API.getHistory(
+            props.id,
+            (r: any) => {
+                setMatches(r);
+            }, (err: any) => {
+                handleError(err.message)
+            });
     }, []);
 
     return (

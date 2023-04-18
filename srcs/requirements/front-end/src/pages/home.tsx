@@ -7,8 +7,8 @@ export default function Home () {
     return (
         <>
         <div className={g.background}>
-            {/* <NavBar /> */}
-            <PopUpHistory show={true} id={1} onClose={() => {}}/>
+            <NavBar />
+            {/* <PopUpHistory show={true} id={1} onClose={() => {}}/> */}
         </div>
         </>
     );

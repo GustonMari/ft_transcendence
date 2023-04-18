@@ -1,13 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { BsXLg } from "react-icons/bs";
 import { FiSend } from "react-icons/fi";
-import { AiOutlineUsergroupAdd } from "react-icons/ai";
+import { AiOutlineClockCircle, AiOutlineUsergroupAdd } from "react-icons/ai";
 import { ProfilePopUpContext } from "../../contexts/ProfilePopUp.context";
 import s from "../../styles/profile/ProfileComponent.module.css";
 import API from "../../network/api";
 import { AlertContext } from "../../contexts/Alert.context";
 import { UserContext } from "../../contexts/User.context";
 import { IoLogoGameControllerA } from "react-icons/io";
+import { PopUpHistory } from "../history/PopUpHistory";
 
 export const ProfileComponent = () => {
 
@@ -17,15 +18,7 @@ export const ProfileComponent = () => {
 
     const [user, setUser] = useState<any | undefined>(undefined)
 
-    const handleSendFriendRequest = () => {
-        API.sendFriendRequest(user.id,
-            () => {
-                handleSuccess("Friend request sent successfully.")
-            }, (err: any) => {
-                handleError(err.message)
-            }
-        )
-    }
+    const [show, setShow] = useState<boolean>(false)
 
     const handleLaunchGame = () => {
         // TODO: launch game
@@ -43,26 +36,31 @@ export const ProfileComponent = () => {
 
   return (
     <>
-        {/*{console.log(me.id)}*/}
+        <PopUpHistory
+            show={show}
+            id={1}
+            onClose={() => {setShow(false)}}
+        />
+
         <div className={s.container}>
             <div className={s.pop_up}>
                 { user && me && <>
                     <a className={s.close_button} onClick={() => setPopUpID(undefined)} title="Close the window">
                         <BsXLg/>
                     </a>
-                    {me?.login !== user?.login &&
-                        <div className={s.action_buttons}>
-                            <a className={s.send_message} title="Send message to this person">
-                                <FiSend/>
+                    <div className={s.action_buttons}>
+                            <a className={s.friend_request} title="Send friend request to this person"  onClick={() => setShow(true)}>
+                                <AiOutlineClockCircle/>
                             </a>
-                            <a className={s.friend_request} title="Send friend request to this person"  onClick={() => handleSendFriendRequest()}>
-                                <AiOutlineUsergroupAdd/>
+                        {me?.login !== user?.login && <>
+                            <a className={s.send_message} title="See History">
+                                <FiSend/>
                             </a>
                             <a className={s.friend_request} title="Send request to play"  onClick={() => handleLaunchGame()}>
                                 <IoLogoGameControllerA/>
                             </a>
-                        </div>
-                    }
+                        </>}
+                    </div>
                     <div className={s.picture_section}>
                         <img src={"http://localhost:3000/api/public/picture/" + user.login}></img>
                     </div>
@@ -81,8 +79,9 @@ export const ProfileComponent = () => {
                         </div>
                         <div className={s.separator}></div>
                         <div className={s.bio_section}>
-                            <p>{
-                                user.description ? user.description?.substring(0, 250) : "No description"}</p>
+                            <p>
+                                {user.description ? user.description?.substring(0, 250) : "No description"}
+                            </p>
                         </div>
                     </div>
                 </>}
