@@ -208,25 +208,27 @@ export default class API {
         uid: number,
         successFunc: () => void,
         errorFunc: (err: any) => void
-    ) {
-        try {
-            await APP.post("/relation/create", {
-                id_target: uid,
-                relation_type: "BLOCKED",
-
-            });
-            successFunc();
-        } catch (err) {
-            if (axios.isAxiosError(err)) {
-                const error = err as any;
-                errorFunc({
-                    code: error.code,
-                    message: error.response?.data?.message,           
+        ) {
+            try {
+                await APP.post("/relation/create", {
+                    id_target: uid,
+                    relation_type: "BLOCKED",
+                    
                 });
-            };
-        }
+                successFunc();
+            } catch (err) {
+                if (axios.isAxiosError(err)) {
+                    const error = err as any;
+                    errorFunc({
+                        code: error.code,
+                        message: error.response?.data?.message,           
+                    });
+                };
+            }
     }
 
+    /* ------------------------------------------------------------------------------ */
+        
     static async getUser(
         id: number,
         successFunc: (user: any) => void,
@@ -295,6 +297,25 @@ export default class API {
                     'Content-Type': 'multipart/form-data'
                 }
             });
+            successFunc(r.data);
+        } catch (err) {
+            if (axios.isAxiosError(err)) {
+                const error = err as any;
+                errorFunc({
+                    code: error.code,
+                    message: error.response?.data?.message,
+                });
+            };
+        }
+    }
+
+    static async getHistory (
+        id: number,
+        successFunc: (r: any) => void,
+        errorFunc: (err: ApiError) => void
+    ) {
+        try {
+            const r = await APP.get("/user/history/get/" + id);
             successFunc(r.data);
         } catch (err) {
             if (axios.isAxiosError(err)) {

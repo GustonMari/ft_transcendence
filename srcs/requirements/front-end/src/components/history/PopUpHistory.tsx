@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { RxCross1 } from "react-icons/rx";
 import { ProfilePopUpContext } from "../../contexts/ProfilePopUp.context";
+import API from "../../network/api";
 
 interface IPopUpHistoryProps {
     show: boolean;
@@ -22,49 +23,6 @@ interface IMatch {
     date: string;
 }
 
-const db: any[] = [
-    {
-        id: 1,
-        user_1: 1,
-        user_2: 3,
-        user_1_username: "user1",
-        user_2_username: "user2",
-        user_1_score: 2,
-        user_2_score: 1,
-        date: "2021-10-10 10:10:10",
-    },
-    {
-        id: 2,
-        user_1: 2,
-        user_2: 3,
-        user_1_username: "user1",
-        user_2_username: "user2",
-        user_1_score: 2,
-        user_2_score: 1,
-        date: "2021-10-10 10:10:10",
-    },
-    {
-        id: 3,
-        user_1: 2,
-        user_2: 3,
-        user_1_username: "usfgnmfgrfdesfeskm",
-        user_2_username: "usnhujikrfesfefesf2",
-        user_1_score: 2,
-        user_2_score: 1,
-        date: "2021-10-10 10:10:10",
-    },
-    {
-        id: 4,
-        user_1: 2,
-        user_2: 3,
-        user_1_username: "user1",
-        user_2_username: "user2",
-        user_1_score: 2,
-        user_2_score: 1,
-        date: "2021-10-10 10:10:10",
-    },
-]
-
 const theme = createTheme({
     typography: {
       fontFamily: [
@@ -80,11 +38,11 @@ const centerSX : SxProps<Theme> = {
 
 export const PopUpHistory  = (props: IPopUpHistoryProps) => {
 
-    const [matches, setMatches] = useState<IMatch[] | undefined>(db);
+    const [matches, setMatches] = useState<IMatch[] | undefined>(undefined);
     const {setPopUpID} = useContext<any>(ProfilePopUpContext);
 
     useEffect(() => {
-        // fetch(`http://localhost:3001/api/history/list/${props.id}`)
+        API.getHistory(props.id, (r: any) => {}, (err: any) => {});
     }, []);
 
     return (
@@ -98,10 +56,10 @@ export const PopUpHistory  = (props: IPopUpHistoryProps) => {
             <List
                 sx={{
                     width: "600px",
-                }}
+                }}                    
             >
-                { db ? db.map((match: IMatch, item: number) => {
-                    const labelId = `checkbox-list-label-${item}`;
+                { matches ? matches.map((match: IMatch, item: number) => {
+                    const labelId = `list-label-${item}`;
                     return (
                         <ListItem
                             sx={{
@@ -110,6 +68,7 @@ export const PopUpHistory  = (props: IPopUpHistoryProps) => {
                                 justifyContent: "center",
                                 alignItems: "center",
                             }}
+                            key={item}
                         >
                             <ListItemAvatar
                                 sx={{
@@ -159,6 +118,7 @@ export const PopUpHistory  = (props: IPopUpHistoryProps) => {
                                     borderRadius: "5px",
                                     borderWidth: "1px",
                                 }}
+                                
                             />
                             <ListItemText id={labelId}
                                 primary={match.user_2_score}

@@ -49,11 +49,30 @@ model User {
     incoming Relation[]    @relation("incoming")
     outgoing Relation[]    @relation("outgoing")
 
+    game_history1 GameHistory[] @relation("game_history1")
+    game_history2 GameHistory[] @relation("game_history2")
+
     rooms UsersOnRooms[]
 	messages Message[]
     socket_id  String?  @unique
 
     @@map("users")
+}
+
+model GameHistory {
+    id Int @id @unique @default(autoincrement())
+
+    created_at DateTime @default(now())
+
+    user_1 User @relation("game_history1", fields: [user_1_id], references: [id])
+    user_1_id Int
+    user_1_score Int
+
+    user_2 User @relation("game_history2", fields: [user_2_id], references: [id])
+    user_2_id Int
+    user_2_score Int
+
+    @@map("game_history")
 }
 
 model Chat_Relation {
@@ -62,8 +81,6 @@ model Chat_Relation {
     created_at DateTime @default(now())
 
     state RELATION_STATE 
-
-   
 
     @@map("chat_request")
 }
