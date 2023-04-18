@@ -47,11 +47,12 @@ export const PopUpHistory  = (props: IPopUpHistoryProps) => {
         API.getHistory(
             props.id,
             (r: any) => {
+                console.log(props.id);
                 setMatches(r);
             }, (err: any) => {
                 handleError(err.message)
             });
-    }, []);
+    }, [props.id]);
 
     return (
         <>
@@ -66,7 +67,7 @@ export const PopUpHistory  = (props: IPopUpHistoryProps) => {
                     width: "600px",
                 }}                    
             >
-                { matches ? matches.map((match: IMatch, item: number) => {
+                { (matches && matches.length > 0) ? matches.map((match: IMatch, item: number) => {
                     const labelId = `list-label-${item}`;
                     return (
                         <ListItem
@@ -83,7 +84,7 @@ export const PopUpHistory  = (props: IPopUpHistoryProps) => {
                                     ...centerSX,
                                     cursor: "pointer",
                                 }}
-                                onClick={() => setPopUpID(match.user_1)}
+                                onClick={() => {setPopUpID(match.user_1); ; props.onClose()}}
                             >
                                 <Avatar alt={match.user_1_username} src={"http://localhost:3000/api/public/picture/" + match.user_1_username}/>
                             </ListItemAvatar>
@@ -107,7 +108,7 @@ export const PopUpHistory  = (props: IPopUpHistoryProps) => {
                                     fontFamily: 'Open Sans',
                                     overflow: "hidden",
                                 }}
-                                onClick={() => setPopUpID(match.user_1)}
+                                onClick={() => {setPopUpID(match.user_1); ; props.onClose()}}
                             />
                             <ListItemText id={labelId}
                                 primary={match.user_1_score}
@@ -157,14 +158,14 @@ export const PopUpHistory  = (props: IPopUpHistoryProps) => {
                                     fontFamily: 'Open Sans',
                                     overflow: "hidden",
                                 }}
-                                onClick={() => setPopUpID(match.user_2)}
+                                onClick={() => {setPopUpID(match.user_2); ; props.onClose()}}
                             />
                             <ListItemAvatar
                                 sx={{
                                     ...centerSX,
                                     cursor: "pointer",
                                 }}
-                                onClick={() => setPopUpID(match.user_2)}
+                                onClick={() => {setPopUpID(match.user_2); props.onClose()}}
                             >
                                 <Avatar alt={match.user_1_username} src={"http://localhost:3000/api/public/picture/" + match.user_2_username}/>
                             </ListItemAvatar>

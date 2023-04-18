@@ -10,15 +10,13 @@ import { UserContext } from "../../contexts/User.context";
 import { IoLogoGameControllerA } from "react-icons/io";
 import { PopUpHistory } from "../history/PopUpHistory";
 
-export const ProfileComponent = () => {
+export const ProfileComponent = ({setHistory}: any) => {
 
     const {popUpID, setPopUpID} : any = useContext(ProfilePopUpContext);
     const {handleError, handleSuccess} : any = useContext(AlertContext);
     const {me}: any = useContext(UserContext)
 
     const [user, setUser] = useState<any | undefined>(undefined)
-
-    const [show, setShow] = useState<boolean>(false)
 
     const handleLaunchGame = () => {
         // TODO: launch game
@@ -36,12 +34,6 @@ export const ProfileComponent = () => {
 
   return (
     <>
-        <PopUpHistory
-            show={show}
-            id={1}
-            onClose={() => {setShow(false)}}
-        />
-
         <div className={s.container}>
             <div className={s.pop_up}>
                 { user && me && <>
@@ -49,7 +41,7 @@ export const ProfileComponent = () => {
                         <BsXLg/>
                     </a>
                     <div className={s.action_buttons}>
-                            <a className={s.friend_request} title="Send friend request to this person"  onClick={() => setShow(true)}>
+                            <a className={s.friend_request} title="Send friend request to this person"  onClick={() => setHistory(user.id)}>
                                 <AiOutlineClockCircle/>
                             </a>
                         {me?.login !== user?.login && <>
