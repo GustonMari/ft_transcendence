@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'app/src/prisma/prisma.service';
 import { User, Room, Message } from '@prisma/client';
 import { InfoMessage } from '../interfaces/chat.interface';
-// import { InfoMessage } from './gateways/chat.interface';
 import * as argon from 'argon2';
 
 @Injectable()

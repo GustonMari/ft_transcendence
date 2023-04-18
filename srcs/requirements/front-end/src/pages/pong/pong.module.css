@@ -1,0 +1,347 @@
+/* canvas {
+	display: flex;
+	align-items: center;
+	margin: auto;
+	background-color: black;
+	border: 2px;
+	border-radius: 5px;
+} */
+
+
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	/* its to improve gpu cpu */
+	transform: translateZ(0);
+	/* will-change: transform; */
+
+}
+
+:root {
+	--hue: 200;
+	--saturation: 75%;
+	--foreground-color: hsl(var(--hue), var(--saturation), 75%);
+	--glowing: 0.15;
+	--color-paddle: #f09;
+
+}
+
+.container-game {
+	/* --background-image-main: 'url(\'../../../static/pong/background_pong.png\')'); */
+	border: blueviolet 2px solid;
+	/* display: flex; */
+	/* flex-direction: column; */
+	/* min-width: 100vh; */
+	min-width: 100vw;
+	min-height: 100vh;
+
+	/* justify-content: center; */
+	/* align-items: center; */
+
+	/* background-color: red; */
+	background-image: url('../../../public/pong/background_pong.png');
+	/* background-image: var(--background-image-main); */
+	background-repeat: no-repeat;
+	background-size: cover;
+	/* background-size: 100vw 100vh; */
+	/* background-position: absolute 0 0; */
+	
+	background-position: center center;
+}
+
+*, *::after, *::before {
+	box-sizing: border-box;
+}
+
+.game {
+	/* width: 100%; */
+	/* height: 100%; */
+	/* display: flex; */
+	/* justify-content: center; */
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 90vh;
+	height: 55vh;
+
+}
+
+.pong-body {
+	
+	/* TODO: il faudra remettre le overflow */
+	overflow: hidden; 
+	background-color: rgb(0, 0, 0);
+	position : relative;
+	width: 100%;
+	height: 100%;
+	/* width: 854px;
+	height: 480px; */
+	border-radius: 5px;
+}
+
+
+@media screen and (max-height: 350px) {
+	.pong-body {
+		/* width: auto%; */
+		/* height: 100%; */
+	}
+
+	.container-game {
+		width: 100%;
+		height: 100%;
+	}
+
+	.game {
+		width: 90vh;
+		height: 55vh;
+		/* zoom: 2; */
+	}
+}
+	
+
+.paddle {
+	/* --position: 25; */
+	--position: 50;
+	--glowingpaddle:0.3;
+
+	will-change: transform;
+	position: absolute;
+	/* top: 50%; */
+	top: calc(var(--position) * (55vh - 1vh) / 100 );
+	/* top: calc(var(--position) * 1vh); */
+	transform: translateY(-50%);
+	/* background-color: var(--foreground-color); */
+	/* background-color: blue; */
+	width: 2vh;
+	height: 12vh;
+	border-radius: 5px;
+	background-color: white;
+	box-shadow:  
+	0 0 calc(var(--glowingpaddle) * 7px) white,
+	0 0 calc(var(--glowingpaddle) * 10px) white,
+	0 0 calc(var(--glowingpaddle) * 21px) white,
+	0 0 calc(var(--glowingpaddle) * 42px) var(--color-paddle),
+	0 0 calc(var(--glowingpaddle) * 82px) var(--color-paddle),
+	0 0 calc(var(--glowingpaddle) * 92px) var(--color-paddle),
+	0 0 calc(var(--glowingpaddle) * 102px) var(--color-paddle),
+	0 0 calc(var(--glowingpaddle) * 151px) var(--color-paddle),
+	0 0 calc(var(--glowingpaddle) * 171px) var(--color-paddle),
+	0 0 calc(var(--glowingpaddle) * 180px) var(--color-paddle),
+	0 0 calc(var(--glowingpaddle) * 200px) var(--color-paddle);
+	/* animation: pulse 1s infinite; */
+	animation: glowpaddle 3s ease-in-out infinite alternate;
+}
+
+
+.paddle.left {
+	left: 1vh;
+}
+
+.paddle.right {
+	right: 1vh;
+}
+
+@keyframes glowpaddle {
+	100% {
+		box-shadow: 
+		0 0 calc(var(--glowingpaddle) * 7px) white,
+		0 0 calc(var(--glowingpaddle) * 10px) white,
+		0 0 calc(var(--glowingpaddle) * 21px) white,
+		0 0 calc(var(--glowingpaddle) * 42px) var(--color-paddle),
+		0 0 calc(var(--glowingpaddle) * 82px) var(--color-paddle),
+		0 0 calc(var(--glowingpaddle) * 92px) var(--color-paddle),
+		0 0 calc(var(--glowingpaddle) * 102px) var(--color-paddle),
+		0 0 calc(var(--glowingpaddle) * 151px) var(--color-paddle),
+		0 0 calc(var(--glowingpaddle) * 171px) var(--color-paddle),
+		0 0 calc(var(--glowingpaddle) * 180px) var(--color-paddle),
+		0 0 calc(var(--glowingpaddle) * 200px) var(--color-paddle);
+	}
+	0% {
+		box-shadow: 
+		0 0 calc((var(--glowingpaddle) + 0.05) * 4px) white,
+		0 0 calc((var(--glowingpaddle) + 0.05) * 10px) white,
+		0 0 calc((var(--glowingpaddle) + 0.05) * 18px) white,
+		0 0 calc((var(--glowingpaddle) + 0.05) * 38px) var(--color-paddle),
+		0 0 calc((var(--glowingpaddle) + 0.05) * 73px) var(--color-paddle),
+		0 0 calc((var(--glowingpaddle) + 0.05) * 80px) var(--color-paddle),
+		0 0 calc((var(--glowingpaddle) + 0.05) * 94px) var(--color-paddle),
+		0 0 calc((var(--glowingpaddle) + 0.05) * 140px) var(--color-paddle),
+		0 0 calc((var(--glowingpaddle) + 0.05) * 151px) var(--color-paddle),
+		0 0 calc((var(--glowingpaddle) + 0.05) * 168px) var(--color-paddle),
+		0 0 calc((var(--glowingpaddle) + 0.05) * 188px) var(--color-paddle);
+	}
+	
+}
+
+.ball {
+	--x: 50;
+	--y: 50;
+	--insideball: 0.2;
+	--outsideball: 0.5;
+	transform: transale3d(0,0,0);
+	will-change: transform;
+	position: absolute;
+	top: calc(var(--y) * (55vh - 1vh) / 100);
+	left: calc(var(--x) * (90vh - 4vh) / 100);
+	transform: translateY(-50%);
+	/* background-color: var(--foreground-color); */
+	background-color: #ee82ee;
+	/* background-color: #121212; */
+	width: 4vh;
+	height: 4vh;
+	border-radius: 50%;
+
+	/*?  DESIGN */
+
+	/* box-shadow:
+	inset 0 0 calc(var(--insideball) * 30px) #fff,
+	inset calc(var(--insideball) * 20px) 0 calc(var(--insideball) * 60px) #ee82ee,
+	inset calc(var(--insideball) * -20px) 0 calc(var(--insideball) * 60px) #0ff,
+	inset calc(var(--insideball) * 20px) 0 calc(var(--insideball) * 300px) #ee82ee,
+	inset calc(var(--insideball) * -20px) 0 calc(var(--insideball) * 300px) #0ff,
+	0 0 calc(var(--outsideball) * 5px) #fff,
+	-10px 0 calc(var(--outsideball) * 60px) #ee82ee,
+	10px 0 calc(var(--outsideball) * 60px) #0ff;
+
+	animation: balldesign 2s infinite; */
+
+}
+
+@keyframes balldesign {
+	0%{
+		/* transform: rotate(0); */
+		/* filter: hue-rotate(0deg); */
+	}
+	50%{
+		/* filter: hue-rotate(100deg); */
+	}
+	100%{
+		/* transform: rotate(360deg); */
+	}
+}
+
+/* 
+.ball {
+	--x: 50;
+	--y: 50;
+	--insideball: 0.2;
+	--outsideball: 0.5;
+	transform: transale3d(0,0,0);
+	will-change: transform;
+	position: absolute;
+	top: calc(var(--y) * (55vh - 1vh) / 100);
+	left: calc(var(--x) * (90vh - 4vh) / 100);
+	transform: translateY(-50%);
+	background-color: #121212;
+	width: 4vh;
+	height: 4vh;
+	border-radius: 50%;
+
+
+	box-shadow:
+	inset 0 0 calc(var(--insideball) * 30px) #fff,
+	inset calc(var(--insideball) * 20px) 0 calc(var(--insideball) * 60px) #ee82ee,
+	inset calc(var(--insideball) * -20px) 0 calc(var(--insideball) * 60px) #0ff,
+	inset calc(var(--insideball) * 20px) 0 calc(var(--insideball) * 300px) #ee82ee,
+	inset calc(var(--insideball) * -20px) 0 calc(var(--insideball) * 300px) #0ff,
+	0 0 calc(var(--outsideball) * 5px) #fff,
+	-10px 0 calc(var(--outsideball) * 60px) #ee82ee,
+	10px 0 calc(var(--outsideball) * 60px) #0ff;
+
+	animation: balldesign 2s infinite;
+
+} */
+
+
+.score {
+	display: flex;
+	justify-content: center;
+	font-weight: bold;
+	font-size: 7vh;
+	color: white;
+	text-shadow: 
+	0 0 calc(var(--glowing) * 7px) white,
+	0 0 calc(var(--glowing) * 10px) white,
+	0 0 calc(var(--glowing) * 21px) white,
+	0 0 calc(var(--glowing) * 42px) var(--color-paddle),
+	0 0 calc(var(--glowing) * 82px) var(--color-paddle),
+	0 0 calc(var(--glowing) * 92px) var(--color-paddle),
+	0 0 calc(var(--glowing) * 102px) var(--color-paddle),
+	0 0 calc(var(--glowing) * 151px) var(--color-paddle),
+	0 0 calc(var(--glowing) * 171px) var(--color-paddle),
+	0 0 calc(var(--glowing) * 180px) var(--color-paddle),
+	0 0 calc(var(--glowing) * 200px) var(--color-paddle);
+	/* animation: pulse 1s infinite; */
+	animation: glowscore 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes glowscore {
+	100% {
+		text-shadow: 
+		0 0 calc(var(--glowing) * 7px) white,
+		0 0 calc(var(--glowing) * 10px) white,
+		0 0 calc(var(--glowing) * 21px) white,
+		0 0 calc(var(--glowing) * 42px) var(--color-paddle),
+		0 0 calc(var(--glowing) * 82px) var(--color-paddle),
+		0 0 calc(var(--glowing) * 92px) var(--color-paddle),
+		0 0 calc(var(--glowing) * 102px) var(--color-paddle),
+		0 0 calc(var(--glowing) * 151px) var(--color-paddle),
+		0 0 calc(var(--glowing) * 171px) var(--color-paddle),
+		0 0 calc(var(--glowing) * 180px) var(--color-paddle),
+		0 0 calc(var(--glowing) * 200px) var(--color-paddle);
+	}
+	0% {
+		text-shadow: 
+		0 0 calc((var(--glowing) + 0.05) * 4px) white,
+		0 0 calc((var(--glowing) + 0.05) * 10px) white,
+		0 0 calc((var(--glowing) + 0.05) * 18px) white,
+		0 0 calc((var(--glowing) + 0.05) * 38px) var(--color-paddle),
+		0 0 calc((var(--glowing) + 0.05) * 73px) var(--color-paddle),
+		0 0 calc((var(--glowing) + 0.05) * 80px) var(--color-paddle),
+		0 0 calc((var(--glowing) + 0.05) * 94px) var(--color-paddle),
+		0 0 calc((var(--glowing) + 0.05) * 140px) var(--color-paddle),
+		0 0 calc((var(--glowing) + 0.05) * 151px) var(--color-paddle),
+		0 0 calc((var(--glowing) + 0.05) * 168px) var(--color-paddle),
+		0 0 calc((var(--glowing) + 0.05) * 188px) var(--color-paddle);
+	}
+	
+}
+
+
+.score > * {
+	margin: 0 1vh;
+	flex-grow: 1;
+	flex-basis: 0;
+	padding: 0 2vh;
+	/* opacity: 0.5; */
+}
+
+.score > :first-child {
+	text-align: right;
+}
+
+
+@keyframes scored-animation {
+	0% {
+			width: 20vh;
+		height: 20vh;
+	}
+	50% {
+			width: 30vh;
+		height: 30vh;
+	}
+	100% {
+			width: 20vh;
+	height: 20vh;
+	}
+}
+
+.scored {
+	background-color: red;
+	width: 5vh;
+	height: 5vh;
+	/* animation: scored-animation 2s ease-in-out; */
+	/* background-color: red !important; */
+}

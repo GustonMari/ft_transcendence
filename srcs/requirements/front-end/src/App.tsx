@@ -14,6 +14,7 @@ import TFA from "./pages/tfa";
 import { AlertProvider } from "./contexts/Alert.context";
 import { Welcome } from "./pages/welcome";
 import Chat from "./pages/chat";
+import Pong from "./pages/pong/pong";
 
 function App() {
   return (
@@ -65,6 +66,11 @@ function App() {
                          <Chat/>
                 </PrivateRoute>
             }/>
+        } />
+        <Route path="/pong" element={
+            <PrivateRoute>
+                <Pong />
+            </PrivateRoute>
         } />
 
         <Route path="/profile" element={
