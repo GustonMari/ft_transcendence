@@ -218,6 +218,7 @@ export function ExecutePong(props: any) {
 					if (first === false) {
 						newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
 						first = true;
+						console.log("first rect of update");
 					}
 					if (newLimit)
 					{
@@ -232,10 +233,16 @@ export function ExecutePong(props: any) {
 					UpHandler();
 					window.addEventListener('resize', () => {
 						newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
+						console.log('resize');
 					});
 				}
 				lastTime = time;
-				window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight, newLimit));
+				setTimeout(() => {
+					window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight, newLimit));
+
+					// requestAnimationFrame(animate);
+				  }, 1000 / 45);
+				// window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight, newLimit));
 				
 			};
 
