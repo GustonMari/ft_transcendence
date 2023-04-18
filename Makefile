@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mamaurai <mamaurai@student.42.fr>          +#+  +:+       +#+         #
+#    By: gmary <gmary@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/02 10:42:00 by mamaurai          #+#    #+#              #
-#    Updated: 2023/01/27 16:12:09 by mamaurai         ###   ########.fr        #
+#    Updated: 2023/04/18 10:41:26 by gmary            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ else
 endif
 
 DOCKER_ENV_FILE = ./srcs/.dev/.env
-DOCKER_COMPOSE = docker-compose
+DOCKER_COMPOSE = docker compose
 BASH = /bin/bash
 CLEAR_FILE = ./srcs/.dev/docker-cleaner.sh
 DOCKER_EXEC = docker exec -it
@@ -79,7 +79,7 @@ drestart:
 		@${DOCKER_COMPOSE} --env-file ${DOCKER_ENV_FILE} -f ${DOCKER_COMPOSE_FILE} up --build -d
 		
 api-logs:
-		@${DOCKER_COMPOSE} --env-file ${DOCKER_ENV_FILE} -f ${DOCKER_COMPOSE_FILE} logs --tail=100 ${BACK_NAME}
+		@${DOCKER_COMPOSE} --env-file ${DOCKER_ENV_FILE} -f ${DOCKER_COMPOSE_FILE} logs --tail=300 ${BACK_NAME}
 
 front-logs:
 		@${DOCKER_COMPOSE} --env-file ${DOCKER_ENV_FILE} -f ${DOCKER_COMPOSE_FILE} logs --tail=100 ${FRONT_NAME}
@@ -93,6 +93,13 @@ migrate:
 remove-modules:
 		@rm -rf srcs/requirements/back-end/node_modules srcs/requirements/back-end/dist &> /dev/null || true
 		@rm -rf srcs/requirements/front-end/node_modules srcs/requirements/front-end/dist &> /dev/null
+	
+super-clean:
+		make stop 2>/dev/null
+		rm -rf srcs/requirements/back-end/node_modules
+		rm -rf srcs/requirements/front-end/node_modules
+		rm -rf srcs/requirements/back-end/app/prisma/migrations
+		make drestart
 	
 endif
 

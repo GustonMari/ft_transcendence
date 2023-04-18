@@ -1,4 +1,6 @@
 import { ChatModule } from './chat/chat.module';
+import { PongModule } from './pong/pong.module';
+/* eslint-disable prettier/prettier */
 import { JwtModule } from '@nestjs/jwt';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { PrismaService } from './prisma';
@@ -15,7 +17,8 @@ import { PublicModule } from './public/public.module';
         PrismaModule,
         AuthModule,
         UserModule,
-        ChatModule,
+		ChatModule,
+		PongModule,
 		RelationModule,
 		PublicModule,
     ],

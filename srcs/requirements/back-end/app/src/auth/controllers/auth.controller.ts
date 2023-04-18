@@ -72,6 +72,7 @@ export class AuthController {
         });
         res.cookie('refresh_token', refresh_token, {
             httpOnly: true,
+
             secure: true,
         });
         res.send({ access_token: access_token });

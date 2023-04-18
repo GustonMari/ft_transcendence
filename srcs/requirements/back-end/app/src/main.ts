@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
@@ -33,9 +34,9 @@ async function bootstrap() {
     const document = SwaggerModule.createDocument(app, options);
     SwaggerModule.setup('api/docs', app, document);
 
-  app.setGlobalPrefix('api');
-  app.use(cookieParser());
-  await app.listen(3000);
+	app.setGlobalPrefix('api');
+	app.use(cookieParser());
+	await app.listen(3000);
 }
 
 bootstrap();

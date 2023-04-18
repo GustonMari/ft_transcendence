@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'app/src/prisma/prisma.service';
 import { User, Room, Message } from '@prisma/client';
 import { InfoMessage } from '../interfaces/chat.interface';
+// import { InfoMessage } from './gateways/chat.interface';
 import * as argon from 'argon2';
 
 @Injectable()
@@ -53,9 +54,9 @@ export class ChatService {
 
 	async addSocketToUser(user_id: number, socket_id: string) {
 		await this.prisma.user.update({
-		  where: { 
-            id: user_id 
-            },
+		  where: { id: user_id 
+			
+		},
 		  data: {
 			socket_id: socket_id,
 		  },
@@ -74,7 +75,6 @@ export class ChatService {
 	async joinChatRoom(room_name: string, user_id: number )
 	{
 		//TODO: change with findOne
-		console.log("--------- room name = ", room_name, " | user_id = ", user_id, "---------")
 		const current_user = await this.prisma.user.findUnique({ where: { id: user_id } });
 		if (!current_user) {
 			throw new Error('User not found');
@@ -82,7 +82,6 @@ export class ChatService {
 
 		//on cherche si la room existe deja sinon on la creer
 		const room_exist = await this.prisma.room.findUnique({ where: { name: room_name} });
-		console.log("room_existssss = ", room_exist)
 		if (!room_exist) {
 			//! or maybe trhow something
 			console.log("on est dans joinChatRoom la room nexiste pas on createChatRoom(", room_name, ", ", user_id);
@@ -491,5 +490,14 @@ export class ChatService {
 			return true;
 		}
 		return false;
+	}
+
+	async getSocketIdByUserId (user_id: number): Promise<string> {
+		const user = await this.prisma.user.findUnique({
+			where: {
+				id: user_id,
+			},
+		})
+		return user.socket_id;
 	}
 }
