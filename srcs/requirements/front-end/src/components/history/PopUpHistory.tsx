@@ -24,13 +24,6 @@ interface IMatch {
     date: string;
 }
 
-const theme = createTheme({
-    typography: {
-      fontFamily: [
-        'Open Sans',
-      ].join(','),
-    },});
-
 const centerSX : SxProps<Theme> = {
     justifyContent: "center",
     alignItems: "center",

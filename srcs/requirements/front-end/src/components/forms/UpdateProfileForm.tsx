@@ -59,10 +59,8 @@ function UpdateProfileForm(props: any) {
       }, (e: any) => {
         handleError(e.message)
       }); 
-
   }
   
-
   return (
     <>
         <NavBar/>
@@ -78,29 +76,32 @@ function UpdateProfileForm(props: any) {
         {/*<span className={s.input__overlay}>Upload file</span>*/}
         <label className={s.labels}>
           First Name:
-          <input className={s.inputs} type="text" value={me?.first_name} onChange={(event) => setFirstName(event.target.value)}/>
+          <input className={s.inputs} type="text" value={firstName ? firstName : ""} onChange={(event) => setFirstName(event.target.value)} maxLength={30}/>
         </label>
         <br />
         <label className={s.labels}>
           Last Name:
-          <input className={s.inputs} type="text" value={me?.last_name} onChange={(event) => setLastName(event.target.value)}/>
+          <input className={s.inputs} type="text" value={lastName  ? lastName : ""} onChange={(event) => setLastName(event.target.value)} maxLength={30}/>
         </label>
         <br />
         <label className={s.labels}>
           New Password:
-          <input className={s.inputs} type="password" onChange={(event) => setPassword(event.target.value)} minLength={8}/>
+          <input className={s.inputs} type="password" onChange={(event) => setPassword(event.target.value)} minLength={8} maxLength={50}/>
         </label>
         <br />
         <label className={s.labels}>
           Confirm Password:
-          <input className={s.inputs} type="password" onChange={(event) => setConfirmPassword(event.target.value)} minLength={8}/>
+          <input className={s.inputs} type="password" onChange={(event) => setConfirmPassword(event.target.value)} minLength={8} maxLength={50}/>
         </label>
         <br />
         <label className={s.labels}>
           Description:
-          <textarea className={[s.description, s.inputs].join(' ')} onChange={(event) => setDescription(event.target.value)}>
-            {me?.description}
-          </textarea>
+            <textarea
+                className={[s.description, s.inputs].join(' ')}
+                onChange={(event) => setDescription(event.target.value)}
+                maxLength={250}
+                value={description  ? description : ""}
+            />
         </label>
         <br />
         {/*<Switch checked={me.tfa}></Switch>*/}

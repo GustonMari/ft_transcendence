@@ -38,7 +38,7 @@ model User {
     avatar_url String?  @default("/storage/default/user.png")
     email      String   @unique
     state      Boolean  @default(false)
-    description String? @db.VarChar(240)
+    description String? @db.VarChar(250)
 
     password   String   @default(cuid())
     rt         String?

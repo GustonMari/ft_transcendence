@@ -7,7 +7,6 @@ import g from '../styles/communs/global.module.css';
 function Profile() {
   return (
     <div className={g.background}>
-        <NavBar/>
         <UpdateProfileForm/>
     </div>
   );

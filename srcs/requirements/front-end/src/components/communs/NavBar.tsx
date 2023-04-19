@@ -8,7 +8,7 @@ import {useNavigate} from "react-router-dom";
 import {UserContext} from "../../contexts/User.context";
 import {ProfilePopUpContext} from "../../contexts/ProfilePopUp.context";
 import {AlertContext} from "../../contexts/Alert.context";
-import { AiOutlineClose } from "react-icons/ai";
+import { IoLogoGameControllerA } from "react-icons/io";
 
 interface ISideElem {
     icon: any;
@@ -18,7 +18,7 @@ interface ISideElem {
 
 const sideElems: ISideElem[] = [
     {
-        icon: <BiHome className={s.icons}/>,
+        icon: <IoLogoGameControllerA className={s.icons}/>,
         title: "Home",
         link: "/home"
     },

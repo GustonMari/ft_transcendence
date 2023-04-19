@@ -228,7 +228,13 @@ export const Friends = () => {
                                 }    
                             >
                                 <ListItemAvatar>
-                                    <Avatar  alt="jean" src="http://localhost:3000/api/public/picture/mamaurai1"/>
+                                    {/* <StyledBadge
+                                      overlap="circular"
+                                      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                                      variant="dot"
+                                    > */}
+                                        <Avatar  alt="jean" src="http://localhost:3000/api/public/picture/mamaurai1"/>
+                                    {/* </StyledBadge> */}
                                 </ListItemAvatar>
                                 <ListItemText
                                     primary={user.login}
