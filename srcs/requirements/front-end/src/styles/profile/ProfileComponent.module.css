@@ -1,4 +1,9 @@
-.container {
+* {
+    font-family: "Google Sans", "Roboto", "Noto Sans", "Droid Sans", "Segoe UI", "Helvetica Neue", "Lucida Grande", sans-serif;
+    letter-spacing: 1px;
+}
+
+.page {
     position: absolute;
     top: 0;
     left: 0;
@@ -7,165 +12,214 @@
     backdrop-filter: blur(3px);
 }
 
-.pop_up {
+.container {
+    width: 500px;
+    height: 290px;
     position: absolute;
-    transform: translate(-50%, -50%);
     top: 50%;
     left: 50%;
-    width: 600px;
-    height: 370px;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 1);
     border-radius: 10px;
-    overflow-wrap: break-word;
-    border: rgba(24, 17, 26, 0.2) 3px solid;
-    padding: 0 20px;
-
-    background-color: rgb(89, 56, 97);
-    /* background-color: rgb(242, 242, 242); */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
 }
 
-@media screen and (max-width: 650px) {
-    .pop_up {
-        width: 400px;
-    }
-}
-
-.close_button {
+.profile_picture_div {
+    width: 180px;
+    height: 180px;
     position: absolute;
-    top: 3px;
-    left: 3px;
+    top: -60px;
+    left: -60px;
+    background-color: #f8b9b6;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.profile_picture_div > img {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+
+/* ------------------------------------------------------------------------------- */
+/* Bio div */
+
+.profile_bio_div {
+    width: 420px;
+    height: 190px;
+    position: absolute;
+    top: -70px;
+    right: -80px;
+    background-color: #f8b9b6;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+
+    display: flex;
+    flex-direction: column;
+
+}
+
+.profile_bio_div > h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #000000;
+    /* text-align: center; */
+    margin: 15px 0px 0px 15px;
+    font-weight: "italic";
+}
+
+.profile_bio_div > p {
+    font-size: 14px;
+    font-weight: 400;
+    color: #000000;
+    /* text-align: center; */
+    margin: 0px 10px 0px 15px;
+    font-weight: "italic";
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    overflow-wrap: break-word;
+}
+
+/* ------------------------------------------------------------------------------- */
+
+
+.profile_stats_div {
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    top: 160px;
+    left: -30px;
+    background-color: #f8b9b6;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+
+}
+
+/* ------------------------------------------------------------------------------- */
+/* Name div */
+
+.profile_name_div {
+    width: 270px;
+    height: 70px;
+    position: absolute;
+    top: 160px;
+    left: 160px;
+    background-color: #f8b9b6;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+
+    display: flex;
+    flex-direction: column;
+
+}
+
+.profile_name_div > h1 {
+    font-size: 20px;
+    font-weight: 500;
+    color: #000000;
+    /* text-align: center; */
+    margin: 10px 10px 3px 15px;
+
+    font-family: "Google Sans", "Roboto", "Noto Sans", "Droid Sans", "Segoe UI", "Helvetica Neue", "Lucida Grande", sans-serif;
+    letter-spacing: 1.5px;
+}
+
+.profile_name_div > h2 {
+    font-size: 15px;
+    font-weight: 500;
+    color: #4d4d4d;
+    /* text-align: center; */
+    margin: 5px 10px 10px 15px;
+    font-weight: "italic";
+}
+
+/* ------------------------------------------------------------------------------- */
+/* History button */
+
+.profile_history_div {
+    width: 90px;
+    height: 70px;
+    position: absolute;
+    top: 160px;
+    left: 470px;
+    background-color: #f8b9b6;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    padding: 10px;
+}
+
+.profile_history_div > button {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.profile_history_div > button:hover {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.profile_history_div > button > * {
     width: 30px;
     height: 30px;
     border-radius: 10px;
-    background-color: rgb(100, 69, 108);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    z-index: 10;
 }
 
-.action_buttons {
+/* ------------------------------------------------------------------------------- */
+
+.profile_btn_div {
+    width: 380px;
+    height: 70px;
+    position: absolute;
+    top: 270px;
+    left: 160px;
+    background-color: #f8b9b6;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+
     display: flex;
     flex-direction: row;
-    gap: 20px;
-    height: 40px;
-    width: 190px;
-    position: absolute;
-    top: 15px;
-    right: 15px;
+    justify-content: space-around;
+    align-items: center;
 }
 
-.action_buttons a {
+.profile_btn_div > button {
     width: 100%;
     height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: rgb(34, 34, 34);
-    text-decoration: none;
-    border-radius: 10px;
-    cursor: pointer;
-    z-index: 10;
-    border: rgba(31, 21, 33, 0.15) 2px solid;
-
-    background-color: rgb(235, 235, 235);
+    background-color: transparent;
+    border: none;
+    border-right: 2px solid #746d6d;
+    /* border: 1px solid #000000; */
 }
 
-.action_buttons a * {
-    height: 60%;
-    width: 60%;
-}
-
-.action_buttons a:hover {
-    background-color: rgba(35, 24, 38, 0.8);
-    color:rgb(255, 255, 255);
-}
-
-.close_button:hover {
-    background-color: rgb(100, 69, 108, 0.8);
-    color:rgb(255, 255, 255);
-}
-
-.picture_section {
-    position: relative;
-    top: 0;
-    left: 0;
-    transform: translate(0%, -50%);
+.profile_btn_div > button:hover {
     width: 100%;
-    height: 150px;
-
+    height: 100%;
+    background-color: rgba(0, 0, 0, 1);
+    border: none;
+    border-right: 2px solid #746d6d;
+    /* border: 1px solid #000000; */
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
-.picture_section img {
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 150px;
-    height: 150px;
-    border-radius: 20px;
-    border: rgba(27, 19, 29, 0.2) 3px solid;
-    background-color: rgb(255, 255, 255);
+.profile_btn_div > button:last-of-type {
+    border-right: none;
+    border-radius: 0px 10px 10px 0px;
 }
 
-.name_section {
-    position: absolute;
-    top: 25%;
-    left: 50%;
-    transform: translateX(-50%);
-
-    width: 100%;
-    height: auto;
-    text-align: center;
-    color: rgb(255, 255, 255);
-    margin-top: 10px;
+.profile_btn_div > button:first-of-type {
+    border-radius: 10px 0px 0px 10px;
 }
 
-.name_section h1 {
-    font-size: 26px;
-    font-weight: 600;
-}
-
-.name_section h2 {
-    font-size: 16px;
-    font-weight: 600;
-    color: rgb(178, 178, 178);
-}
-
-.stats {
-    margin-top: 15px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 40px;
-}
-
-.stats h3 {
-    font-size: 16px;
-    font-weight: 600;
-    color: rgb(178, 178, 178);
-}
-
-.separator {
-    position: relative;
-    width: 85%;
-    height: 2px;
-    background-color: rgb(239, 239, 239);
-    margin: auto;
-    margin-top: 20px;
-    border-radius: 10px;
-}
-
-.bio_section {
-    width: 100%;
-    height: auto;
-    padding: 20px 0;
-    text-align: center;
-    color: rgb(255, 255, 255);
-    padding: 20px;
-}
-
-.bio_section p {
-    font-size: 14px;
-    font-weight: 600;
+.profile_btn_div > button > * {
+    width: 25px;
+    height: 25px;
 }

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { BsXLg } from "react-icons/bs";
 import { FiSend } from "react-icons/fi";
 import { AiOutlineClockCircle, AiOutlineUsergroupAdd } from "react-icons/ai";
@@ -17,25 +17,30 @@ function CircularProgressWithLabel(
     
     const progress = Math.floor((props.value - Math.floor(props.value)) * 100);
 
-    useEffect(() => {{console.log(progress)}})
-
     return (
         <Box
             sx={{
-                top: -51,
-                left: 205,
+                top: "25px",
+                left: "25px",
                 position: 'absolute',
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                width: "100px",
+                height: "100px",
+                borderRadius: "50000px",
+                boxShadow: "0px 0px 2px 0px rgba(0,0,0,0.75)",
             }}
         >
         <CircularProgress variant="determinate" value={progress}
             sx={{
                 color: "white",
-                bgcolor: "black",
-                borderRadius: "50%",
+                bgcolor: "#7f5082",
+                borderRadius: "100%",
+
+                // backgroundColor: "red",
             }}
+            size={"100px"}
         />
         <Box
           sx={{
@@ -43,13 +48,15 @@ function CircularProgressWithLabel(
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            width: "100px",
+            height: "100px",
           }}
         >
           <Typography
             variant="caption"
             component="div"
             color="text.secondary"
-            fontSize={20}
+            fontSize={40}
             sx={{
                 color: "white",
             }}
@@ -59,7 +66,6 @@ function CircularProgressWithLabel(
     );
   }
   
-
 export const ProfileComponent = ({setHistory}: any) => {
 
     const {popUpID, setPopUpID} : any = useContext(ProfilePopUpContext);
@@ -82,54 +88,65 @@ export const ProfileComponent = ({setHistory}: any) => {
             })
     }, [popUpID])
 
-  return (
+    const outsideRef = useRef<any>(null);
+    
+    const handleClickOutside = (e: any) => {
+        if (outsideRef.current && !outsideRef.current.contains(e.target)) {
+            setPopUpID(undefined);
+        }
+    }
+
+    useEffect(() => {
+        document.addEventListener("click", handleClickOutside, true);
+        return () => {
+            document.removeEventListener("click", handleClickOutside, true);
+        }
+    }, [])
+
+    return (
     <>
-        <div className={s.container}>
-            <div className={s.pop_up}>
-                { user && me && <>
-                    <a className={s.close_button} onClick={() => setPopUpID(undefined)} title="Close the window">
-                        <BsXLg/>
-                    </a>
-                    <div className={s.action_buttons}>
-                            <a className={s.friend_request} title="Send friend request to this person"  onClick={() => setHistory(user.id)}>
-                                <AiOutlineClockCircle/>
-                            </a>
-                        {me?.login !== user?.login && <>
-                            <a className={s.send_message} title="See History">
-                                <FiSend/>
-                            </a>
-                            <a className={s.friend_request} title="Send request to play"  onClick={() => handleLaunchGame()}>
-                                <IoLogoGameControllerA/>
-                            </a>
-                        </>}
+        <div className={s.page}>
+            <div ref={outsideRef}>
+                <div className={s.container}>
+                    <div className={s.profile_picture_div}>
+                        <img src={"http://localhost:3000/api/public/picture/" + user?.login }></img>
                     </div>
-                    <div className={s.picture_section}>
-                        <img src={"http://localhost:3000/api/public/picture/" + user.login}></img>
+                    <div className={s.profile_bio_div}>
+                        <h2>Description</h2>
+                        <hr></hr>
+                        <p>{user?.description ? user?.description?.substring(0, 200) : "No Description"}</p>
                     </div>
-                    <div className={s.name_section}>
-                        <h1>{user.login?.substring(0, 25)}</h1>
-                        <h2>{user.first_name?.substring(0, 25)} {user.last_name?.substring(0, 25)}</h2>
-                        <div className={s.stats}>
-                            <div className={s.stats_wins}>
-                                <h3>Wins</h3>
-                                <h3>{user.wins}</h3>
-                            </div>
-                            <CircularProgressWithLabel value={user.level} />
-                            <div className={s.stats_losses}>
-                                <h3>Losses</h3>
-                                <h3>{user.loses}</h3>
-                            </div>
-                        </div>
-                        <div className={s.separator}></div>
-                        <div className={s.bio_section}>
-                            <p>
-                                {user.description ? user.description?.substring(0, 250) : "No description"}
-                            </p>
-                        </div>
+                    <div className={s.profile_stats_div}>
+                        <CircularProgressWithLabel value={user?.level} />
                     </div>
-                </>}
+                    <div className={s.profile_name_div}>
+                        <h1>{user?.login?.substring(0, 20)}</h1>
+                        <h2>{user?.first_name?.substring(0, 15)} {user?.last_name?.substring(0, 15)}</ h2>
+                    </div>
+                    <div className={s.profile_history_div}>
+                        <button
+                            onClick={() => setHistory(user.id)}
+                        >
+                            <AiOutlineClockCircle/>
+                        </button>
+                    </div>
+
+                    <div className={s.profile_btn_div}>
+                        <button
+
+                        >
+                            <FiSend/>
+                        </button>
+                        <button
+                            onClick={() => handleLaunchGame()}
+                        >
+                            <IoLogoGameControllerA/>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </>
   );
 };
+

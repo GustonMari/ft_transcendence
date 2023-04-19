@@ -99,7 +99,7 @@ function UpdateProfileForm(props: any) {
             <textarea
                 className={[s.description, s.inputs].join(' ')}
                 onChange={(event) => setDescription(event.target.value)}
-                maxLength={250}
+                maxLength={200}
                 value={description  ? description : ""}
             />
         </label>

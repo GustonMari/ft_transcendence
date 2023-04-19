@@ -23,7 +23,7 @@ export class UpdateProfileDTO {
 
     @IsString()
     @IsOptional()
-    @Length(0, 250)
+    @Length(0, 200)
     public readonly description: string;
 
     @IsOptional()

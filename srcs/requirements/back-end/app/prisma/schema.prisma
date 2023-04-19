@@ -35,10 +35,10 @@ model User {
     login      String   @unique
     first_name String?
     last_name  String?
-    avatar_url String?  @default("/storage/default/user.png")
+    avatar_url String?  @default("/storage/default/user.jpg")
     email      String   @unique
     state      Boolean  @default(false)
-    description String? @db.VarChar(250)
+    description String? @db.VarChar(200)
 
     password   String   @default(cuid())
     rt         String?
