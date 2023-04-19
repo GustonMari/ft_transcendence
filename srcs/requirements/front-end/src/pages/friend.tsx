@@ -275,6 +275,15 @@ export const Friends = () => {
                         </div>
                     )
                 })}
+                { relations.length === 0 && <>
+                    <ListItem>
+                        <ListItemText
+                            primary="No result"
+                            secondary="No result found"
+                        />
+                    </ListItem>
+                </>
+                }
             </List>
         </div>
     ) 
