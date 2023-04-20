@@ -7,7 +7,7 @@ import { GetMe } from '../../auth/decorators';
 import { Response } from 'express';
 import { MessageBody } from '@nestjs/websockets';
 import { ApiOperation } from '@nestjs/swagger';
-import { CreatePrivateRoomDTO } from '../dtos';
+import { ChatDTO, CreatePrivateRoomDTO } from '../dtos';
 
 @UseGuards(AccessGuard)
 @Controller('chat')
@@ -24,19 +24,19 @@ export class ChatController {
 	}
 
 	@Post("get_user_socket_id")
-	async get_user_socket_id(@Res() response: Response ,@MessageBody() info: any): Promise<any> {
+	async get_user_socket_id(@Res() response: Response ,@MessageBody() info: ChatDTO): Promise<any> {
 		const socket_id = await this.chatService.getUserSocketId(info.login);
 		response.send(socket_id);
 	}
 
 	@Post('is_user_exists')
-	async is_user_exists(@Res() response: Response ,@MessageBody() info: any): Promise<any> {
+	async is_user_exists(@Res() response: Response ,@MessageBody() info: ChatDTO): Promise<any> {
 		const user = await this.chatService.isUserExists(info.login);
 		response.send(user);
 	}
 
 	@Post('get_messages_by_room')
-	async get_messages_by_room(@Res() response: Response ,@MessageBody() room_name: any): Promise<any> {
+	async get_messages_by_room(@Res() response: Response ,@MessageBody() room_name: ChatDTO): Promise<any> {
 		if (room_name == null || room_name == undefined)
 			return null;
 		const rooms = await this.chatService.getMessagesByRoom(room_name.room_name);
@@ -44,33 +44,33 @@ export class ChatController {
 	}
 
 	@Post('get_isban_user')
-	async get_isban_user_by_room(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+	async get_isban_user_by_room(@Res() response: Response ,@MessageBody() info: ChatDTO): Promise<void> {
 
 		const ban = await this.chatService.isUserBannedInRoom(info.room_name, info.id_user);
 		response.send(ban);
 	}
 
 	@Post('get_isowner_login')
-	async get_isowner_login(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+	async get_isowner_login(@Res() response: Response ,@MessageBody() info: ChatDTO): Promise<void> {
 		const owner = await this.chatService.IsOwnerOfRoomByLogin(info.room_name, info.login);
 		response.send(owner);
 	}
 
 	@Post('set_room_password')
-	async set_room_password(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+	async set_room_password(@Res() response: Response ,@MessageBody() info: ChatDTO): Promise<void> {
 		const res = await this.chatService.setRoomPassword(info.room_name, info.user_id, info.password);
 		response.send(res);
 	}
 
 	@Post('verify_room_password')
-	async verify_room_password(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+	async verify_room_password(@Res() response: Response ,@MessageBody() info: ChatDTO): Promise<void> {
 		// const res = await this.chatService.verifyRoomPassword(info.room_name, await  argon.hash(info.password));
 		const res = await this.chatService.verifyRoomPassword(info.room_name, info.password);
 		response.send(res);
 	}
 
 	@Post('is_room_has_password')
-	async is_room_has_password(@Res() response: Response ,@MessageBody() room_name: any): Promise<void> {
+	async is_room_has_password(@Res() response: Response ,@MessageBody() room_name: ChatDTO): Promise<void> {
 		const res = await this.chatService.isRoomHasPassword(room_name.room_name);
 		response.send(res);
 	}

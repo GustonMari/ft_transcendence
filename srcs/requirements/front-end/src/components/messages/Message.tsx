@@ -44,9 +44,9 @@ export function GetMessagesByRoom(handle_history: any, room_name: string)
 
 function IsSenderOrReceiver(props: any)
 {
+    const {setPopUpID}: any = useContext<any>(ProfilePopUpContext);
 	let {historyItem, current_user, socket} = props;
 
-    const {setPopUpID} = useContext<any>(ProfilePopUpContext);
 
 	if(historyItem.sender_id == current_user.id)
 		return (
@@ -56,7 +56,7 @@ function IsSenderOrReceiver(props: any)
 					<span className={Style["chat-date"]}> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
 				</div>
 				{/* <PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass={Style["img-message-right"]} current_user={current_user} socket={socket}/> */}
-                <img src={"http://localhost:3000/api/public/picture/" + current_user.login} className={Style["img-message-right"]} onClick={() => setPopUpID(current_user.id)}/>
+                <img src={"http://localhost:3000/api/public/picture/" + current_user.login} className={Style["img-message-right"]} onClick={() => setPopUpID(current_user.id)}/> 
 			</div>
 		);
 	else
@@ -136,84 +136,3 @@ export function DisplayMessagesByRoom(props: any) {
 	);
 }
 
-
-function PopupImage(props: any) {
-	const { imageSrc, classPass, current_user, socket} = props;
-  
-	const [show, setShow] = useState(false);
-	const handleClose = () => setShow(false);
-	const handleShow = () => setShow(true);
-	let [value, setValue] = React.useState("");
-  
-	function InviteFriend(event: any) {
-		// if (event.key === "Enter") {
-			// event.preventDefault();
-			socket.emit("invite_pong", {current_user: current_user});
-			// handleSetPassword(value);
-		// }
-	}
-
-	if (current_user === undefined || current_user === null) {
-		return (
-			<div>
-				<h1>PROBLEM TA MERE</h1>
-			</div>
-        );
-    }
-
-	return (
-        <div>
-            <a href="#" onClick={handleShow}>
-                <img src={ imageSrc } className={classPass}/>
-            </a>
-		{/* <Button id="bootstrap-overrides" variant="primary" onClick={handleShow} >
-		  <img src={ imageSrc } className={classPass}/>
-		</Button> */}
-
-		<Modal
-            show={show}
-            onHide={handleClose}
-            sx={{
-                overflowY: 'none',
-                overflowX: 'none',
-            }}
-        >
-		  <Modal.Header closeButton>
-			<Modal.Title>Profile</Modal.Title>
-		  </Modal.Header>
-		  <Modal.Body className={Style["text-center"]}>
-			<img src={ imageSrc } className={Style["img-popup-user"]}/>
-			<br />
-			<br />
-			<ProgressBar progress={70}/>
-			<h4>LVL :</h4>
-			<br />
-			<h4>Login : {current_user.login}</h4>
-			<h4>First Name : {current_user.first_name}</h4>
-			<h4>Last Name : {current_user.last_name}</h4>
-			<h4>Email : {current_user.email}</h4>
-			<h4>State : {current_user.state}</h4>
-			<hr />
-			<Button variant="secondary" onClick={InviteFriend}>
-			  Invite to Pong
-			</Button>
-			{/* <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label></Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Invite to pong"
-                autoFocus
-				onChange={(e) => setValue(e.target.value)}
-				onKeyDown={handleKeyDown}
-              />
-            </Form.Group> */}
-		  </Modal.Body>
-		  <Modal.Footer>
-			<Button variant="secondary" onClick={handleClose}>
-			  Close
-			</Button>
-		  </Modal.Footer>
-		</Modal>
-	  </div>
-	);
-  }
