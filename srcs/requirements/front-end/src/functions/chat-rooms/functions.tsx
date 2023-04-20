@@ -6,8 +6,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import StyleProgres from '../../styles/profile/Style.progressBar.module.css';
 import Style from "../../styles/messages/Style.message.module.css";
 
-
-
 /*
 	InputRoom functions
 */
@@ -28,7 +26,7 @@ export async function addRoom(setMessage: any, define_room: any, socket: Socket,
 	socket?.emit("message", {room: value, message: `${current_user.login} has join the room ${value}`});
 	await GetMessagesByRoom(handle_history, value);
 	socket?.on('renderReact', render_react);
-	setValue("");
+	// setValue("");
 }
 
 

@@ -215,12 +215,12 @@ export class ChatService {
 		if (!room_exist) {
 			return false;
 		}
-		await this.prisma.usersOnRooms.update({
+		await this.prisma.usersOnRooms.updateMany({
 			where: {
-				user_id_room_id: {
+				// user_id_room_id: {
 					user_id: user_id,
 					room_id: room_exist.id,
-				}
+				// }
 			},
 			data: {
 				admin: true,

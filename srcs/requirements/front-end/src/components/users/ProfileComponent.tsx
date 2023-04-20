@@ -10,6 +10,7 @@ import { UserContext } from "../../contexts/User.context";
 import { IoLogoGameControllerA } from "react-icons/io";
 import { PopUpHistory } from "../history/PopUpHistory";
 import { Box, CircularProgress, CircularProgressProps, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 function CircularProgressWithLabel(
     props: CircularProgressProps & { value: number },
@@ -74,9 +75,17 @@ export const ProfileComponent = ({setHistory}: any) => {
 
     const [user, setUser] = useState<any | undefined>(undefined)
 
+    const navigate = useNavigate();
+
     const handleLaunchGame = () => {
         // TODO: launch game
     }
+
+    const handleSendMessage = (id: number) => {
+        navigate('/messages?__create_room__=' + id);
+        setPopUpID(undefined);
+    }
+        
 
     useEffect(() => {
         API.getUser(
@@ -134,7 +143,7 @@ export const ProfileComponent = ({setHistory}: any) => {
 
                     <div className={s.profile_btn_div}>
                         <button
-
+                            onClick={() => handleSendMessage(user?.id)}
                         >
                             <FiSend/>
                         </button>

@@ -19,7 +19,6 @@ GLOBAL
   height: 100vh;
   min-width: 120vh;
   flex-direction: row;
-  outline: solid yellow;
   overflow-x: hidden;
 
   margin-left: 70px;

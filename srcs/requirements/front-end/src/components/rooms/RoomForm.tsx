@@ -72,15 +72,16 @@ export function RoomForm(props : any)
 					</li>
 				))}
 			</span>
-			<InputRoom define_room={define_room} 
-			current_room={current_room} 
-			current_user={current_user} 
-			socket={socket} 
-			handle_history={handle_history} 
-			setMessage={setMessage}
-			render_react={render_react}
-			setRoom={setRoom}
-			GetMessagesByRoom={GetMessagesByRoom}
+			<InputRoom
+                define_room={define_room} 
+                current_room={current_room} 
+                current_user={current_user} 
+                socket={socket} 
+                handle_history={handle_history} 
+                setMessage={setMessage}
+                render_react={render_react}
+                setRoom={setRoom}
+                GetMessagesByRoom={GetMessagesByRoom}
 			/>
 	</div>
 	);

@@ -92,29 +92,31 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		client_socket.emit('renderReact', 'renderReact');
 		current_socket.emit('renderReact', 'renderReact');
 	}
-	
+
 	@Post('joinRoomWithSocketIdPost')
 	async joinRoomWithSocketIdPost(@MessageBody() data: any, @Res() res: Response): Promise<void> {
 		
 	}
 
-
 	@SubscribeMessage('joinRoom')
 	async handleJoinRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket): Promise<void> {
 		
+        console.log('Starting join room' + data.id_user);
 		const roomExists = await this.chatService.roomExists(data.room_name);
-		if (roomExists) { 
+		if (roomExists) {
+            console.log('Room already exists');
 			await this.chatService.joinChatRoom(data.room_name, data.id_user);
 		}
 		else {
+            console.log('Room does not exists');
 			await this.chatService.createChatRoom(data.room_name, data.id_user);
 			await this.chatService.setAdmin(data.room_name, data.id_user);
 		}
+        console.log('Joining room');
 		await socket.join(data.room_name);
 		socket.emit('renderReact', 'renderReact');
 	
 	}
-
 
 	@SubscribeMessage('leaveRoom')
 	async handleLeaveRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket): Promise<void> {
@@ -128,7 +130,6 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		await socket.leave(data.room_name);
 		socket.emit('renderReact', 'renderReact');
 	}
-
 
 	@SubscribeMessage('deleteRoom')
 	async handleDeleteRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket): Promise<void> {
@@ -211,7 +212,6 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			this.myserver.to(data.room).emit('message', data); // Emit the message event to the client, for every user
 		}
 	}
-	
 
 	@SubscribeMessage('invite_pong_response')
 	async handleInvitePongResponse(@MessageBody() data: any, @ConnectedSocket() socket: Socket) : Promise<void> {

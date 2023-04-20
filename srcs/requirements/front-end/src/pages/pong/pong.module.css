@@ -13,7 +13,6 @@
 	padding: 0;
 	box-sizing: border-box;
 	/* its to improve gpu cpu */
-	transform: translateZ(0);
 	/* will-change: transform; */
 
 }

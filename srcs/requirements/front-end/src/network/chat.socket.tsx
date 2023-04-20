@@ -3,10 +3,10 @@ import io, { Socket } from "socket.io-client";
 
 // Create a socket and return it, using socket.io
 
-export default function Create_socket (): Socket | undefined {
-	const [socket, setSocket] = useState<Socket>();
+export default function Create_socket () : Socket {
+	// const [socket, setSocket] = useState<Socket>();
 
-	useEffect(() => {
+	// useEffect(() => {
 
 		const new_socket = io("http://localhost:3001", {
 			transports : ['websocket', 'polling', 'flashsocket'],
@@ -23,13 +23,13 @@ export default function Create_socket (): Socket | undefined {
 				  },
 				}
 			}
-			
 		});
-		setSocket(new_socket);
-	}, [setSocket]);
+        
+	// 	setSocket(new_socket);
+	// }, []);
 
 	return (
-		socket
+		new_socket as Socket
 	);
 }
 

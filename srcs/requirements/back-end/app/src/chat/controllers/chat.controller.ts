@@ -1,14 +1,13 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Param, Post, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Param, Post, Res, UseGuards } from '@nestjs/common';
 import { AccessGuard } from '../../auth/guards/access.guard';
 import { ChatService } from '../services/chat.service';
 import { PrismaService } from '../../prisma/prisma.service';
-// import { RoomRO } from './ros/chat.full.ro';
-import { TransformPlainToInstance } from 'class-transformer';
 import { GetMe } from '../../auth/decorators';
 import { Response } from 'express';
 import { MessageBody } from '@nestjs/websockets';
-
+import { ApiOperation } from '@nestjs/swagger';
+import { CreatePrivateRoomDTO } from '../dtos';
 
 @UseGuards(AccessGuard)
 @Controller('chat')
@@ -49,7 +48,6 @@ export class ChatController {
 
 		const ban = await this.chatService.isUserBannedInRoom(info.room_name, info.id_user);
 		response.send(ban);
-
 	}
 
 	@Post('get_isowner_login')
@@ -77,4 +75,20 @@ export class ChatController {
 		response.send(res);
 	}
 
+    @ApiOperation({
+        summary: 'Create private room between two users',
+    })
+    @Post('create_room')
+    @HttpCode(HttpStatus.CREATED)
+    async createRoom (
+        @Body() dto: CreatePrivateRoomDTO,
+        @GetMe('id') id: number,
+    ): Promise<void> {
+        try {
+            await this.chatService.createChatRoom(dto.name, id);
+            await this.chatService.joinChatRoom(dto.name, dto.invite_id);  
+        } catch (error) {
+            throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
