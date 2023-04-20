@@ -171,7 +171,14 @@ function PopupImage(props: any) {
 		  <img src={ imageSrc } className={classPass}/>
 		</Button> */}
 
-		<Modal show={show} onHide={handleClose}>
+		<Modal
+            show={show}
+            onHide={handleClose}
+            sx={{
+                overflowY: 'none',
+                overflowX: 'none',
+            }}
+        >
 		  <Modal.Header closeButton>
 			<Modal.Title>Profile</Modal.Title>
 		  </Modal.Header>

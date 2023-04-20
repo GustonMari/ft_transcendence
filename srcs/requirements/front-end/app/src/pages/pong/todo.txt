@@ -1,8 +1,0 @@
-[ ] win / lose => ++ update prisma with lvl etc... and achievvement + link avec la queue quand on refuse une revanche
-[x] make room for different games, MAYBE THERE IS SOME THINGS TO DO WHEN YOU SWITCH GAME
-[ ] make queue for different games
-[ ] make watchers
-[ ] make different map or different power up
-[X] make stop the game when you lose, NEED TO CONNECT TO QUEUE
-[ ] match history
-

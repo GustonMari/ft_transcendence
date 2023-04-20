@@ -35,9 +35,7 @@ function App() {
             // </PublicRoute>
         } />
         <Route path="/signin" element={
-            // <PublicRoute>
                 <SignIn />
-            // </PublicRoute>
         } />
         <Route path="/tfa" element={
             // <PublicRoute>
