@@ -44,8 +44,7 @@ export function GetMessagesByRoom(handle_history: any, room_name: string)
 
 function IsSenderOrReceiver(props: any)
 {
-    const {setPopUpID}: any = useContext<any>(ProfilePopUpContext);
-	let {historyItem, current_user, socket} = props;
+	let {historyItem, current_user, socket, setPopUpID} = props;
 
 
 	if(historyItem.sender_id == current_user.id)
@@ -56,7 +55,7 @@ function IsSenderOrReceiver(props: any)
 					<span className={Style["chat-date"]}> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
 				</div>
 				{/* <PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass={Style["img-message-right"]} current_user={current_user} socket={socket}/> */}
-                <img src={"http://localhost:3000/api/public/picture/" + current_user.login} className={Style["img-message-right"]} onClick={() => setPopUpID(current_user.id)}/> 
+                <img src={"http://localhost:3000/api/public/picture/" + historyItem.sender_name} className={Style["img-message-right"]} onClick={() => setPopUpID(historyItem.sender_id)}/> 
 			</div>
 		);
 	else
@@ -64,7 +63,7 @@ function IsSenderOrReceiver(props: any)
 			<div>
 				<div className={Style["wrapper-message"]}>	
 					{/* <PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass={Style["img-message-left"]} current_user={historyItem.sender} socket={socket}/> */}
-                    <img src={"http://localhost:3000/api/public/picture/" + current_user.login} className={Style["img-message-right"]} onClick={() => setPopUpID(current_user.id)}/>
+                    <img src={"http://localhost:3000/api/public/picture/" + historyItem.sender_name} className={Style["img-message-right"]} onClick={() => setPopUpID(historyItem.sender_id)}/>
 					<div className={Style["message-sender"]}>
 						{historyItem.sender_name} : {historyItem.current_message}
 						<span className={Style["chat-date"]}> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
@@ -78,9 +77,7 @@ function IsSenderOrReceiver(props: any)
 
 function IsSenderOrReceiver_socket(props: any)
 {
-	let {infomessage, current_user, socket} = props;
-
-    const {setPopUpID} = useContext<any>(ProfilePopUpContext);
+	let {infomessage, current_user, socket, setPopUpID} = props;
 
 	if (infomessage.current_user.id == current_user.id)
 		return (
@@ -90,7 +87,7 @@ function IsSenderOrReceiver_socket(props: any)
 	 				<span className={Style["chat-date"]}> {dayjs(infomessage.created_at).format("DD MMM YYYY À H:mm")} </span>
 				</div>
 				{/* <PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass={Style["img-message-right"]} current_user={current_user} socket={socket}/> */}
-                <img src={"http://localhost:3000/api/public/picture/" + current_user.login} className={Style["img-message-right"]} onClick={() => setPopUpID(current_user.id)}/>
+                <img src={"http://localhost:3000/api/public/picture/" + infomessage.current_user.login} className={Style["img-message-right"]} onClick={() => setPopUpID(infomessage.current_user.id)}/>
 			</div>
 		);
 	else
@@ -98,7 +95,7 @@ function IsSenderOrReceiver_socket(props: any)
 			<div>
 				<div className={Style["wrapper-message"]}>	
 					{/* <PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass={Style["img-message-left"]} current_user={infomessage.current_user} socket={socket}/> */}
-                    <img src={"http://localhost:3000/api/public/picture/" + current_user.login} className={Style["img-message-right"]} onClick={() => setPopUpID(current_user.id)}/>
+                    <img src={"http://localhost:3000/api/public/picture/" + infomessage.current_user.login} className={Style["img-message-right"]} onClick={() => setPopUpID(infomessage.current_user.id)}/>
 					<div className={Style["message-sender"]}>
 						{infomessage.current_user.login} : {infomessage.message}
 						<span className={Style["chat-date"]}> {dayjs(infomessage.created_at).format("DD MMM YYYY À H:mm")} </span>
@@ -112,6 +109,7 @@ export function DisplayMessagesByRoom(props: any) {
 	let { current_user, socket, history, infomessage, room, handle_history} = props;
 
 	const messagesContainer = useRef<HTMLDivElement>(null);
+    const {setPopUpID} = useContext<any>(ProfilePopUpContext);
 
 	useEffect(() => {
 		if (messagesContainer.current) {
@@ -124,12 +122,12 @@ export function DisplayMessagesByRoom(props: any) {
 	  <div ref={messagesContainer} className={Style['print-message']}>
 		{!history ? "" : history.map((historyItem: HistoryDto, index: number) => (
 		  <div key={index}>
-			{ IsSenderOrReceiver({historyItem, current_user, socket}) }
+			{ IsSenderOrReceiver({historyItem, current_user, socket, setPopUpID}) }
 		  </div>
 		))}
 		{infomessage.map((infomessage: any, index: number) => (
 			<div key={index}>
-				{IsSenderOrReceiver_socket({infomessage, current_user, socket})}
+				{IsSenderOrReceiver_socket({infomessage, current_user, socket, setPopUpID})}
 				</div>
 		))}
 	  </div>
