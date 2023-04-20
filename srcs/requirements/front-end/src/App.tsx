@@ -52,6 +52,16 @@ function App() {
                 </PrivateRoute>
             }/>
         } />
+
+        <Route path="/pong" element={
+            <WrapContext components={
+                <PrivateRoute>
+                        <Pong/>
+                </PrivateRoute>
+            }/>
+        } />
+
+
         <Route path="/friends" element={
             <WrapContext components={
                 <PrivateRoute>

@@ -13,7 +13,7 @@ import { Ball } from "./ball";
 import { Paddle } from "./paddle";
 import { PopupWinLose} from "./modalpong";
 import { User } from "../../dtos/chat.dto";
-// import kd from "./keydrown";
+import kd from "./keydrown.jsx";
 
 
 const PongContext = React.createContext<any>(null);
@@ -135,7 +135,7 @@ export function ExecutePong(props: any) {
 	let collision = document.getElementById("collision");
 	const {socket} = useContext(PongContext);
 	// const kd					= useRef(require('keydrown'));
-	const kd					= useRef(require('keydrown'));
+	const kd					= useRef(require('./keydrown'));
 
 
 	useEffect(() => {
