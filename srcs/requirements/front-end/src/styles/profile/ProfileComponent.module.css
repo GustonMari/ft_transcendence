@@ -25,6 +25,9 @@
     backdrop-filter: blur(3px);
 }
 
+/* ------------------------------------------------------------------------------- */
+/* Profile picture div */
+
 .profile_picture_div {
     width: 180px;
     height: 180px;
@@ -34,6 +37,8 @@
     background-color: #f8b9b6;
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+
+    animation: appearFromTop 1s ease-in-out forwards;
 }
 
 .profile_picture_div > img {
@@ -58,6 +63,9 @@
     display: flex;
     flex-direction: column;
 
+    animation: appearFromRight 1s ease-in-out forwards;
+      
+
 }
 
 .profile_bio_div > h2 {
@@ -81,6 +89,7 @@
     text-overflow: ellipsis;
     overflow-wrap: break-word;
 }
+  
 
 /* ------------------------------------------------------------------------------- */
 
@@ -95,6 +104,8 @@
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 
+    animation: appearFromLeft 1s ease-in-out forwards;
+
 }
 
 /* ------------------------------------------------------------------------------- */
@@ -105,7 +116,7 @@
     height: 70px;
     position: absolute;
     top: 160px;
-    left: 160px;
+    right: 70px;
     background-color: #f8b9b6;
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
@@ -113,13 +124,14 @@
     display: flex;
     flex-direction: column;
 
+    animation: appearFromRight 1s ease-in-out forwards;
+
 }
 
 .profile_name_div > h1 {
     font-size: 20px;
     font-weight: 500;
     color: #000000;
-    /* text-align: center; */
     margin: 10px 10px 3px 15px;
 
     font-family: "Google Sans", "Roboto", "Noto Sans", "Droid Sans", "Segoe UI", "Helvetica Neue", "Lucida Grande", sans-serif;
@@ -130,7 +142,6 @@
     font-size: 15px;
     font-weight: 500;
     color: #4d4d4d;
-    /* text-align: center; */
     margin: 5px 10px 10px 15px;
     font-weight: "italic";
 }
@@ -143,11 +154,13 @@
     height: 70px;
     position: absolute;
     top: 160px;
-    left: 470px;
+    right: -60px;
     background-color: #f8b9b6;
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     padding: 10px;
+
+    animation: appearFromRight 1s ease-in-out forwards;
 }
 
 .profile_history_div > button {
@@ -179,7 +192,7 @@
     width: 380px;
     height: 70px;
     position: absolute;
-    top: 270px;
+    bottom: -50px;
     left: 160px;
     background-color: #f8b9b6;
     border-radius: 10px;
@@ -189,6 +202,8 @@
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
+
+    animation: appearFromBottom 1s ease-in-out;
 }
 
 .profile_btn_div > button {
@@ -222,4 +237,40 @@
 .profile_btn_div > button > * {
     width: 25px;
     height: 25px;
+}
+
+@keyframes appearFromRight {
+    0% {
+      right: -100vh;
+    }
+    100% {
+      right: --div-width;
+    }
+}
+
+@keyframes appearFromLeft {
+    0% {
+      left: -100vh;
+    }
+    100% {
+      left: --div-width;
+    }
+}
+
+@keyframes appearFromTop {
+    0% {
+      top: -100vh;
+    }
+    100% {
+      top: --div-width;
+    }
+}
+
+@keyframes appearFromBottom {
+    0% {
+      bottom: -100vh;
+    }
+    100% {
+      bottom: --div-width;
+    }
 }

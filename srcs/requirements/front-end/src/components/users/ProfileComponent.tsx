@@ -108,6 +108,7 @@ export const ProfileComponent = ({setHistory}: any) => {
         <div className={s.page}>
             <div ref={outsideRef}>
                 <div className={s.container}>
+                { user && <>
                     <div className={s.profile_picture_div}>
                         <img src={"http://localhost:3000/api/public/picture/" + user?.login }></img>
                     </div>
@@ -143,6 +144,23 @@ export const ProfileComponent = ({setHistory}: any) => {
                             <IoLogoGameControllerA/>
                         </button>
                     </div>
+                </>}
+                { !user && <>
+                    <CircularProgress
+                        sx={{
+                            color: "#7f5082",
+                            // bgcolor: "#7f5082",
+                            borderRadius: "100%",
+                            position: "absolute",
+                            top: "45%",
+                            left: "45%",
+                            transform: "translate(-50%, -50%)",
+                            // backgroundColor: "red",
+                        }}
+                        size={"50px"}
+                    />
+                
+                </>}
                 </div>
             </div>
         </div>
