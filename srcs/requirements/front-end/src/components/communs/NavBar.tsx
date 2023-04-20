@@ -8,7 +8,7 @@ import {useNavigate} from "react-router-dom";
 import {UserContext} from "../../contexts/User.context";
 import {ProfilePopUpContext} from "../../contexts/ProfilePopUp.context";
 import {AlertContext} from "../../contexts/Alert.context";
-import { AiOutlineClose } from "react-icons/ai";
+import { IoLogoGameControllerA } from "react-icons/io";
 
 interface ISideElem {
     icon: any;
@@ -18,7 +18,7 @@ interface ISideElem {
 
 const sideElems: ISideElem[] = [
     {
-        icon: <BiHome className={s.icons}/>,
+        icon: <IoLogoGameControllerA className={s.icons}/>,
         title: "Home",
         link: "/home"
     },
@@ -73,7 +73,7 @@ export const NavBar = ({onProfile, profilePic}: any) => {
                         <FaBars className={s.show__btn}/>
                     </a>
                 </div>
-                <nav className={showSideBar ? s.list__active : s.list}>
+                <nav className={s.list}>
                     <ul className={s.list__item}>
                         {/* <li className="navbar__close">
                             <AiOutlineClose className={s.icons}/>
@@ -83,9 +83,9 @@ export const NavBar = ({onProfile, profilePic}: any) => {
                             sideElems.map((e: ISideElem, index: number) => {
                                 return (
                                     <li  key={index}>
-                                        <a className={s.side_elem} href={e.link}>
+                                        <a className={ showSideBar ? s.side_elem__active : s.side_elem} href={e.link}>
                                             {e.icon}
-                                            { (window.innerWidth > 767 || showSideBar) &&
+                                            { (showSideBar) &&
                                                 <span className={showSideBar ? s.span__active : s.span}>{e.title}</span>
                                             }
                                         </a>
@@ -94,9 +94,11 @@ export const NavBar = ({onProfile, profilePic}: any) => {
                             })
                         }
                         <li>
-                            <a className={s.side_elem} onClick={handleLogOut}>
+                            <a className={ showSideBar ? s.side_elem__active : s.side_elem} onClick={handleLogOut}>
                                 <BiLogOut className={s.icons}/>
-                                <span className={showSideBar ? s.span__active : s.span}>Log Out</span>
+                                { (showSideBar) &&
+                                    <span className={showSideBar ? s.span__active : s.span}>Log Out</span>
+                                }
                             </a>
                         </li>
                     </ul>

@@ -11,8 +11,16 @@ if [ "$MODE" = 'development' ]; then
     npm install
 fi
 
+echo "Generating Prisma Client..."
 npx prisma generate --schema='./app/prisma/schema.prisma'
-npx prisma migrate dev --name first-migration --schema='./app/prisma/schema.prisma'
+
+if [ "$MODE" = 'development' ]; then
+    npx prisma migrate dev --name first-migration --schema='./app/prisma/schema.prisma' --preview-feature
+else
+    npx prisma migrate deploy --schema='./app/prisma/schema.prisma' --preview-feature
+    npx prisma db push --schema='./app/prisma/schema.prisma' --preview-feature
+    npm run build
+fi
 
 exec "$@"
 

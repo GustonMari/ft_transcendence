@@ -1,5 +1,5 @@
 .background {
-    background-image: url(../../../public/back.png);
+    background-image: url(../../../public/background-blur.jpg);
     backdrop-filter: blur(10px);
     -webkit-background-size: cover;
     -moz-background-size: cover;

@@ -55,6 +55,14 @@ export class UserRO {
     loses: number;
 
     @Expose()
+    @ApiProperty({ description: 'User exp number', type: 'number' })
+    xp: number;
+
+    @Expose()
+    @ApiProperty({ description: 'User level number', type: 'any' })
+    level: any;
+
+    @Expose()
     @ApiProperty({ description: 'TFA', type: 'boolean' })
     tfa: boolean;
 }

@@ -3,7 +3,7 @@ import API from "../network/api"
 import { AlertContext } from "../contexts/Alert.context"
 import MenuSelector from "../components/relations/MenuSelector"
 import { FaUserFriends } from "react-icons/fa"
-import { Avatar, IconButton, List, ListItem, ListItemAvatar, ListItemText } from "@mui/material"
+import { Avatar, Badge, IconButton, List, ListItem, ListItemAvatar, ListItemText, styled } from "@mui/material"
 import { NavBar } from "../components/communs/NavBar"
 import g from "../styles/communs/global.module.css"
 import { ProfilePopUpContext } from "../contexts/ProfilePopUp.context"
@@ -30,6 +30,7 @@ export interface IUser {
     first_name: string,
     last_name: string,
     description: string,
+    state: boolean,
 }
 
 const menuItems: IMenu[] = [
@@ -59,6 +60,35 @@ const menuItems: IMenu[] = [
         url: 'blocked',
     },
 ]
+
+const StyledBadge = styled(Badge)(({ theme }) => ({
+    '& .MuiBadge-badge': {
+      backgroundColor: '#44b700',
+      color: '#44b700',
+      boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+      '&::after': {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        borderRadius: '50%',
+        animation: 'ripple 1.2s infinite ease-in-out',
+        border: '1px solid currentColor',
+        content: '""',
+      },
+    },
+    '@keyframes ripple': {
+      '0%': {
+        transform: 'scale(.8)',
+        opacity: 1,
+      },
+      '100%': {
+        transform: 'scale(2.4)',
+        opacity: 0,
+      },
+    },
+  }));
 
 export const Friends = () => {
 
@@ -228,7 +258,13 @@ export const Friends = () => {
                                 }    
                             >
                                 <ListItemAvatar>
-                                    <Avatar  alt="jean" src="http://localhost:3000/api/public/picture/mamaurai1"/>
+                                    <StyledBadge
+                                        overlap="circular"
+                                        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                                        variant={(menuID === 0 && user.state) ? "dot" : "standard"}
+                                    >
+                                        <Avatar  alt="jean" src="http://localhost:3000/api/public/picture/mamaurai1"/>
+                                    </StyledBadge>
                                 </ListItemAvatar>
                                 <ListItemText
                                     primary={user.login}
@@ -239,6 +275,15 @@ export const Friends = () => {
                         </div>
                     )
                 })}
+                { relations.length === 0 && <>
+                    <ListItem>
+                        <ListItemText
+                            primary="No result"
+                            secondary="No result found"
+                        />
+                    </ListItem>
+                </>
+                }
             </List>
         </div>
     ) 

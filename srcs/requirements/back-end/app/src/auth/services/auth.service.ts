@@ -17,7 +17,9 @@ import * as argon from 'argon2';
 
 import * as crypto from 'crypto';
 import * as speakeasy from 'speakeasy';
-import * as qrcode from 'qrcode';
+
+const AT_EXPIRATION = "10s";
+const RT_EXPIRATION = "5d";
 
 @Injectable()
 export class AuthService {
@@ -142,8 +144,8 @@ export class AuthService {
                 expiresIn: '10m',
             }),
             this.jwtService.sign(plain_user, {
-                secret: 'secret',
-                expiresIn: '5d',
+                secret: AT_EXPIRATION,
+                expiresIn: RT_EXPIRATION,
             }),
         ];
         return ({
@@ -151,20 +153,6 @@ export class AuthService {
             refresh_token: rt,
         });
     }
-
-
-    // // TODO: remove this function if not needed
-    // verifyToken(
-    //     token: string
-    // ): TokenPayloadRO {
-    //     const payload_raw = this.jwtService.verify(token, {
-    //         secret: 'secret',
-    //     });
-    //     const payload: TokenPayloadRO = plainToClass(TokenPayloadRO, payload_raw, {
-    //         excludeExtraneousValues: true,
-    //     });
-    //     return (payload);
-    // }
 
     async callback(
         profile: ProfileField

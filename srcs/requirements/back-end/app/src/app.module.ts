@@ -11,6 +11,7 @@ import { UserModule } from './user/user.module';
 import { RelationModule } from "./relation/relation.module";
 import { PublicController } from './public/controllers/public.controller';
 import { PublicModule } from './public/public.module';
+import { HistoryModule } from './history/history.module';
 
 @Module({
     imports: [
@@ -21,6 +22,7 @@ import { PublicModule } from './public/public.module';
 		PongModule,
 		RelationModule,
 		PublicModule,
+		HistoryModule,
     ],
     providers: [
         PrismaService
