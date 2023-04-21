@@ -7,14 +7,13 @@ import { Avatar, Badge, IconButton, List, ListItem, ListItemAvatar, ListItemText
 import { NavBar } from "../components/communs/NavBar"
 import g from "../styles/communs/global.module.css"
 import { ProfilePopUpContext } from "../contexts/ProfilePopUp.context"
-
 import { CgProfile } from "react-icons/cg"
 import { MdOutlineRemoveCircleOutline } from "react-icons/md";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { RiDeleteBin5Line } from "react-icons/ri"
 import { PopUp } from "../components/communs/PopUp"
 import { IoLogoGameControllerA } from "react-icons/io"
-
+import { StyledBadge } from "../components/communs/StyledBadge"
 
 export interface IMenu {
     id: number,
@@ -60,35 +59,6 @@ const menuItems: IMenu[] = [
         url: 'blocked',
     },
 ]
-
-const StyledBadge = styled(Badge)(({ theme }) => ({
-    '& .MuiBadge-badge': {
-      backgroundColor: '#44b700',
-      color: '#44b700',
-      boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-      '&::after': {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        borderRadius: '50%',
-        animation: 'ripple 1.2s infinite ease-in-out',
-        border: '1px solid currentColor',
-        content: '""',
-      },
-    },
-    '@keyframes ripple': {
-      '0%': {
-        transform: 'scale(.8)',
-        opacity: 1,
-      },
-      '100%': {
-        transform: 'scale(2.4)',
-        opacity: 0,
-      },
-    },
-  }));
 
 export const Friends = () => {
 

@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { BsXLg } from "react-icons/bs";
 import { FiSend } from "react-icons/fi";
-import { AiOutlineClockCircle, AiOutlineUsergroupAdd } from "react-icons/ai";
+import { AiOutlineClockCircle, AiOutlineUserAdd, AiOutlineUsergroupAdd } from "react-icons/ai";
 import { ProfilePopUpContext } from "../../contexts/ProfilePopUp.context";
 import s from "../../styles/profile/ProfileComponent.module.css";
 import API from "../../network/api";
@@ -11,6 +11,10 @@ import { IoLogoGameControllerA } from "react-icons/io";
 import { PopUpHistory } from "../history/PopUpHistory";
 import { Box, CircularProgress, CircularProgressProps, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { CgProfile } from "react-icons/cg";
+import { APP } from "../../network/app";
+import { AxiosResponse } from "axios";
+import { StyledBadge } from "../communs/StyledBadge";
 
 function CircularProgressWithLabel(
     props: CircularProgressProps & { value: number },
@@ -73,6 +77,8 @@ export const ProfileComponent = ({setHistory}: any) => {
     const {handleError, handleSuccess} : any = useContext(AlertContext);
     const {me}: any = useContext(UserContext)
 
+    const [isFriend, setIsFriend] = useState<boolean | undefined>(undefined);
+
     const [user, setUser] = useState<any | undefined>(undefined)
 
     const navigate = useNavigate();
@@ -85,6 +91,22 @@ export const ProfileComponent = ({setHistory}: any) => {
         navigate('/messages?__create_room__=' + id);
         setPopUpID(undefined);
     }
+
+    const handleProfile = () => {
+        navigate('/profile');
+        setPopUpID(undefined);
+    }
+
+    const handleAddFriend = (id: number) => {
+        API.sendFriendRequest(
+            id,
+            () => {
+                handleSuccess("Friend request sent");
+            }, (err: any) => {
+                handleError(err.message);
+            }
+        )
+    }
         
 
     useEffect(() => {
@@ -94,7 +116,22 @@ export const ProfileComponent = ({setHistory}: any) => {
                 setUser(u)
             }, (err: any) => {
                 handleError(err.message)
+            }
+        )
+
+        if (me.id !== popUpID) {
+            APP.get('/relation/isfriend/id/' + popUpID)
+            .then((response: AxiosResponse) => {
+                console.log(response.data)
+                setIsFriend(response.data);
             })
+            .catch(() => {
+                setIsFriend(false);
+                handleError("Error while getting user's relation")
+            })
+        } else {
+            setIsFriend(false);
+        }
     }, [popUpID])
 
     const outsideRef = useRef<any>(null);
@@ -117,12 +154,27 @@ export const ProfileComponent = ({setHistory}: any) => {
         <div className={s.page}>
             <div ref={outsideRef}>
                 <div className={s.container}>
-                { user && <>
+                { user && isFriend !== undefined && <>
                     <div className={s.profile_picture_div}>
                         <img src={"http://localhost:3000/api/public/picture/" + user?.login }></img>
                     </div>
                     <div className={s.profile_bio_div}>
-                        <h2>Description</h2>
+                        {user.state ? <>
+                            <StyledBadge
+                                overlap="circular"
+                                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                                variant="dot"
+                                sx={{
+                                    top: "25px",
+                                    left: "-275px",
+                                }}
+                            >
+                            </StyledBadge>
+                            <h2>Online</h2>
+                            </>
+                            : 
+                            <h2>Offline</h2>
+                        }
                         <hr></hr>
                         <p>{user?.description ? user?.description?.substring(0, 200) : "No Description"}</p>
                     </div>
@@ -142,16 +194,37 @@ export const ProfileComponent = ({setHistory}: any) => {
                     </div>
 
                     <div className={s.profile_btn_div}>
-                        <button
-                            onClick={() => handleSendMessage(user?.id)}
-                        >
-                            <FiSend/>
-                        </button>
-                        <button
-                            onClick={() => handleLaunchGame()}
-                        >
-                            <IoLogoGameControllerA/>
-                        </button>
+                        { user?.id !== me?.id ?
+                        <>
+                            { !isFriend &&
+                            <>
+                                <button
+                                    onClick={() => handleAddFriend(user?.id)}
+                                >
+                                    <AiOutlineUserAdd/>
+                                </button>
+                            </>
+                            }
+                            <button
+                                onClick={() => handleSendMessage(user?.id)}
+                            >
+                                <FiSend/>
+                            </button>
+                            <button
+                                onClick={() => handleLaunchGame()}
+                            >
+                                <IoLogoGameControllerA/>
+                            </button>
+                        </>
+                        :
+                        <>
+                            <button
+                                onClick={() => handleProfile()}
+                            >
+                                <CgProfile/>
+                            </button>
+                        </>
+                        }
                     </div>
                 </>}
                 { !user && <>

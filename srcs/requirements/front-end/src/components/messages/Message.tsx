@@ -74,7 +74,6 @@ function IsSenderOrReceiver(props: any)
 	);
 }
 
-
 function IsSenderOrReceiver_socket(props: any)
 {
 	let {infomessage, current_user, socket, setPopUpID} = props;

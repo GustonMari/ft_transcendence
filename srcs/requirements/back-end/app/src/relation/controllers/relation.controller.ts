@@ -158,6 +158,21 @@ export class RelationController {
             })
         );
     }
+
+    /* ------------------------------------------------------------------------------ */
+
+    @ApiOperation({
+        summary: 'Return boolean if the :id is a friend of the current user',
+    })
+    @Get('/isfriend/id/:id')
+    @HttpCode(HttpStatus.OK)
+    async isFriend(
+        @Param('id', ParseIntPipe) id: number,
+        @GetMe('id') my_id: number,
+    ) : Promise<boolean> {
+        const relation = await this.relationService.findRelationByTwoUserID(id, my_id);
+        return !!(relation && relation.state === "FRIEND");
+    }
 }
 
 /*
