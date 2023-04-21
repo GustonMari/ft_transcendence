@@ -1,0 +1,24 @@
+
+INSERT INTO "users" ("id", "created_at", "updated_at", "login", "socket_id", "first_name", "last_name", "avatar_url", "email", "state", "description", "password", "rt", "tfa", "tfa_secret", "wins", "loses", "xp", "level") VALUES
+(5,	'2023-04-21 09:42:53.137',	'2023-04-21 09:42:55.539',	'Elizabeth',	NULL,	NULL,	NULL,	'/storage/default/user.jpg',	'elizabeth@example.com',	'f',	NULL,	'$argon2id$v=19$m=65536,t=3,p=4$lw3fJUNWt8DuMBW1vb8eDQ$gW3qlFUbmlGUf76rN5NbfVZZtzW5gce/MgqJenA8LIQ',	'$argon2id$v=19$m=65536,t=3,p=4$fIchXQG2TpUu+RP0z31Fjg$qLAWiNocw7VSc+o3me4KyUCT3Ld3aecknQhMsLVfEzI',	'f',	NULL,	0,	0,	10,	1),
+(10,	'2023-04-21 09:44:32.824',	'2023-04-21 09:44:34.767',	'Alexander',	NULL,	NULL,	NULL,	'/storage/default/user.jpg',	'alexander@example.com',	'f',	NULL,	'$argon2id$v=19$m=65536,t=3,p=4$hs8O2XbLJqZwfEvzIIHHDw$z5m4hfVZ5C/lkjvJG84PAzWvlh/h57w5G2ph+jscyKI',	'$argon2id$v=19$m=65536,t=3,p=4$d5VU4USL1He3erz3vfgepQ$FZRovFzDPqh3PWu9w8u2nb4mS6/2Sq9ULiCGcFmVfkM',	'f',	NULL,	0,	0,	10,	1),
+(6,	'2023-04-21 09:43:14.304',	'2023-04-21 09:43:16.357',	'Benjamin23',	NULL,	NULL,	NULL,	'/storage/default/user.jpg',	'benjamin23@example.com',	'f',	NULL,	'$argon2id$v=19$m=65536,t=3,p=4$vrwM+m3ZRafnu9wC35QTKw$1woakLMrJ7wwqfHqKmpVhhz42dnUd0/68DbBVELkQLM',	'$argon2id$v=19$m=65536,t=3,p=4$8pRrUuF02ANzrWCeN7EhaA$l6XkADAs+BHoO1zpjZJE97jX+IfOMCqDbSkMhHUbMrI',	'f',	NULL,	0,	0,	10,	1),
+(7,	'2023-04-21 09:43:34.294',	'2023-04-21 09:43:37.077',	'Victoria12',	NULL,	NULL,	NULL,	'/storage/default/user.jpg',	'victoria12@example.com',	'f',	NULL,	'$argon2id$v=19$m=65536,t=3,p=4$kNLDq44qqUb/0j3Qw5Jjdg$HRT+kTJos1i6JkG6XBAf9aMMMduGXLs5JNt1VhlCrTY',	'$argon2id$v=19$m=65536,t=3,p=4$Sy/O1aBrpKLa3eUnnvQsZQ$l/Zi1Ql2iHXUDljEtEtsVqSg15EGs7ep+SFQnp+HcVI',	'f',	NULL,	0,	0,	10,	1),
+(3,	'2023-04-21 09:41:47.471',	'2023-04-21 09:41:51.87',	'Samantha89',	NULL,	NULL,	NULL,	'/storage/default/user.jpg',	'samantha89@example.com',	'f',	NULL,	'$argon2id$v=19$m=65536,t=3,p=4$3v/PpqgP3Fv2cJeH+LNQ5g$gmJ42cIM41VVxAfaBGckfJgogaZ8SrWNELsqobrR71c',	'$argon2id$v=19$m=65536,t=3,p=4$9SNo+Pcm9TWDsMeFwq0How$A24TJOdnKH4w/JopjS+KmJc3kZ0tNnq8B9cz2sZt5EE',	'f',	NULL,	0,	0,	10,	1),
+(11,	'2023-04-21 09:44:57.398',	'2023-04-21 09:44:59.671',	'Charlotte2',	NULL,	NULL,	NULL,	'/storage/default/user.jpg',	'charlotte2@example.com',	'f',	NULL,	'$argon2id$v=19$m=65536,t=3,p=4$Md3W990Hdrdf/K1y93WERg$PEKvm1obPrq9I95tkuIzUA3v4ae/On0Kdt+fpDhVsok',	'$argon2id$v=19$m=65536,t=3,p=4$jbCmTU22jA5jRofLEZHO0w$+R3Ooiwf/tc6ixYZUhRIblEUM4nWsQpcGpnfA7vW8Zk',	'f',	NULL,	0,	0,	10,	1),
+(4,	'2023-04-21 09:42:24.268',	'2023-04-21 09:42:26.359',	'Jonathan77',	NULL,	NULL,	NULL,	'/storage/default/user.jpg',	'jonathan77@example.com',	'f',	NULL,	'$argon2id$v=19$m=65536,t=3,p=4$VuFhaILJ3Fa3b9bNlNHquw$kG4gVL23wiI7qa570WteQF5eb3PVxh/sAfW/kSOEpqo',	'$argon2id$v=19$m=65536,t=3,p=4$uF/qJZJfnmYTk1IN6UK3nQ$9OPqkXrJNWXGkzQxMimt+GkBkJ8lnsjK3A4dIGowS78',	'f',	NULL,	0,	0,	10,	1),
+(8,	'2023-04-21 09:43:55.985',	'2023-04-21 09:43:57.656',	'Nathaniel',	NULL,	NULL,	NULL,	'/storage/default/user.jpg',	'nathaniel@example.com',	'f',	NULL,	'$argon2id$v=19$m=65536,t=3,p=4$R/+jKM0/7jM4JOxdZb55Rw$WKsczakHpLNGr1VFeQvqdKIDjwZ94HjPq6Fb8Z4SYeY',	'$argon2id$v=19$m=65536,t=3,p=4$bQRdWQJfyjfsHp3jZkdcAA$49rpliznEL50ycINjmGoDCuciSIiXTYWQ6PrRp/jAXE',	'f',	NULL,	0,	0,	10,	1),
+(12,	'2023-04-21 09:45:17.439',	'2023-04-21 09:45:19.294',	'Nicholas11',	NULL,	NULL,	NULL,	'/storage/default/user.jpg',	'nicholas11@example.com',	'f',	NULL,	'$argon2id$v=19$m=65536,t=3,p=4$PgpoESXFVCNeM5ouRRnG1Q$bRrhP8X7bwtSKvPg76pyWCHII4KLkJQANh4j6SY9du0',	'$argon2id$v=19$m=65536,t=3,p=4$P6H3lIYVXOHLR5Dvl+ojpg$BNdUQXAJzaBZfH4wmGHhF6TJ9kaCRdZIYTUrSGsKndw',	'f',	NULL,	0,	0,	10,	1),
+(9,	'2023-04-21 09:44:13.944',	'2023-04-21 09:44:15.95',	'Gabrielle1',	NULL,	NULL,	NULL,	'/storage/default/user.jpg',	'gabrielle1@example.com',	'f',	NULL,	'$argon2id$v=19$m=65536,t=3,p=4$l1FQZUQQz4uy/PBhw9LBSw$SU1nkauY54qHFusQcJZeoPlMfh39b47+mxq/VFuc4Fc',	'$argon2id$v=19$m=65536,t=3,p=4$YZRclwsZnAWbLL6dsX75WQ$hnRBADz90iTFaf5BHu17pVfmjt78sKUR842DZLoHxac',	'f',	NULL,	0,	0,	10,	1);
+
+INSERT INTO "friend_request" ("id", "created_at", "state", "from_id", "to_id") VALUES
+(6,	'2023-04-21 09:45:45.909',	'FRIEND',	4,	7),
+(7,	'2023-04-21 09:45:55.944',	'PENDING',	5,	11),
+(8,	'2023-04-21 09:46:06.633',	'FRIEND',	6,	5),
+(9,	'2023-04-21 09:46:17.295',	'FRIEND',	12,	10),
+(10,	'2023-04-21 09:46:30.874',	'BLOCKED',	3,	7),
+(11,	'2023-04-21 09:46:41.28',	'FRIEND',	9,	10),
+(12,	'2023-04-21 09:46:51.412',	'FRIEND',	4,	5),
+(13,	'2023-04-21 09:47:04.616',	'PENDING',	5,	4),
+(14,	'2023-04-21 09:47:14.126',	'FRIEND',	10,	9),
+(15,	'2023-04-21 09:47:31.333',	'PENDING',	10,	7);

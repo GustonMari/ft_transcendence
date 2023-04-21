@@ -18,6 +18,15 @@ services:
       - db
     restart: unless-stopped
 
+  adminer:
+    container_name: adminer
+    image: adminer:latest
+    restart: always
+    ports:
+      - 8077:8080
+    networks:
+      - db
+
   api:
     container_name: api
     hostname: api
@@ -43,7 +52,8 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - CLIENT_ID=${CLIENT_ID}
       - CLIENT_SECRET=${CLIENT_SECRET}
-    command: ["npm", "run", "start:development"]
+    # command: ["npm", "run", "start:development"]
+    command: "sleep 1000000000"
 
   front:
     container_name: front

@@ -74,7 +74,15 @@ $gradient-radial: radial-gradient(#8d6b94ff, #b185a7ff, #c3a29eff, #e8dbc5ff, #f
 - Put hashing code and other stuff into .env file
 - Use Session instead of cookies
 
-## TODO List
+## USER LIST
 
-[ ] - Upgrade NotFound.tsx
-[ ] - Handle block user (call api when button is clicked, create block user page, unblock user in this page).
+Nom d'utilisateur : Samantha89 - Mot de passe : Pass_1234 - E-mail : samantha89@example.com
+Nom d'utilisateur : Jonathan77 - Mot de passe : Secret_Pass_789 - E-mail : jonathan77@example.com
+Nom d'utilisateur : Elizabeth - Mot de passe : MyPassw0rd_ - E-mail : elizabeth@example.com
+Nom d'utilisateur : Benjamin23 - Mot de passe : StrongPass_23 - E-mail : benjamin23@example.com
+Nom d'utilisateur : Victoria12 - Mot de passe : SecurePass12_ - E-mail : victoria12@example.com
+Nom d'utilisateur : Nathaniel - Mot de passe : Pass_12345 - E-mail : nathaniel@example.com
+Nom d'utilisateur : Gabrielle1 - Mot de passe : Secret_Pass_12 - E-mail : gabrielle1@example.com
+Nom d'utilisateur : Alexander - Mot de passe : Heavy_Pass_56 - E-mail : alexander@example.com
+Nom d'utilisateur : Charlotte2 - Mot de passe : Super_Pass_123 - E-mail : charlotte2@example.com
+Nom d'utilisateur : Nicholas11 - Mot de passe : StrongPass_11 - E-mail : nicholas11@example.com
