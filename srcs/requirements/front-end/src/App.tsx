@@ -9,12 +9,12 @@ import Profile from "./pages/profile";
 import { Result } from "./pages/search";
 import { NotFound } from "./errors/NotFound";
 import WrapContext from "./contexts/wrap.context";
-import PublicRoute from "./components/routes/PublicRoute";
 import TFA from "./pages/tfa";
 import { AlertProvider } from "./contexts/Alert.context";
 import { Welcome } from "./pages/welcome";
 import Chat from "./pages/chat";
 import Pong from "./pages/pong/pong";
+import { Authentification } from "./pages/authentification";
 
 function App() {
   return (
@@ -25,22 +25,19 @@ function App() {
         <Route path="/" element={<Navigate to="/welcome"/>} />
 
         <Route path="/welcome" element={
-            // <PublicRoute>
-                <Welcome/>
-            // </PublicRoute>
+            <Welcome/>
         } />
-        <Route path="/register" element={
-            // <PublicRoute>
-                <Register/>
-            // </PublicRoute>
+        {/* <Route path="/register" element={
+            <Register/>
         } />
         <Route path="/signin" element={
-                <SignIn />
+            <SignIn />
+        } /> */}
+        <Route path="/authentification" element={
+            <Authentification />
         } />
         <Route path="/tfa" element={
-            // <PublicRoute>
-                <TFA />
-            // </PublicRoute>
+            <TFA />
         } />
 
         <Route path="/home" element={
