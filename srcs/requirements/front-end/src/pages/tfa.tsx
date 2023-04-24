@@ -14,7 +14,7 @@ export default function TFA () {
 
     useEffect(() => {
         if (!username || !code ) {
-            navigate('/signin');
+            navigate('/authentification');
             handleError("Error during the TFA, code or username is invalid");
         }
     })

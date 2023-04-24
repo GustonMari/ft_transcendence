@@ -6,7 +6,7 @@ export const Authentification = () => {
     <>
         <div
             className="
-                absolute
+                fixed
                 h-full
                 w-full
                 top-0
@@ -15,7 +15,6 @@ export const Authentification = () => {
                 bg-zinc-900
                 bg-no-repeat
                 bg-cover
-                bg-fixed
                 flex
                 justify-center
                 items-center
@@ -24,13 +23,12 @@ export const Authentification = () => {
         >
             <div
                 className="
-                absolute
+                relative
                 bg-zinc-900
                 bg-opacity-90
                 px-12
                 py-12
                 rounded-md
-                top-36
                 w-full
                 md:w-auto
                 md:max-w-md

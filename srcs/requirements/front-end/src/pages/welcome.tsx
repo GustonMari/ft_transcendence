@@ -1,5 +1,6 @@
 import s from '../styles/pages/welcome.module.css';
 import {AiFillGithub} from "react-icons/ai";
+
 export function Welcome() {
 
     const presentationText : string = "Vivamus elementum nibh odio, et eleifend velit pretium a. Nunc non quam velit. Curabitur vitae commodo nisl, vel mattis massa.\n"
@@ -15,11 +16,11 @@ export function Welcome() {
                     </p>
                     <div className={s.content__buttons}>
                         <button className={s.button} onClick={() => {
-                            window.location.href = "/signin"
+                            window.location.href = "/authentification"
                         }}>Sign In
                         </button>
                         <button className={s.button} onClick={() => {
-                            window.location.href = "/register"
+                            window.location.href = "/authentification"
                         }}>Register
                         </button>
                     </div>

@@ -1,8 +1,6 @@
 import "./App.css";
 import { Route, Routes, Navigate} from "react-router-dom";
-import Register from "./pages/register";
 import Home from "./pages/home";
-import SignIn from "./pages/signin";
 import PrivateRoute from "./components/routes/PrivateRoute";
 import { Friends } from "./pages/friend";
 import Profile from "./pages/profile";
@@ -27,12 +25,6 @@ function App() {
         <Route path="/welcome" element={
             <Welcome/>
         } />
-        {/* <Route path="/register" element={
-            <Register/>
-        } />
-        <Route path="/signin" element={
-            <SignIn />
-        } /> */}
         <Route path="/authentification" element={
             <Authentification />
         } />

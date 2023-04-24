@@ -26,7 +26,7 @@ export default function PrivateRoute ({children} : any) {
     }, []);
 
     return (
-        (logged ? React.cloneElement(children, {me}) : (isLoading ? <Loading/> : <Navigate to={'/signin'}></Navigate>))
+        (logged ? React.cloneElement(children, {me}) : (isLoading ? <Loading/> : <Navigate to={'/authentification'}></Navigate>))
     );
 
 };

@@ -58,7 +58,7 @@ export const NavBar = ({onProfile, profilePic}: any) => {
     const handleLogOut = () => {
         API.logOut(() => {
             handleSuccess("You have been logged out")
-            navigate("/signin");
+            navigate("/authentification");
         }, () => {
             handleError("An error occured while logging out")
         });

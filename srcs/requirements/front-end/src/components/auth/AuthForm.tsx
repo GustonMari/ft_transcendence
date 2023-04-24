@@ -1,25 +1,38 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+    import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { InputForm } from "./InputForm";
 import { AuthButton } from "./AuthButton";
-import { useSearchParams } from "react-router-dom";
+import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
+import { APP } from "../../network/app";
+import { AlertContext } from "../../contexts/Alert.context";
+import axios from "axios";
 
+/**
+ * AuthForm component
+ * Contains every elements to fill a form to sign in or register a user.
+ */
 export const AuthForm = () => {
 
-    /* Refs */
+    /* -- Refs -- */
     const email = useRef<string>("");
     const username = useRef<string>("");
     const password = useRef<string>("");
     const passwordConfirm = useRef<string>("");
+
+    /* -- Navigate through router -- */
+    const navigate = useNavigate();
+
+    /* -- PopUp for errors and success -- */
+    const {handleError, handleSuccess}: any = useContext(AlertContext);
     
-    /* States */
+    /* -- States */
     const [variant, setVariant] = useState<'signin' | 'register'>('signin');
     
-    /* Callback to switch between sign and register in one click*/
+    /* -- Callback to switch between sign and register in one click -- */
     const toggleVariant = useCallback(() => {
         setVariant((currentVariant) => currentVariant === 'signin' ? 'register' : 'signin');
     }, []);
     
-    /* Code to switch between register and sign pages if a query parameter 'type' is in the URL */
+    /* -- Code to switch between register and sign pages if a query parameter 'type' is in the URL -- */
     const [searchParams, setSearchParams] = useSearchParams();
     useEffect(() => {
         if (searchParams.get('type') === 'signin' || searchParams.get('type') === 'register') {
@@ -27,22 +40,48 @@ export const AuthForm = () => {
         }
     }, [])
 
-    const handleSubmit = () => {
-        console.log(email.current, username.current, password.current, passwordConfirm.current);
+    /* -- Handle submit of the form - call the API and redirect to /home if the connection is a success and /tfa if the TFA is enable on this user -- */
+    const handleSubmit = (event: any) => {
+        event.preventDefault();
+        APP.post(`/auth/${variant}`, {
+            email: email.current,
+            login: username.current,
+            password: password.current,
+        }).then((res: any) => {
+            if (res.data?.url) {
+                navigate('/' + res.data.url);
+                window.location.href = res.data.url;
+            } else {
+                navigate('/home');
+                handleSuccess('You have been successfully connected!')
+            }
+        }).catch((err) => {
+            handleError(err.response?.data?.message || 'An error occured, please try again later.')
+        })
     }
 
-    const handleFortyTwo = () => {}
+    /* -- Rediction to connect with the 42 API -- */
+    const handleFortyTwo = async (event: any) => {
+        event.preventDefault();
+        APP.get('/auth/42/connect')
+        .then((res) => {
+            window.location.href = res.data.url;
+            handleSuccess("Successfully redirected to 42");
+        }).catch((err) => {
+            handleError(err.response?.data?.message || 'An error occured, please try again later.')
+        })
+    }
 
     return (
     <>
             <h2
                 className="
-                    col-span-2
-                    text-center
-                    text-2xl
-                    font-semibold
-                    text-white
-                    mb-12
+                col-span-2
+                text-center
+                text-2xl
+                font-semibold
+                text-white
+                mb-12
                 "
             >
                 {variant === 'signin' ? 'Log In to your account' : 'Create a new account'}
@@ -50,26 +89,26 @@ export const AuthForm = () => {
             <form>
                 <div 
                     className="
-                        flex
-                        justify-center
-                        flex-col
-                        gap-4
-                        mb-10
-                        "
+                    flex
+                    justify-center
+                    flex-col
+                    gap-4
+                    mb-10
+                    "
                 >
                     { variant === 'register' && (
                         <InputForm
-                            id="username"
-                            label="Username"
-                            type="text"
-                            onChange={(event) => username.current = event.target.value}
-                        />
-                    )}
-                    <InputForm
                         id="email"
                         label="Email"
                         type="email"
                         onChange={(event) => email.current = event.target.value}
+                    />
+                    )}
+                    <InputForm
+                        id="username"
+                        label="Username"
+                        type="text"
+                        onChange={(event) => username.current = event.target.value}
                     />
                     <InputForm
                         id="password"
@@ -89,36 +128,52 @@ export const AuthForm = () => {
                 </div>
                 <AuthButton
                     title={variant === 'signin' ? 'Log In' : 'Register'}
-                    onClick={() => handleSubmit()}
+                    onClick={(event) => handleSubmit(event)}
                 />
                 <p
                     className="
-                        text-[14px]
-                        mt-4
-                        text-neutral-400
-                        max-w-auto
-                        md:max-w-[350px]
-                        mx-2
+                    text-[14px]
+                    mt-4
+                    text-neutral-400
+                    max-w-auto
+                    md:max-w-[350px]
+                    mx-2
                     "
                 >
                     {variant === 'signin' ? 'Don\'t have an account? ' : 'Already have an account? '}
                     <span
                         className="
-                            text-white
-                            hover:underline
-                            cursor-pointer
+                        text-white
+                        hover:underline
+                        cursor-pointer
                         "
                         onClick={toggleVariant}
                     >
                         {variant === 'signin' ? 'Create your transcendence account ' : 'Log In to your account'}
                     </span>
                 </p>
-                <div className="inline-flex items-center justify-center w-full">
-                    <hr className="w-64 h-1 bg-gray-200 border-0 rounded mb-5"/>
+                <div
+                    className="
+                    inline-flex
+                    items-center
+                    justify-center
+                    w-full
+                    "
+                    >
+                    <hr
+                        className="
+                        w-64
+                        h-1
+                        bg-gray-200
+                        border-0
+                        rounded
+                        mb-4
+                        "
+                    />
                 </div>
                 <AuthButton
                     title="Connect with 42 Intra"
-                    onClick={(event) => console.log('Google')}
+                    onClick={(event) => handleFortyTwo(event)}
                 />
             </form>
     </>
