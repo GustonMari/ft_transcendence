@@ -1,18 +1,10 @@
 ## TODO 
 
-### Back
-
-- Creer une auth local
-- Creer des Users
-- Creer un controler pour creer un user utilisant un AuthDTO.
-- Lier un Item FriendList a notre User.
-- Creer fonctions suivantes : adduser(id, username...), showFriends, deleteFriend
-
-### Front
-
-- Page Login
-- Page Home
-- Afficher une liste
+- [ ] create avatar component
+- [ ] fix the CSS for hidden components
+- [ ] check inputs for authentication in react
+- [ ] fix the overflow error in welcome.tsx
+- [ ] fix the CSS for NavBar to be responsive + if I have the time, rework the Navbar in TailwindCSS
 
 ---
 

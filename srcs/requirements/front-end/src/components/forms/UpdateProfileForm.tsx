@@ -187,20 +187,7 @@ export const UpdateProfileForm = () => {
 //         });
 // }
 
-//     const handleProfilePictureChange = (event: ChangeEvent<HTMLInputElement>) => {
-//             if (!event.target.files) {
-//                 return;
-//             }
-//             const file = event.target.files[0];
-//             const formData = new FormData();
-//             formData.append('file', file, file.name);
-//             API.changePP(formData, () => {
-//                 handleSuccess("Profile Picture uploaded")
-//                 window.location.reload();
-//             }, (e: any) => {
-//                 handleError(e.message)
-//             });
-//     }
+
 
 //     return (
 //         <>

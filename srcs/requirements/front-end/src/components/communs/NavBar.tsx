@@ -19,7 +19,7 @@ interface ISideElem {
 const sideElems: ISideElem[] = [
     {
         icon: <IoLogoGameControllerA className={s.icons}/>,
-        title: "Home",
+        title: "Game",
         link: "/home"
     },
     {

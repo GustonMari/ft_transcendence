@@ -1,8 +1,9 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import API from "../../network/api";
 import { Loading } from './Loading';
 import { UserContext } from '../../contexts/User.context';
+import { APP } from '../../network/app';
 
 export default function PrivateRoute ({children} : any) {
 
@@ -11,18 +12,18 @@ export default function PrivateRoute ({children} : any) {
 
     const {me, setMe}: any = React.useContext(UserContext);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         
-        API.checkAuth(
-            (u: any) => {
-                setMe(u);
-                setLogged(true);
-            },
-            () => {
-                setIsLoading(false);
-                setMe(null);
-            }
-        );
+        APP.get('user/me')
+        .then((r) => {
+            setMe(r.data);
+            setLogged(true);
+        }
+        ).catch(() => {
+            setIsLoading(false);
+            setMe(null);
+        });
+
     }, []);
 
     return (

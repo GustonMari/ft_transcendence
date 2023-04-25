@@ -31,24 +31,6 @@ export default class API {
         }
     }
 
-    static async checkAuth(
-        successFunc: (data: any) => void,
-        errorFunc: (err: ApiError) => void
-    ) {
-        try {
-            const r = await APP.get("/user/me");
-            successFunc(r.data);
-        } catch (err) {
-            if (axios.isAxiosError(err)) {
-                const error = err as any;
-                errorFunc({
-                    code: error.code,
-                    message: error.response?.data?.message,           
-                });
-            };
-        }
-    }
-
     static async logOut(
         successFunc: () => void,
         errorFunc: (err: ApiError) => void
@@ -182,25 +164,6 @@ export default class API {
         try {
             const res = await APP.get("/user/get/" + id);
             successFunc(res.data);
-        } catch (err) {
-            if (axios.isAxiosError(err)) {
-                const error = err as any;
-                errorFunc({
-                    code: error.code,
-                    message: error.response?.data?.message,           
-                });
-            };
-        }
-    }
-
-    static async updateProfile (
-        opt: any,
-        successFunc: () => void,
-        errorFunc: (err: ApiError) => void
-    ) {
-        try {
-            await APP.patch("/user/profile/me/update", opt);
-            successFunc();
         } catch (err) {
             if (axios.isAxiosError(err)) {
                 const error = err as any;

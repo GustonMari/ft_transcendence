@@ -18,7 +18,7 @@ import * as argon from 'argon2';
 import * as crypto from 'crypto';
 import * as speakeasy from 'speakeasy';
 
-const AT_EXPIRATION = "10s";
+const AT_EXPIRATION = "10m";
 const RT_EXPIRATION = "5d";
 
 @Injectable()
@@ -141,10 +141,10 @@ export class AuthService {
         const [at, rt] = [
             this.jwtService.sign(plain_user, {
                 secret: 'secret',
-                expiresIn: '10m',
+                expiresIn: AT_EXPIRATION,
             }),
             this.jwtService.sign(plain_user, {
-                secret: AT_EXPIRATION,
+                secret: 'secret',
                 expiresIn: RT_EXPIRATION,
             }),
         ];
