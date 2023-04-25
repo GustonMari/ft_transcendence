@@ -26,7 +26,7 @@ export const TextareForm : React.FC<IInputFormProps> = ({
             <textarea
                 className={
                 (readonly && `cursor-default`)
-                + `
+                + `api
                 w-full
                 rounded-md
                 text-white

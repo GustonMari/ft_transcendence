@@ -37,7 +37,8 @@ export const TFAForm : React.FC<ITFAFormProps> = ({
         e.preventDefault();
 
         APP.get(
-            `/auth/tfa/validation`, {
+            `/auth/tfa/validation`,
+            {
                 params: {
                     token: code.current,
                     username: username
@@ -48,7 +49,7 @@ export const TFAForm : React.FC<ITFAFormProps> = ({
             handleSuccess('TFA Code Validated, Welcome Back!')
         }).catch((err) => {
             handleError(err.response?.data?.message || 'An error occured, please try again later.')
-        })
+        });
       }
 
     return (

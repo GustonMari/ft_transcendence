@@ -4,18 +4,46 @@ import { InputForm } from "../auth/InputForm";
 import { AuthButton } from "../auth/AuthButton";
 import { FormControlLabel, Switch } from "@mui/material";
 import { TextareForm } from "../auth/TextareaForm";
+import { AlertContext } from "../../contexts/Alert.context";
+import { APP } from "../../network/app";
 
 export const UpdateProfileForm = () => {
 
-    /* -- Refs -- */
-    const [firstName, setFirstName] = useState<string>("");
-    const [lastName, setLastName] = useState<string>("salut");
-    const password = useRef<string>("");
-    const passwordConfirm = useRef<string>("");
-    const [tfa, setTFA] = useState<boolean>(false);
-    
     /* -- Context -- */
     const { me }: any = useContext(UserContext);
+    const { handleError, handleSuccess }: any = useContext(AlertContext);
+
+    /* -- Refs -- */
+    const [firstName, setFirstName] = useState<string>(me.first_name);
+    const [lastName, setLastName] = useState<string>(me.last_name);
+    const password = useRef<string>("");
+    const passwordConfirm = useRef<string>("");
+    const [tfa, setTFA] = useState<boolean>(me.tfa);
+    const [description, setDescription] = useState<string>(me.description);
+
+    const handleSubmit = (event: any) => {
+        event.preventDefault();
+        if (password.current !== passwordConfirm.current) {
+            handleError("Password doesn't match with confirm password.")
+            return;
+        }
+
+        APP.patch(
+            `/user/profile/me/update`,
+            {
+                firstName: firstName,
+                lastName: lastName,
+                password: password.current,
+                description: description,
+                tfa: tfa,
+            }
+        ).then(() => {
+            handleSuccess("Profile updated successfully.");
+            window.location.reload();
+        }).catch((err) => {
+            handleError(err.response?.data?.message || 'An error occured, please try again later.')
+        });
+    }
 
     return (
         <>
@@ -85,7 +113,7 @@ export const UpdateProfileForm = () => {
                 <TextareForm
                     id="description-form"
                     label="Description"
-                    onChange={() => {}}
+                    onChange={(event) => setDescription(event.target.value)}
                     value={me.description}
                     readonly={false}
                 />
@@ -104,7 +132,7 @@ export const UpdateProfileForm = () => {
                 />
                 <AuthButton
                         title="Update"
-                        onClick={(event) => console.log(event)}
+                        onClick={(event) => handleSubmit(event)}
                 />
             </div>
         </>
