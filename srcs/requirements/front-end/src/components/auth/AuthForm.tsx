@@ -103,6 +103,8 @@ export const AuthForm = () => {
                         label="Email"
                         type="email"
                         onChange={(event) => email.current = event.target.value}
+                        readonly={false}
+                        value={undefined}
                     />
                     )}
                     <InputForm
@@ -110,12 +112,16 @@ export const AuthForm = () => {
                         label="Username"
                         type="text"
                         onChange={(event) => username.current = event.target.value}
+                        readonly={false}
+                        value={undefined}
                     />
                     <InputForm
                         id="password"
                         label="Password"
                         type="password"
                         onChange={(event) => password.current = event.target.value}
+                        readonly={false}
+                        value={undefined}
 
                     />
                     { variant === 'register' && (
@@ -124,6 +130,8 @@ export const AuthForm = () => {
                             label="Confirm Password"
                             type="password"
                             onChange={(event) => passwordConfirm.current = event.target.value}
+                            readonly={false}
+                            value={undefined}
                         />
                     )}
                 </div>

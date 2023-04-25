@@ -1,18 +1,16 @@
 interface IInputFormProps {
     id: string;
     label: string;
-    type: string;
     maxLength?: number;
     minLength?: number;
     readonly: boolean;
     value: string | undefined;
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-export const InputForm : React.FC<IInputFormProps> = ({
+export const TextareForm : React.FC<IInputFormProps> = ({
     id,
     label,
-    type,
     onChange,
     maxLength,
     minLength,
@@ -25,7 +23,7 @@ export const InputForm : React.FC<IInputFormProps> = ({
         <div
             className="relative"
         >
-            <input
+            <textarea
                 className={
                 (readonly && `cursor-default`)
                 + `
@@ -42,14 +40,14 @@ export const InputForm : React.FC<IInputFormProps> = ({
                 focus:outline-none
                 `}
                 id={id}
-                type={type}
                 onChange={onChange}
                 minLength={minLength}
                 maxLength={maxLength}
                 placeholder=" "
                 readOnly={readonly}
                 value={value ? value : undefined}
-            />
+            >
+            </textarea>
             <label
                 className="
                 absolute

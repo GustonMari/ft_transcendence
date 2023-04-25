@@ -4,9 +4,9 @@ import { RxCross2 } from "react-icons/rx";
 export const AlertContext = createContext({});
 
 export const AlertProvider = ({children}: any) => {
-    const [show, setShow] = useState(false);
-    const [color, setColor] = useState(true); // true = green, false = red
-    const [msg, setMsg] = useState("");
+    const [show, setShow] = useState<boolean>(false);
+    const [color, setColor] = useState<boolean>(true); // true = green, false = red
+    const [msg, setMsg] = useState<string>("");
 
     function handleError (msg: string) {
         setMsg(msg);
@@ -14,7 +14,7 @@ export const AlertProvider = ({children}: any) => {
         setColor(false);
          setTimeout(() => {
             setShow(false);
-        }, 3000);
+        }, 5000);
     }
 
     function handleSuccess (msg: string) {
@@ -23,7 +23,7 @@ export const AlertProvider = ({children}: any) => {
         setColor(true);
         setTimeout(() => {
             setShow(false);
-        }, 3000);
+        }, 5000);
     }
 
     return (        
@@ -56,6 +56,7 @@ export const AlertProvider = ({children}: any) => {
                         className="
                         p-2
                         mr-8
+                        ml-4
                         text-gray-900
                         text-center
                         "

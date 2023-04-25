@@ -87,6 +87,8 @@ export const TFAForm : React.FC<ITFAFormProps> = ({
                 label="Code"
                 type="text"
                 onChange={(event) => code.current = event.target.value}
+                readonly={false}
+                value={undefined}
             />
             <AuthButton
                 title="Sign In"
