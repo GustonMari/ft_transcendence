@@ -36,18 +36,32 @@ CREATE TABLE "users" (
     "socket_id" TEXT,
     "first_name" TEXT,
     "last_name" TEXT,
-    "avatar_url" TEXT DEFAULT '/storage/default/user.png',
+    "avatar_url" TEXT DEFAULT '/storage/default/user.jpg',
     "email" TEXT NOT NULL,
     "state" BOOLEAN NOT NULL DEFAULT false,
+    "description" VARCHAR(200),
     "password" TEXT NOT NULL,
     "rt" TEXT,
-    "description" VARCHAR(240),
-    "wins" INTEGER NOT NULL DEFAULT 0,
-    "loses" INTEGER NOT NULL DEFAULT 0,
     "tfa" BOOLEAN NOT NULL DEFAULT false,
     "tfa_secret" TEXT,
+    "wins" INTEGER NOT NULL DEFAULT 0,
+    "loses" INTEGER NOT NULL DEFAULT 0,
+    "xp" INTEGER NOT NULL DEFAULT 10,
+    "level" DOUBLE PRECISION NOT NULL DEFAULT 1,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "game_history" (
+    "id" SERIAL NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "user_1_id" INTEGER NOT NULL,
+    "user_1_score" INTEGER NOT NULL,
+    "user_2_id" INTEGER NOT NULL,
+    "user_2_score" INTEGER NOT NULL,
+
+    CONSTRAINT "game_history_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -137,6 +151,9 @@ CREATE UNIQUE INDEX "users_socket_id_key" ON "users"("socket_id");
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "game_history_id_key" ON "game_history"("id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Room_id_key" ON "Room"("id");
 
 -- CreateIndex
@@ -159,6 +176,12 @@ ALTER TABLE "friend_request" ADD CONSTRAINT "friend_request_from_id_fkey" FOREIG
 
 -- AddForeignKey
 ALTER TABLE "friend_request" ADD CONSTRAINT "friend_request_to_id_fkey" FOREIGN KEY ("to_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "game_history" ADD CONSTRAINT "game_history_user_1_id_fkey" FOREIGN KEY ("user_1_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "game_history" ADD CONSTRAINT "game_history_user_2_id_fkey" FOREIGN KEY ("user_2_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "UsersOnRooms" ADD CONSTRAINT "UsersOnRooms_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

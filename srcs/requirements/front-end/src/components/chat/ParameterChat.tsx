@@ -10,6 +10,7 @@ import App from "../../App";
 import { HistoryDto, InfoMessage } from "../../dtos/chat.dto";
 import Style from "../../styles/messages/Style.message.module.css";
 
+
 export function ParameterChat(props: any)
 {
 	let {define_room, current_room, current_user, socket} = props;

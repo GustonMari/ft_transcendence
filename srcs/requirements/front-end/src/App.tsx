@@ -1,5 +1,5 @@
 import "./App.css";
-import { Route, Routes, Navigate} from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import Home from "./pages/home";
 import PrivateRoute from "./components/routes/PrivateRoute";
 import { Friends } from "./pages/friend";
@@ -7,7 +7,6 @@ import Profile from "./pages/profile";
 import { Result } from "./pages/search";
 import { NotFound } from "./errors/NotFound";
 import WrapContext from "./contexts/wrap.context";
-import TFA from "./pages/tfa";
 import { AlertProvider } from "./contexts/Alert.context";
 import { Welcome } from "./pages/welcome";
 import Chat from "./pages/chat";
@@ -17,77 +16,101 @@ import { Authentification } from "./pages/authentification";
 function App() {
   return (
     <div className="App">
-        <AlertProvider>
-      <Routes>
+      <AlertProvider>
+        <Routes>
+          <Route path="/" element={<Navigate to="/welcome" />} />
 
-        <Route path="/" element={<Navigate to="/welcome"/>} />
+          <Route path="/welcome" element={<Welcome />} />
+          <Route path="/authentification" element={<Authentification />} />
 
-        <Route path="/welcome" element={
-            <Welcome/>
-        } />
-        <Route path="/authentification" element={
-            <Authentification />
-        } />
-        <Route path="/tfa" element={
-            <TFA />
-        } />
+          <Route
+            path="/home"
+            element={
+              <WrapContext
+                components={
+                  <PrivateRoute>
+                    <Home />
+                  </PrivateRoute>
+                }
+              />
+            }
+          />
 
-        <Route path="/home" element={
-            <WrapContext components={
-                <PrivateRoute>
-                        <Home/>
-                </PrivateRoute>
-            }/>
-        } />
+          <Route
+            path="/pong"
+            element={
+              <WrapContext
+                components={
+                  <PrivateRoute>
+                    <Pong />
+                  </PrivateRoute>
+                }
+              />
+            }
+          />
 
-        <Route path="/pong" element={
-            <WrapContext components={
-                <PrivateRoute>
-                        <Pong/>
-                </PrivateRoute>
-            }/>
-        } />
+          <Route
+            path="/friends"
+            element={
+              <WrapContext
+                components={
+                  <PrivateRoute>
+                    <Friends />
+                  </PrivateRoute>
+                }
+              />
+            }
+          />
 
-
-        <Route path="/friends" element={
-            <WrapContext components={
-                <PrivateRoute>
-                        <Friends/>
-                </PrivateRoute>
-            }/>
-        } />
-
-        <Route path="/messages" element={
-            <WrapContext components={
-                <PrivateRoute>
-                         <Chat/>
-                </PrivateRoute>
-            }/>
-        } />
-        <Route path="/pong" element={
-            <PrivateRoute>
+          <Route
+            path="/messages"
+            element={
+              <WrapContext
+                components={
+                  <PrivateRoute>
+                    <Chat />
+                  </PrivateRoute>
+                }
+              />
+            }
+          />
+          <Route
+            path="/pong"
+            element={
+              <PrivateRoute>
                 <Pong />
-            </PrivateRoute>
-        } />
+              </PrivateRoute>
+            }
+          />
 
-        <Route path="/profile" element={
-            <WrapContext components={
-                <PrivateRoute>
-                    <Profile/>
-                </PrivateRoute>
-            } />
-        } />
-        <Route path='/search' element={
-            <WrapContext components={
-                <PrivateRoute>
-                    <Result/>
-                </PrivateRoute>
-            } />
-        }/>
+          <Route
+            path="/profile"
+            element={
+              <WrapContext
+                components={
+                  <PrivateRoute>
+                    <Profile />
+                  </PrivateRoute>
+                }
+              />
+            }
+          />
+          <Route
+            path="/search"
+            element={
+              <WrapContext
+                components={
+                  <PrivateRoute>
+                    <Result />
+                  </PrivateRoute>
+                }
+              />
+            }
+          />
 
-    <Route path='*' element={<NotFound/>}/>
-      </Routes>
-        </AlertProvider>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </AlertProvider>
     </div>
   );
 }
