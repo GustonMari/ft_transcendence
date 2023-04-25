@@ -55,10 +55,11 @@ export const NavBar = ({onProfile, profilePic}: any) => {
     const navigate = useNavigate();
 
     const handleSideBarChange = () => {setShowSideBar(!showSideBar)};
+
     const handleLogOut = () => {
         API.logOut(() => {
             handleSuccess("You have been logged out")
-            navigate("/authentification");
+            navigate("/welcome");
         }, () => {
             handleError("An error occured while logging out")
         });
@@ -75,10 +76,6 @@ export const NavBar = ({onProfile, profilePic}: any) => {
                 </div>
                 <nav className={s.list}>
                     <ul className={s.list__item}>
-                        {/* <li className="navbar__close">
-                            <AiOutlineClose className={s.icons}/>
-                        </li> */}
-                        
                         {
                             sideElems.map((e: ISideElem, index: number) => {
                                 return (

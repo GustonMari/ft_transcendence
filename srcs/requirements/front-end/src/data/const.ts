@@ -1,0 +1,2 @@
+export const GITHUB_URL = 'https://github.com/mathias-mrsn/ft_transcendence'
+export const PRESENTATION_TEXT = 'Vivamus elementum nibh odio, et eleifend velit pretium a. Nunc non quam velit. Curabitur vitae commodo nisl, vel mattis massa.\n'

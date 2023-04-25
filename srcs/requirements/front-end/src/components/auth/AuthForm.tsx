@@ -43,6 +43,7 @@ export const AuthForm = () => {
     /* -- Handle submit of the form - call the API and redirect to /home if the connection is a success and /tfa if the TFA is enable on this user -- */
     const handleSubmit = (event: any) => {
         event.preventDefault();
+
         APP.post(`/auth/${variant}`, {
             email: email.current,
             login: username.current,
@@ -50,7 +51,6 @@ export const AuthForm = () => {
         }).then((res: any) => {
             if (res.data?.url) {
                 navigate('/' + res.data.url);
-                window.location.href = res.data.url;
             } else {
                 navigate('/home');
                 handleSuccess('You have been successfully connected!')
@@ -82,6 +82,7 @@ export const AuthForm = () => {
                 font-semibold
                 text-white
                 mb-12
+                break-words
                 "
             >
                 {variant === 'signin' ? 'Log In to your account' : 'Create a new account'}

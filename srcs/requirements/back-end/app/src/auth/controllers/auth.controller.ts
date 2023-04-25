@@ -80,7 +80,6 @@ export class AuthController {
 
     /* ------------------------------------------------------------------------------ */
 
-    // TODO: Apply TFA on basic login.
     @ApiOperation({
         summary: 'Sign in a user',
     })
@@ -96,7 +95,7 @@ export class AuthController {
 
         if (access_token !== undefined && refresh_token === undefined) {
             res.send({
-                url: 'tfa?qrcode=' + access_token + "&username=" + dto.login,
+                url: 'authentification?qrcode=' + access_token + "&username=" + dto.login,
             })
             return;
         }
@@ -199,7 +198,7 @@ export class AuthController {
         const {access_token, refresh_token} = await this.authService.callback(user.profile);
         if (access_token == undefined || refresh_token == undefined) {
             const qr_url = await this.authService.generateTFA(user.profile.username);
-            res.redirect('http://localhost:4200/tfa?qrcode=' + qr_url + "&username=" + user.profile.username);
+            res.redirect('http://localhost:4200/authentification?qrcode=' + qr_url + "&username=" + user.profile.username);
             return;
         }
         

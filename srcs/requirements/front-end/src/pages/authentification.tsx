@@ -1,6 +1,10 @@
+import { useSearchParams } from "react-router-dom";
 import { AuthForm } from "../components/auth/AuthForm";
+import { TFAForm } from "../components/auth/TFAForm";
 
 export const Authentification = () => {
+
+    const [p, setP] = useSearchParams();
 
     return (
     <>
@@ -34,7 +38,20 @@ export const Authentification = () => {
                 md:max-w-md
             "
             >
-                <AuthForm />
+                {
+                p.get('username') && p.get('qrcode') ? <>
+                    {console.log("tfa is on")}
+                    <TFAForm
+                        username={p.get('username') as string}
+                        qrcode={p.get('qrcode') as string}
+                    />
+                </>
+                :
+                <>
+                    {console.log("tfa is off")}
+                    <AuthForm />
+                </>
+                }
             </div>
         </div>    
     </>

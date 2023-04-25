@@ -5,61 +5,6 @@ import {APP} from "./app";
 
 export default class API {
 
-  static async signIn(
-    opt: SignInOptions,
-    successFunc: (url: string) => void,
-    errorFunc: (err: ApiError) => void
-  ) {
-    try {
-      const d: any = await (await APP.post("/auth/signin", opt)).data;
-      successFunc(d.url);
-    } catch (err) {
-        if (axios.isAxiosError(err)) {
-                const error = err as any;
-                errorFunc({
-                    code: error.code,
-                    message: error.response?.data?.message,           
-                });
-            };
-    }
-  }
-
-  static async register(
-    opt: RegisterOptions,
-    successFunc: () => void,
-    errorFunc: (err: ApiError) => void
-  ) {
-    try {
-      await APP.post("/auth/register", opt);
-      successFunc();
-    } catch (err) {
-        if (axios.isAxiosError(err)) {
-                const error = err as any;
-                errorFunc({
-                    code: error.code,
-                    message: error.response?.data?.message,           
-                });
-            };
-    }
-  }
-
-  static async ftConnect(
-    successFunc: (url: string) => void,
-    errorFunc: (err: ApiError) => void
-    ) {
-        try {
-            const data = await (await APP.get("/auth/42/connect")).data;
-            successFunc(data.url);
-        } catch (err) {
-            if (axios.isAxiosError(err)) {
-                const error = err as any;
-                errorFunc({
-                    code: error.code,
-                    message: error.response?.data?.message,           
-                });
-            };
-        }
-    }
 
     static async tfaCheck(
         tfaCode: string,

@@ -4,6 +4,8 @@ export interface ProfileField {
     avatar: string;
     displayName: string;
     email: string;
+    first_name: string;
+    last_name: string;
     
     _raw: string;
 }

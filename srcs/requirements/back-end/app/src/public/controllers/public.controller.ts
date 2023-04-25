@@ -18,6 +18,10 @@ export class PublicController {
         if (!filename) {
             throw new BadRequestException('Invalid username this login doesnt exist');
         }
-        res.sendFile(process.cwd() + '/' + filename);
+        if (filename.startsWith('http') || filename.startsWith('https')) {
+            return (res.redirect(filename));
+        } else {
+            res.sendFile(process.cwd() + '/' + filename);
+        }
     }
 }
