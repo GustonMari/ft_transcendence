@@ -138,11 +138,11 @@ export class AuthService {
 
         const [at, rt] = [
             this.jwtService.sign(plain_user, {
-                secret: JWT_SECRET,
+                secret: "secret",
                 expiresIn: AT_EXPIRATION,
             }),
             this.jwtService.sign(plain_user, {
-                secret: JWT_SECRET,
+                secret: "secret",
                 expiresIn: RT_EXPIRATION,
             }),
         ];

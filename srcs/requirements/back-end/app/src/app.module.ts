@@ -23,6 +23,7 @@ import { HistoryModule } from './history/history.module';
 		RelationModule,
 		PublicModule,
 		HistoryModule,
+        PongModule,
     ],
     providers: [
         PrismaService

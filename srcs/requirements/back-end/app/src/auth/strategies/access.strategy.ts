@@ -15,7 +15,7 @@ export class AccessStrategy extends PassportStrategy(Strategy, 'access') {
         private readonly userService: UserService
     ) {
         super({
-            secretOrKey: JWT_SECRET,
+            secretOrKey: "secret",
             jwtFromRequest: ExtractJwt.fromExtractors([
                 (req: Request) => {
                     return req?.cookies?.access_token;
