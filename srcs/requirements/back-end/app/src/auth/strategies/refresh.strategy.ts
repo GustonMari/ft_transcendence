@@ -7,6 +7,7 @@ import { ExtractJwt, Strategy } from "passport-jwt";
 import { RegisterDTO } from '../dtos/register.dto';
 import { Request } from 'express';
 import { TransformPlainToInstance } from 'class-transformer';
+import { JWT_SECRET } from '../data';
 
 @Injectable()
 export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
@@ -15,7 +16,7 @@ export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
         private readonly userService: UserService
     ) {
         super({
-            secretOrKey: 'secret',  // TODO change this value by the one in the .env file
+            secretOrKey: JWT_SECRET,
             jwtFromRequest: ExtractJwt.fromExtractors([
                 (req: Request) => {
                     return req?.cookies?.refresh_token;

@@ -31,9 +31,8 @@ export class FtStrategy extends PassportStrategy(Strategy, '42') {
         _rt: string,
         profile: ProfileField,
     ) {
-        delete profile._raw;
         if (profile && !profile.avatar) {profile.avatar = 'METTRE_UN_FICHIER_PAR_DEFAULT';} //TODO : mettre un fichier par default
-        if (profile && profile.id && profile.username && profile.displayName) {return {profile};}
+        if (profile && profile.id && profile.username) {return {profile};}
         else {throw new Error('connect to 42 failed due to invalid profile')}
     }
 }

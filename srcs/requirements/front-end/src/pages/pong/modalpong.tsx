@@ -1,11 +1,10 @@
 import { Button, Modal, Form } from 'react-bootstrap';
 import React, { useEffect, useRef, useState } from "react";
 import StyleUtils from './Style.utils.module.css';
-// import StyleUtils from './Style.utils.module.css';
 
 
 export function PopupWinLose(props : any) {
-	const { popupwinlose, setPopupWinLose, isMaster, socket} = props;
+	const { popupwinlose, setPopupWinLose, isMaster, socket, gameName} = props;
 	const [show, setShow] = useState(true);
 	// const [triggerPong, setTriggerPong] = React.useState(false);
 	const handleClose = () => {
@@ -16,7 +15,7 @@ export function PopupWinLose(props : any) {
 
 	function RestartGame()
 	{
-		socket?.emit('playGame', "");
+		socket?.emit('playGame', gameName);
 		setShow(false)
 		setPopupWinLose({winlose: false, winlosemessage: ""});
 		// setTriggerPong(true);

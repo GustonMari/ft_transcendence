@@ -63,25 +63,21 @@ export class Ball {
 		return this.BallElem.getBoundingClientRect();
 	}
 
-	reset() {
+	// reset() {
 		
 
-	}
+	// }
 
-	update(delta: number, playerPaddleLeft: Paddle, playerPaddleRight: Paddle, gameName: string) {
-		// this.socket.emit('updateGame', {delta: delta, limit: limit, playerPaddleLeft: playerPaddleLeft.rect, playerPaddleRight: playerPaddleRight.rect, ballRect: this.rect()});
-		this.socket.emit('updateGame', {delta: delta, gameName: gameName});
-		this.socket?.on('GameUpdated', (data: any) => {
-			this.x = data.x;
-			this.y = data.y;
-			this.setLeftScore(data.leftScore);
-			this.setRightScore(data.rightScore);
-			playerPaddleLeft.position = data.paddleLeftY;
-			playerPaddleRight.position = data.paddleRightY;
-
-			// console.log('paddle rect left =', playerPaddleLeft.rect, 'paddle rect right =', playerPaddleRight.rect);
-			// console.log("playerPaddleLeft.position: " + data.paddleLeftY, "playerPaddleRight.position: " + data.paddleRightY);
-		});
+	update(delta: number, playerPaddleLeft: Paddle, playerPaddleRight: Paddle, gameName: string, isMaster: boolean) {
+		this.socket.emit('updateGame', {delta: delta, gameName: gameName, isMaster: isMaster});
+		// this.socket?.on('GameUpdated', (data: any) => {
+		// 	this.x = data.x;
+		// 	this.y = data.y;
+		// 	this.setLeftScore(data.leftScore);
+		// 	this.setRightScore(data.rightScore);
+		// 	playerPaddleLeft.position = data.paddleLeftY;
+		// 	playerPaddleRight.position = data.paddleRightY;
+		// });
 	}
 
 	// update(delta: number, limit: DOMRect, playerPaddleLeft: Paddle, playerPaddleRight: Paddle, gameName: string) {

@@ -3,21 +3,24 @@ import { useState } from "react";
 import io, { Socket } from "socket.io-client";
 import axios from "axios";
 //BUG: replace the path of create_socket
-// import Create_socket from "../chat/socket";
-import Create_socket from "../../network/chat.socket";
-import { APP } from "../../network/app";
 import App from "../../App";
 // import "./pong.css";
 import Style from "./pong.module.css";
 import { Ball } from "./ball";
 import { Paddle } from "./paddle";
 import { PopupWinLose} from "./modalpong";
-import { User } from "../../dtos/chat.dto";
-import kd from "./keydrown.jsx";
+import { useLocation } from "react-router-dom";
+// import { URLSearchParams } from "url";
+import { IconContext } from "react-icons";
+import { BsPlayFill } from "react-icons/bs";
+import { BiPause } from "react-icons/bi";
+import Create_socket from "../../network/chat.socket";
+import { APP } from "../../network/app";
+
+// import kd from "./keydrown";
 
 
 const PongContext = React.createContext<any>(null);
-// const PongContext = React.createContext<Socket | null>(null);
 export default function Pong() {
 	const [ready, setReady] = useState(false);
 	const [currentUser, setCurrentUser] = useState<any>(null);
@@ -27,10 +30,41 @@ export default function Pong() {
 	const [isWatcher, setIsWatcher] = useState<boolean>(false);
 	const [userTo, setUserTo] = useState<any>(null);
 	const socket = Create_socket();
+	// const [trigger, setTrigger] = React.useState(0);
+	// const [rooms, setRooms] = useState<any>([]);
+	// const roomContainer = useRef<HTMLDivElement>(null);
+
+
+	// useEffect(() => {
+	// 	const getRooms = async () => {
+	// 		try {
+	// 			const all_games = await APP.post("/pong/get_games_rooms", {
+			
+	// 			})
+	// 			setRooms(all_games.data);
+	// 			if (roomContainer.current) {
+	// 				roomContainer.current.scrollTop = roomContainer.current.scrollHeight;
+	// 			  }
+	// 		} catch (error) {
+	// 			console.error(error);
+	// 		}
+	// 	};
+	// 	getRooms();
+	// 	// console.log("rooms = ", rooms);
+	// }, [trigger/* , define_room */]);
+
+	// const render_react_pong = () => {
+	// 	setTrigger(trigger += 1);
+	// }
+
+	// socket?.on('renderReactPong', render_react_pong);
   
 	useLayoutEffect(() => {
 	  const getUsers = async () => {
 		try {
+			// const location = useLocation();
+			// const user2 = new URLSearchParams (location.search).get("opponent");
+			// console.log("user222222222222 = ", user2);
 			const res = await APP.get("/user/me");
 			setCurrentUser(res.data);
 			const is_master = await APP.post("/pong/is_user_master", {
@@ -42,41 +76,44 @@ export default function Pong() {
 			});
 			const game_name = await APP.post("/pong/get_game_name", {
 				login: res.data.login,
-			});
 
-			console.log(
-				"Bonjour ismaster.data = ",
-				is_master.data,
-				"res.data.login = ",
-				res.data.login
-			);
+			});
+			// const new_socket = await Create_socket_async();
+			// setSocket(new_socket);
+			// const all_games = await APP.post("/pong/get_games_rooms", {
+			
+			// })
+			// console.log("all_games = ", all_games.data);
 			if (is_master.data) {
 				setIsMaster(true);
 				setIsSlave(false);
-				// console.log("master zooo");
+
+				// console.log('before get_game', game_name);
+				let game = await APP.post('/pong/get_game', {game_name: game_name})
+				// console.log("getgame in front :", game.data)
+				await APP.post('/pong/init_game', {game: game});
+
+				// console.log("tes morts fdp")
 			} else {
 				setIsMaster(false);
 				
 				if (is_slave.data) {
 					setIsSlave(true);
-					// console.log("slave zooo");
 				}
 				else {
 					setIsWatcher(true);
-					// console.log("watcher zooo");
 				}
 			}
 			setGameName(game_name.data);
-			setReady(true); // set ready state to true after data has been fetched
-			// console.log("is_master = ", is_master.data, "is_slave = ", is_slave.data)
+				setReady(true); // set ready state to true after data has been fetched
+				// setTrigger(trigger + 1);
 		} catch (error) {
 			console.error(error);
 		}
-		// console.log("ismaster = ", isMaster, "isSlave = ", isSlave)
-	  };
+	};
 		getUsers();
 	}, []);
-  
+
 	if (!ready) {
 	  return (
 		<div>
@@ -84,33 +121,35 @@ export default function Pong() {
 		</div>
 	  );
 	} else if (currentUser && isMaster && !isSlave && !isWatcher) {
-	  console.log("MASTER =", isMaster, "date =", Date.now());
 	  return (
 		<>
 		  {socket && (
 			<PongContext.Provider value={{ socket }}>
-			  <ExecutePong isMaster={isMaster} gameName={gameName}/>
+			  <ExecutePong isMaster={isMaster} gameName={gameName} isWatcher={isWatcher} /* rooms={rooms} *//>
 			</PongContext.Provider>
 		  )}
 		</>
 	  );
 	} else if (currentUser && isSlave && !isMaster && !isWatcher) {
-	  console.log(" NON MASTER =", isMaster, "date =", Date.now());
 	  return (
 		<>
 		  {socket && (
 			<PongContext.Provider value={{ socket }}>
-			  <ExecutePong isMaster={isMaster} gameName={gameName}/>
+			  <ExecutePong isMaster={isMaster} gameName={gameName} isWatcher={isWatcher} /* rooms={rooms} *//>
 			</PongContext.Provider>
 		  )}
 		</>
 	  );
 	} else {
-	  return (
-		<div>
-		  <h1>watcher</h1>
-		</div>
-	  );
+		return (
+			<>
+			  {socket && (
+				<PongContext.Provider value={{ socket }}>
+				  <ExecutePong isMaster={isMaster} gameName={gameName} isWatcher={isWatcher} /* rooms={rooms} *//>
+				</PongContext.Provider>
+			  )}
+			</>
+		)
 	}
   }
   
@@ -123,7 +162,7 @@ export function ExecutePong(props: any) {
 	const [rightscore, setRightScore] = useState<number>(0);
 	const [changeMap, setChangeMap] = useState<number>(0);
 	const [popupwinlose ,setPopupWinLose] = useState<{popup: boolean, winlosemessage: string}>({popup: false, winlosemessage: ""});
-	let {isMaster, gameName} = props;
+	let {isMaster, gameName, isWatcher/* , rooms */} = props;
 	let newLimit: DOMRect | undefined;
 	let first: boolean = false;
 	let playerPaddleLeft = new Paddle(document.getElementById("player-paddle-left") as HTMLDivElement);
@@ -134,12 +173,15 @@ export function ExecutePong(props: any) {
 	let rightDownPressed : boolean = false;
 	let collision = document.getElementById("collision");
 	const {socket} = useContext(PongContext);
-	// const kd					= useRef(require('keydrown'));
-	const kd					= useRef(require('./keydrown'));
+	const kd					= useRef(require('keydrown'));
+
+	let pongBall: Ball; 
+
 
 
 	useEffect(() => {
-		console.log ("isMasterrrrrrrrrrrrrrrrrrrrrrrrrrr = ", isMaster);
+		// console.log("EXECUTE PONG socket = ", socket);
+		// console.log ("isMasterrrrrrrrrrrrrrrrrrrrrrrrrrr = ", isMaster);
 		const ballElement = document.getElementById("ball") as HTMLDivElement;
 		
 		let rect;
@@ -153,20 +195,30 @@ export function ExecutePong(props: any) {
 			newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
 			setBall(ballElement);
 		}
+
 	}, []);
-
 	
-	const DownHandler = async () => {
-
-		if (kd.current.UP.isDown()) {
+	// socket?.on('GameUpdated', (data: any) => {
+		// .x = data.x;
+		// this.y = data.y;
+		// this.setLeftScore(data.leftScore);
+		// this.setRightScore(data.rightScore);
+		// playerPaddleLeft.position = data.paddleLeftY;
+		// playerPaddleRight.position = data.paddleRightY;
+		// });
+		
+		const DownHandler = async () => {
+			
+			if (kd.current.UP.isDown() && !isWatcher) {
+			console.log('aaaaaaaaaaaaaaaaa')
 			rightUpPressed = true;
 			if (isMaster) {
 				if (newLimit && playerPaddleLeft) {
-					socket.emit('updatePaddleLeft', 'up');
+					socket.emit('updatePaddleLeft', {paddle: 'up', gameName: gameName});
 				}
-			} else {
+			} else if (!isWatcher) {
 				if (newLimit && playerPaddleRight) {
-					socket.emit('updatePaddleRight', 'up');
+					socket.emit('updatePaddleRight', {paddle: 'up', gameName: gameName});
 				}
 			}
 			} else {
@@ -176,11 +228,11 @@ export function ExecutePong(props: any) {
 				rightDownPressed = true;
 				if (isMaster) {
 					if (newLimit && playerPaddleLeft) {
-						socket.emit('updatePaddleLeft', 'down');
+						socket.emit('updatePaddleLeft', {paddle: 'down', gameName: gameName});
 					}
-				} else if (!isMaster) {
+				} else if (!isMaster && !isWatcher) {
 					if (newLimit && playerPaddleRight) {
-						socket.emit('updatePaddleRight', 'down');
+						socket.emit('updatePaddleRight', {paddle: 'down', gameName: gameName});
 					}
 				}
 			} else {
@@ -199,18 +251,21 @@ export function ExecutePong(props: any) {
 	}
 
 	const UpHandler = async ()  => {
-		kd.current.W.up(() => {
-			leftUpPressed = false;
-		  });
-		  kd.current.S.up(() => {
-			leftDownPressed = false;
-		  });
-		  kd.current.UP.up(() => {
-			rightUpPressed = false;
-		  });
-		  kd.current.DOWN.up(() => {
-			rightDownPressed = false;
-		  });
+		if (!isWatcher)
+		{
+			kd.current.W.up(() => {
+				leftUpPressed = false;
+			});
+			kd.current.S.up(() => {
+				leftDownPressed = false;
+			});
+			kd.current.UP.up(() => {
+				rightUpPressed = false;
+			});
+			kd.current.DOWN.up(() => {
+				rightDownPressed = false;
+			});
+		}
 	}
 
 			const update = (lastTime: number, pongBall: Ball, playerPaddleLeft: Paddle, playerPaddleRight: Paddle, limit?: DOMRect) => (time: number) => {
@@ -220,14 +275,12 @@ export function ExecutePong(props: any) {
 					if (first === false) {
 						newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
 						first = true;
-						console.log("first rect of update");
+						// console.log("first rect of update");
 					}
 					if (newLimit)
 					{
-								pongBall.update(delta, playerPaddleLeft, playerPaddleRight, gameName);
+						pongBall.update(delta, playerPaddleLeft, playerPaddleRight, gameName, isMaster);
 					}
-					// document.addEventListener("keydown", DownHandler);
-					// document.addEventListener("keyup", UpHandler);
 					kd.current.run(function () {
 						kd.current.tick();
 					});
@@ -235,72 +288,73 @@ export function ExecutePong(props: any) {
 					UpHandler();
 					window.addEventListener('resize', () => {
 						newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
-						console.log('resize');
+						// console.log('resize');
 					});
 				}
-				lastTime = time;
-				// setTimeout(() => {
+				let ret_timeout = setTimeout(() => {
+					lastTime = time;
 					window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight, newLimit));
-
-				//   }, 1000 / 45);
-				// window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight, newLimit));
+					clearTimeout(ret_timeout);
+				}, 1);
 				
 			};
 
-
+			
 			
 			useEffect(() => {
 				if (ball && socket) {
-					const pongBall = new Ball(ball, setLeftScore, setRightScore, socket);
+					console.log('heyyyyyyy');
+					// const pongBall = new Ball(ball, setLeftScore, setRightScore, socket);
+					pongBall = new Ball(ball, setLeftScore, setRightScore, socket);
+					socket?.on('GameUpdated', (data: any) => {
+						pongBall.x = data.x;
+						pongBall.y = data.y;
+						pongBall.setLeftScore(data.leftScore);
+						pongBall.setRightScore(data.rightScore);
+						playerPaddleLeft.position = data.paddleLeftY;
+						playerPaddleRight.position = data.paddleRightY;
+					});
 					let lastTime: number = 0;
 					window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight));
 			  }
 			}, [ball]);
+			if (!isWatcher)
+			{
+				socket.on('GameFinished', async (data: any) => {
+					let msg_tmp = '';
+							
+	
+					if (isMaster && data.leftScore >= 11)
+					{
+						// console.log("You won!");
+						msg_tmp = 'You won'
+					}
+					else if (!isMaster && data.rightScore >= 11)
+					{
+						// console.log("slave won");
+						msg_tmp = 'You won!';
+					}
+					else if (isMaster && data.rightScore >= 11)
+					{
+						// console.log('master lose');
+						msg_tmp = 'You lose :(';
+					}
+					else if (!isMaster && data.leftScore >= 11)
+					{
+						// console.log('slave lose');
+						msg_tmp = 'You lose :(';
+					}
+					setPopupWinLose({popup: true, winlosemessage: msg_tmp});
+					await APP.post("/pong/set_game_over", {
+						game_name: gameName
+					});
+					const is_game_over = await APP.post("/pong/is_game_over", {
+						game_name: gameName
+					});
+					// setTrigger(trigger += 1);
+				})
+			}
 
-			socket.on('GameFinished', (data: any) => {
-				let msg_tmp = '';
-
-				if (isMaster && data.leftScore >= 11)
-				{
-					console.log("You won!");
-					msg_tmp = 'You won'
-				}
-				else if (!isMaster && data.rightScore >= 11)
-				{
-					console.log("slave won");
-					msg_tmp = 'You won!';
-				}
-				else if (isMaster && data.rightScore >= 11)
-				{
-					console.log('master lose');
-					msg_tmp = 'You lose :(';
-				}
-				else if (!isMaster && data.leftScore >= 11)
-				{
-					console.log('slave lose');
-					msg_tmp = 'You lose :(';
-				}
-				setPopupWinLose({popup: true, winlosemessage: msg_tmp});
-			})
-
-			// function changeMap(map: number) {
-
-			// 	const map_background = document.getElementById("main-window");
-			// 	if (map_background && map === 1) {
-			// 		console.log("map1");
-			// 			map_background.style.backgroundImage = 'url("../../../static/pong/background_pong_2.png")';
-				
-			// 		// map_background?.style.setProperty('--background-image-main', 'url(\'../../../static/pong/background_pong.png\')');
-			// 		// setGameName('map1');
-			// 	} else if (map_background && map === 2) {
-			// 		console.log("map2");
-			// 		map_background.style.backgroundImage = 'url("../../../static/pong/background_pong_2.png")';
-
-			// 		// setGameName('map2');
-			// 	} else if (map_background && map === 3) {
-			// 		// setGameName('map3');
-			// 	}
-			// }
 			const click = (map: number) => {
 				setChangeMap(map);
 			}
@@ -309,25 +363,14 @@ export function ExecutePong(props: any) {
 				const map_background = document.getElementById("main-window");
 				const pong_game = document.getElementById("pong-body");
 				if (map_background && pong_game && changeMap === 1) {
-						console.log("map1");
-							// map_background.style.backgroundImage = 'url(../../../static/pong/background_pong_2.png)';
-							// map_background.style.backgroundImage = 'url(../../../static/pong/chat.png)';
-							// pong_game.style.backgroundColor = '#ee82ee';
+						// console.log("map1");
 							pong_game.style.backgroundColor = 'black';
 							document.documentElement.style.setProperty('--color-paddle', 'red');
-							// map_background.style.backgroundColor = 'blue';
-						// map_background?.style.setProperty('--background-image-main', 'url(\'../../../static/pong/background_pong.png\')');
-						// setGameName('map1');
 					} else if (map_background && pong_game && changeMap === 2) {
-						// map_background.style.backgroundColor = 'yellow';
-						console.log("map2");
+						// console.log("map2");
 						pong_game.style.backgroundColor = '#59f7f785';
 						document.documentElement.style.setProperty('--color-paddle', '#f09');
-						// map_background.style.backgroundImage = 'url(../../../static/pong/background_pong_2.png)';
-
-						// setGameName('map2');
 					} else if (map_background && pong_game && changeMap === 3) {
-						// setGameName('map3');
 						pong_game.style.backgroundColor = 'rgba(238, 130, 238, 0.5)';
 						document.documentElement.style.setProperty('--color-paddle', '#0ff');
 					}
@@ -336,16 +379,18 @@ export function ExecutePong(props: any) {
 
 	return (
 		<div className={Style['container-game']} id="main-window">
-		{/* <h1>Pong game</h1> */}
 			<div>
-				{popupwinlose.popup ? (<PopupWinLose popupwinlose={popupwinlose} setPopupWinLose={setPopupWinLose} isMaster={isMaster} socket={socket}/> ) : (<></>)}
+				{popupwinlose.popup ? (<PopupWinLose popupwinlose={popupwinlose} setPopupWinLose={setPopupWinLose} isMaster={isMaster} socket={socket} gameName={gameName}/> ) : (<></>)}
 			</div>
-			<button className="" onClick={() => click(1)}>Map 1</button>
-			<button className="" onClick={() => click(2)}>Map 2</button>
-			<button className="" onClick={() => click(3)}>Map 3</button>
-			{/* <button className="" onClick={() => changeMap(1)}>Map 1</button> */}
-			{/* <button className="" onClick={() => changeMap(2)}>Map 2</button> */}
-			{/* <button className="" onClick={() => changeMap(3)}>Map 3</button> */}
+			 <div className={Style['container-button-map']}>
+				<button className={Style['button-map']} onClick={() => click(1)}>
+					1
+				</button>
+				<button className={Style['button-map']} onClick={() => click(2)}>2</button>
+				<button className={Style['button-map']} onClick={() => click(3)}>3</button>
+			</div>
+			<div className={Style['responsive-game']}>
+
 				<div className={Style['game']} >
 					<div className={Style['pong-body']} id="pong-body">
 						<span id="collision"></span>
@@ -354,11 +399,34 @@ export function ExecutePong(props: any) {
 							<div className={Style['left-score']} id="score-one">{leftscore}</div>
 							<div className={Style['right-score']} id="score-two">{rightscore}</div>
 						</div>
-						<div className={`${Style.ball} `} id="ball"></div>
+							<div className={`${Style.ball} `} id="ball">
+								<div className={`${Style.insideball} `} ></div>
+							</div>
 						<div className={`${Style.paddle} ${Style.left}`} id="player-paddle-left"></div>
 						<div className={`${Style.paddle} ${Style.right}`} id="player-paddle-right"></div>
 					</div>
 				</div>
+			</div>
+				<div className={Style['container-button-play-stop']}>
+					<div>
+						<button 
+							className={Style['button-play']} 
+							onClick={() => {socket.emit('resumeGame', gameName)}}>
+								<IconContext.Provider value={{className: Style['icon-center']}}>
+									<BsPlayFill />
+								</IconContext.Provider>
+						</button>
+					</div>
+					<div>
+						<button 
+							className={Style['button-pause']} 
+							onClick={() => {socket.emit('pauseGame', gameName)}}>
+								<IconContext.Provider value={{className: Style['icon-center']}}>
+									<BiPause className="icon-center"/>
+								</IconContext.Provider>
+						</button>
+					</div>
+			</div>
 		</div>
 	);
 }

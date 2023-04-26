@@ -12,6 +12,7 @@ import { Welcome } from "./pages/welcome";
 import Chat from "./pages/chat";
 import Pong from "./pages/pong/pong";
 import { Authentification } from "./pages/authentification";
+import HomePong from "./pages/pong/homePong";
 
 function App() {
   return (
@@ -102,6 +103,18 @@ function App() {
                 components={
                   <PrivateRoute>
                     <Result />
+                  </PrivateRoute>
+                }
+              />
+            }
+          />
+          <Route
+            path="/homepong"
+            element={
+              <WrapContext
+                components={
+                  <PrivateRoute>
+                    <HomePong />
                   </PrivateRoute>
                 }
               />

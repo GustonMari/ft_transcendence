@@ -153,7 +153,6 @@ model Message {
 
 	@@map("messages")
 }
-
 model UserInGame {
 
 	created_at DateTime @default(now())
@@ -184,6 +183,7 @@ model Game {
 	master_id Int @unique
 	// slave UserInGame @relation("slave", fields: [slave_id], references: [id])
 	slave_id Int
+	game_over Boolean @default(false)
 
 	UserInGame UserInGame[]
 
@@ -195,6 +195,7 @@ enum GameType {
     SLAVE
     WATCHER
 }
+
 
 enum Role {
     ADMIN

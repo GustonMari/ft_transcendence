@@ -1,8 +1,12 @@
+/* eslint-disable prettier/prettier */
 import { Controller, Get, Post, Res } from '@nestjs/common';
 import { MessageBody } from '@nestjs/websockets';
 import { PrismaService } from '../prisma/prisma.service';
 import { PongService } from './pong.service';
 import { Response } from 'express';
+import { exit } from 'process';
+import { PlayerMatched } from './pong.interface';
+import { User } from '@prisma/client';
 
 @Controller('pong')
 export class PongController {
@@ -30,8 +34,92 @@ export class PongController {
 		}
 		
 		@Post('get_game_name')
-		async get_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
-			const game = await this.pongService.getGameName(info.login);
+		async get_game_name(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+			const game_name = await this.pongService.getGameName(info.login);
+			response.send(game_name);
+		}
+
+		@Post('get_games_rooms')
+		async get_games_rooms(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+			const games = await this.pongService.getGamesRooms();
+			response.send(games);
+		}
+
+		@Post('set_game_over')
+		async set_game_over(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+			await this.pongService.setGameOver(info);
+		}
+
+		@Post('is_game_over')
+		async is_game_over(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+			const game = await this.pongService.isGameOver(info);
 			response.send(game);
+		}
+
+		@Post('get_game')
+		async get_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+			// console.log('inside NTMMMMMMMMMM', info)
+			const game = await this.pongService.getGameByGameName(info.game_name.data);
+			// exit(1);
+			response.send(game);
+		}
+
+		@Post('init_game')
+		async init_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+			const game = await this.pongService.initGame(info);
+			response.send(game);
+		}
+
+		@Post('is_matched')
+		async is_matched(@Res() response: Response): Promise<void> {
+			// console.log("burger king");
+			const bool = await this.pongService.IsPlayerMatched();
+			if (bool === true)
+			{
+				// console.log("MATCHED");
+				// send les players
+				// console.log("waiting list = ", await this.pongService.getWaitingList());
+				response.send(await this.pongService.getWaitingList());
+				// response.send("salut");
+
+				// vider la list
+				// await this.pongService.clearWaitingList();
+			}
+			else
+			{
+				//send null
+				response.send(null);
+				// console.log("NOT MATCHED");
+			}
+		}
+
+		@Post('add_player_to_waiting_list')
+		async add_player_to_waiting_list(@Res() response: Response ,@MessageBody() info: User): Promise<void> {
+			console.log("info in controlleur = ", info);
+			// await this.pongService.addPlayerToWaitingList(info);
+			await this.pongService.addPlayerToWaitingList(info);
+			response.send("added");
+		}
+
+		@Post('clear_waiting_list')
+		async clear_waiting_list(@Res() response: Response): Promise<void> {
+			await this.pongService.clearWaitingList();
+			response.send("cleared");
+		}
+
+		@Post('pause_game')
+		async pause_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+			// const game = await this.pongService.getGameName(info.login);
+			// await this.pongService.PauseGame(game.data.game_name);
+			await this.pongService.PauseGame(info);
+			response.send("paused");
+		}
+
+		@Post('resume_game')
+		async resume_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+			// const game = await this.pongService.getGameName(info.login);
+			// await this.pongService.resumeGame(game.data.game_name);
+			await this.pongService.resumeGame(info);
+			response.send("resumed");
 		}
 }
