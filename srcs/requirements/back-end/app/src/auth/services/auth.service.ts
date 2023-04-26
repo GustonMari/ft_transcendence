@@ -17,7 +17,7 @@ import * as argon from 'argon2';
 
 import * as crypto from 'crypto';
 import * as speakeasy from 'speakeasy';
-import { JWT_SECRET, AT_EXPIRATION, RT_EXPIRATION } from '../data';
+import { AT_EXPIRATION, RT_EXPIRATION } from '../data';
 
 @Injectable()
 export class AuthService {

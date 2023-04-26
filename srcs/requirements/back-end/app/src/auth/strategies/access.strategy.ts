@@ -6,7 +6,6 @@ import { ExtractJwt, Strategy } from "passport-jwt";
 import { RegisterDTO } from '../dtos/register.dto';
 import { Request } from 'express';
 import { TransformPlainToInstance } from 'class-transformer';
-import { JWT_SECRET } from '../data';
 
 @Injectable()
 export class AccessStrategy extends PassportStrategy(Strategy, 'access') {
