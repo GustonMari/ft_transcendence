@@ -45,6 +45,7 @@ export const ChangePP = ({
         >
             <img
                 src={"http://localhost:3000/api/public/picture/" + username}
+                alt="Profile Avatar"
                 className="
                 w-32
                 h-32

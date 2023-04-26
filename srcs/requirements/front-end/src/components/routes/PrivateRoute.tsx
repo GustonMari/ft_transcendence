@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import API from "../../network/api";
 import { Loading } from './Loading';
 import { UserContext } from '../../contexts/User.context';
 import { APP } from '../../network/app';
@@ -24,7 +23,7 @@ export default function PrivateRoute ({children} : any) {
             setMe(null);
         });
 
-    }, []);
+    }, [setMe]);
 
     return (
         (logged ? React.cloneElement(children, {me}) : (isLoading ? <Loading/> : <Navigate to={'/authentification'}></Navigate>))

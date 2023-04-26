@@ -1,10 +1,9 @@
-    import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { InputForm } from "./InputForm";
 import { AuthButton } from "./AuthButton";
-import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { APP } from "../../network/app";
 import { AlertContext } from "../../contexts/Alert.context";
-import axios from "axios";
 
 /**
  * AuthForm component
@@ -33,12 +32,12 @@ export const AuthForm = () => {
     }, []);
     
     /* -- Code to switch between register and sign pages if a query parameter 'type' is in the URL -- */
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     useEffect(() => {
         if (searchParams.get('type') === 'signin' || searchParams.get('type') === 'register') {
             setVariant(searchParams.get('type') as 'signin' | 'register');
         }
-    }, [])
+    }, [searchParams])
 
     /* -- Handle submit of the form - call the API and redirect to /home if the connection is a success and /tfa if the TFA is enable on this user -- */
     const handleSubmit = (event: any) => {
