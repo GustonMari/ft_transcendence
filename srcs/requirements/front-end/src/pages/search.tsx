@@ -7,19 +7,18 @@ import g from "./../styles/communs/global.module.css";
 
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { NavBar } from "../components/communs/NavBar";
-import { useContext, useLayoutEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import API from "../network/api";
-import { ProfileComponent } from "../components/users/ProfileComponent";
 import { ProfilePopUpContext } from "../contexts/ProfilePopUp.context";
 import { AlertContext } from "../contexts/Alert.context";
-import { Avatar, Button, IconButton, Input, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Typography } from '@mui/material';
+import { Avatar, Button, IconButton, Input, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
 import { PopUp } from "../components/communs/PopUp";
 import { IUser } from "./friend";
 
 export const Result = (props: any) => {
-    const [param, setParam] = useSearchParams();
+    const [param] = useSearchParams();
     const [search, setSearch] = useState("");
-    const [oriSearch, setOriSearch] = useState(param.get('user'));
+    const [oriSearch] = useState(param.get('user'));
     const [apiRes, setApiRes] = useState<IUser[]>([]);
 
     const {setPopUpID} : any = useContext(ProfilePopUpContext);
@@ -33,7 +32,7 @@ export const Result = (props: any) => {
 
     const navigate = useNavigate();
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         API.searchUser(
             oriSearch,
             (u: any) => {
@@ -44,7 +43,7 @@ export const Result = (props: any) => {
                 console.log(err);
             }
         );
-    }, []);
+    }, [oriSearch]);
 
     const handleProfile = (event: any, id: number) => {
         event.preventDefault();
@@ -85,7 +84,7 @@ export const Result = (props: any) => {
         <>
             <div className={g.background + "  flex flex-col w-full md:flex-row"}>
 
-                <NavBar/>
+                <NavBar/>``
 
                 {/* Search Bar */}
                 <div className="w-full">

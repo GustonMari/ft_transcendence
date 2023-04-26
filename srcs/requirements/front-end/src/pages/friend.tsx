@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import API from "../network/api"
 import { AlertContext } from "../contexts/Alert.context"
 import MenuSelector from "../components/relations/MenuSelector"
 import { FaUserFriends } from "react-icons/fa"
-import { Avatar, Badge, IconButton, List, ListItem, ListItemAvatar, ListItemText, styled } from "@mui/material"
+import { Avatar, IconButton, List, ListItem, ListItemAvatar, ListItemText } from "@mui/material"
 import { NavBar } from "../components/communs/NavBar"
 import g from "../styles/communs/global.module.css"
 import { ProfilePopUpContext } from "../contexts/ProfilePopUp.context"
@@ -86,7 +86,7 @@ export const Friends = () => {
                 handleError(err.message);
             }
         )
-    }, [menuID])
+    }, [menuID, handleError])
 
     const handleProfile = (event: any, id: number) => {
         event.preventDefault();
@@ -118,7 +118,7 @@ export const Friends = () => {
             rid,
             () => {
                 _removeRelation(rid);
-                handleSuccess("Request accepted");
+                handleSuccess("Request removed");
             }, (err: any) => {
                 handleError(err.message);
             }
