@@ -67,63 +67,61 @@ export const NavBar = ({onProfile, profilePic}: any) => {
     }
 
     return (
-        <div className={s.position}>
-            <section className={showSideBar ? s.navbar__active : s.navbar}>
-                <div className={s.show}>
-                    <a onClick={handleSideBarChange}>
-                        <FaBars className={s.show__btn}/>
-                    </a>
-                </div>
-                <nav className={s.list}>
-                    <ul className={s.list__item}>
-                        {
-                            sideElems.map((e: ISideElem, index: number) => {
-                                return (
-                                    <li  key={index}>
-                                        <a className={ showSideBar ? s.side_elem__active : s.side_elem} href={e.link}>
-                                            {e.icon}
-                                            { (showSideBar) &&
-                                                <span className={showSideBar ? s.span__active : s.span}>{e.title}</span>
-                                            }
-                                        </a>
-                                    </li>
-                                );
-                            })
-                        }
-                        <li>
-                            <a className={ showSideBar ? s.side_elem__active : s.side_elem} onClick={handleLogOut}>
-                                <BiLogOut className={s.icons}/>
-                                { (showSideBar) &&
-                                    <span className={showSideBar ? s.span__active : s.span}>Log Out</span>
-                                }
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-
-                { window.innerWidth > 767 &&
-                    <div className={showSideBar ? s.footer__active : s.footer}>
-                        <a onClick={
-                            (e) => {
-                                e.preventDefault();
-                                setPopUpID(me.id);
-                            }
-                        }>
-                            <img className={s.avatar} src={"http://localhost:3000/api/public/picture/" + me.login}/>
-                            { showSideBar &&
-                                <div className={showSideBar ? s.profile_info__active : s.profile_info}>
-                                    <p>{me.login.substring(0, 20)}</p>
-                                    <div className={s.match_history}>
-                                        <span>W : {me.loses} | L : {me.wins}</span>
-                                    </div>
-                                </div>
+        <section className={showSideBar ? s.navbar__active : s.navbar}>
+            <div className={s.show}>
+                <a onClick={handleSideBarChange}>
+                    <FaBars className={s.show__btn}/>
+                </a>
+            </div>
+            <nav className={s.list}>
+                <ul className={s.list__item}>
+                    {
+                        sideElems.map((e: ISideElem, index: number) => {
+                            return (
+                                <li  key={index}>
+                                    <a className={ showSideBar ? s.side_elem__active : s.side_elem} href={e.link}>
+                                        {e.icon}
+                                        { (showSideBar) &&
+                                            <span className={showSideBar ? s.span__active : s.span}>{e.title}</span>
+                                        }
+                                    </a>
+                                </li>
+                            );
+                        })
+                    }
+                    <li>
+                        <a className={ showSideBar ? s.side_elem__active : s.side_elem} onClick={handleLogOut}>
+                            <BiLogOut className={s.icons}/>
+                            { (showSideBar) &&
+                                <span className={showSideBar ? s.span__active : s.span}>Log Out</span>
                             }
                         </a>
-                    </div>
-                }
+                    </li>
+                </ul>
+            </nav>
 
-            </section>
-        </div>
+            { window.innerWidth > 767 &&
+                <div className={showSideBar ? s.footer__active : s.footer}>
+                    <a onClick={
+                        (e) => {
+                            e.preventDefault();
+                            setPopUpID(me.id);
+                        }
+                    }>
+                        <img className={s.avatar} src={"http://localhost:3000/api/public/picture/" + me.login}/>
+                        { showSideBar &&
+                            <div className={showSideBar ? s.profile_info__active : s.profile_info}>
+                                <p>{me.login.substring(0, 20)}</p>
+                                <div className={s.match_history}>
+                                    <span>W : {me.loses} | L : {me.wins}</span>
+                                </div>
+                            </div>
+                        }
+                    </a>
+                </div>
+            }
+
+        </section>
     )
 
 };

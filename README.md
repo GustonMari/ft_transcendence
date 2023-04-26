@@ -1,9 +1,9 @@
 ## TODO 
 
-- [ ] create avatar component
-- [ ] fix the CSS for hidden components
+- [x] create avatar component
+- [x] fix the CSS for hidden components
 - [ ] check inputs for authentication in react
-- [ ] fix the overflow error in welcome.tsx
+- [-] fix the overflow error in welcome.tsx
 - [ ] fix the CSS for NavBar to be responsive + if I have the time, rework the Navbar in TailwindCSS
 
 ---

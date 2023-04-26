@@ -196,7 +196,14 @@ export class AuthController {
         const user : any = req.user;
         if (user == undefined) { throw new UnauthorizedException('profile is undefined'); }
         
-        const {access_token, refresh_token} = await this.authService.callback(user.profile);
+        const {access_token, refresh_token} = await this.authService.callback({
+            id: user.profile.id as string,
+            username: user.profile.username as string,
+            avatar: user.profile.image_url as string,
+            email: user.profile.email as string,
+            first_name: user.profile._json.first_name as string,
+            last_name: user.profile._json.last_name as string,
+        });
         if (access_token == undefined || refresh_token == undefined) {
             const qr_url = await this.authService.generateTFA(user.profile.username);
             res.redirect('http://localhost:4200/authentification?qrcode=' + qr_url + "&username=" + user.profile.username);

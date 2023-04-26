@@ -6,6 +6,7 @@ import { FormControlLabel, Switch } from "@mui/material";
 import { TextareForm } from "../auth/TextareaForm";
 import { AlertContext } from "../../contexts/Alert.context";
 import { APP } from "../../network/app";
+import { ChangePP } from "../users/ChangePP";
 
 export const UpdateProfileForm = () => {
 
@@ -52,8 +53,12 @@ export const UpdateProfileForm = () => {
                 flex
                 flex-col
                 gap-4
+                justify-center
                 "
             >
+                <ChangePP
+                    username={me.login}
+                />
                 <div
                     className="
                     flex

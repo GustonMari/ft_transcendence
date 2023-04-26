@@ -157,6 +157,9 @@ export class AuthService {
     async callback(
         profile: ProfileField
     ): Promise<Tokens> {
+
+        console.log(profile);
+
         let r = crypto.randomBytes(50).toString('hex');
         let found = (await this.userService.findUniqueUser({
                             email: profile.email
@@ -193,7 +196,9 @@ export class AuthService {
             },
             {
                 rt: await argon.hash(tokens.refresh_token),
-                avatar_url: profile.avatar as string,
+                avatar_url: profile.avatar,
+                first_name: profile.first_name,
+                last_name: profile.last_name,
             }
         );
         this.userService.setUserOnline(found.id, true);

@@ -131,130 +131,132 @@ export const Friends = () => {
     }
 
     return (
-        <div className={g.background}>
+        <div className={g.background + " flex flex-col w-full md:flex-row"}>
             <NavBar/>
+            <div className="w-full">
+                <MenuSelector
+                    setListValue={(id: number) => setMenuID(id)}
+                    listValue={menuID}
+                    listElements={menuItems}
+                />
 
-            <MenuSelector
-                setListValue={(id: number) => setMenuID(id)}
-                listValue={menuID}
-                listElements={menuItems}
-            />
+                <PopUp
+                    show={showPU}
+                    title={titlePU}
+                    content={messagePU}
+                    onClose={() => {setShowPU(false)}}
+                    onConfirm={() => {if (onConfirm) {onConfirm()}}}
+                />
 
-            <PopUp
-                show={showPU}
-                title={titlePU}
-                content={messagePU}
-                onClose={() => {setShowPU(false)}}
-                onConfirm={() => {if (onConfirm) {onConfirm()}}}
-            />
-
-            <List
-                sx={{
-                    ml: 12,
-                    mr: 3,
-                    mt: 3,
-                    padding: 3,
-                    bgcolor: "white",
-                    borderRadius: 2,
-                }}
-            >
-                { relations && relations.map((item: any, id: number) => {
-                    const user : IUser = item.user;
-                    console.log("test" + user);
-                    return (
-                        <div key={id}>
-                            <ListItem
-                                secondaryAction={
-                                    <>
-                                        <IconButton onClick={(e: any) => {handleProfile(e, user.id)}}>
-                                            <CgProfile/>
-                                        </IconButton>
-                                        {menuID === 0 && <>
-                                            <IconButton
-                                                onClick={(e: any) => createConfirmPopUp(
-                                                    e,
-                                                    "Remove friend",
-                                                    "Do you want to remove " + user.login + " from your friend list ?",
-                                                    () => handleRemoveRelation(item.id),
+                <List
+                    sx={{
+                        ml: 3,
+                        mr: 3,
+                        mt: 3,
+                        padding: 3,
+                        bgcolor: "white",
+                        borderRadius: 2,
+                        zIndex: 100,
+                    }}
+                >
+                    { relations && relations.map((item: any, id: number) => {
+                        const user : IUser = item.user;
+                        console.log("test" + user);
+                        return (
+                            <div key={id}>
+                                <ListItem
+                                    secondaryAction={
+                                        <>
+                                            <IconButton onClick={(e: any) => {handleProfile(e, user.id)}}>
+                                                <CgProfile/>
+                                            </IconButton>
+                                            {menuID === 0 && <>
+                                                <IconButton
+                                                    onClick={(e: any) => createConfirmPopUp(
+                                                        e,
+                                                        "Remove friend",
+                                                        "Do you want to remove " + user.login + " from your friend list ?",
+                                                        () => handleRemoveRelation(item.id),
+                                                    )}
+                                                >
+                                                    <MdOutlineRemoveCircleOutline/>
+                                                </IconButton>
+                                                <IconButton
+                                                    onClick={(e: any) => launchGame(e)}
+                                                >
+                                                    <IoLogoGameControllerA/>
+                                                </IconButton>
+                                                </>
+                                            }
+                                            { menuID === 1 &&
+                                                <IconButton  
+                                                    onClick={(e: any) => createConfirmPopUp(
+                                                        e,
+                                                        "Accept friend request",
+                                                        "Do you want to accept " + user.login + " friend request ?",
+                                                        () => handleAcceptRequest(item.id),
+                                                    )}
+                                                >
+                                                    <AiOutlinePlusCircle/>
+                                                </IconButton>
+                                            }
+                                            { (menuID === 2 || menuID === 1) &&
+                                                <IconButton 
+                                                    onClick={(e: any) => createConfirmPopUp(
+                                                        e,
+                                                        "Decline friend request",
+                                                        "Do you want to remove " + user.login + " friend request ?",
+                                                        () => handleRemoveRelation(item.id),
+                                                    )}
+                                                >
+                                                    <RiDeleteBin5Line/>
+                                                </IconButton>
+                                            }
+                                            { menuID === 3 &&
+                                                <IconButton 
+                                                    onClick={(e: any) => createConfirmPopUp(
+                                                        e,
+                                                        "Unblock user",
+                                                        "Do you want to unblock " + user.login + " ?",
+                                                        () => handleRemoveRelation(item.id),
                                                 )}
-                                            >
-                                                <MdOutlineRemoveCircleOutline/>
-                                            </IconButton>
-                                            <IconButton
-                                                onClick={(e: any) => launchGame(e)}
-                                            >
-                                                <IoLogoGameControllerA/>
-                                            </IconButton>
-                                            </>
-                                        }
-                                        { menuID === 1 &&
-                                            <IconButton  
-                                                onClick={(e: any) => createConfirmPopUp(
-                                                    e,
-                                                    "Accept friend request",
-                                                    "Do you want to accept " + user.login + " friend request ?",
-                                                    () => handleAcceptRequest(item.id),
-                                                )}
-                                            >
-                                                <AiOutlinePlusCircle/>
-                                            </IconButton>
-                                        }
-                                        { (menuID === 2 || menuID === 1) &&
-                                            <IconButton 
-                                                onClick={(e: any) => createConfirmPopUp(
-                                                    e,
-                                                    "Decline friend request",
-                                                    "Do you want to remove " + user.login + " friend request ?",
-                                                    () => handleRemoveRelation(item.id),
-                                                )}
-                                            >
-                                                <RiDeleteBin5Line/>
-                                            </IconButton>
-                                        }
-                                        { menuID === 3 &&
-                                            <IconButton 
-                                                onClick={(e: any) => createConfirmPopUp(
-                                                    e,
-                                                    "Unblock user",
-                                                    "Do you want to unblock " + user.login + " ?",
-                                                    () => handleRemoveRelation(item.id),
-                                            )}
-                                            >
-                                                <MdOutlineRemoveCircleOutline/>
-                                            </IconButton>
-                                        }
+                                                >
+                                                    <MdOutlineRemoveCircleOutline/>
+                                                </IconButton>
+                                            }
 
-                                    </>
-                                }    
-                            >
-                                <ListItemAvatar>
-                                    <StyledBadge
-                                        overlap="circular"
-                                        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                                        variant={(menuID === 0 && user.state) ? "dot" : "standard"}
-                                    >
-                                        <Avatar  alt="jean" src="http://localhost:3000/api/public/picture/mamaurai1"/>
-                                    </StyledBadge>
-                                </ListItemAvatar>
-                                <ListItemText
-                                    primary={user.login}
-                                    secondary={(user.first_name ? user.first_name : "") + " " + (user.last_name ? user.last_name : "")}
-                                    sx={{width: 3/4}}
-                                />
-                            </ListItem>
-                        </div>
-                    )
-                })}
-                { relations.length === 0 && <>
-                    <ListItem>
-                        <ListItemText
-                            primary="No result"
-                            secondary="No result found"
-                        />
-                    </ListItem>
-                </>
-                }
-            </List>
+                                        </>
+                                    }    
+                                >
+                                    <ListItemAvatar>
+                                        <StyledBadge
+                                            overlap="circular"
+                                            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                                            variant={(menuID === 0 && user.state) ? "dot" : "standard"}
+                                        >
+                                            <Avatar  alt="jean" src="http://localhost:3000/api/public/picture/mamaurai1"/>
+                                        </StyledBadge>
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        primary={user.login}
+                                        secondary={(user.first_name ? user.first_name : "") + " " + (user.last_name ? user.last_name : "")}
+                                        sx={{width: 3/4}}
+                                    />
+                                </ListItem>
+                            </div>
+                        )
+                    })}
+                    { relations.length === 0 && <>
+                        <ListItem>
+                            <ListItemText
+                                primary="No result"
+                                secondary="No result found"
+                            />
+                        </ListItem>
+                    </>
+                    }
+                </List>
+            </div>
         </div>
     ) 
 }

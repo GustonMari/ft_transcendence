@@ -83,39 +83,58 @@ export default function Chat(props: any) {
 	socket?.on("message", message_listener);
 
 	return (
-        <div className={g.background}>
-        <NavBar/>
-		<div>
-			{/* <nav className="nav-bar">
-				<a className='nav-bar-box' href="">Home</a>
-				<a href="">Rooms</a>
-				<a href="">Profile</a>
-				<a href="">Logout</a>
-				<a href="">Settings</a>
-			</nav> */}
-		</div>
-		<div className={Style["global"]}>
-			<div className={StyleRoom["room-menu"]}>
-				<RoomForm
-					define_room={define_room}
-					current_room={room}
-					current_user={me}
-					socket={socket}
-					handle_history={history_listener}
-					trigger={trigger}
-					setTrigger={setTrigger}
-					setMessage={setMessage}
-					setRoom={setRoom}
-                />
-			</div>
-			<div className={Style["message-box"]}>
-				<DisplayMessagesByRoom current_user={me} socket={socket} history={history} infomessage={messages} room={room} handle_history={history_listener}/>
-				<MessageInput send={send}/>
-			</div>
-			<div className={Style["menu-chat"]}>
-				<ParameterChat define_room={define_room} current_room={room} current_user={me} socket={socket}/>
-			</div>
-		</div>
-	</div>
+        <div
+        className="
+        fixed
+        h-full
+        w-full
+        top-0
+        left-0
+        md:bg-background-blur
+        bg-zinc-900
+        bg-no-repeat
+        bg-cover
+        "
+    >
+        <div
+            className="
+            flex
+            flex-col
+            md:flex-row
+            w-full
+            h-full
+            "
+        >
+            <NavBar/>
+            <div className={g.background}>
+                <div className={Style["global"]}>
+                    <div className={StyleRoom["room-menu"]}>
+                        <RoomForm
+                            define_room={define_room}
+                            current_room={room}
+                            current_user={me}
+                            socket={socket}
+                            handle_history={history_listener}
+                            trigger={trigger}
+                            setTrigger={setTrigger}
+                            setMessage={setMessage}
+                            setRoom={setRoom}
+                        />
+                    </div>
+                    <div className={Style["message-box"]}>
+                        <DisplayMessagesByRoom current_user={me} socket={socket} history={history} infomessage={messages} room={room} handle_history={history_listener}/>
+                        <MessageInput send={send}/>
+                    </div>
+                    <div className={Style["menu-chat"]}>
+                        <ParameterChat define_room={define_room} current_room={room} current_user={me} socket={socket}/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+        
 	);
 }

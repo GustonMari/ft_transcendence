@@ -39,13 +39,14 @@ export const AlertProvider = ({children}: any) => {
                     left-1/2
                     transform
                     -translate-x-1/2
-                    w-full
+                    
                     max-w-md
                     max-h-md
                     rounded-md
                     pt-3                             
                     flex
                     flex-row
+                    
 
                     transition
                     duration-500
@@ -55,7 +56,7 @@ export const AlertProvider = ({children}: any) => {
                     <p
                         className="
                         p-2
-                        mr-8
+                        mr-12
                         ml-4
                         text-gray-900
                         text-center

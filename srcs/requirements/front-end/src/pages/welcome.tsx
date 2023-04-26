@@ -14,11 +14,11 @@ export function Welcome() {
                     </p>
                     <div className={s.content__buttons}>
                         <button className={s.button} onClick={() => {
-                            window.location.href = "/authentification"
+                            window.location.href = "/authentification?type=signin"
                         }}>Sign In
                         </button>
                         <button className={s.button} onClick={() => {
-                            window.location.href = "/authentification"
+                            window.location.href = "/authentification?type=register"
                         }}>Register
                         </button>
                     </div>

@@ -27,7 +27,7 @@ export const ChangePP = ({
             }
         }).then(() => {
             handleSuccess("Profile Picture uploaded")
-            window.location.reload(); // TODO: check to reload the component only
+            window.location.reload();
         }).catch((err) => {
             handleError(err.response?.data?.message || 'An error occured, please try again later.')
         });
@@ -36,7 +36,37 @@ export const ChangePP = ({
 
     return (
     <>
-        
+        <div
+            className="
+            flex
+            justify-center
+            w-full
+            "
+        >
+            <img
+                src={"http://localhost:3000/api/public/picture/" + username}
+                className="
+                w-32
+                h-32
+                rounded-md
+                "
+            />
+            <input
+                id="change-pp-file"
+                type="file"
+                name="file"
+                onChange={handleProfilePictureChange}
+                className="
+                absolute
+                w-32
+                h-32
+                opacity-0
+
+                hover:cursor-pointer
+                "
+            />
+
+        </div>
     </>
     )
 }

@@ -83,127 +83,129 @@ export const Result = (props: any) => {
 
     return (
         <>
-            <div className={g.background}>
+            <div className={g.background + "  flex flex-col w-full md:flex-row"}>
 
                 <NavBar/>
 
                 {/* Search Bar */}
-                <Input
-                    onChange={
-                    (e: any) => {   
-                        e.preventDefault();
-                        setSearch(e.target.value);
-
-                        if (e.key === "Enter") {
-                            navigate("/search?user=" + search);
-                            window.location.reload();
-                        }
-                    }}
-                    onKeyDown={ (e: any) => {
-                        if (e.key === "Enter") {
-                            navigate("/search?user=" + search);
-                            window.location.reload();
-                        }}
-                    }
-                    placeholder="Search"
-                    sx={{
-                        ml: 20,
-                        mt: 10,
-                        width: 200,
-                        bgcolor: "white",
-                        borderRadius: 1,
-                        height: 40,
-                        padding: 1,
-                    }}
-                />
-
-                {/* Button to valid the search field */}
-                <Button
-                    startIcon={<BiSearch/>}
-                    onClick={
-                        (e: any) => {
+                <div className="w-full">
+                    <Input
+                        onChange={
+                        (e: any) => {   
                             e.preventDefault();
-                            navigate("/search?user=" + search);
-                            window.location.reload();   
-                        }
-                    }
-                    sx={{ml: 2}}
-                    variant="contained"
-                >
-                Search
-                </Button>
+                            setSearch(e.target.value);
 
-                {/* PopUp used to confirm the request */}
-                <PopUp
-                    show={showPU}
-                    title={titlePU}
-                    content={messagePU}
-                    onClose={() => {setShowPU(false)}}
-                    onConfirm={() => {if (onConfirm) {onConfirm()}}}
-                />
-
-                {/* List of users */}
-                { oriSearch &&
-                <List
-                    sx={{
-                        ml: 12,
-                        mr: 3,
-                        mt: 3,
-                        padding: 3,
-                        bgcolor: "white",
-                        borderRadius: 2,
-                    }}
-                    subheader={
-                        <Typography variant="h6" component="div" sx={{ml: 2}}>
-                            Search result for "{oriSearch}"
-                        </Typography>
-                    }
-                >
-                    { apiRes.map((user: any, idx: number) => { return (
-                        <ListItem key={idx}
-                            secondaryAction={
-                                <>
-                                    <IconButton onClick={(e: any) => {handleProfile(e, user.id)}}>
-                                        <CgProfile/>
-                                    </IconButton>
-                                    <IconButton onClick={(e: any) => createConfirmPopUp(
-                                        e,
-                                        "Add friend",
-                                        "Do you want to add " + user.login + " as a friend ?",
-                                        () => handleAddFriend(user.id)
-                                    )}>
-                                        <AiOutlinePlusCircle/>
-                                    </IconButton>
-                                    <IconButton onClick={(e: any) => createConfirmPopUp(
-                                        e,
-                                        "Block user",
-                                        "Do you want to block " + user.login + " ?",
-                                        () => handleBlockUser(user.id)
-                                    )}>
-                                        <MdOutlineRemoveCircleOutline/>
-                                    </IconButton>
-                                </>                    
+                            if (e.key === "Enter") {
+                                navigate("/search?user=" + search);
+                                window.location.reload();
                             }
-                            sx={{
-                                "&:hover": {
-                                    bgcolor: "grey.100",
-                                    borderRadius: 1,
-                                }
+                        }}
+                        onKeyDown={ (e: any) => {
+                            if (e.key === "Enter") {
+                                navigate("/search?user=" + search);
+                                window.location.reload();
                             }}
-                        >
-                            <ListItemAvatar>
-                                <Avatar  alt={user.login} src={"http://localhost:3000/api/public/picture/" + user.login}/>
-                            </ListItemAvatar>
-                            <ListItemText
-                                primary={user.login}
-                                secondary={(user.first_name ? user.first_name : "") + " " + (user.last_name ? user.last_name : "")}
-                                sx={{width: 3/4}}
-                            />
-                            
-                        </ListItem>
-                    )})}
-                </List>
-                }
+                        }
+                        placeholder="Search"
+                        sx={{
+                            ml: 10,
+                            mt: 10,
+                            width: 200,
+                            bgcolor: "white",
+                            borderRadius: 1,
+                            height: 40,
+                            padding: 1,
+                        }}
+                    />
+
+                    {/* Button to valid the search field */}
+                    <Button
+                        startIcon={<BiSearch/>}
+                        onClick={
+                            (e: any) => {
+                                e.preventDefault();
+                                navigate("/search?user=" + search);
+                                window.location.reload();   
+                            }
+                        }
+                        sx={{ml: 2}}
+                        variant="contained"
+                    >
+                    Search
+                    </Button>
+
+                    {/* PopUp used to confirm the request */}
+                    <PopUp
+                        show={showPU}
+                        title={titlePU}
+                        content={messagePU}
+                        onClose={() => {setShowPU(false)}}
+                        onConfirm={() => {if (onConfirm) {onConfirm()}}}
+                    />
+
+                    {/* List of users */}
+                    { oriSearch &&
+                    <List
+                        sx={{
+                            ml: 3,
+                            mr: 3,
+                            mt: 3,
+                            padding: 3,
+                            bgcolor: "white",
+                            borderRadius: 2,
+                        }}
+                        subheader={
+                            <Typography variant="h6" component="div" sx={{ml: 2}}>
+                                Search result for "{oriSearch}"
+                            </Typography>
+                        }
+                    >
+                        { apiRes.map((user: any, idx: number) => { return (
+                            <ListItem key={idx}
+                                secondaryAction={
+                                    <>
+                                        <IconButton onClick={(e: any) => {handleProfile(e, user.id)}}>
+                                            <CgProfile/>
+                                        </IconButton>
+                                        <IconButton onClick={(e: any) => createConfirmPopUp(
+                                            e,
+                                            "Add friend",
+                                            "Do you want to add " + user.login + " as a friend ?",
+                                            () => handleAddFriend(user.id)
+                                        )}>
+                                            <AiOutlinePlusCircle/>
+                                        </IconButton>
+                                        <IconButton onClick={(e: any) => createConfirmPopUp(
+                                            e,
+                                            "Block user",
+                                            "Do you want to block " + user.login + " ?",
+                                            () => handleBlockUser(user.id)
+                                        )}>
+                                            <MdOutlineRemoveCircleOutline/>
+                                        </IconButton>
+                                    </>                    
+                                }
+                                sx={{
+                                    "&:hover": {
+                                        bgcolor: "grey.100",
+                                        borderRadius: 1,
+                                    }
+                                }}
+                            >
+                                <ListItemAvatar>
+                                    <Avatar  alt={user.login} src={"http://localhost:3000/api/public/picture/" + user.login}/>
+                                </ListItemAvatar>
+                                <ListItemText
+                                    primary={user.login}
+                                    secondary={(user.first_name ? user.first_name : "") + " " + (user.last_name ? user.last_name : "")}
+                                    sx={{width: 3/4}}
+                                />
+                                
+                            </ListItem>
+                        )})}
+                    </List>
+                    }
+                </div>
             </div>
         </>
     );

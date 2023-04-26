@@ -38,7 +38,7 @@ const MenuSelector = (props: IMenuProps) => {
                     '&:hover': {
                         backgroundColor: 'rgb(158, 109, 170)',
                     },
-                    ml: 20,
+                    ml: 12,
                     mt: 5,
                 }}
                 onClick={(e: any) => handleMenuClick(e)}

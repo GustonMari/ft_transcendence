@@ -169,6 +169,8 @@
     border: none;
     background-color: transparent;
     cursor: pointer;
+
+    display: block ruby;
 }
 
 .profile_history_div > button:hover {
@@ -212,6 +214,8 @@
     background-color: transparent;
     border: none;
     border-right: 2px solid #746d6d;
+
+    display: block ruby;
     /* border: 1px solid #000000; */
 }
 
