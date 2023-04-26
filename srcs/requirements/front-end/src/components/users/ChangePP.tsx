@@ -29,7 +29,7 @@ export const ChangePP = ({
             handleSuccess("Profile Picture uploaded")
             window.location.reload();
         }).catch((err) => {
-            handleError(err.response?.data?.message || 'An error occured, please try again later.')
+            handleError(err?.message)
         });
 
 }

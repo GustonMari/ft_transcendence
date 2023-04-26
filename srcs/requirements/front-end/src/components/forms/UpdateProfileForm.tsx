@@ -42,7 +42,7 @@ export const UpdateProfileForm = () => {
             handleSuccess("Profile updated successfully.");
             window.location.reload();
         }).catch((err) => {
-            handleError(err.response?.data?.message || 'An error occured, please try again later.')
+            handleError(err?.message)
         });
     }
 

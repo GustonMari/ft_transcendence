@@ -48,7 +48,7 @@ export const TFAForm : React.FC<ITFAFormProps> = ({
             navigate("/home");
             handleSuccess('TFA Code Validated, Welcome Back!')
         }).catch((err) => {
-            handleError(err.response?.data?.message || 'An error occured, please try again later.')
+            handleError(err?.message)
         });
       }
 

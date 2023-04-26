@@ -31,18 +31,18 @@ APP.interceptors.response.use(
         originalConfig._retry = true;
 
         try {
-            await APP.get("/auth/refresh");
-            return APP(originalConfig);
-        } catch (_error) {
-            if (axios.isAxiosError(_error)) {
-                return _error;
+            const _ = await APP.get("/auth/refresh");
+            if (_.status === 200) {
+                return APP(originalConfig);
+            } else {
+                throw new Error("You are not authorized");
             }
+        } catch (_error) {        
+            throw new Error("You are not authorized");
         }
       }
     }
 
-    if (axios.isAxiosError(err)) {
-        return err;
-    }
+    throw new Error(err.response?.data?.message || "An error occured, please try again later.");
   }
 );

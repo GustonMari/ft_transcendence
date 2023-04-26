@@ -56,7 +56,7 @@ export const AuthForm = () => {
                 handleSuccess('You have been successfully connected!')
             }
         }).catch((err) => {
-            handleError(err.response?.data?.message || 'An error occured, please try again later.')
+            handleError(err?.message)
         })
     }
 
@@ -68,7 +68,7 @@ export const AuthForm = () => {
             window.location.href = res.data.url;
             handleSuccess("Successfully redirected to 42");
         }).catch((err) => {
-            handleError(err.response?.data?.message || 'An error occured, please try again later.')
+            handleError(err?.message)
         })
     }
 

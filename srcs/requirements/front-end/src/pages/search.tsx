@@ -143,7 +143,6 @@ export const Result = (props: any) => {
                     />
 
                     {/* List of users */}
-                    { oriSearch &&
                     <List
                         sx={{
                             ml: 3,
@@ -155,7 +154,7 @@ export const Result = (props: any) => {
                         }}
                         subheader={
                             <Typography variant="h6" component="div" sx={{ml: 2}}>
-                                Search result for "{oriSearch}"
+                                {oriSearch ? `Search result for ${oriSearch}` : "Make new friends" }
                             </Typography>
                         }
                     >
@@ -203,7 +202,6 @@ export const Result = (props: any) => {
                             </ListItem>
                         )})}
                     </List>
-                    }
                 </div>
             </div>
         </>
