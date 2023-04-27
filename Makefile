@@ -6,7 +6,7 @@
 #    By: gmary <gmary@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/02 10:42:00 by mamaurai          #+#    #+#              #
-#    Updated: 2023/04/18 10:41:26 by gmary            ###   ########.fr        #
+#    Updated: 2023/04/27 11:15:25 by gmary            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -99,7 +99,7 @@ super-clean:
 		rm -rf srcs/requirements/back-end/node_modules
 		rm -rf srcs/requirements/front-end/node_modules
 		rm -rf srcs/requirements/back-end/app/prisma/migrations
-		make drestart
+		# make drestart
 	
 endif
 

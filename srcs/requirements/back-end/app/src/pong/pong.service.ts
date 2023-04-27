@@ -5,6 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { exit } from 'process';
 import { Socket } from 'socket.io';
 import { InfoPongRoom } from './pong.interface';
+import { AddGameDTO } from '../history/dtos';
 
 
 @Injectable()
@@ -492,5 +493,15 @@ export class PongService {
 
 	async getWaitingList() : Promise<any> {
 		return PongService.waitingList;
+	}
+
+	async formatGameForAddGame(game: InfoPongRoom) : Promise<AddGameDTO> {
+		const ret: AddGameDTO = {
+			user_1_id: game.player1_id,
+			user_2_id: game.player2_id,
+			user_1_score: game.leftScore,
+			user_2_score: game.rightScore,
+		}
+		return (ret);
 	}
 }
