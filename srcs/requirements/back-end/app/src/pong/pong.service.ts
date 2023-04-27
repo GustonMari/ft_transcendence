@@ -26,6 +26,7 @@ export class PongService {
 		return (all);
 	}
 
+
 	async createGame(master: User, slave: User): Promise<boolean> {
 
 		// let game_name = "";
@@ -98,6 +99,7 @@ export class PongService {
 	}
 
 	async getGameByGameName(gameName: string): Promise<Game> {
+		console.log("getGameByGameName = ", gameName)
 		if (!gameName)
 			return (null);
 		const game: Game = await this.prisma.game.findUnique({
@@ -281,6 +283,7 @@ export class PongService {
 	async updateGame(data: any): Promise<{x: number, y: number, leftScore: number, rightScore: number, paddleLeftY: number, paddleRightY: number}>
 	{
 		const game = await this.getGame(data.gameName);
+		// console.log("updateGame : gameName = ", data.gameName, " | game = ", game);
 		if (game && game.PausePlay == false)
 			return ({x: game.x, y: game.y, leftScore: game.leftScore, rightScore: game.rightScore, paddleLeftY: game.back_paddle_left.y, paddleRightY: game.back_paddle_right.y});
 		if (game.leftScore >= 11 || game.rightScore >= 11)
@@ -469,15 +472,23 @@ export class PongService {
 		await this.reset(await this.getGame(newGame.game_name));
 	}
 
+	async fillAllRooms() {
+		const games = await this.prisma.game.findMany();
+		for (const game of games) {
+			this.initGame({ game: { data: game } });
+		}
+	}
+
+
 	async addPlayerToWaitingList(info: User) : Promise<any> {
-		console.log("info waiting = ", info);
+		// console.log("info waiting = ", info);
 		PongService.waitingList.push(info);
-		console.log("waiting list = ", PongService.waitingList);
+		// console.log("waiting list = ", PongService.waitingList);
 	}
 
 	async IsPlayerMatched() : Promise<boolean> {
 		const ret = PongService.waitingList.length % 2;
-		console.log("isplayermatched ret = ", ret)
+		// console.log("isplayermatched ret = ", ret)
 		if (ret === 0)
 		{
 			console.log("matched lolilol");	

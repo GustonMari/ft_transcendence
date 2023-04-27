@@ -57,9 +57,14 @@ export class PongController {
 		}
 
 		@Post('get_game')
+		// async get_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
 		async get_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+
 			// console.log('inside NTMMMMMMMMMM', info)
-			const game = await this.pongService.getGameByGameName(info.game_name.data);
+			console.log("getgetgetgame: info = ", info.game_name);
+			// const game = await this.pongService.getGameByGameName(info.game_name.data);
+			const game = await this.pongService.getGameByGameName(info.game_name);
+
 			// exit(1);
 			response.send(game);
 		}
@@ -95,7 +100,7 @@ export class PongController {
 
 		@Post('add_player_to_waiting_list')
 		async add_player_to_waiting_list(@Res() response: Response ,@MessageBody() info: User): Promise<void> {
-			console.log("info in controlleur = ", info);
+			// console.log("info in controlleur = ", info);
 			// await this.pongService.addPlayerToWaitingList(info);
 			await this.pongService.addPlayerToWaitingList(info);
 			response.send("added");
@@ -122,4 +127,11 @@ export class PongController {
 			await this.pongService.resumeGame(info);
 			response.send("resumed");
 		}
+
+		@Post('fill_all_rooms')
+		async fill_all_rooms(@Res() response: Response): Promise<void> {
+			await this.pongService.fillAllRooms();
+			response.send("filled");
+		}
+
 }

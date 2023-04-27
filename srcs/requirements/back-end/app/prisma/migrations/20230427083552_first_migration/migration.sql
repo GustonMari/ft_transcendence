@@ -128,6 +128,7 @@ CREATE TABLE "games" (
     "score_right" INTEGER NOT NULL DEFAULT 0,
     "master_id" INTEGER NOT NULL,
     "slave_id" INTEGER NOT NULL,
+    "game_over" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "games_pkey" PRIMARY KEY ("id")
 );

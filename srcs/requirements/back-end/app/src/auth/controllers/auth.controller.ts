@@ -145,7 +145,7 @@ export class AuthController {
         @GetCredentials() credentials: Tokens,
         @Res() res: Response
     ) {
-        console.log("Refresh functions here -> ", user, credentials);
+        // console.log("Refresh functions here -> ", user, credentials);
         const {access_token, refresh_token} = await this.authService.refresh(user, credentials);
         res.cookie('access_token', access_token, {
             httpOnly: true,

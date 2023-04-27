@@ -65,7 +65,6 @@ export default function HomePong() {
 
 	const isMatched = async (): Promise<any> => {
 		const ret = await APP.post("/pong/is_matched");
-		// console.log("isMatched = ", ret.data);
 		if (ret.data != null)
 			return ret.data;
 		return null;
@@ -73,7 +72,6 @@ export default function HomePong() {
 
 	const addPlayerToList = async (user: User) => {
 		try {
-			// const res = await APP.post("/pong/add_player_to_waiting_list", {currentUser: currentUser});
 			const res = await APP.post("/pong/add_player_to_waiting_list", currentUser);
 			// console.log("addPlayerToList = ", res.data);
 		}
@@ -100,12 +98,16 @@ export default function HomePong() {
 			// console.log("socket = ", socket);
 			socket?.emit("joinWaitingRoom", is_match);
 			// console.log("is_match = ", is_match);
-
-			// navigate("/pong", {state: {
-			// 	user: is_match.player1, 
-			// 	opponent: is_match.player2,
-			// }});
 		}
+	}
+
+	const spectateGame = async (room: any) => {
+		console.log("spectateGame : room = ", room);
+		console.log("socket = ", socket);
+		socket?.emit("changeGame", room.name);
+		navigate("/pong", {state: {
+			game_name_param: room.name,
+	}});
 	}
 
 	socket?.on("startGame", (data: any) => {
@@ -113,8 +115,8 @@ export default function HomePong() {
 		// console.log("startGame");
 		setWaitingForGame(false);
 		navigate("/pong", {state: {
-				user: data.is_match.player1, 
-				opponent: data.is_match.player2,
+				// user: data.is_match.player1, 
+				// opponent: data.is_match.player2,
 		}});
 	});
 
@@ -151,9 +153,11 @@ export default function HomePong() {
 								<div className={Style['line-game-room']}>
 									<div className={Style['room-game-name']}>{room.name}</div>
 									<button
-										type="submit"
+										// type="submit"
 										className={Style['game-room-image']}
-										onClick={() => {}}
+										onClick={() => {
+											spectateGame(room);
+										}}
 										>
 										<IconContext.Provider value={{className: Style['icon-game-room']}}>
 											<FaEye />
