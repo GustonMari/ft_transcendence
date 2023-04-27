@@ -20,6 +20,13 @@ export class PongService {
 	static waitingList: User[] = [];
 
 	async createInvitationPong(master: User, slave: User): Promise<void> {
+		this.prisma.invitationPong.create({
+			data: {
+				game_name: master.login + "-" + slave.login,
+				sender_player: master,
+				invited_player: slave,
+			}
+		});
 	}
 
 	async getGame(game_name: string): Promise<InfoPongRoom>
