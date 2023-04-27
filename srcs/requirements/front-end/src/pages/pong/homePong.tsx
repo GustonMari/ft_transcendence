@@ -28,7 +28,6 @@ export default function HomePong() {
 	const roomContainer = useRef<HTMLDivElement>(null);
 	const [rooms, setRooms] = useState<any>([]);
 
-
 	useEffect(() => {
 		const getRooms = async () => {
 			try {
@@ -36,6 +35,7 @@ export default function HomePong() {
 			
 				})
 				setRooms(all_games.data);
+				console.log("all_games = ", all_games.data);
 				if (roomContainer.current) {
 					roomContainer.current.scrollTop = roomContainer.current.scrollHeight;
 				  }
@@ -44,12 +44,8 @@ export default function HomePong() {
 			}
 		};
 		getRooms();
-		// console.log("rooms = ", rooms);
-	}, [trigger/* , define_room */]);
+	}, [/* trigger,  *//* rooms */]);
 
-	const render_react_pong = () => {
-		setTrigger((p) => p + 1);
-	}
 
 	useEffect(() => {
 		const getCurrentUser = async () => {
@@ -73,7 +69,6 @@ export default function HomePong() {
 	const addPlayerToList = async (user: User) => {
 		try {
 			const res = await APP.post("/pong/add_player_to_waiting_list", currentUser);
-			// console.log("addPlayerToList = ", res.data);
 		}
 		catch (error) {
 			console.error(error);
@@ -81,7 +76,6 @@ export default function HomePong() {
 	}
 
 	const enterInWaitingFile = async () => {
-		// console.log("enterInWaitingFile: currentUser = ", currentUser);
 		await addPlayerToList(currentUser);
 		const is_match = await isMatched();
 		if (!is_match)
@@ -111,12 +105,12 @@ export default function HomePong() {
 	}
 
 	socket?.on("startGame", (data: any) => {
-		// console.log("datatatatatattat = ", data);
-		// console.log("startGame");
 		setWaitingForGame(false);
+			const clearWait = async () => {
+				await APP.post("/pong/clear_waiting_list");
+			}
+			clearWait();
 		navigate("/pong", {state: {
-				// user: data.is_match.player1, 
-				// opponent: data.is_match.player2,
 		}});
 	});
 
@@ -126,12 +120,6 @@ export default function HomePong() {
 			<h1 className={Style['homepong-title']}>LOBBY</h1>
 			<div className={Style['homepong-container']}>
 
-				{/* <button className={Style['join-waiting-list']} onClick={() =>{
-					enterInWaitingFile();
-				} }
-				>Join Waiting List
-
-				</button> */}
 				<button className={Style['join-waiting-list']} onClick={() =>{
 					enterInWaitingFile();
 				} }>
@@ -145,7 +133,6 @@ export default function HomePong() {
 					</div>
 				</div>
 				</button>
-
 				<div className={Style['game-list']}>
 						<h1 className={Style['game-title']}>Game list</h1>
 							{rooms.map((room : any) =>(

@@ -1,16 +1,30 @@
 import { Button, Modal, Form } from 'react-bootstrap';
 import React, { useEffect, useRef, useState } from "react";
 import StyleUtils from './Style.utils.module.css';
+import { Navigate, useNavigate } from "react-router-dom";
+import { APP } from "../../network/app";
+
+
 
 
 export function PopupWinLose(props : any) {
 	const { popupwinlose, setPopupWinLose, isMaster, socket, gameName} = props;
 	const [show, setShow] = useState(true);
-	// const [triggerPong, setTriggerPong] = React.useState(false);
+	const navigate = useNavigate();
+
+	// const handleClose = async () => {
+	// 	setShow(false)
+	// 	setPopupWinLose({winlose: false, winlosemessage: ""});
+	// 	await APP.post("/pong/delete_game", {
+	// 		game_name: gameName
+	// 	});
+	// 	navigate("/homepong");
+	// };
+
 	const handleClose = () => {
 		setShow(false)
 		setPopupWinLose({winlose: false, winlosemessage: ""});
-		// setPopup_pong(null);
+		navigate("/homepong");
 	};
 
 	function RestartGame()
@@ -18,16 +32,8 @@ export function PopupWinLose(props : any) {
 		socket?.emit('playGame', gameName);
 		setShow(false)
 		setPopupWinLose({winlose: false, winlosemessage: ""});
-		// setTriggerPong(true);
 	}
 
-	// if (triggerPong == true) {
-		
-	// 	return (
-	// 		<Navigate to="/pong" />
-	// 	);
-	// }
-	// else {
 		return (
 		  <>
 

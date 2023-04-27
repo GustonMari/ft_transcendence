@@ -128,6 +128,13 @@ export class PongController {
 			response.send("resumed");
 		}
 
+		@Post('delete_game')
+		async delete_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+			console.log("delete_game: info = ", info.game_name);	
+			await this.pongService.deleteGame(info.game_name);
+			response.send("deleted");
+		}
+
 		@Post('fill_all_rooms')
 		async fill_all_rooms(@Res() response: Response): Promise<void> {
 			await this.pongService.fillAllRooms();

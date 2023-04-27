@@ -70,6 +70,24 @@ export class PongService {
 		return (true);
 	}
 
+	async deleteGame(game_name: string): Promise<boolean> {
+		if (!game_name)
+			return (false);
+		const game = await this.prisma.game.findUnique({
+			where: {
+				name: game_name,
+			}
+		});
+		if (!game)
+			return (false);
+		await this.prisma.game.delete({
+			where: {
+				name: game_name,
+			}
+		});
+		return (true);
+	}
+
 	async getGameName(login:string): Promise<any> {
 		if (!login)
 			return ('Error: problem with login');
