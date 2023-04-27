@@ -16,6 +16,7 @@ import { BsPlayFill } from "react-icons/bs";
 import { BiPause } from "react-icons/bi";
 import Create_socket from "../../network/chat.socket";
 import { APP } from "../../network/app";
+import { Navigate, useNavigate } from "react-router-dom";
 
 // import kd from "./keydrown";
 
@@ -152,6 +153,8 @@ export function ExecutePong(props: any) {
 	let collision = document.getElementById("collision");
 	const {socket} = useContext(PongContext);
 	const kd					= useRef(require('keydrown'));
+	const navigate = useNavigate();
+
 
 	let pongBall: Ball; 
 
@@ -178,7 +181,7 @@ export function ExecutePong(props: any) {
 		const DownHandler = async () => {
 			
 			if (kd.current.UP.isDown() && !isWatcher) {
-			console.log('aaaaaaaaaaaaaaaaa')
+			// console.log('aaaaaaaaaaaaaaaaa')
 			rightUpPressed = true;
 			if (isMaster) {
 				if (newLimit && playerPaddleLeft) {
@@ -287,32 +290,35 @@ export function ExecutePong(props: any) {
 						window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight));
 			  }
 			}, [ball]);
-			if (!isWatcher)
-			{
-				socket.on('GameFinished', async (data: any) => {
-					let msg_tmp = '';
-							
-	
-					if (isMaster && data.leftScore >= 11)
-					{
-						// console.log("You won!");
-						msg_tmp = 'You won'
-					}
-					else if (!isMaster && data.rightScore >= 11)
-					{
-						// console.log("slave won");
-						msg_tmp = 'You won!';
-					}
-					else if (isMaster && data.rightScore >= 11)
-					{
-						// console.log('master lose');
-						msg_tmp = 'You lose :(';
-					}
-					else if (!isMaster && data.leftScore >= 11)
-					{
-						// console.log('slave lose');
-						msg_tmp = 'You lose :(';
-					}
+			socket.on('GameFinished', async (data: any) => {
+				let msg_tmp = '';
+						
+				if (isMaster && data.leftScore >= 11)
+				{
+					// console.log("You won!");
+					msg_tmp = 'You won'
+				}
+				else if (!isWatcher && !isMaster && data.rightScore >= 11)
+				{
+					// console.log("slave won");
+					msg_tmp = 'You won!';
+				}
+				else if (isMaster && data.rightScore >= 11)
+				{
+					// console.log('master lose');
+					msg_tmp = 'You lose :(';
+				}
+				else if (!isWatcher &&  !isMaster && data.leftScore >= 11)
+				{
+					// console.log('slave lose');
+					msg_tmp = 'You lose :(';
+				}
+				else if (isWatcher)
+				{
+					navigate("/homepong");
+				}
+				if (!isWatcher)
+				{
 					setPopupWinLose({popup: true, winlosemessage: msg_tmp});
 					await APP.post("/pong/set_game_over", {
 						game_name: gameName
@@ -321,8 +327,8 @@ export function ExecutePong(props: any) {
 						game_name: gameName
 					});
 					// setTrigger(trigger += 1);
-				})
-			}
+				}
+			})
 
 			const click = (map: number) => {
 				setChangeMap(map);
