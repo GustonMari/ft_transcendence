@@ -2,7 +2,7 @@
 
 - [x] create avatar component
 - [x] fix the CSS for hidden components
-- [ ] check inputs for authentication in react
+- [x] check inputs for authentication in react
 - [x] fix the overflow error in welcome.tsx
 - [ ] fix the CSS for NavBar to be responsive + if I have the time, rework the Navbar in TailwindCSS
 - [ ] Set JWT secret in .env

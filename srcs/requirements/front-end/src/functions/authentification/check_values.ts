@@ -1,26 +1,25 @@
 const g_emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-function _check_username (username: string): true {
-    if (username.length < 3) {
-        throw new Error("Username must be at least 3 characters long");
-    }
-    if (username.length > 20) {
-        throw new Error("Username must be at most 20 characters long");
-    }
-    if (!g_emailRegex.test(username)) {
-        throw new Error('Please enter a valid email address.');
-    }
-    return true;
-}
-
-function _check_email (email: string): void {
-    if (!g_emailRegex.test(email)) {
-        throw new Error('Please enter a valid email address.');
+function _check_username(username: string): void {
+    const regex = /^[a-zA-Z0-9_-]{3,16}$/;
+    if (!regex.test(username) || username.length < 9 || username.length > 20) {
+      throw new Error("invalid username");
     }
 }
 
-function _check_password (password: string): void {
-}
+function _check_email(email: string): void {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!regex.test(email)) {
+      throw new Error("invalid email");
+    }
+  }
+
+  function _check_password(password: string): void {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]+$/;
+    if (password.length < 8 || password.length > 50 || !regex.test(password)) {
+      throw new Error("Le mot de passe doit comporter entre 8 et 50 caractères, au moins une lettre minuscule, une lettre majuscule et un chiffre.");
+    }
+  }
 
 export function check_form({
     username,

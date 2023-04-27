@@ -4,6 +4,7 @@ import { AuthButton } from "./AuthButton";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { APP } from "../../network/app";
 import { AlertContext } from "../../contexts/Alert.context";
+import { check_form } from "../../functions/authentification/check_values";
 
 /**
  * AuthForm component
@@ -43,20 +44,32 @@ export const AuthForm = () => {
     const handleSubmit = (event: any) => {
         event.preventDefault();
 
-        APP.post(`/auth/${variant}`, {
-            email: email.current,
-            login: username.current,
-            password: password.current,
-        }).then((res: any) => {
-            if (res.data?.url) {
-                navigate('/' + res.data.url);
-            } else {
-                navigate('/home');
-                handleSuccess('You have been successfully connected!')
-            }
-        }).catch((err) => {
+        try {
+            check_form({
+                username: username.current,
+                email: email.current,
+                password: password.current,
+                passwordConfirm: passwordConfirm.current,
+                type: variant,
+            })
+            APP.post(`/auth/${variant}`, {
+                email: email.current,
+                login: username.current,
+                password: password.current,
+            }).then((res: any) => {
+                if (res.data?.url) {
+                    navigate('/' + res.data.url);
+                } else {
+                    navigate('/home');
+                    handleSuccess('You have been successfully connected!')
+                }
+            }).catch((err) => {
+                handleError(err?.message)
+            })
+        } catch (err: Error | any) {
             handleError(err?.message)
-        })
+        }
+
     }
 
     /* -- Rediction to connect with the 42 API -- */
