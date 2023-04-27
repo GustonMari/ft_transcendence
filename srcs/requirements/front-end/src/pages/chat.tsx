@@ -96,7 +96,7 @@ export default function Chat(props: any) {
         bg-cover
         "
     >
-        <div
+        {/* <div
             className="
             flex
             flex-col
@@ -104,7 +104,7 @@ export default function Chat(props: any) {
             w-full
             h-full
             "
-        >
+        > */}
             <NavBar/>
             <div className={g.background}>
                 <div className={Style["global"]}>
@@ -130,7 +130,7 @@ export default function Chat(props: any) {
                     </div>
                 </div>
             </div>
-        </div>
+        {/* </div> */}
     </div>
 
 
