@@ -19,6 +19,9 @@ export class PongService {
 	static allRooms: InfoPongRoom[] = [];
 	static waitingList: User[] = [];
 
+	async createInvitationPong(master: User, slave: User): Promise<void> {
+	}
+
 	async getGame(game_name: string): Promise<InfoPongRoom>
 	{
 		// console.log("game_name = ", game_name)

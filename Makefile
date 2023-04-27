@@ -6,7 +6,7 @@
 #    By: gmary <gmary@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/02 10:42:00 by mamaurai          #+#    #+#              #
-#    Updated: 2023/04/27 11:15:25 by gmary            ###   ########.fr        #
+#    Updated: 2023/04/27 15:51:06 by gmary            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -96,10 +96,11 @@ remove-modules:
 	
 super-clean:
 		make stop 2>/dev/null
+		# make dclean 2>/dev/null
 		rm -rf srcs/requirements/back-end/node_modules
 		rm -rf srcs/requirements/front-end/node_modules
 		rm -rf srcs/requirements/back-end/app/prisma/migrations
-		# make drestart
+		make drestart
 	
 endif
 

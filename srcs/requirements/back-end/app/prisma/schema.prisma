@@ -73,7 +73,8 @@ model User {
     rooms UsersOnRooms[]
 	messages Message[]
 	UserInGame UserInGame[]
-
+    InvitationPong1 InvitationPong[] @relation("invitationpong1")
+    InvitationPong2 InvitationPong[] @relation("invitationpong2")
 	// GameMaster Game	@relation("master")
 	// GameSlave Game	@relation("slave")
     // Game Game[]			@relation("watchers")
@@ -171,7 +172,7 @@ model UserInGame {
     @@id([user_id, game_id])
 }
 
-model Game {
+model Game {@relation("invitationpong", fields: [invited_player], references: [login])
 	id Int @id @unique @default(autoincrement())
 	name String @unique
 	created_at DateTime @default(now())
@@ -188,6 +189,21 @@ model Game {
 	UserInGame UserInGame[]
 
 	@@map("games")
+}
+
+model InvitationPong {
+    id Int @id @unique @default(autoincrement())
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    
+    sender_player User @relation("invitationpong1", fields: [sender_player_id], references: [id])
+    sender_player_id Int
+    invited_player User @relation("invitationpong2", fields: [invited_player_id], references: [id])
+    invited_player_id Int
+    game_name String
+
+    @@map("invitationpong")
 }
 
 enum GameType {

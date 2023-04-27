@@ -123,4 +123,11 @@ export class PongController {
 			await this.pongService.resumeGame(info);
 			response.send("resumed");
 		}
+
+		@Post('create_invitation_pong')
+		async create_invitation_pong(@Res() response: Response ,@MessageBody() info: any): Promise<any> {
+		{
+			await this.pongService.createInvitationPong(info);
+			response.send("invitation created");
+		}
 }
