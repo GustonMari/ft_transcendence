@@ -58,13 +58,13 @@ export default function Pong() {
 	// }
 
 	// socket?.on('renderReactPong', render_react_pong);
+	const location = useLocation();
   
 	useLayoutEffect(() => {
 	  const getUsers = async () => {
 		try {
-			// const location = useLocation();
-			// const user2 = new URLSearchParams (location.search).get("opponent");
-			// console.log("user222222222222 = ", user2);
+			const { user, opponent } = location.state;
+			console.log("user222222222222 = ", user, opponent);
 			const res = await APP.get("/user/me");
 			setCurrentUser(res.data);
 			const is_master = await APP.post("/pong/is_user_master", {
