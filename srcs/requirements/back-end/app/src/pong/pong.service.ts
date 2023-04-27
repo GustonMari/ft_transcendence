@@ -325,9 +325,9 @@ export class PongService {
 					game.x -= 3;
 				}
 			}
+			await this.sideColision(game.back_ball, game.back_limit, game);
 		}
 		//TODO: faire en sorte que la ball sorte entierement pour marquer un point
-		await this.sideColision(game.back_ball, game.back_limit, game);
 		return ({x: game.x, y: game.y, leftScore: game.leftScore, rightScore: game.rightScore, paddleLeftY: game.back_paddle_left.y, paddleRightY: game.back_paddle_right.y});
 		
 	}
@@ -388,18 +388,15 @@ export class PongService {
 	// async sideColision(rect: DOMRect, limit: DOMRect): Promise<void> {
 	async sideColision(rect: any, limit: any, game: InfoPongRoom): Promise<void> {
 		if (rect.left <= limit.left || rect.right >= limit.right) {
-			//TODO: divier cette fonction en deux pour les points, et pour le reset
 			if (rect.left <= limit.left)
 			{
 				await this.reset(game);
 				await this.incrRightScore(game);
-				//TODO: do we have to add score to prisma ?
 			}
 			else if (rect.right >= limit.right)
 			{
 				await this.reset(game);
 				await this.incrLeftScore(game);
-				//TODO: do we have to add score to prisma ?
 			}
 		}
 	}

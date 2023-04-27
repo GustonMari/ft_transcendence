@@ -86,7 +86,6 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			// console.log('game stopped');
 			const game = await this.pongService.getGame(data.gameName);
 			await this.historyService.addGame(await this.pongService.formatGameForAddGame(game));
-			console.log('okkkkkkkkkkkkkkkkkkk boy', game);
 			await this.pongService.reset(game);
 			await this.pongService.resetScore(data.gameName);
 			// socket.emit('GameUpdated', ret);
