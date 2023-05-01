@@ -57,8 +57,8 @@ export function KickUser(props: any)
 	const [value, setValue] = React.useState("");
 
 	function emitAndClear() {
-		// socket?.emit("banUser", { room_name: current_room, id_user_from: current_user.id, login_user_to: value, ban_till: date_value});
-		
+		socket?.emit("kickUser", { room_name: current_room, id_user_from: current_user.id, login_user_to: value});
+
 		setValue("");
 	}
 
