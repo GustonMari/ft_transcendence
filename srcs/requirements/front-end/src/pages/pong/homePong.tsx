@@ -77,23 +77,33 @@ export default function HomePong() {
 	}
 
 	const enterInWaitingFile = async () => {
-		await addPlayerToList(currentUser);
-		const is_match = await isMatched();
-		if (!is_match)
+		const in_game = await APP.post("/pong/is_player_is_in_game", currentUser);
+		if (in_game.data === true)
 		{
-			//put message waiting
-			// console.log('is_match = null');
-			socket?.emit("joinWaitingRoom");
-			setWaitingForGame(true);
+			navigate("/pong", {state: {
+			}});
 		}
-		else
+		const res = await APP.post("/pong/is_player_in_waiting_list", currentUser);
+		if (res.data === false)
 		{
-			console.log("enterInWaitingFile : is_match = ", is_match);
-			setWaitingForGame(false);
-			// await APP.post("/pong/clear_waiting_list");
-			// console.log("socket = ", socket);
-			socket?.emit("joinWaitingRoom", is_match);
-			// console.log("is_match = ", is_match);
+			await addPlayerToList(currentUser);
+			const is_match = await isMatched();
+			if (!is_match)
+			{
+				//put message waiting
+				// console.log('is_match = null');
+				socket?.emit("joinWaitingRoom");
+				setWaitingForGame(true);
+			}
+			else
+			{
+				console.log("enterInWaitingFile : is_match = ", is_match);
+				setWaitingForGame(false);
+				// await APP.post("/pong/clear_waiting_list");
+				// console.log("socket = ", socket);
+				socket?.emit("joinWaitingRoom", is_match);
+				// console.log("is_match = ", is_match);
+			}
 		}
 	}
 

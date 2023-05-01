@@ -508,6 +508,34 @@ export class PongService {
 		// console.log("waiting list = ", PongService.waitingList);
 	}
 
+	async isPlayerIsInWaitingList(info: User) : Promise<boolean> {
+		console.log("isPlayerIsInWaitingList = ", info);
+		console.log("isplayerisinwaitinglist : waiting list = ", PongService.waitingList)
+		for (const player of PongService.waitingList)
+		{
+			console.log("HOHOHOHOH player = ", player);
+			console.log("HOHOHOHOH info = ", info.id);
+			if (player.id === info.id)
+				return true;
+		}
+		console.log("returned FALSE")
+		return false;
+	}
+
+	async isPlayerIsInGame(info: User) : Promise<boolean> {
+		console.log("isPlayerIsInGame = ", info);
+		console.log("isplayerisingame : waiting list = ", PongService.allRooms)
+		for (const player of PongService.allRooms)
+		{
+			console.log("isPlayerIsInGame HOHOHOHOH player = ", player);
+			console.log("isPlayerIsInGame HOHOHOHOH info = ", info.id);
+			if (player.player1_id === info.id || player.player2_id === info.id)
+				return true;
+		}
+		console.log("isPlayerIsInGame returned FALSE")
+		return false;
+	}
+
 	async IsPlayerMatched() : Promise<boolean> {
 		const ret = PongService.waitingList.length % 2;
 		// console.log("isplayermatched ret = ", ret)
