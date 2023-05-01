@@ -145,25 +145,19 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 	@SubscribeMessage('leaveGame')
 	async leaveGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-		// console.log("leaveGame");
-		// await this.pongService.leaveGame();
 		await socket.leave(data.gameName);
 	}
 
 	@SubscribeMessage('changeGame')
 	async changeGame(@MessageBody() data: string, @ConnectedSocket() socket: Socket): Promise<void> {
-		// await socket.leave(data.old_game_name);
 		console.log("changeGame data = ", data)
 		await socket.join(data);
-		// console.log("changeGame");
 	}
 
 	@SubscribeMessage('joinWaitingRoom')
 	async createWaitingRoom(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
 		console.log("joinWaitingRoom");
 		await socket.join("waitingRoom");
-		// console.log("data = ", data);
-
 		if ((await this.myserver.in("waitingRoom").fetchSockets()).length == 2) {
 			console.log("2 players in waiting room")
 			await this.pongService.createGame(PongService.waitingList[0] , PongService.waitingList[1]);
@@ -180,13 +174,11 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 	@SubscribeMessage('pauseGame')
 	async pauseGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-		// console.log("pauseGame data = ", data);
 		await this.pongService.PauseGame(data);
 	}
 
 	@SubscribeMessage('resumeGame')
 	async resumeGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-		// console.log("resumeGame data = ", data);
 		await this.pongService.resumeGame(data);
 	}
 

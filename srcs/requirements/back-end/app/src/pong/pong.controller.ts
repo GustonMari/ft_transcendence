@@ -100,8 +100,6 @@ export class PongController {
 
 		@Post('add_player_to_waiting_list')
 		async add_player_to_waiting_list(@Res() response: Response ,@MessageBody() info: User): Promise<void> {
-			// console.log("info in controlleur = ", info);
-			// await this.pongService.addPlayerToWaitingList(info);
 			await this.pongService.addPlayerToWaitingList(info);
 			response.send("added");
 		}
@@ -126,16 +124,12 @@ export class PongController {
 
 		@Post('pause_game')
 		async pause_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
-			// const game = await this.pongService.getGameName(info.login);
-			// await this.pongService.PauseGame(game.data.game_name);
 			await this.pongService.PauseGame(info);
 			response.send("paused");
 		}
 
 		@Post('resume_game')
 		async resume_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
-			// const game = await this.pongService.getGameName(info.login);
-			// await this.pongService.resumeGame(game.data.game_name);
 			await this.pongService.resumeGame(info);
 			response.send("resumed");
 		}

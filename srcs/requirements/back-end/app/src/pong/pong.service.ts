@@ -20,17 +20,13 @@ export class PongService {
 
 	async getGame(game_name: string): Promise<InfoPongRoom>
 	{
-		// console.log("game_name = ", game_name)
 		const all =  await PongService.allRooms.find(currentRoom => currentRoom.game_name === game_name)
-		// console.log("GETGAME = ", all);
 		return (all);
 	}
 
 
 	async createGame(master: User, slave: User): Promise<boolean> {
 
-		// let game_name = "";
-		console.log("create game : master = ", master, " slave = ", slave);
 		let new_game_name = "";
 		if (!slave || !master)
 			return (false);
@@ -112,7 +108,6 @@ export class PongService {
 		});
 		if (game == null || game == undefined)
 			return ('Error game dont exist');
-		// console.log("GAME NAME = ", game.name);
 		return (game.name);
 	}
 
@@ -186,11 +181,6 @@ export class PongService {
 		game.back_ball.right = (game.x + ((game.back_width * 2) / 90) - 3);
 		game.back_ball.top = (game.y - ((100 * 2) / 55));
 		game.back_ball.bottom = (game.y + ((100 * 2) / 55) - 1.27);
-
-		// game.back_ball.left = (((game.x - 2) * game.back_width) / 90);
-		// game.back_ball.right = (((game.x + 2) * game.back_width) / 90);
-		// game.back_ball.top = (((game.y - 2) * game.back_height) / 55);
-		// game.back_ball.bottom = (((game.y + 2) * game.back_height) / 55);
 	}
 
 	async movePaddeLeft(data: string, current_game_name: string): Promise<void>
@@ -233,16 +223,12 @@ export class PongService {
 		// this.PausePlay = !this.PausePlay;
 		// this.PausePlay = false;
 		const game = await this.getGame(current_game_name);
-		// console.log("PAUSE GAME current_game_name = ", game);
-		// console.log("PAUSE GAME game = ", game);
 		game.PausePlay = false;
 	}
 
 	async resumeGame(current_game_name: string): Promise<void>
 	{
 		const game = await this.getGame(current_game_name);
-		// console.log("RESUME GAME current_game_name = ", game);
-		// console.log("RESUME GAME game = ", game);
 		game.PausePlay = true;
 	}
 
@@ -262,36 +248,15 @@ export class PongService {
 		//TODO: vraiment changer ce systeme lorsquon aurra les queues
 		if (game.waiter == 1) // ici on mets 1 car le deuxieme joueur est le second waiter
 		{
-			// console.log("2 waiters are ready");
 			game.PausePlay = true;
 			game.waiter = 0;
-			// await game.pongService.playGame(data.gameName);
 		}	else
 		{
-			// console.log("1 waiter is ready");
 			game.waiter++;
 		}
 		//TODO: faire le systeme de queue, ou l'on passe au jour suivant si il y a un joueur qui veut jouer
 	}
 
-	// @SubscribeMessage('playGame')
-	// async playGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-	// 	console.log("playGame");
-
-	// 	//TODO: comment ou quoi faire lorsqu'un joueur accepte ou non de jouer
-	// 	//TODO: vraiment changer ce systeme lorsquon aurra les queues
-	// 	if (this.waiter == 1) // ici on mets 1 car le deuxieme joueur est le second waiter
-	// 	{
-	// 		console.log("2 waiters are ready");
-	// 		this.waiter = 0;
-	// 		await this.pongService.playGame(data.gameName);
-	// 	}	else
-	// 	{
-	// 		console.log("1 waiter is ready");
-	// 		this.waiter++;
-	// 	}
-	// 	//TODO: faire le systeme de queue, ou l'on passe au jour suivant si il y a un joueur qui veut jouer
-	// }
 
 	async defineWinnerLooser()
 	{
@@ -351,16 +316,6 @@ export class PongService {
 		return ({x: game.x, y: game.y, leftScore: game.leftScore, rightScore: game.rightScore, paddleLeftY: game.back_paddle_left.y, paddleRightY: game.back_paddle_right.y});
 		
 	}
-
-	// async isCollision(ball: any, paddle: any): Promise<boolean> {
-
-	// 	return (
-	// 		(ball.left <= (paddle.right + 1) &&
-	// 		ball.right >= (paddle.left - 1) &&
-	// 		ball.top <= (paddle.bottom + 1) &&
-	// 		ball.bottom >= (paddle.top + 1))
-	// 	)
-	// }
 
 	async isCollision(ball: any, paddle: any): Promise<boolean> {
 		const collidesFromTop = ball.bottom >= paddle.top && ball.top < paddle.top && ball.right >= paddle.left && ball.left <= paddle.right;
@@ -431,7 +386,6 @@ export class PongService {
 	}
 
 	async getGamesRooms(): Promise<any> {
-		console.log("waiting list = ", PongService.waitingList);
 		return await this.prisma.game.findMany();
 	}
 
@@ -460,12 +414,10 @@ export class PongService {
 		console.log('game inited')
 		const newGame: InfoPongRoom = {
 			PausePlay: false,
-			// PausePlay: true,
 			x: 50,
 			y: 50,
 			back_width: 100,
 			back_height: 100,
-			// back_ball: { width: ((100 * 4) / 90), height: ((100 * 4) / 55), left: ((43 * 100) / 90), right: ((47 * 100) / 90), top: ((25.5 * 100) / 55), bottom: ((29.5 * 100) / 55) },
 			back_ball: { width: ((100 * 2) / 90), height: ((100 * 2) * 55), left: (50 - ((100 * 2) * (90 - 3))), right: (50 + ((100 * 2) * 90)), top: (50 - ((100 * 2) * (55 - 3))), bottom: (50 + ((100 * 2) * 55)) },
 			back_limit: { top: 0, bottom: 100, left: 0, right: 100 },
 			leftScore: 0,
@@ -480,12 +432,9 @@ export class PongService {
 				x: 0.1,
 				y: 0.1
 			},
-			// velocity: 0.80,
 			velocity: 0.25,
 			player1_id: info.game.data.master_id,
 			player2_id: info.game.data.slave_id,
-			// player1_name: '',
-			// player2_name: ''
 		}
 		PongService.allRooms.push(newGame);
 		await this.reset(await this.getGame(newGame.game_name));
@@ -500,48 +449,31 @@ export class PongService {
 
 
 	async addPlayerToWaitingList(info: User) : Promise<any> {
-		console.log("info waiting = ", info);
-		console.log("addplayertowaiting : before : waiting list = ", PongService.waitingList)
 		PongService.waitingList.push(info);
-		console.log("addplayertowaiting : after : waiting list = ", PongService.waitingList)
-
-		// console.log("waiting list = ", PongService.waitingList);
 	}
 
 	async isPlayerIsInWaitingList(info: User) : Promise<boolean> {
-		console.log("isPlayerIsInWaitingList = ", info);
-		console.log("isplayerisinwaitinglist : waiting list = ", PongService.waitingList)
 		for (const player of PongService.waitingList)
 		{
-			console.log("HOHOHOHOH player = ", player);
-			console.log("HOHOHOHOH info = ", info.id);
 			if (player.id === info.id)
 				return true;
 		}
-		console.log("returned FALSE")
 		return false;
 	}
 
 	async isPlayerIsInGame(info: User) : Promise<boolean> {
-		console.log("isPlayerIsInGame = ", info);
-		console.log("isplayerisingame : waiting list = ", PongService.allRooms)
 		for (const player of PongService.allRooms)
 		{
-			console.log("isPlayerIsInGame HOHOHOHOH player = ", player);
-			console.log("isPlayerIsInGame HOHOHOHOH info = ", info.id);
 			if (player.player1_id === info.id || player.player2_id === info.id)
 				return true;
 		}
-		console.log("isPlayerIsInGame returned FALSE")
 		return false;
 	}
 
 	async IsPlayerMatched() : Promise<boolean> {
 		const ret = PongService.waitingList.length % 2;
-		// console.log("isplayermatched ret = ", ret)
 		if (ret === 0)
 		{
-			console.log("matched lolilol");
 			return true;
 		}
 		return (false);

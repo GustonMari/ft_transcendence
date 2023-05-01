@@ -47,29 +47,20 @@ export default function Pong() {
 			});
 			let game_name;
 			if (is_master.data || is_slave.data) {
-				// console.log("master ou slave")
 				game_name = await APP.post("/pong/get_game_name", {
 					login: res.data.login,
 				});
 				game_name = game_name.data;
 			}
 			else {
-				// console.log("watcher des familles")
 				const { game_name_param } = location.state;
 				game_name = game_name_param;
 			}
-			// console.log('before get_game', game_name);
-			// let game = await APP.post('/pong/get_game', {game_name: game_name})
 			let game = await APP.post('/pong/get_game', {game_name: game_name})
-			// console.log("getgame in front :", game.data)
 			if (is_master.data) {
 				setIsMaster(true);
 				setIsSlave(false);
-				
-				// let game = await APP.post('/pong/get_game', {game_name: game_name})
 				await APP.post('/pong/init_game', {game: game});
-
-				// console.log("tes morts fdp")
 			} else {
 				setIsMaster(false);
 				
@@ -77,11 +68,9 @@ export default function Pong() {
 					setIsSlave(true);
 				}
 				else {
-					// console.log("im a watcher")
 					setIsWatcher(true);
 				}
 			}
-			// setGameName(game_name.data);
 			setGameName(game_name);
 
 				setReady(true); // set ready state to true after data has been fetched
@@ -161,8 +150,6 @@ export function ExecutePong(props: any) {
 
 
 	useEffect(() => {
-		// console.log("EXECUTE PONG socket = ", socket);
-		// console.log ("isMasterrrrrrrrrrrrrrrrrrrrrrrrrrr = ", isMaster);
 		const ballElement = document.getElementById("ball") as HTMLDivElement;
 
 		let rect;
@@ -181,7 +168,6 @@ export function ExecutePong(props: any) {
 		const DownHandler = async () => {
 			
 			if (kd.current.UP.isDown() && !isWatcher) {
-			// console.log('aaaaaaaaaaaaaaaaa')
 			rightUpPressed = true;
 			if (isMaster) {
 				if (newLimit && playerPaddleLeft) {
@@ -246,7 +232,6 @@ export function ExecutePong(props: any) {
 					if (first === false) {
 						newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
 						first = true;
-						// console.log("first rect of update");
 					}
 					if (newLimit /* && !isWatcher */)
 					{
@@ -274,8 +259,6 @@ export function ExecutePong(props: any) {
 			
 			useEffect(() => {
 				if (ball && socket) {
-					// console.log('heyyyyyyy');
-					// const pongBall = new Ball(ball, setLeftScore, setRightScore, socket);
 					pongBall = new Ball(ball, setLeftScore, setRightScore, socket);
 					socket?.on('GameUpdated', (data: any) => {
 						pongBall.x = data.x;
@@ -286,7 +269,6 @@ export function ExecutePong(props: any) {
 						playerPaddleRight.position = data.paddleRightY;
 					});
 					let lastTime: number = 0;
-					// if (!isWatcher)
 						window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight));
 			  }
 			}, [ball]);
@@ -295,22 +277,18 @@ export function ExecutePong(props: any) {
 						
 				if (isMaster && data.leftScore >= 11)
 				{
-					// console.log("You won!");
 					msg_tmp = 'You won'
 				}
 				else if (!isWatcher && !isMaster && data.rightScore >= 11)
 				{
-					// console.log("slave won");
 					msg_tmp = 'You won!';
 				}
 				else if (isMaster && data.rightScore >= 11)
 				{
-					// console.log('master lose');
 					msg_tmp = 'You lose :(';
 				}
 				else if (!isWatcher &&  !isMaster && data.leftScore >= 11)
 				{
-					// console.log('slave lose');
 					msg_tmp = 'You lose :(';
 				}
 				else if (isWatcher)
@@ -338,11 +316,9 @@ export function ExecutePong(props: any) {
 				const map_background = document.getElementById("main-window");
 				const pong_game = document.getElementById("pong-body");
 				if (map_background && pong_game && changeMap === 1) {
-						// console.log("map1");
 							pong_game.style.backgroundColor = 'black';
 							document.documentElement.style.setProperty('--color-paddle', 'red');
 					} else if (map_background && pong_game && changeMap === 2) {
-						// console.log("map2");
 						pong_game.style.backgroundColor = '#59f7f785';
 						document.documentElement.style.setProperty('--color-paddle', '#f09');
 					} else if (map_background && pong_game && changeMap === 3) {
