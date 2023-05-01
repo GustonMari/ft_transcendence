@@ -495,19 +495,13 @@ export class PongService {
 	}
 
 	async addPlayerToWaitingList(info: User) : Promise<any> {
-		console.log("info waiting = ", info);
 		PongService.waitingList.push(info);
-		console.log("waiting list = ", PongService.waitingList);
 	}
 
 	async IsPlayerMatched() : Promise<boolean> {
 		const ret = PongService.waitingList.length % 2;
-		console.log("isplayermatched ret = ", ret)
 		if (ret === 0)
-		{
-			console.log("matched lolilol");	
 			return true;
-		}
 		return (false);
 	}
 
