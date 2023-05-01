@@ -32,9 +32,7 @@ export default function HomePong() {
 	useEffect(() => {
 		const getRooms = async () => {
 			try {
-				const all_games = await APP.post("/pong/get_games_rooms", {
-			
-				})
+				const all_games = await APP.post("/pong/get_games_rooms")
 				setRooms(all_games.data);
 				if (roomContainer.current) {
 					roomContainer.current.scrollTop = roomContainer.current.scrollHeight;

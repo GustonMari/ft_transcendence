@@ -50,14 +50,11 @@ export class PongService {
 	{
 		// console.log("game_name = ", game_name)
 		const all =  await PongService.allRooms.find(currentRoom => currentRoom.game_name === game_name)
-		// console.log("GETGAME = ", all);
+		// console.log("GETGAME = ", all);  
 		return (all);
 	}
 
 	async createGame(master: User, slave: User): Promise<boolean> {
-
-		// let game_name = "";
-		console.log("create game : master = ", master, " slave = ", slave);
 		let new_game_name = "";
 		if (!slave || !master)
 			return (false);
@@ -309,11 +306,12 @@ export class PongService {
 	async updateGame(data: any): Promise<{x: number, y: number, leftScore: number, rightScore: number, paddleLeftY: number, paddleRightY: number}>
 	{
 		const game = await this.getGame(data.gameName);
-		if (game && game.PausePlay == false)
+		console.log('FUCKKKKKKKKKKKKKKKKKKKKKKK', game, " | ",data.gameName);
+		if ((game && game.PausePlay == false) || game.leftScore === undefined)
 			return ({x: game.x, y: game.y, leftScore: game.leftScore, rightScore: game.rightScore, paddleLeftY: game.back_paddle_left.y, paddleRightY: game.back_paddle_right.y});
-		if (game.leftScore && game.leftScore >= 11 || game.rightScore >= 11)
+		if (game.leftScore >= 11 || game.rightScore >= 11)
 		{
-			// game.defineWinnerLooser();
+			// game.defineWinnerLooser();   
 			this.restartGame(game);
 		}
 		if (data.isMaster)
