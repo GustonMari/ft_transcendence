@@ -81,7 +81,7 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	@SubscribeMessage('updateGame')
 	async updateGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
 		let ret = await this.pongService.updateGame(data);
-		if (ret && ret.leftScore >= 11 || ret.rightScore >= 11) {
+		if (data.isMaster && ret && (ret.leftScore >= 11 || ret.rightScore >= 11)) {
 			//TODO: need to change to emit to all in a room, how to get game name ??
 			// console.log('game stopped');
 			const game = await this.pongService.getGame(data.gameName);
@@ -99,10 +99,11 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			// this.myserver.to(data.gameName).emit('GameUpdated', ret);
 			socket.join(data.gameName);
 			// socket.emit('GameUpdated', ret);
-			this.myserver.to(data.gameName).emit('GameUpdated', ret);
-
+			if (data.isMaster)
+				this.myserver.to(data.gameName).emit('GameUpdated', ret);
 		}
 	}
+
 
 	@SubscribeMessage('playGame')
 	async playGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
@@ -147,28 +148,24 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 	@SubscribeMessage('leaveGame')
 	async leaveGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-		// console.log("leaveGame");
-		// await this.pongService.leaveGame();
 		await socket.leave(data.gameName);
 	}
 
 	@SubscribeMessage('changeGame')
-	async changeGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-		await socket.leave(data.old_game_name);
-		await socket.join(data.new_game_name);
-		// console.log("changeGame");
+	async changeGame(@MessageBody() data: string, @ConnectedSocket() socket: Socket): Promise<void> {
+		console.log("changeGame data = ", data)
+		await socket.join(data);
 	}
 
 	@SubscribeMessage('joinWaitingRoom')
 	async createWaitingRoom(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-		// console.log("joinWaitingRoom");
+		console.log("joinWaitingRoom");
 		await socket.join("waitingRoom");
-		// console.log("data = ", data);
-
 		if ((await this.myserver.in("waitingRoom").fetchSockets()).length == 2) {
+			console.log("2 players in waiting room")
 			await this.pongService.createGame(PongService.waitingList[0] , PongService.waitingList[1]);
-
 			this.myserver.to("waitingRoom").emit('startGame', {is_match: data});
+			this.myserver.socketsLeave("waitingRoom");
 		}
 	}
 
@@ -180,13 +177,11 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 	@SubscribeMessage('pauseGame')
 	async pauseGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-		// console.log("pauseGame data = ", data);
 		await this.pongService.PauseGame(data);
 	}
 
 	@SubscribeMessage('resumeGame')
 	async resumeGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-		// console.log("resumeGame data = ", data);
 		await this.pongService.resumeGame(data);
 	}
 

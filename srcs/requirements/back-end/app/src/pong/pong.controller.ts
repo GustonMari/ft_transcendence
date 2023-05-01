@@ -60,9 +60,14 @@ export class PongController {
 		}
 
 		@Post('get_game')
+		// async get_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
 		async get_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+
 			// console.log('inside NTMMMMMMMMMM', info)
-			const game = await this.pongService.getGameByGameName(info.game_name.data);
+			console.log("getgetgetgame: info = ", info.game_name);
+			// const game = await this.pongService.getGameByGameName(info.game_name.data);
+			const game = await this.pongService.getGameByGameName(info.game_name);
+
 			// exit(1);
 			response.send(game);
 		}
@@ -98,9 +103,20 @@ export class PongController {
 
 		@Post('add_player_to_waiting_list')
 		async add_player_to_waiting_list(@Res() response: Response ,@MessageBody() info: User): Promise<void> {
-			// await this.pongService.addPlayerToWaitingList(info);
 			await this.pongService.addPlayerToWaitingList(info);
 			response.send("added");
+		}
+
+		@Post('is_player_in_waiting_list')
+		async is_player_in_waiting_list(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+			const bool = await this.pongService.isPlayerIsInWaitingList(info);
+			response.send(bool);
+		}
+
+		@Post('is_player_is_in_game')
+		async is_player_is_in_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+			const bool = await this.pongService.isPlayerIsInGame(info);
+			response.send(bool);
 		}
 
 		@Post('clear_waiting_list')
@@ -131,4 +147,18 @@ export class PongController {
 			await this.pongService.createInvitationPong(info.master, info.slave);
 			response.send("invitation created");
 		}
+
+		@Post('delete_game')
+		async delete_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+			console.log("delete_game: info = ", info.game_name);	
+			await this.pongService.deleteGame(info.game_name);
+			response.send("deleted");
+		}
+
+		@Post('fill_all_rooms')
+		async fill_all_rooms(@Res() response: Response): Promise<void> {
+			await this.pongService.fillAllRooms();
+			response.send("filled");
+		}
+
 }

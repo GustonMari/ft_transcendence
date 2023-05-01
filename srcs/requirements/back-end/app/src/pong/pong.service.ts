@@ -48,11 +48,10 @@ export class PongService {
 
 	async getGame(game_name: string): Promise<InfoPongRoom>
 	{
-		// console.log("game_name = ", game_name)
 		const all =  await PongService.allRooms.find(currentRoom => currentRoom.game_name === game_name)
-		// console.log("GETGAME = ", all);  
 		return (all);
 	}
+
 
 	async createGame(master: User, slave: User): Promise<boolean> {
 		let new_game_name = "";
@@ -94,6 +93,24 @@ export class PongService {
 		return (true);
 	}
 
+	async deleteGame(game_name: string): Promise<boolean> {
+		if (!game_name)
+			return (false);
+		const game = await this.prisma.game.findUnique({
+			where: {
+				name: game_name,
+			}
+		});
+		if (!game)
+			return (false);
+		await this.prisma.game.delete({
+			where: {
+				name: game_name,
+			}
+		});
+		return (true);
+	}
+
 	async getGameName(login:string): Promise<any> {
 		if (!login)
 			return ('Error: problem with login');
@@ -118,11 +135,11 @@ export class PongService {
 		});
 		if (game == null || game == undefined)
 			return ('Error game dont exist');
-		// console.log("GAME NAME = ", game.name);
 		return (game.name);
 	}
 
 	async getGameByGameName(gameName: string): Promise<Game> {
+		console.log("getGameByGameName = ", gameName)
 		if (!gameName)
 			return (null);
 		const game: Game = await this.prisma.game.findUnique({
@@ -191,11 +208,6 @@ export class PongService {
 		game.back_ball.right = (game.x + ((game.back_width * 2) / 90) - 3);
 		game.back_ball.top = (game.y - ((100 * 2) / 55));
 		game.back_ball.bottom = (game.y + ((100 * 2) / 55) - 1.27);
-
-		// game.back_ball.left = (((game.x - 2) * game.back_width) / 90);
-		// game.back_ball.right = (((game.x + 2) * game.back_width) / 90);
-		// game.back_ball.top = (((game.y - 2) * game.back_height) / 55);
-		// game.back_ball.bottom = (((game.y + 2) * game.back_height) / 55);
 	}
 
 	async movePaddeLeft(data: string, current_game_name: string): Promise<void>
@@ -238,16 +250,12 @@ export class PongService {
 		// this.PausePlay = !this.PausePlay;
 		// this.PausePlay = false;
 		const game = await this.getGame(current_game_name);
-		// console.log("PAUSE GAME current_game_name = ", game);
-		// console.log("PAUSE GAME game = ", game);
 		game.PausePlay = false;
 	}
 
 	async resumeGame(current_game_name: string): Promise<void>
 	{
 		const game = await this.getGame(current_game_name);
-		// console.log("RESUME GAME current_game_name = ", game);
-		// console.log("RESUME GAME game = ", game);
 		game.PausePlay = true;
 	}
 
@@ -267,36 +275,15 @@ export class PongService {
 		//TODO: vraiment changer ce systeme lorsquon aurra les queues
 		if (game.waiter == 1) // ici on mets 1 car le deuxieme joueur est le second waiter
 		{
-			// console.log("2 waiters are ready");
 			game.PausePlay = true;
 			game.waiter = 0;
-			// await game.pongService.playGame(data.gameName);
 		}	else
 		{
-			// console.log("1 waiter is ready");
 			game.waiter++;
 		}
 		//TODO: faire le systeme de queue, ou l'on passe au jour suivant si il y a un joueur qui veut jouer
 	}
 
-	// @SubscribeMessage('playGame')
-	// async playGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-	// 	console.log("playGame");
-
-	// 	//TODO: comment ou quoi faire lorsqu'un joueur accepte ou non de jouer
-	// 	//TODO: vraiment changer ce systeme lorsquon aurra les queues
-	// 	if (this.waiter == 1) // ici on mets 1 car le deuxieme joueur est le second waiter
-	// 	{
-	// 		console.log("2 waiters are ready");
-	// 		this.waiter = 0;
-	// 		await this.pongService.playGame(data.gameName);
-	// 	}	else
-	// 	{
-	// 		console.log("1 waiter is ready");
-	// 		this.waiter++;
-	// 	}
-	// 	//TODO: faire le systeme de queue, ou l'on passe au jour suivant si il y a un joueur qui veut jouer
-	// }
 
 	async defineWinnerLooser()
 	{
@@ -306,8 +293,8 @@ export class PongService {
 	async updateGame(data: any): Promise<{x: number, y: number, leftScore: number, rightScore: number, paddleLeftY: number, paddleRightY: number}>
 	{
 		const game = await this.getGame(data.gameName);
-		console.log('FUCKKKKKKKKKKKKKKKKKKKKKKK', game, " | ",data.gameName);
-		if ((game && game.PausePlay == false) || game.leftScore === undefined)
+		// console.log("updateGame : gameName = ", data.gameName, " | game = ", game);
+		if (game && game.PausePlay == false)
 			return ({x: game.x, y: game.y, leftScore: game.leftScore, rightScore: game.rightScore, paddleLeftY: game.back_paddle_left.y, paddleRightY: game.back_paddle_right.y});
 		if (game.leftScore >= 11 || game.rightScore >= 11)
 		{
@@ -356,16 +343,6 @@ export class PongService {
 		return ({x: game.x, y: game.y, leftScore: game.leftScore, rightScore: game.rightScore, paddleLeftY: game.back_paddle_left.y, paddleRightY: game.back_paddle_right.y});
 		
 	}
-
-	// async isCollision(ball: any, paddle: any): Promise<boolean> {
-
-	// 	return (
-	// 		(ball.left <= (paddle.right + 1) &&
-	// 		ball.right >= (paddle.left - 1) &&
-	// 		ball.top <= (paddle.bottom + 1) &&
-	// 		ball.bottom >= (paddle.top + 1))
-	// 	)
-	// }
 
 	async isCollision(ball: any, paddle: any): Promise<boolean> {
 		const collidesFromTop = ball.bottom >= paddle.top && ball.top < paddle.top && ball.right >= paddle.left && ball.left <= paddle.right;
@@ -461,12 +438,10 @@ export class PongService {
 		console.log('game inited')
 		const newGame: InfoPongRoom = {
 			PausePlay: false,
-			// PausePlay: true,
 			x: 50,
 			y: 50,
 			back_width: 100,
 			back_height: 100,
-			// back_ball: { width: ((100 * 4) / 90), height: ((100 * 4) / 55), left: ((43 * 100) / 90), right: ((47 * 100) / 90), top: ((25.5 * 100) / 55), bottom: ((29.5 * 100) / 55) },
 			back_ball: { width: ((100 * 2) / 90), height: ((100 * 2) * 55), left: (50 - ((100 * 2) * (90 - 3))), right: (50 + ((100 * 2) * 90)), top: (50 - ((100 * 2) * (55 - 3))), bottom: (50 + ((100 * 2) * 55)) },
 			back_limit: { top: 0, bottom: 100, left: 0, right: 100 },
 			leftScore: 0,
@@ -481,19 +456,42 @@ export class PongService {
 				x: 0.1,
 				y: 0.1
 			},
-			// velocity: 0.80,
 			velocity: 0.25,
 			player1_id: info.game.data.master_id,
 			player2_id: info.game.data.slave_id,
-			// player1_name: '',
-			// player2_name: ''
 		}
 		PongService.allRooms.push(newGame);
 		await this.reset(await this.getGame(newGame.game_name));
 	}
 
+	async fillAllRooms() {
+		const games = await this.prisma.game.findMany();
+		for (const game of games) {
+			this.initGame({ game: { data: game } });
+		}
+	}
+
+
 	async addPlayerToWaitingList(info: User) : Promise<any> {
 		PongService.waitingList.push(info);
+	}
+
+	async isPlayerIsInWaitingList(info: User) : Promise<boolean> {
+		for (const player of PongService.waitingList)
+		{
+			if (player.id === info.id)
+				return true;
+		}
+		return false;
+	}
+
+	async isPlayerIsInGame(info: User) : Promise<boolean> {
+		for (const player of PongService.allRooms)
+		{
+			if (player.player1_id === info.id || player.player2_id === info.id)
+				return true;
+		}
+		return false;
 	}
 
 	async IsPlayerMatched() : Promise<boolean> {

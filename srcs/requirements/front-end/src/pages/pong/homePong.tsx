@@ -29,12 +29,12 @@ export default function HomePong() {
 	const roomContainer = useRef<HTMLDivElement>(null);
 	const [rooms, setRooms] = useState<any>([]);
 
-
 	useEffect(() => {
 		const getRooms = async () => {
 			try {
 				const all_games = await APP.post("/pong/get_games_rooms")
 				setRooms(all_games.data);
+				console.log("all_games = ", all_games.data);
 				if (roomContainer.current) {
 					roomContainer.current.scrollTop = roomContainer.current.scrollHeight;
 				  }
@@ -43,12 +43,8 @@ export default function HomePong() {
 			}
 		};
 		getRooms();
-		// console.log("rooms = ", rooms);
-	}, [trigger/* , define_room */]);
+	}, [/* trigger,  *//* rooms */]);
 
-	const render_react_pong = () => {
-		setTrigger((p) => p + 1);
-	}
 
 	useEffect(() => {
 		const getCurrentUser = async () => {
@@ -65,7 +61,7 @@ export default function HomePong() {
 
 	const isMatched = async (): Promise<any> => {
 		const ret = await APP.post("/pong/is_matched");
-		// console.log("isMatched = ", ret.data);
+		console.log("isMatched = ", ret.data);
 		if (ret.data != null)
 			return ret.data;
 		return null;
@@ -73,9 +69,7 @@ export default function HomePong() {
 
 	const addPlayerToList = async (user: User) => {
 		try {
-			// const res = await APP.post("/pong/add_player_to_waiting_list", {currentUser: currentUser});
 			const res = await APP.post("/pong/add_player_to_waiting_list", currentUser);
-			// console.log("addPlayerToList = ", res.data);
 		}
 		catch (error) {
 			console.error(error);
@@ -83,39 +77,53 @@ export default function HomePong() {
 	}
 
 	const enterInWaitingFile = async () => {
-		// console.log("enterInWaitingFile: currentUser = ", currentUser);
-		await addPlayerToList(currentUser);
-		const is_match = await isMatched();
-		if (!is_match)
+		const in_game = await APP.post("/pong/is_player_is_in_game", currentUser);
+		if (in_game.data === true)
 		{
-			//put message waiting
-			// console.log('is_match = null');
-			socket?.emit("joinWaitingRoom");
-			setWaitingForGame(true);
+			navigate("/pong", {state: {
+			}});
 		}
-		else
+		const res = await APP.post("/pong/is_player_in_waiting_list", currentUser);
+		if (res.data === false)
 		{
-			setWaitingForGame(false);
-			// await APP.post("/pong/clear_waiting_list");
-			// console.log("socket = ", socket);
-			socket?.emit("joinWaitingRoom", is_match);
-			// console.log("is_match = ", is_match);
-
-			// navigate("/pong", {state: {
-			// 	user: is_match.player1, 
-			// 	opponent: is_match.player2,
-			// }});
+			await addPlayerToList(currentUser);
+			const is_match = await isMatched();
+			if (!is_match)
+			{
+				//put message waiting
+				// console.log('is_match = null');
+				socket?.emit("joinWaitingRoom");
+				setWaitingForGame(true);
+			}
+			else
+			{
+				console.log("enterInWaitingFile : is_match = ", is_match);
+				setWaitingForGame(false);
+				// await APP.post("/pong/clear_waiting_list");
+				// console.log("socket = ", socket);
+				socket?.emit("joinWaitingRoom", is_match);
+				// console.log("is_match = ", is_match);
+			}
 		}
 	}
 
-	socket?.on("startGame", (data: any) => {
-		// console.log("datatatatatattat = ", data);
-		// console.log("startGame");
-		setWaitingForGame(false);
-
+	const spectateGame = async (room: any) => {
+		console.log("spectateGame : room = ", room);
+		console.log("socket = ", socket);
+		socket?.emit("changeGame", room.name);
 		navigate("/pong", {state: {
-				user: data.is_match.player1, 
-				opponent: data.is_match.player2,
+			game_name_param: room.name,
+	}});
+	}
+
+	socket?.on("startGame", (data: any) => {
+		console.log("starting the game")
+		setWaitingForGame(false);
+			const clearWait = async () => {
+				await APP.post("/pong/clear_waiting_list");
+			}
+			clearWait();
+		navigate("/pong", {state: {
 		}});
 	});
 
@@ -138,9 +146,11 @@ export default function HomePong() {
 								<div className={Style['line-game-room']}>
 									<div className={Style['room-game-name']}>{room.name}</div>
 									<button
-										type="submit"
+										// type="submit"
 										className={Style['game-room-image']}
-										onClick={() => {}}
+										onClick={() => {
+											spectateGame(room);
+										}}
 										>
 										<IconContext.Provider value={{className: Style['icon-game-room']}}>
 											<BsCheck />

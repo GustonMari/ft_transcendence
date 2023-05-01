@@ -63,11 +63,6 @@ export class Ball {
 		return this.BallElem.getBoundingClientRect();
 	}
 
-	// reset() {
-		
-
-	// }
-
 	update(delta: number, playerPaddleLeft: Paddle, playerPaddleRight: Paddle, gameName: string, isMaster: boolean) {
 		this.socket.emit('updateGame', {delta: delta, gameName: gameName, isMaster: isMaster});
 		// this.socket?.on('GameUpdated', (data: any) => {
