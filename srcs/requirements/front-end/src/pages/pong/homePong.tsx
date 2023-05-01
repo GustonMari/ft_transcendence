@@ -161,24 +161,27 @@ export default function HomePong() {
 							</li>
 							))}	
 				</div>
-				<button className={Style['join-waiting-list']} onClick={() =>{
-					enterInWaitingFile();
-				} }>
-				<div className={Style['body-waiting-list']} >
-					<span></span>
-					<span></span>
-					<span></span>
-					<span></span>
-					<div className={Style['play-game']}>
-						Play Game
+				<div>
+					<button className={Style['join-waiting-list']} onClick={() =>{
+						enterInWaitingFile();
+					} }>
+					<div className={Style['body-waiting-list']} >
+						<span></span>
+						<span></span>
+						<span></span>
+						<span></span>
+						<div className={Style['play-game']}>
+							Play Game
+						</div>
 					</div>
+					</button>
 				</div>
-				</button>
 
 				<div className={Style['game-list']}>
+					<div className="center-line">
 						<h1 className={Style['game-title']}>Game list</h1>
 							{rooms.map((room : any) =>(
-							<li key={room.id}>
+								<li key={room.id}>
 								<div className={Style['line-game-room']}>
 									<div className={Style['room-game-name']}>{room.name}</div>
 									<button
@@ -194,6 +197,7 @@ export default function HomePong() {
 								</div>
 							</li>
 							))}	
+					</div>
 				</div>
 			</div>
 				{/* <div>

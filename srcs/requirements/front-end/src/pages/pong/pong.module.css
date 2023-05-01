@@ -740,8 +740,15 @@
 	height: 80vh;
 	margin-right: 3%;
 	margin-left: 3%;
+	overflow: hidden;
 	
-	
+}
+
+.center-line
+{
+	display: flex;
+	justify-content: center;
+
 }
 
 .game-title {
@@ -769,10 +776,11 @@
 	text-shadow: 1px 1px 0px #443d3d;
 	box-shadow: 0px 0px 20px 0px rgba(0, 255, 255, 0.5);
 	margin: 1vh;
-	padding-left: 20px;
+	/* padding-left: 20px; */
 	border-radius: 30px;
-	/* width: 15vw;
-	height: 4vh; */
+	overflow: hidden;
+	width: 90%;
+	/* height: 4vh; */
 	/* font-size: 1.5vw; */
 }
 
