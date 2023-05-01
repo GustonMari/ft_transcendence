@@ -55,6 +55,7 @@ export default function HomePong() {
 		const getCurrentUser = async () => {
 			try {
 				const res = await APP.get("/user/me");
+
 				setCurrentUser(res.data);
 			} catch (error) {
 				console.error(error);
@@ -112,6 +113,7 @@ export default function HomePong() {
 		// console.log("datatatatatattat = ", data);
 		// console.log("startGame");
 		setWaitingForGame(false);
+
 		navigate("/pong", {state: {
 				user: data.is_match.player1, 
 				opponent: data.is_match.player2,

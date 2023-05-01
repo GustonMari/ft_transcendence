@@ -73,6 +73,7 @@ model User {
     rooms UsersOnRooms[]
 	messages Message[]
 	UserInGame UserInGame[]
+    // InvitationPong InvitationPong[] 
     InvitationPong1 InvitationPong[] @relation("invitationpong1")
     InvitationPong2 InvitationPong[] @relation("invitationpong2")
 	// GameMaster Game	@relation("master")
@@ -190,6 +191,21 @@ model Game {@relation("invitationpong", fields: [invited_player], references: [l
 
 	@@map("games")
 }
+
+// model InvitationPong {
+//     id Int @id @unique @default(autoincrement())
+//     created_at DateTime @default(now())
+//     updated_at DateTime @updatedAt
+
+    
+//     sender_player User @relation(fields: [sender_player_id], references: [id])
+//     sender_player_id Int
+//     invited_player User @relation(fields: [invited_player_id], references: [id])
+//     invited_player_id Int
+//     game_name String
+
+//     @@map("invitationpong")
+// }
 
 model InvitationPong {
     id Int @id @unique @default(autoincrement())

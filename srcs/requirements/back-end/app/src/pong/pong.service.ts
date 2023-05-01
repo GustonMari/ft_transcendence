@@ -19,12 +19,29 @@ export class PongService {
 	static allRooms: InfoPongRoom[] = [];
 	static waitingList: User[] = [];
 
-	async createInvitationPong(master: User, slave: User): Promise<void> {
-		this.prisma.invitationPong.create({
+	async createInvitationPong(master_str: string, slave_str: string): Promise<void> {
+
+		const master = await this.prisma.user.findUnique({
+			where: {
+				login: master_str,
+			}
+		});
+		const slave = await this.prisma.user.findUnique({
+			where: {
+				login: slave_str,
+			}
+		});
+
+		if (!master || !slave)
+		{
+			console.error("Error: master or slave not found, createInvitationPong failed");
+			return ;
+		}
+		await this.prisma.invitationPong.create({
 			data: {
 				game_name: master.login + "-" + slave.login,
-				sender_player: master,
-				invited_player: slave,
+				sender_player_id: master.id,
+				invited_player_id: slave.id,
 			}
 		});
 	}
@@ -294,7 +311,7 @@ export class PongService {
 		const game = await this.getGame(data.gameName);
 		if (game && game.PausePlay == false)
 			return ({x: game.x, y: game.y, leftScore: game.leftScore, rightScore: game.rightScore, paddleLeftY: game.back_paddle_left.y, paddleRightY: game.back_paddle_right.y});
-		if (game.leftScore >= 11 || game.rightScore >= 11)
+		if (game.leftScore && game.leftScore >= 11 || game.rightScore >= 11)
 		{
 			// game.defineWinnerLooser();
 			this.restartGame(game);

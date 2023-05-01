@@ -126,8 +126,8 @@ export class PongController {
 
 		@Post('create_invitation_pong')
 		async create_invitation_pong(@Res() response: Response ,@MessageBody() info: any): Promise<any> {
-		{
-			await this.pongService.createInvitationPong(info);
+		
+			await this.pongService.createInvitationPong(info.master, info.slave);
 			response.send("invitation created");
 		}
 }

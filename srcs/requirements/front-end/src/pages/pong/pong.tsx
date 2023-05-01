@@ -64,6 +64,8 @@ export default function Pong() {
 	  const getUsers = async () => {
 		try {
 			const { user, opponent } = location.state;
+
+			await APP.post('/pong/create_invitation_pong', {master: user, slave: opponent});
 			console.log("user222222222222 = ", user, opponent);
 			const res = await APP.get("/user/me");
 			setCurrentUser(res.data);
