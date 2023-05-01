@@ -21,9 +21,10 @@ export function PopupWinLose(props : any) {
 	// 	navigate("/homepong");
 	// };
 
-	const handleClose = () => {
+	const handleClose = async () => {
 		setShow(false)
 		setPopupWinLose({winlose: false, winlosemessage: ""});
+		console.log("delete in modal close");
 		navigate("/homepong");
 	};
 

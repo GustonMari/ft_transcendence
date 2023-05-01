@@ -94,6 +94,7 @@ export class PongService {
 	}
 
 	async deleteGame(game_name: string): Promise<boolean> {
+		console.log("dldlalaoks gamename = ", game_name);
 		if (!game_name)
 			return (false);
 		const game = await this.prisma.game.findUnique({
@@ -103,7 +104,7 @@ export class PongService {
 		});
 		if (!game)
 			return (false);
-		await this.prisma.game.delete({
+		await this.prisma.game.deleteMany({
 			where: {
 				name: game_name,
 			}

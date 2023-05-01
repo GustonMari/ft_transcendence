@@ -150,8 +150,8 @@ export class PongController {
 
 		@Post('delete_game')
 		async delete_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
-			console.log("delete_game: info = ", info.game_name);	
-			await this.pongService.deleteGame(info.game_name);
+			console.log("delete_game: info = ", info.gameName);
+			await this.pongService.deleteGame(info.gameName);
 			response.send("deleted");
 		}
 

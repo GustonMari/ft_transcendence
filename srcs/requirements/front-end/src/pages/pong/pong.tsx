@@ -272,9 +272,15 @@ export function ExecutePong(props: any) {
 						window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight));
 			  }
 			}, [ball]);
+			useEffect(() => {
+
 			socket.on('GameFinished', async (data: any) => {
 				let msg_tmp = '';
-						
+				if (isMaster)
+				{
+					console.log("Master, go delete game bitch");
+					await APP.post("/pong/delete_game", {gameName: gameName});
+				}
 				if (isMaster && data.leftScore >= 11)
 				{
 					msg_tmp = 'You won'
@@ -307,6 +313,10 @@ export function ExecutePong(props: any) {
 					// setTrigger(trigger += 1);
 				}
 			})
+			return () => {
+				socket.off('GameFinished');
+			}
+		},[socket]);
 
 			const click = (map: number) => {
 				setChangeMap(map);
