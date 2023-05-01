@@ -431,6 +431,7 @@ export class PongService {
 	}
 
 	async getGamesRooms(): Promise<any> {
+		console.log("waiting list = ", PongService.waitingList);
 		return await this.prisma.game.findMany();
 	}
 
@@ -499,8 +500,11 @@ export class PongService {
 
 
 	async addPlayerToWaitingList(info: User) : Promise<any> {
-		// console.log("info waiting = ", info);
+		console.log("info waiting = ", info);
+		console.log("addplayertowaiting : before : waiting list = ", PongService.waitingList)
 		PongService.waitingList.push(info);
+		console.log("addplayertowaiting : after : waiting list = ", PongService.waitingList)
+
 		// console.log("waiting list = ", PongService.waitingList);
 	}
 
@@ -509,7 +513,7 @@ export class PongService {
 		// console.log("isplayermatched ret = ", ret)
 		if (ret === 0)
 		{
-			console.log("matched lolilol");	
+			console.log("matched lolilol");
 			return true;
 		}
 		return (false);

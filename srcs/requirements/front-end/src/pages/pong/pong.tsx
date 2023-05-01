@@ -47,21 +47,21 @@ export default function Pong() {
 			});
 			let game_name;
 			if (is_master.data || is_slave.data) {
-				console.log("master ou slave")
+				// console.log("master ou slave")
 				game_name = await APP.post("/pong/get_game_name", {
 					login: res.data.login,
 				});
 				game_name = game_name.data;
 			}
 			else {
-				console.log("watcher des familles")
+				// console.log("watcher des familles")
 				const { game_name_param } = location.state;
 				game_name = game_name_param;
 			}
-			console.log('before get_game', game_name);
+			// console.log('before get_game', game_name);
 			// let game = await APP.post('/pong/get_game', {game_name: game_name})
 			let game = await APP.post('/pong/get_game', {game_name: game_name})
-			console.log("getgame in front :", game.data)
+			// console.log("getgame in front :", game.data)
 			if (is_master.data) {
 				setIsMaster(true);
 				setIsSlave(false);
@@ -77,7 +77,7 @@ export default function Pong() {
 					setIsSlave(true);
 				}
 				else {
-					console.log("im a watcher")
+					// console.log("im a watcher")
 					setIsWatcher(true);
 				}
 			}
@@ -274,7 +274,7 @@ export function ExecutePong(props: any) {
 			
 			useEffect(() => {
 				if (ball && socket) {
-					console.log('heyyyyyyy');
+					// console.log('heyyyyyyy');
 					// const pongBall = new Ball(ball, setLeftScore, setRightScore, socket);
 					pongBall = new Ball(ball, setLeftScore, setRightScore, socket);
 					socket?.on('GameUpdated', (data: any) => {

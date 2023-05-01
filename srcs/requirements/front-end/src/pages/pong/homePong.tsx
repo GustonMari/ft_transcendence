@@ -61,6 +61,7 @@ export default function HomePong() {
 
 	const isMatched = async (): Promise<any> => {
 		const ret = await APP.post("/pong/is_matched");
+		console.log("isMatched = ", ret.data);
 		if (ret.data != null)
 			return ret.data;
 		return null;
@@ -87,6 +88,7 @@ export default function HomePong() {
 		}
 		else
 		{
+			console.log("enterInWaitingFile : is_match = ", is_match);
 			setWaitingForGame(false);
 			// await APP.post("/pong/clear_waiting_list");
 			// console.log("socket = ", socket);
@@ -105,6 +107,7 @@ export default function HomePong() {
 	}
 
 	socket?.on("startGame", (data: any) => {
+		console.log("starting the game")
 		setWaitingForGame(false);
 			const clearWait = async () => {
 				await APP.post("/pong/clear_waiting_list");

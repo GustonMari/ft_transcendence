@@ -160,14 +160,15 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 	@SubscribeMessage('joinWaitingRoom')
 	async createWaitingRoom(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-		// console.log("joinWaitingRoom");
+		console.log("joinWaitingRoom");
 		await socket.join("waitingRoom");
 		// console.log("data = ", data);
 
 		if ((await this.myserver.in("waitingRoom").fetchSockets()).length == 2) {
+			console.log("2 players in waiting room")
 			await this.pongService.createGame(PongService.waitingList[0] , PongService.waitingList[1]);
-
 			this.myserver.to("waitingRoom").emit('startGame', {is_match: data});
+			this.myserver.socketsLeave("waitingRoom");
 		}
 	}
 
