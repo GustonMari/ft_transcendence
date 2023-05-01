@@ -15,6 +15,7 @@ import { IconContext } from "react-icons";
 import Create_socket from "../../network/chat.socket";
 import { APP } from "../../network/app";
 import { User } from "../../dtos/chat.dto";
+import { BsCheck, BsX } from "react-icons/bs";
 
 
 export default function HomePong() {
@@ -32,9 +33,7 @@ export default function HomePong() {
 	useEffect(() => {
 		const getRooms = async () => {
 			try {
-				const all_games = await APP.post("/pong/get_games_rooms", {
-			
-				})
+				const all_games = await APP.post("/pong/get_games_rooms")
 				setRooms(all_games.data);
 				if (roomContainer.current) {
 					roomContainer.current.scrollTop = roomContainer.current.scrollHeight;
@@ -55,6 +54,7 @@ export default function HomePong() {
 		const getCurrentUser = async () => {
 			try {
 				const res = await APP.get("/user/me");
+
 				setCurrentUser(res.data);
 			} catch (error) {
 				console.error(error);
@@ -112,6 +112,7 @@ export default function HomePong() {
 		// console.log("datatatatatattat = ", data);
 		// console.log("startGame");
 		setWaitingForGame(false);
+
 		navigate("/pong", {state: {
 				user: data.is_match.player1, 
 				opponent: data.is_match.player2,
@@ -130,24 +131,57 @@ export default function HomePong() {
 				>Join Waiting List
 
 				</button> */}
-				<button className={Style['join-waiting-list']} onClick={() =>{
-					enterInWaitingFile();
-				} }>
-				<div className={Style['body-waiting-list']} >
-					<span></span>
-					<span></span>
-					<span></span>
-					<span></span>
-					<div className={Style['play-game']}>
-						Play Game
-					</div>
-				</div>
-				</button>
-
 				<div className={Style['game-list']}>
 						<h1 className={Style['game-title']}>Game list</h1>
 							{rooms.map((room : any) =>(
 							<li key={room.id}>
+								<div className={Style['line-game-room']}>
+									<div className={Style['room-game-name']}>{room.name}</div>
+									<button
+										type="submit"
+										className={Style['game-room-image']}
+										onClick={() => {}}
+										>
+										<IconContext.Provider value={{className: Style['icon-game-room']}}>
+											<BsCheck />
+										</IconContext.Provider>
+
+									</button>
+									<button
+										type="submit"
+										className={Style['game-room-image']}
+										onClick={() => {}}
+										>
+										<IconContext.Provider value={{className: Style['icon-game-room']}}>
+											<BsX />
+										</IconContext.Provider>
+
+									</button>
+								</div>
+							</li>
+							))}	
+				</div>
+				<div>
+					<button className={Style['join-waiting-list']} onClick={() =>{
+						enterInWaitingFile();
+					} }>
+					<div className={Style['body-waiting-list']} >
+						<span></span>
+						<span></span>
+						<span></span>
+						<span></span>
+						<div className={Style['play-game']}>
+							Play Game
+						</div>
+					</div>
+					</button>
+				</div>
+
+				<div className={Style['game-list']}>
+					<div className="center-line">
+						<h1 className={Style['game-title']}>Game list</h1>
+							{rooms.map((room : any) =>(
+								<li key={room.id}>
 								<div className={Style['line-game-room']}>
 									<div className={Style['room-game-name']}>{room.name}</div>
 									<button
@@ -163,6 +197,7 @@ export default function HomePong() {
 								</div>
 							</li>
 							))}	
+					</div>
 				</div>
 			</div>
 				{/* <div>

@@ -15,32 +15,35 @@ export class PongController {
 		){}
 
 		@Post('create_game') // Subscribe to the event 'joinGame'
+		// async create_game(@Res() response: Response ,@MessageBody() info: {master: User, slave: User}): Promise<void> {
 		async create_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+		console.log('DTTTTTTTTTTTTTTTTTTTTTTTOOOOOOOOOOOOOOOOOOOO WORK'); 
+		// exit(1);
 		await this.pongService.createGame(info.master, info.slave);
 		response.send("Created game");
 
 	}
 
 		@Post('is_user_master')
-		async is_user_master(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+		async is_user_master(@Res() response: Response ,@MessageBody() info: User): Promise<void> {
 			const master = await this.pongService.isUserMaster(info.login);
 			response.send(master);
 		}
 
 		@Post('is_user_slave')
-		async is_user_slave(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+		async is_user_slave(@Res() response: Response ,@MessageBody() info: User): Promise<void> {
 			const slave = await this.pongService.isUserSlave(info.login);
 			response.send(slave);
 		}
 		
 		@Post('get_game_name')
-		async get_game_name(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+		async get_game_name(@Res() response: Response ,@MessageBody() info: User): Promise<void> {
 			const game_name = await this.pongService.getGameName(info.login);
 			response.send(game_name);
 		}
 
 		@Post('get_games_rooms')
-		async get_games_rooms(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+		async get_games_rooms(@Res() response: Response): Promise<void> {
 			const games = await this.pongService.getGamesRooms();
 			response.send(games);
 		}
@@ -95,7 +98,6 @@ export class PongController {
 
 		@Post('add_player_to_waiting_list')
 		async add_player_to_waiting_list(@Res() response: Response ,@MessageBody() info: User): Promise<void> {
-			console.log("info in controlleur = ", info);
 			// await this.pongService.addPlayerToWaitingList(info);
 			await this.pongService.addPlayerToWaitingList(info);
 			response.send("added");
@@ -107,19 +109,26 @@ export class PongController {
 			response.send("cleared");
 		}
 
-		@Post('pause_game')
-		async pause_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
-			// const game = await this.pongService.getGameName(info.login);
-			// await this.pongService.PauseGame(game.data.game_name);
-			await this.pongService.PauseGame(info);
-			response.send("paused");
-		}
+		// @Post('pause_game')
+		// async pause_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+		// 	// const game = await this.pongService.getGameName(info.login);
+		// 	// await this.pongService.PauseGame(game.data.game_name);
+		// 	await this.pongService.PauseGame(info);
+		// 	response.send("paused");
+		// }
 
-		@Post('resume_game')
-		async resume_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
-			// const game = await this.pongService.getGameName(info.login);
-			// await this.pongService.resumeGame(game.data.game_name);
-			await this.pongService.resumeGame(info);
-			response.send("resumed");
+		// @Post('resume_game')
+		// async resume_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+		// 	// const game = await this.pongService.getGameName(info.login);
+		// 	// await this.pongService.resumeGame(game.data.game_name);
+		// 	await this.pongService.resumeGame(info);
+		// 	response.send("resumed");
+		// }
+
+		@Post('create_invitation_pong')
+		async create_invitation_pong(@Res() response: Response ,@MessageBody() info: any): Promise<any> {
+		
+			await this.pongService.createInvitationPong(info.master, info.slave);
+			response.send("invitation created");
 		}
 }

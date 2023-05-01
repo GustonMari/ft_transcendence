@@ -166,6 +166,23 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		}
 	}
 
+	@SubscribeMessage('kickUser')
+	async handleKickUser(@MessageBody() data: InfoRoomTo): Promise<void> {
+		if (await this.chatService.isAdmin(data.room_name, data.id_user_from)) {
+			const id_user_to = await this.chatService.getIdUser(data.login_user_to);
+			if (await this.chatService.isAdmin(data.room_name, id_user_to) 
+				&& (!await this.chatService.IsOwnerOfRoomById(data.room_name, data.id_user_from)))
+			{
+				return ;
+			}
+			await this.chatService.leaveRoom(data.room_name, id_user_to);
+			const sockets = this.myserver.sockets.sockets;
+			const client_socket_id = await this.chatService.getSocketIdByUserId(id_user_to);
+			const client_socket = sockets.get(client_socket_id);
+			client_socket.emit('renderReact', 'renderReact');
+		}
+	}
+
 	@SubscribeMessage('unbanUser')
 	async handleUnbanUser(@MessageBody() data: InfoRoomTo): Promise<void> {
 

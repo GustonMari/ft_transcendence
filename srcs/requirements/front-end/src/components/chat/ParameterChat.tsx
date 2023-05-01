@@ -19,6 +19,7 @@ export function ParameterChat(props: any)
 		<>
 			<SetAdmin define_room={define_room} current_room={current_room} current_user={current_user} socket={socket}/>
 			<BanUser define_room={define_room} current_room={current_room} current_user={current_user} socket={socket}/>
+			<KickUser define_room={define_room} current_room={current_room} current_user={current_user} socket={socket}/>
 			{/* <UnbanUser define_room={define_room} current_user={current_user} socket={socket}/> */}
 			<MuteUser define_room={define_room} current_room={current_room} current_user={current_user} socket={socket}/>
 		</>
@@ -50,7 +51,24 @@ export function SetAdmin(props : any)
 	)
 }
 
+export function KickUser(props: any)
+{
+	let { define_room, current_room, current_user, socket  } = props;
+	const [value, setValue] = React.useState("");
 
+	function emitAndClear() {
+		socket?.emit("kickUser", { room_name: current_room, id_user_from: current_user.id, login_user_to: value});
+
+		setValue("");
+	}
+
+	return (
+		<div className={Style['inputparam']}>
+			<input className={Style['borderbox-param']} onChange={(e) => setValue(e.target.value)} placeholder="kick user login..." value={value} />
+				<button className={Style['input-param-button']} onClick={() => emitAndClear()}>Kick</button>
+		</div>
+	);
+}
 
 export function BanUser(props : any)
 {

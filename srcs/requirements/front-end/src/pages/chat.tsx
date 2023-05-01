@@ -96,7 +96,7 @@ export default function Chat(props: any) {
         -z-10
         "
     >
-        <div
+        {/* <div
             className="
             flex
             flex-col
@@ -105,7 +105,7 @@ export default function Chat(props: any) {
             h-full
             -z-10
             "
-        >
+        > */}
             <NavBar/>
             <div className="w-full">
                 <div className={Style["global"]}>
@@ -131,7 +131,7 @@ export default function Chat(props: any) {
                     </div>
                 </div>
             </div>
-        </div>
+        {/* </div> */}
     </div>
 
 

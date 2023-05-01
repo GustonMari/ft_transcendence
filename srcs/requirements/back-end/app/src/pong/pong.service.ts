@@ -5,6 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { exit } from 'process';
 import { Socket } from 'socket.io';
 import { InfoPongRoom } from './pong.interface';
+import { AddGameDTO } from '../history/dtos';
 
 
 @Injectable()
@@ -18,18 +19,42 @@ export class PongService {
 	static allRooms: InfoPongRoom[] = [];
 	static waitingList: User[] = [];
 
+	async createInvitationPong(master_str: string, slave_str: string): Promise<void> {
+
+		const master = await this.prisma.user.findUnique({
+			where: {
+				login: master_str,
+			}
+		});
+		const slave = await this.prisma.user.findUnique({
+			where: {
+				login: slave_str,
+			}
+		});
+
+		if (!master || !slave)
+		{
+			console.error("Error: master or slave not found, createInvitationPong failed");
+			return ;
+		}
+		await this.prisma.invitationPong.create({
+			data: {
+				game_name: master.login + "-" + slave.login,
+				sender_player_id: master.id,
+				invited_player_id: slave.id,
+			}
+		});
+	}
+
 	async getGame(game_name: string): Promise<InfoPongRoom>
 	{
 		// console.log("game_name = ", game_name)
 		const all =  await PongService.allRooms.find(currentRoom => currentRoom.game_name === game_name)
-		// console.log("GETGAME = ", all);
+		// console.log("GETGAME = ", all);  
 		return (all);
 	}
 
 	async createGame(master: User, slave: User): Promise<boolean> {
-
-		// let game_name = "";
-		console.log("create game : master = ", master, " slave = ", slave);
 		let new_game_name = "";
 		if (!slave || !master)
 			return (false);
@@ -281,11 +306,12 @@ export class PongService {
 	async updateGame(data: any): Promise<{x: number, y: number, leftScore: number, rightScore: number, paddleLeftY: number, paddleRightY: number}>
 	{
 		const game = await this.getGame(data.gameName);
-		if (game && game.PausePlay == false)
+		console.log('FUCKKKKKKKKKKKKKKKKKKKKKKK', game, " | ",data.gameName);
+		if ((game && game.PausePlay == false) || game.leftScore === undefined)
 			return ({x: game.x, y: game.y, leftScore: game.leftScore, rightScore: game.rightScore, paddleLeftY: game.back_paddle_left.y, paddleRightY: game.back_paddle_right.y});
 		if (game.leftScore >= 11 || game.rightScore >= 11)
 		{
-			// game.defineWinnerLooser();
+			// game.defineWinnerLooser();   
 			this.restartGame(game);
 		}
 		if (data.isMaster)
@@ -324,9 +350,9 @@ export class PongService {
 					game.x -= 3;
 				}
 			}
+			await this.sideColision(game.back_ball, game.back_limit, game);
 		}
 		//TODO: faire en sorte que la ball sorte entierement pour marquer un point
-		await this.sideColision(game.back_ball, game.back_limit, game);
 		return ({x: game.x, y: game.y, leftScore: game.leftScore, rightScore: game.rightScore, paddleLeftY: game.back_paddle_left.y, paddleRightY: game.back_paddle_right.y});
 		
 	}
@@ -387,18 +413,15 @@ export class PongService {
 	// async sideColision(rect: DOMRect, limit: DOMRect): Promise<void> {
 	async sideColision(rect: any, limit: any, game: InfoPongRoom): Promise<void> {
 		if (rect.left <= limit.left || rect.right >= limit.right) {
-			//TODO: divier cette fonction en deux pour les points, et pour le reset
 			if (rect.left <= limit.left)
 			{
 				await this.reset(game);
 				await this.incrRightScore(game);
-				//TODO: do we have to add score to prisma ?
 			}
 			else if (rect.right >= limit.right)
 			{
 				await this.reset(game);
 				await this.incrLeftScore(game);
-				//TODO: do we have to add score to prisma ?
 			}
 		}
 	}
@@ -470,19 +493,13 @@ export class PongService {
 	}
 
 	async addPlayerToWaitingList(info: User) : Promise<any> {
-		console.log("info waiting = ", info);
 		PongService.waitingList.push(info);
-		console.log("waiting list = ", PongService.waitingList);
 	}
 
 	async IsPlayerMatched() : Promise<boolean> {
 		const ret = PongService.waitingList.length % 2;
-		console.log("isplayermatched ret = ", ret)
 		if (ret === 0)
-		{
-			console.log("matched lolilol");	
 			return true;
-		}
 		return (false);
 	}
 
@@ -492,5 +509,15 @@ export class PongService {
 
 	async getWaitingList() : Promise<any> {
 		return PongService.waitingList;
+	}
+
+	async formatGameForAddGame(game: InfoPongRoom) : Promise<AddGameDTO> {
+		const ret: AddGameDTO = {
+			user_1_id: game.player1_id,
+			user_2_id: game.player2_id,
+			user_1_score: game.leftScore,
+			user_2_score: game.rightScore,
+		}
+		return (ret);
 	}
 }

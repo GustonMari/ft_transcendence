@@ -18,6 +18,7 @@ import { InfoPongRoom, MovePaddle } from '../pong.interface';
 import { Response} from 'express';
 import { Game } from '@prisma/client';
 import { exit } from 'process';
+import { HistoryService } from 'app/src/history/services';
 
 @WebSocketGateway(3001, {
 	cors: {
@@ -30,7 +31,7 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 	// waiter: number;
 
-	constructor(private pongService: PongService){
+	constructor(private pongService: PongService, private historyService: HistoryService){
 		// console.log("PongGateway");
 		// this.waiter = 0;
 	 }
@@ -80,10 +81,12 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	@SubscribeMessage('updateGame')
 	async updateGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
 		let ret = await this.pongService.updateGame(data);
-		if (ret.leftScore >= 11 || ret.rightScore >= 11) {
+		if (ret && ret.leftScore >= 11 || ret.rightScore >= 11) {
 			//TODO: need to change to emit to all in a room, how to get game name ??
 			// console.log('game stopped');
-			await this.pongService.reset(await this.pongService.getGame(data.gameName));
+			const game = await this.pongService.getGame(data.gameName);
+			await this.historyService.addGame(await this.pongService.formatGameForAddGame(game));
+			await this.pongService.reset(game);
 			await this.pongService.resetScore(data.gameName);
 			// socket.emit('GameUpdated', ret);
 			

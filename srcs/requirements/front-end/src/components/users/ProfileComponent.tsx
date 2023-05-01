@@ -83,8 +83,14 @@ export const ProfileComponent = ({setHistory}: any) => {
 
     const navigate = useNavigate();
 
-    const handleLaunchGame = () => {
+    const handleLaunchGame = async () => {
         // TODO: launch game
+        await APP.post('/pong/create_game', {master: me, slave: user});
+        setPopUpID(undefined);
+        navigate("/pong", {state: {
+            user: me.login, 
+            opponent: user?.login,
+        }});
     }
 
     const handleSendMessage = (id: number) => {

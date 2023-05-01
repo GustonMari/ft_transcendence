@@ -128,8 +128,21 @@ CREATE TABLE "games" (
     "score_right" INTEGER NOT NULL DEFAULT 0,
     "master_id" INTEGER NOT NULL,
     "slave_id" INTEGER NOT NULL,
+    "game_over" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "games_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "invitationpong" (
+    "id" SERIAL NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+    "sender_player_id" INTEGER NOT NULL,
+    "invited_player_id" INTEGER NOT NULL,
+    "game_name" TEXT NOT NULL,
+
+    CONSTRAINT "invitationpong_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -171,6 +184,9 @@ CREATE UNIQUE INDEX "games_name_key" ON "games"("name");
 -- CreateIndex
 CREATE UNIQUE INDEX "games_master_id_key" ON "games"("master_id");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "invitationpong_id_key" ON "invitationpong"("id");
+
 -- AddForeignKey
 ALTER TABLE "friend_request" ADD CONSTRAINT "friend_request_from_id_fkey" FOREIGN KEY ("from_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -200,3 +216,9 @@ ALTER TABLE "UserInGame" ADD CONSTRAINT "UserInGame_user_id_fkey" FOREIGN KEY ("
 
 -- AddForeignKey
 ALTER TABLE "UserInGame" ADD CONSTRAINT "UserInGame_game_id_fkey" FOREIGN KEY ("game_id") REFERENCES "games"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "invitationpong" ADD CONSTRAINT "invitationpong_sender_player_id_fkey" FOREIGN KEY ("sender_player_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "invitationpong" ADD CONSTRAINT "invitationpong_invited_player_id_fkey" FOREIGN KEY ("invited_player_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
