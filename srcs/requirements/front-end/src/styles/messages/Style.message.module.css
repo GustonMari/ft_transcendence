@@ -16,12 +16,10 @@ GLOBAL
 .global {
   display: flex;
   justify-content: space-between;
-  height: 100vh;
+  height: 100%;
   min-width: 120vh;
   flex-direction: row;
   overflow-x: hidden;
-
-  margin-left: 70px;
 
    /* background-image: url("../../../static/chat/background-trans.jpg");
   background-size: cover;

@@ -91,9 +91,9 @@ export default function Chat(props: any) {
         top-0
         left-0
         md:bg-background-blur
-        bg-zinc-900
         bg-no-repeat
         bg-cover
+        -z-10
         "
     >
         <div
@@ -103,10 +103,11 @@ export default function Chat(props: any) {
             md:flex-row
             w-full
             h-full
+            -z-10
             "
         >
             <NavBar/>
-            <div className={g.background}>
+            <div className="w-full">
                 <div className={Style["global"]}>
                     <div className={StyleRoom["room-menu"]}>
                         <RoomForm
