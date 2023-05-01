@@ -28,6 +28,7 @@ export default function HomePong() {
 	const [trigger, setTrigger] = React.useState<number>(0);
 	const roomContainer = useRef<HTMLDivElement>(null);
 	const [rooms, setRooms] = useState<any>([]);
+	const [invitation, setInvitation] = useState<any>(null);
 
 	useEffect(() => {
 		const getRooms = async () => {
@@ -35,6 +36,8 @@ export default function HomePong() {
 				const all_games = await APP.post("/pong/get_games_rooms")
 				setRooms(all_games.data);
 				console.log("all_games = ", all_games.data);
+
+				// const all_invitations = await APP.post("/pong/get_invitations_pong", currentUser);
 				if (roomContainer.current) {
 					roomContainer.current.scrollTop = roomContainer.current.scrollHeight;
 				  }
@@ -140,7 +143,7 @@ export default function HomePong() {
 
 				</button> */}
 				<div className={Style['game-list']}>
-						<h1 className={Style['game-title']}>Game list</h1>
+						<h1 className={Style['game-title']}>Invitation list</h1>
 							{rooms.map((room : any) =>(
 							<li key={room.id}>
 								<div className={Style['line-game-room']}>
@@ -188,7 +191,7 @@ export default function HomePong() {
 				</div>
 
 				<div className={Style['game-list']}>
-					<div className="center-line">
+					{/* <div className="center-line"> */}
 						<h1 className={Style['game-title']}>Game list</h1>
 							{rooms.map((room : any) =>(
 								<li key={room.id}>
@@ -207,7 +210,7 @@ export default function HomePong() {
 								</div>
 							</li>
 							))}	
-					</div>
+					{/* </div> */}
 				</div>
 			</div>
 				{/* <div>

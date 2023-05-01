@@ -143,9 +143,15 @@ export class PongController {
 
 		@Post('create_invitation_pong')
 		async create_invitation_pong(@Res() response: Response ,@MessageBody() info: any): Promise<any> {
-		
+			
 			await this.pongService.createInvitationPong(info.master, info.slave);
 			response.send("invitation created");
+		}
+
+		@Post('get_invitations_pong')
+		async get_invitations_pong(@Res() response: Response ,@MessageBody() info: User): Promise<any> {
+			const invitations = await this.pongService.getInvitationsPong(info.login);
+			response.send(invitations);
 		}
 
 		@Post('delete_game')

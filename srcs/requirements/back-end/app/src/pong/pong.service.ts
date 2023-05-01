@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
-import { Game, User } from '@prisma/client';
+import { Game, InvitationPong, User } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { exit } from 'process';
 import { Socket } from 'socket.io';
@@ -31,7 +31,6 @@ export class PongService {
 				login: slave_str,
 			}
 		});
-
 		if (!master || !slave)
 		{
 			console.error("Error: master or slave not found, createInvitationPong failed");
@@ -46,11 +45,41 @@ export class PongService {
 		});
 	}
 
+	async getInvitationsPong(login:	string): Promise<InvitationPong[]> {
+		const user = await this.prisma.user.findUnique({
+			where: {
+				login: login,
+			}
+		});
+		if (!user)
+			return ([]);
+		const invitations = await this.prisma.invitationPong.findMany({
+			where: {
+				invited_player_id: user.id
+			}
+		});
+		// const invitations = await this.prisma.invitationPong.findMany({
+		// 	where: {
+		// 		OR: [
+		// 			{
+		// 				sender_player_id: user.id,
+		// 			},
+		// 			{
+		// 				invited_player_id: user.id,
+		// 			}
+		// 		]
+		// 	}
+		// });
+		console.log('invitationssssssssssssssssssssssssssssssssssssss: ', invitations);
+		return (invitations);
+	}
+
 	async getGame(game_name: string): Promise<InfoPongRoom>
 	{
 		const all =  await PongService.allRooms.find(currentRoom => currentRoom.game_name === game_name)
 		return (all);
 	}
+
 
 
 	async createGame(master: User, slave: User): Promise<boolean> {
