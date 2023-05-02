@@ -52,9 +52,11 @@ export function InputRoom(props: any) {
 
 	let handleAddRoom = async () => {
 		if (await checkIsPassword(value))
-			handleShow();
-		else
+			handleShow(); 
+		else {
 			addRoom(setMessage, define_room, socket, current_user, value, setValue, handle_history, render_react);
+            setValue("");
+        }
 	}
 
 	socket?.on('joinPrivateRoom', async (data: any) => {

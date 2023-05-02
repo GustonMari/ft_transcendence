@@ -14,6 +14,9 @@ import { RiDeleteBin5Line } from "react-icons/ri"
 import { PopUp } from "../components/communs/PopUp"
 import { IoLogoGameControllerA } from "react-icons/io"
 import { StyledBadge } from "../components/communs/StyledBadge"
+import { APP } from "../network/app"
+import { useNavigate } from "react-router-dom"
+import { UserContext } from "../contexts/User.context"
 
 export interface IMenu {
     id: number,
@@ -72,6 +75,9 @@ export const Friends = () => {
 
     const {handleError, handleSuccess} = useContext<any>(AlertContext);
     const {setPopUpID} = useContext<any>(ProfilePopUpContext);
+    const {me}: any = useContext(UserContext)
+
+    const navigate = useNavigate();
 
     const _removeRelation = (id: number) => {
         setRelations(relations.filter((item: any) => item.id !== id));
@@ -125,9 +131,15 @@ export const Friends = () => {
         )
     }
 
-    const launchGame = (event: any) => {
+    const launchGame = async (event: any, user: IUser) => {
         event.preventDefault();
-        // TODO : launch game
+        await APP.post('/pong/create_game', {master: me, slave: user});
+        await APP.post('/pong/create_invitation_pong', {master: me.login, slave: user.login});
+        setPopUpID(undefined);
+        navigate("/pong", {state: {
+            user: me.login, 
+            opponent: user?.login,
+        }});
     }
 
     return (
@@ -182,7 +194,7 @@ export const Friends = () => {
                                                     <MdOutlineRemoveCircleOutline/>
                                                 </IconButton>
                                                 <IconButton
-                                                    onClick={(e: any) => launchGame(e)}
+                                                    onClick={(e: any) => launchGame(e, user)}
                                                 >
                                                     <IoLogoGameControllerA/>
                                                 </IconButton>

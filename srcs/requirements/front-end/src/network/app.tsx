@@ -33,6 +33,7 @@ APP.interceptors.response.use(
         try {
             const _ = await APP.get("/auth/refresh");
             if (_.status === 200) {
+                console.log(originalConfig);
                 return APP(originalConfig);
             } else {
                 throw new Error("You are not authorized");

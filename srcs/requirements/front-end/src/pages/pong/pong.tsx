@@ -293,7 +293,7 @@ export function ExecutePong(props: any) {
 				}
 				else if (isWatcher)
 				{
-					navigate("/homepong");
+					navigate("/game");
 				}
 				if (!isWatcher)
 				{

@@ -16,6 +16,7 @@ import Create_socket from "../../network/chat.socket";
 import { APP } from "../../network/app";
 import { User } from "../../dtos/chat.dto";
 import { BsCheck, BsX } from "react-icons/bs";
+import { NavBar } from "../../components/communs/NavBar";
 
 
 export default function HomePong() {
@@ -147,99 +148,100 @@ export default function HomePong() {
 	}
 
 	return (
-		<div>
-		<div className={Style['homepong']}>
-			<h1 className={Style['homepong-title']}>LOBBY</h1>
-			<div className={Style['homepong-container']}>
+		<div className="flex flex-row w-full h-full">
+            <NavBar/>
+            <div className={Style['homepong']}>
+                <h1 className={Style['homepong-title']}>LOBBY</h1>
+                <div className={Style['homepong-container']}>
 
-				{/* <button className={Style['join-waiting-list']} onClick={() =>{
-					enterInWaitingFile();
-				} }
-				>Join Waiting List
+                    {/* <button className={Style['join-waiting-list']} onClick={() =>{
+                        enterInWaitingFile();
+                    } }
+                    >Join Waiting List
 
-				</button> */}
-				<div className={Style['game-list']}>
-						<h1 className={Style['game-title']}>Invitation list</h1>
-							{invitations.map((invitation : any) =>(
-							<li key={invitation.id} className={Style["li-line"]}>
-								<div className={Style['line-game-room']}>
-									<div className={Style['room-game-name']}>{invitation.sender_player_login} invited you</div>
-									<button
-										// type="submit"
-										className={Style['game-room-image']}
-										onClick={() => {
-											APP.post("/pong/delete_invitation", invitation);
-											navigate("/pong", {state: {
-												user: invitation.sender_player_login, 
-												opponent: invitation.invited_player_login,
-											}});
-											// navigate("/pong");
-										}}
-										>
-										<IconContext.Provider value={{className: Style['icon-game-room']}}>
-											<BsCheck />
-										</IconContext.Provider>
+                    </button> */}
+                    <div className={Style['game-list']}>
+                            <h1 className={Style['game-title']}>Invitation list</h1>
+                                {invitations.map((invitation : any) =>(
+                                <li key={invitation.id} className={Style["li-line"]}>
+                                    <div className={Style['line-game-room']}>
+                                        <div className={Style['room-game-name']}>{invitation.sender_player_login} invited you</div>
+                                        <button
+                                            // type="submit"
+                                            className={Style['game-room-image']}
+                                            onClick={() => {
+                                                APP.post("/pong/delete_invitation", invitation);
+                                                navigate("/pong", {state: {
+                                                    user: invitation.sender_player_login, 
+                                                    opponent: invitation.invited_player_login,
+                                                }});
+                                                // navigate("/pong");
+                                            }}
+                                            >
+                                            <IconContext.Provider value={{className: Style['icon-game-room']}}>
+                                                <BsCheck />
+                                            </IconContext.Provider>
 
-									</button>
-									<button
-										type="submit"
-										className={Style['game-room-image']}
-										onClick={() => {
-											refuseInvitation(invitation);
-										}}
-										>
-										<IconContext.Provider value={{className: Style['icon-game-room']}}>
-											<BsX />
-										</IconContext.Provider>
+                                        </button>
+                                        <button
+                                            type="submit"
+                                            className={Style['game-room-image']}
+                                            onClick={() => {
+                                                refuseInvitation(invitation);
+                                            }}
+                                            >
+                                            <IconContext.Provider value={{className: Style['icon-game-room']}}>
+                                                <BsX />
+                                            </IconContext.Provider>
 
-									</button>
-								</div>
-							</li>
-							))}	
-				</div>
-				<div>
-					<button className={Style['join-waiting-list']} onClick={() =>{
-						enterInWaitingFile();
-					} }>
-					<div className={Style['body-waiting-list']} >
-						<span></span>
-						<span></span>
-						<span></span>
-						<span></span>
-						<div className={Style['play-game']}>
-							Play Game
-						</div>
-					</div>
-					</button>
-				</div>
+                                        </button>
+                                    </div>
+                                </li>
+                                ))}	
+                    </div>
+                    <div>
+                        <button className={Style['join-waiting-list']} onClick={() =>{
+                            enterInWaitingFile();
+                        } }>
+                        <div className={Style['body-waiting-list']} >
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <div className={Style['play-game']}>
+                                Play Game
+                            </div>
+                        </div>
+                        </button>
+                    </div>
 
-				<div className={Style['game-list']}>
-					{/* <div className="center-line"> */}
-						<h1 className={Style['game-title']}>Game list</h1>
-							{rooms.map((room : any) =>(
-								<li key={room.id} className={Style["li-line"]}>
-								<div className={Style['line-game-room']}>
-									<div className={Style['room-game-name']}>{room.name}</div>
-									<button
-										type="submit"
-										className={Style['game-room-image']}
-										onClick={() => {}}
-										>
-										<IconContext.Provider value={{className: Style['icon-game-room']}}>
-											<FaEye />
-										</IconContext.Provider>
+                    <div className={Style['game-list']}>
+                        {/* <div className="center-line"> */}
+                            <h1 className={Style['game-title']}>Game list</h1>
+                                {rooms.map((room : any) =>(
+                                    <li key={room.id} className={Style["li-line"]}>
+                                    <div className={Style['line-game-room']}>
+                                        <div className={Style['room-game-name']}>{room.name}</div>
+                                        <button
+                                            type="submit"
+                                            className={Style['game-room-image']}
+                                            onClick={() => {}}
+                                            >
+                                            <IconContext.Provider value={{className: Style['icon-game-room']}}>
+                                                <FaEye />
+                                            </IconContext.Provider>
 
-									</button>
-								</div>
-							</li>
-							))}	
-					{/* </div> */}
-				</div>
-			</div>
-				{/* <div>
-					{waitingForGame ? (<p>Waiting for a game</p>) : ""}
-				</div> */}
-			</div>
+                                        </button>
+                                    </div>
+                                </li>
+                                ))}	
+                        {/* </div> */}
+                    </div>
+                </div>
+                    {/* <div>
+                        {waitingForGame ? (<p>Waiting for a game</p>) : ""}
+                    </div> */}
+            </div>
 		</div>
 		
 	)

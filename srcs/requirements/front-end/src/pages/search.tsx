@@ -82,12 +82,12 @@ export const Result = (props: any) => {
 
     return (
         <>
-            <div className={g.background + "  flex flex-col w-full md:flex-row"}>
+            <div className={g.background + " flex flex-col w-full md:flex-row"}>
 
-                <NavBar/>``
+                <NavBar/>
 
                 {/* Search Bar */}
-                <div className="w-full">
+                <div className="w-full -z-10">
                     <Input
                         onChange={
                         (e: any) => {   

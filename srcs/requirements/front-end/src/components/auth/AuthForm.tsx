@@ -60,7 +60,7 @@ export const AuthForm = () => {
                 if (res.data?.url) {
                     navigate('/' + res.data.url);
                 } else {
-                    navigate('/home');
+                    navigate('/game');
                     handleSuccess('You have been successfully connected!')
                 }
             }).catch((err) => {

@@ -25,12 +25,12 @@ function App() {
           <Route path="/authentification" element={<Authentification />} />
 
           <Route
-            path="/home"
+            path="/game"
             element={
               <WrapContext
                 components={
                   <PrivateRoute>
-                    <Home />
+                    <HomePong />
                   </PrivateRoute>
                 }
               />
@@ -103,18 +103,6 @@ function App() {
                 components={
                   <PrivateRoute>
                     <Result />
-                  </PrivateRoute>
-                }
-              />
-            }
-          />
-          <Route
-            path="/homepong"
-            element={
-              <WrapContext
-                components={
-                  <PrivateRoute>
-                    <HomePong />
                   </PrivateRoute>
                 }
               />

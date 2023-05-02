@@ -217,7 +217,7 @@ export class AuthController {
             httpOnly: true,
             secure: true,
         });
-        res.redirect('http://localhost:4200/home');
+        res.redirect('http://localhost:4200/game');
     }
 
     /* ------------------------------------------------------------------------------ */

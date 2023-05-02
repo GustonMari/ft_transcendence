@@ -20,7 +20,7 @@ const sideElems: ISideElem[] = [
     {
         icon: <IoLogoGameControllerA className={s.icons}/>,
         title: "Game",
-        link: "/home"
+        link: "/game"
     },
     {
         icon: <BiSearch className={s.icons}/>,
