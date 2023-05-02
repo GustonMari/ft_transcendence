@@ -112,7 +112,6 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			await this.chatService.createChatRoom(data.room_name, data.id_user);
 			await this.chatService.setAdmin(data.room_name, data.id_user);
 		}
-        console.log('Joining room');
 		await socket.join(data.room_name);
 		socket.emit('renderReact', 'renderReact');
 	

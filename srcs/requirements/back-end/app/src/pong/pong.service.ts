@@ -38,9 +38,11 @@ export class PongService {
 		}
 		await this.prisma.invitationPong.create({
 			data: {
-				game_name: master.login + " invited you",
+				game_name: master.login + " - " + slave.login,
 				sender_player_id: master.id,
+				sender_player_login: master.login,
 				invited_player_id: slave.id,
+				invited_player_login: slave.login,
 			}
 		});
 	}
@@ -59,19 +61,16 @@ export class PongService {
 				invited_player_id: user.id
 			}
 		});
-		// const invitations = await this.prisma.invitationPong.findMany({
-		// 	where: {
-		// 		OR: [
-		// 			{
-		// 				sender_player_id: user.id,
-		// 			},
-		// 			{
-		// 				invited_player_id: user.id,
-		// 			}
-		// 		]
-		// 	}
-		// });
 		return (invitations);
+	}
+
+	async deleteOneInvitationPong(invitation: InvitationPong): Promise<void> {
+		await this.prisma.invitationPong.delete({
+			where: {
+				// game_name: invitation.game_name,
+				id: invitation.id,
+			}
+		});
 	}
 
 	async getGame(game_name: string): Promise<InfoPongRoom>

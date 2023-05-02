@@ -6,7 +6,7 @@ import { PongService } from './pong.service';
 import { Response } from 'express';
 import { exit } from 'process';
 import { PlayerMatched } from './pong.interface';
-import { User } from '@prisma/client';
+import { InvitationPong, User } from '@prisma/client';
 
 @Controller('pong')
 export class PongController {
@@ -17,7 +17,6 @@ export class PongController {
 		@Post('create_game') // Subscribe to the event 'joinGame'
 		// async create_game(@Res() response: Response ,@MessageBody() info: {master: User, slave: User}): Promise<void> {
 		async create_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
-		console.log('DTTTTTTTTTTTTTTTTTTTTTTTOOOOOOOOOOOOOOOOOOOO WORK'); 
 		// exit(1);
 		await this.pongService.createGame(info.master, info.slave);
 		response.send("Created game");
@@ -64,7 +63,7 @@ export class PongController {
 		async get_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
 
 			// console.log('inside NTMMMMMMMMMM', info)
-			console.log("getgetgetgame: info = ", info.game_name);
+			console.log(": info = ", info.game_name);
 			// const game = await this.pongService.getGameByGameName(info.game_name.data);
 			const game = await this.pongService.getGameByGameName(info.game_name);
 
@@ -158,6 +157,13 @@ export class PongController {
 		async delete_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
 			console.log("delete_game: info = ", info.game_name);	
 			await this.pongService.deleteGame(info.game_name);
+			response.send("deleted");
+		}
+
+		@Post('delete_invitation')
+		async delete_invitation(@Res() response: Response ,@MessageBody() info: InvitationPong): Promise<void> {
+			console.log("delete_invitation: info =>>>>>>>>>>> ", info);
+			await this.pongService.deleteOneInvitationPong(info);
 			response.send("deleted");
 		}
 

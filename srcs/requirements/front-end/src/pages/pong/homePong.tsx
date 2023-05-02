@@ -54,16 +54,14 @@ export default function HomePong() {
 			try {
 				const res = await APP.get("/user/me");
 				const all_invitations = await APP.post("/pong/get_invitations_pong", res.data);
-				console.log("all_invitations = ", all_invitations.data);
 				setInvitations(all_invitations.data);
-
 				setCurrentUser(res.data);
 			} catch (error) {
 				console.error(error);
 			}
 		};
 		getCurrentUser();
-	}, []);
+	}, [invitations]);
 
 	const isMatched = async (): Promise<any> => {
 		const ret = await APP.post("/pong/is_matched");
@@ -133,6 +131,21 @@ export default function HomePong() {
 		}});
 	});
 
+	const acceptInvitation = async (invitation: any) => {
+		await APP.post("/pong/delete_invitation", invitation);
+		// navigate("/pong", {state: {
+		// 	user: invitation.sender_player_login, 
+		// 	opponent: invitation.invited_player_login,
+		// }});
+		navigate("/pong");
+	}
+
+	const refuseInvitation = async (invitation: any) => {
+		await APP.post("/pong/delete_invitation", invitation);
+		const all_invitations = await APP.post("/pong/get_invitations_pong", currentUser);
+		setInvitations(all_invitations.data);
+	}
+
 	return (
 		<div>
 		<div className={Style['homepong']}>
@@ -150,11 +163,18 @@ export default function HomePong() {
 							{invitations.map((invitation : any) =>(
 							<li key={invitation.id} className={Style["li-line"]}>
 								<div className={Style['line-game-room']}>
-									<div className={Style['room-game-name']}>{invitation.game_name}</div>
+									<div className={Style['room-game-name']}>{invitation.sender_player_login} invited you</div>
 									<button
 										// type="submit"
 										className={Style['game-room-image']}
-										onClick={() => {}}
+										onClick={() => {
+											APP.post("/pong/delete_invitation", invitation);
+											navigate("/pong", {state: {
+												user: invitation.sender_player_login, 
+												opponent: invitation.invited_player_login,
+											}});
+											// navigate("/pong");
+										}}
 										>
 										<IconContext.Provider value={{className: Style['icon-game-room']}}>
 											<BsCheck />
@@ -164,7 +184,9 @@ export default function HomePong() {
 									<button
 										type="submit"
 										className={Style['game-room-image']}
-										onClick={() => {}}
+										onClick={() => {
+											refuseInvitation(invitation);
+										}}
 										>
 										<IconContext.Provider value={{className: Style['icon-game-room']}}>
 											<BsX />

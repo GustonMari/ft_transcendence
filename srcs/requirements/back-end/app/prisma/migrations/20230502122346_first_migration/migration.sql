@@ -139,7 +139,9 @@ CREATE TABLE "invitationpong" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "sender_player_id" INTEGER NOT NULL,
+    "sender_player_login" TEXT NOT NULL,
     "invited_player_id" INTEGER NOT NULL,
+    "invited_player_login" TEXT NOT NULL,
     "game_name" TEXT NOT NULL,
 
     CONSTRAINT "invitationpong_pkey" PRIMARY KEY ("id")
@@ -186,6 +188,9 @@ CREATE UNIQUE INDEX "games_master_id_key" ON "games"("master_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "invitationpong_id_key" ON "invitationpong"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "invitationpong_game_name_key" ON "invitationpong"("game_name");
 
 -- AddForeignKey
 ALTER TABLE "friend_request" ADD CONSTRAINT "friend_request_from_id_fkey" FOREIGN KEY ("from_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
