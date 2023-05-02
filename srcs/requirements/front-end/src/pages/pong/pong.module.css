@@ -624,10 +624,56 @@
 	font-family: 'Roboto', sans-serif;
 	font-weight: 900;
 	text-transform: uppercase;
-	color: #f8c291;
+	color: white;
 	letter-spacing: 4px;
 	margin-top: 20px;
-	text-shadow: 0px 0px 15px rgba(255, 0, 225, 0.5);
+	border: none;
+	/* text-shadow: 0px 0px 30px rgba(255, 0, 225, 0.5); */
+	text-shadow: 
+	0 0 calc(var(--glowing) * 7px) white,
+	0 0 calc(var(--glowing) * 10px) white,
+	0 0 calc(var(--glowing) * 21px) white,
+	0 0 calc(var(--glowing) * 42px) rgb(79, 164, 206),
+	0 0 calc(var(--glowing) * 82px) rgb(79, 164, 206),
+	0 0 calc(var(--glowing) * 92px) rgb(79, 164, 206),
+	0 0 calc(var(--glowing) * 102px) rgb(79, 164, 206),
+	0 0 calc(var(--glowing) * 151px) rgb(79, 164, 206),
+	0 0 calc(var(--glowing) * 171px) rgb(79, 164, 206),
+	0 0 calc(var(--glowing) * 180px) rgb(79, 164, 206),
+	0 0 calc(var(--glowing) * 200px) rgb(79, 164, 206);
+	animation: glowlobby 1s ease-in-out infinite alternate;
+}
+
+
+@keyframes glowlobby {
+	100% {
+		text-shadow: 
+		0 0 calc(var(--glowing) * 7px) white,
+		0 0 calc(var(--glowing) * 10px) white,
+		0 0 calc(var(--glowing) * 21px) white,
+		0 0 calc(var(--glowing) * 42px) rgb(79, 164, 206),
+		0 0 calc(var(--glowing) * 82px) rgb(79, 164, 206),
+		0 0 calc(var(--glowing) * 92px) rgb(79, 164, 206),
+		0 0 calc(var(--glowing) * 102px) rgb(79, 164, 206),
+		0 0 calc(var(--glowing) * 151px) rgb(79, 164, 206),
+		0 0 calc(var(--glowing) * 171px) rgb(79, 164, 206),
+		0 0 calc(var(--glowing) * 180px) rgb(79, 164, 206),
+		0 0 calc(var(--glowing) * 200px) rgb(79, 164, 206);
+	}
+	0% {
+		text-shadow: 
+		0 0 calc((var(--glowing) + 0.05) * 4px) white,
+		0 0 calc((var(--glowing) + 0.05) * 10px) white,
+		0 0 calc((var(--glowing) + 0.05) * 18px) white,
+		0 0 calc((var(--glowing) + 0.05) * 38px) rgb(79, 164, 206),
+		0 0 calc((var(--glowing) + 0.05) * 73px) rgb(79, 164, 206),
+		0 0 calc((var(--glowing) + 0.05) * 80px) rgb(79, 164, 206),
+		0 0 calc((var(--glowing) + 0.05) * 94px) rgb(79, 164, 206),
+		0 0 calc((var(--glowing) + 0.05) * 140px) rgb(79, 164, 206),
+		0 0 calc((var(--glowing) + 0.05) * 151px) rgb(79, 164, 206),
+		0 0 calc((var(--glowing) + 0.05) * 168px) rgb(79, 164, 206),
+		0 0 calc((var(--glowing) + 0.05) * 188px) rgb(79, 164, 206);
+	}
 }
 
 .homepong-container {
@@ -644,7 +690,7 @@
 
 	background-color:  #232020;
 	display: flex;
-	margin-left: 35%;
+	/* margin-left: 35%; */
 	border: rgb(52,195,232) 1px solid;
     color: rgb(52,195,232);
     text-transform: uppercase;
@@ -750,7 +796,7 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: top;
-	width: 30vw;
+	width: 40vw;
 	height: 80vh;
 	margin-right: 3%;
 	margin-left: 3%;
@@ -822,4 +868,9 @@
 		/* filter: invert(90%) sepia(100%) saturate(5000%) hue-rotate(190deg); */
 	/* width: 17px;
 	height: 17px; */
+}
+
+.li-line {
+	width: 80%;
+	height: %;
 }

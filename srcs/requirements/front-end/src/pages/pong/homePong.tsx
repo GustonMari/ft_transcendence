@@ -148,7 +148,7 @@ export default function HomePong() {
 				<div className={Style['game-list']}>
 						<h1 className={Style['game-title']}>Invitation list</h1>
 							{invitations.map((invitation : any) =>(
-							<li key={invitation.id}>
+							<li key={invitation.id} className={Style["li-line"]}>
 								<div className={Style['line-game-room']}>
 									<div className={Style['room-game-name']}>{invitation.game_name}</div>
 									<button
@@ -195,7 +195,7 @@ export default function HomePong() {
 					{/* <div className="center-line"> */}
 						<h1 className={Style['game-title']}>Game list</h1>
 							{rooms.map((room : any) =>(
-								<li key={room.id}>
+								<li key={room.id} className={Style["li-line"]}>
 								<div className={Style['line-game-room']}>
 									<div className={Style['room-game-name']}>{room.name}</div>
 									<button
