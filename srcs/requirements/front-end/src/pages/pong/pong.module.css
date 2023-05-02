@@ -602,7 +602,18 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	filter: saturate(1);
+	animation: saturate 7s ease-in-out infinite alternate;
 	/* border-color: yellow; */
+}
+
+@keyframes saturate {
+	0% {
+		filter: saturate(1);
+	}
+	100% {
+		filter: saturate(2);
+	}
 }
 
 .homepong-title {

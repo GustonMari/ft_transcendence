@@ -38,7 +38,7 @@ export class PongService {
 		}
 		await this.prisma.invitationPong.create({
 			data: {
-				game_name: master.login + "-" + slave.login,
+				game_name: master.login + " invited you",
 				sender_player_id: master.id,
 				invited_player_id: slave.id,
 			}
@@ -53,6 +53,7 @@ export class PongService {
 		});
 		if (!user)
 			return ([]);
+		
 		const invitations = await this.prisma.invitationPong.findMany({
 			where: {
 				invited_player_id: user.id
@@ -70,7 +71,6 @@ export class PongService {
 		// 		]
 		// 	}
 		// });
-		console.log('invitationssssssssssssssssssssssssssssssssssssss: ', invitations);
 		return (invitations);
 	}
 
