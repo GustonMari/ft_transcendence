@@ -61,7 +61,7 @@ export default function HomePong() {
 			}
 		};
 		getCurrentUser();
-	}, [invitations]);
+	}, []);
 
 	const isMatched = async (): Promise<any> => {
 		const ret = await APP.post("/pong/is_matched");
