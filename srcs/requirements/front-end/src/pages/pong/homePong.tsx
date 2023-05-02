@@ -28,36 +28,40 @@ export default function HomePong() {
 	const [trigger, setTrigger] = React.useState<number>(0);
 	const roomContainer = useRef<HTMLDivElement>(null);
 	const [rooms, setRooms] = useState<any>([]);
+	const [invitations, setInvitations] = useState<any>([]);
 
 	useEffect(() => {
 		const getRooms = async () => {
 			try {
 				const all_games = await APP.post("/pong/get_games_rooms")
+				console.log("all_games = ", all_games.data);
 				setRooms(all_games.data);
 				console.log("all_games = ", all_games.data);
+
 				if (roomContainer.current) {
 					roomContainer.current.scrollTop = roomContainer.current.scrollHeight;
-				  }
+				}
 			} catch (error) {
 				console.error(error);
 			}
 		};
 		getRooms();
 	}, [/* trigger,  *//* rooms */]);
-
-
+	
+	
 	useEffect(() => {
 		const getCurrentUser = async () => {
 			try {
 				const res = await APP.get("/user/me");
-
+				const all_invitations = await APP.post("/pong/get_invitations_pong", res.data);
+				setInvitations(all_invitations.data);
 				setCurrentUser(res.data);
 			} catch (error) {
 				console.error(error);
 			}
 		};
 		getCurrentUser();
-	}, []);
+	}, [invitations]);
 
 	const isMatched = async (): Promise<any> => {
 		const ret = await APP.post("/pong/is_matched");
@@ -127,6 +131,21 @@ export default function HomePong() {
 		}});
 	});
 
+	const acceptInvitation = async (invitation: any) => {
+		await APP.post("/pong/delete_invitation", invitation);
+		// navigate("/pong", {state: {
+		// 	user: invitation.sender_player_login, 
+		// 	opponent: invitation.invited_player_login,
+		// }});
+		navigate("/pong");
+	}
+
+	const refuseInvitation = async (invitation: any) => {
+		await APP.post("/pong/delete_invitation", invitation);
+		const all_invitations = await APP.post("/pong/get_invitations_pong", currentUser);
+		setInvitations(all_invitations.data);
+	}
+
 	return (
 		<div>
 		<div className={Style['homepong']}>
@@ -140,16 +159,21 @@ export default function HomePong() {
 
 				</button> */}
 				<div className={Style['game-list']}>
-						<h1 className={Style['game-title']}>Game list</h1>
-							{rooms.map((room : any) =>(
-							<li key={room.id}>
+						<h1 className={Style['game-title']}>Invitation list</h1>
+							{invitations.map((invitation : any) =>(
+							<li key={invitation.id} className={Style["li-line"]}>
 								<div className={Style['line-game-room']}>
-									<div className={Style['room-game-name']}>{room.name}</div>
+									<div className={Style['room-game-name']}>{invitation.sender_player_login} invited you</div>
 									<button
 										// type="submit"
 										className={Style['game-room-image']}
 										onClick={() => {
-											spectateGame(room);
+											APP.post("/pong/delete_invitation", invitation);
+											navigate("/pong", {state: {
+												user: invitation.sender_player_login, 
+												opponent: invitation.invited_player_login,
+											}});
+											// navigate("/pong");
 										}}
 										>
 										<IconContext.Provider value={{className: Style['icon-game-room']}}>
@@ -160,7 +184,9 @@ export default function HomePong() {
 									<button
 										type="submit"
 										className={Style['game-room-image']}
-										onClick={() => {}}
+										onClick={() => {
+											refuseInvitation(invitation);
+										}}
 										>
 										<IconContext.Provider value={{className: Style['icon-game-room']}}>
 											<BsX />
@@ -188,10 +214,10 @@ export default function HomePong() {
 				</div>
 
 				<div className={Style['game-list']}>
-					<div className="center-line">
+					{/* <div className="center-line"> */}
 						<h1 className={Style['game-title']}>Game list</h1>
 							{rooms.map((room : any) =>(
-								<li key={room.id}>
+								<li key={room.id} className={Style["li-line"]}>
 								<div className={Style['line-game-room']}>
 									<div className={Style['room-game-name']}>{room.name}</div>
 									<button
@@ -207,7 +233,7 @@ export default function HomePong() {
 								</div>
 							</li>
 							))}	
-					</div>
+					{/* </div> */}
 				</div>
 			</div>
 				{/* <div>

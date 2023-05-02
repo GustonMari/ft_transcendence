@@ -88,7 +88,6 @@ export class ChatService {
 			await this.createChatRoom(room_name, user_id);
 		}
 		else {
-			console.log("On update la room dans joinChatRoom --> user = ", current_user.login, " | room = ", room_name)
 			const user_in_room = await this.prisma.usersOnRooms.findFirst({
 				where: {
 					user_id: user_id,
@@ -121,7 +120,6 @@ export class ChatService {
 
 		}
 		else {
-			console.log("On update la room dans joinChatRoom --> user = ", current_user.login, " | room = ", room_name)
 			const user_in_room = await this.prisma.usersOnRooms.findFirst({
 				where: {
 					user_id: user_id,

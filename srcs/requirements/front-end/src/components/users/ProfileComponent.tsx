@@ -84,8 +84,9 @@ export const ProfileComponent = ({setHistory}: any) => {
     const navigate = useNavigate();
 
     const handleLaunchGame = async () => {
-        // TODO: launch game
+        // TODO: launch game, do we need to create a game before ?
         await APP.post('/pong/create_game', {master: me, slave: user});
+        await APP.post('/pong/create_invitation_pong', {master: me.login, slave: user.login});
         setPopUpID(undefined);
         navigate("/pong", {state: {
             user: me.login, 

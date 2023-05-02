@@ -215,9 +215,11 @@ model InvitationPong {
     
     sender_player User @relation("invitationpong1", fields: [sender_player_id], references: [id])
     sender_player_id Int
+    sender_player_login String
     invited_player User @relation("invitationpong2", fields: [invited_player_id], references: [id])
     invited_player_id Int
-    game_name String
+    invited_player_login String
+    game_name String @unique
 
     @@map("invitationpong")
 }
