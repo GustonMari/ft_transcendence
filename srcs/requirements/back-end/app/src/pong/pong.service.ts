@@ -315,7 +315,14 @@ export class PongService {
 	{
 		const game = await this.getGame(data.gameName);
 		if (game === null || game === undefined)
-			return (null);
+			return ({
+				x: 50,
+				y: 50,
+				leftScore: 0,
+				rightScore: 0,
+				paddleLeftY: ((100 * 27.5) / 55),
+				paddleRightY: ((100 * 27.5) / 55),
+			});
 		// console.log("updateGame : gameName = ", data.gameName, " | game = ", game);
 		if (game && game.PausePlay == false)
 			return ({x: game.x, y: game.y, leftScore: game.leftScore, rightScore: game.rightScore, paddleLeftY: game.back_paddle_left.y, paddleRightY: game.back_paddle_right.y});
