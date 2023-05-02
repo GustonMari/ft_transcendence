@@ -48,7 +48,13 @@ export class PongService {
 
 	async getGame(game_name: string): Promise<InfoPongRoom>
 	{
-		const all =  await PongService.allRooms.find(currentRoom => currentRoom.game_name === game_name)
+		let all: InfoPongRoom = null;
+		try {
+			all =  await PongService.allRooms.find(currentRoom => currentRoom.game_name === game_name)
+		}catch (e) {
+			console.error("Error: getGame failed = ", e);
+			return (all);
+		}
 		return (all);
 	}
 
@@ -94,7 +100,6 @@ export class PongService {
 	}
 
 	async deleteGame(game_name: string): Promise<boolean> {
-		console.log("dldlalaoks gamename = ", game_name);
 		if (!game_name)
 			return (false);
 		const game = await this.prisma.game.findUnique({
@@ -109,6 +114,21 @@ export class PongService {
 				name: game_name,
 			}
 		});
+		return (true);
+	}
+
+	async deleteGameInAllRooms(game_name: string): Promise<boolean> {
+		if (!game_name)
+			return (false);
+		// PongService.allRooms = PongService.allRooms.filter(currentRoom => currentRoom.game_name === game_name);
+		const index = PongService.allRooms.findIndex(
+			(currentRoom) => currentRoom.game_name === game_name
+		);
+		if (index === -1) {
+			return false;
+		}
+		PongService.allRooms.splice(index, 1);
+		console.log("deleteGameInAllRooms = ", PongService.allRooms, "| ohoh game_name = ", game_name);
 		return (true);
 	}
 
@@ -294,10 +314,13 @@ export class PongService {
 	async updateGame(data: any): Promise<{x: number, y: number, leftScore: number, rightScore: number, paddleLeftY: number, paddleRightY: number}>
 	{
 		const game = await this.getGame(data.gameName);
+		if (game === null || game === undefined)
+			return (null);
 		// console.log("updateGame : gameName = ", data.gameName, " | game = ", game);
 		if (game && game.PausePlay == false)
 			return ({x: game.x, y: game.y, leftScore: game.leftScore, rightScore: game.rightScore, paddleLeftY: game.back_paddle_left.y, paddleRightY: game.back_paddle_right.y});
-		if (game.leftScore >= 11 || game.rightScore >= 11)
+		// if (game.leftScore >= 11 || game.rightScore >= 11)
+		if (game.leftScore >= 1 || game.rightScore >= 1)
 		{
 			// game.defineWinnerLooser();   
 			this.restartGame(game);
@@ -487,11 +510,14 @@ export class PongService {
 	}
 
 	async isPlayerIsInGame(info: User) : Promise<boolean> {
+		console.log("isPlayerIsInGame : PongService.allRooms = ", PongService.allRooms)
 		for (const player of PongService.allRooms)
 		{
+			console.log("finding player...")
 			if (player.player1_id === info.id || player.player2_id === info.id)
 				return true;
 		}
+		console.log('player not in game')
 		return false;
 	}
 
