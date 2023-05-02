@@ -84,7 +84,17 @@ export default function Chat(props: any) {
 
 	return (
         <div
-
+        className="
+        fixed
+        h-full
+        w-full
+        top-0
+        left-0
+        md:bg-background-blur
+        bg-no-repeat
+        bg-cover
+        -z-10
+        "
     >
         <div
             className="
