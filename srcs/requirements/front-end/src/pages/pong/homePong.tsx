@@ -96,7 +96,6 @@ export default function HomePong() {
 			if (!is_match)
 			{
 				//put message waiting
-				// console.log('is_match = null');
 				socket?.emit("joinWaitingRoom");
 				setWaitingForGame(true);
 			}
@@ -104,10 +103,7 @@ export default function HomePong() {
 			{
 				console.log("enterInWaitingFile : is_match = ", is_match);
 				setWaitingForGame(false);
-				// await APP.post("/pong/clear_waiting_list");
-				// console.log("socket = ", socket);
 				socket?.emit("joinWaitingRoom", is_match);
-				// console.log("is_match = ", is_match);
 			}
 		}
 	}

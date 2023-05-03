@@ -146,10 +146,21 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		await socket.leave(data.gameName);
 	}
 
+	@SubscribeMessage('allLeaveGame')
+	async allLeaveGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+		this.myserver.socketsLeave(data.gameName);
+	}
+
 	@SubscribeMessage('changeGame')
 	async changeGame(@MessageBody() data: string, @ConnectedSocket() socket: Socket): Promise<void> {
 		console.log("changeGame data = ", data)
 		await socket.join(data);
+	}
+
+	@SubscribeMessage('navigate_to_game')
+	async navigate_to_game(@MessageBody() data: string, @ConnectedSocket() socket: Socket): Promise<void> {
+		console.log("navigate_to_game data = ", data);
+		this.myserver.to(data).emit('navigate_to_game', data);
 	}
 
 	@SubscribeMessage('joinWaitingRoom')
@@ -169,6 +180,7 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		// console.log("disconnectWaitingRoom");
 		this.myserver.socketsLeave("waitingRoom");
 	}
+
 
 	@SubscribeMessage('pauseGame')
 	async pauseGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {

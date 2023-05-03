@@ -7,6 +7,7 @@ import { Response } from 'express';
 import { exit } from 'process';
 import { PlayerMatched } from './pong.interface';
 import { InvitationPong, User } from '@prisma/client';
+import { Socket } from 'dgram';
 
 @Controller('pong')
 export class PongController {
@@ -173,5 +174,8 @@ export class PongController {
 			await this.pongService.fillAllRooms();
 			response.send("filled");
 		}
+
+		// @Post('leave_game_room')
+		// async leave_game_room(@Res() response: Response ,@MessageBody() info: any, @Socket socket): Promise<void> {
 
 }
