@@ -205,13 +205,19 @@ export default function HomePong() {
                     <div>
 
 					{waitTrigger ? 
-					<div className={Style['join-waiting-list']}>
-						<div className={Style['body-waiting-list']}>
-							<div className={Style['play-game']}>
+					<button className={Style['join-waiting-search']} onClick={() =>{
+						
+					} }>
+						<div className={Style['body-waiting-search']}>
+							<div className={Style['play-search']}>
 								Search Game
 							</div>
+							<div className={Style['resize-animation']}>
+								<div className={Style['lds-roller']}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+							</div>
+							{/* <div className={Style['lds-dual-ring']}></div> */}
 						</div>
-					</div> 
+					</button> 
 					
 					: <button className={Style['join-waiting-list']} onClick={() =>{
                             enterInWaitingFile();
