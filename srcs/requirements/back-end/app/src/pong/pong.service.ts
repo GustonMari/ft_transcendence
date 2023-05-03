@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { Game, InvitationPong, User } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { exit } from 'process';
-import { Socket } from 'socket.io';
+import { Socket, Server } from 'socket.io';
 import { InfoPongRoom } from './pong.interface';
 import { AddGameDTO } from '../history/dtos';
 
@@ -583,4 +583,5 @@ export class PongService {
 		}
 		return (ret);
 	}
+
 }

@@ -48,7 +48,7 @@ export default function HomePong() {
 			}
 		};
 		getRooms();
-	}, [/* trigger,  *//* rooms */]);
+	}, [renderReact]);
 	
 	
 	useEffect(() => {
@@ -63,7 +63,7 @@ export default function HomePong() {
 			}
 		};
 		getCurrentUser();
-	}, []);
+	}, [renderReact]);
 
 	const isMatched = async (): Promise<any> => {
 		const ret = await APP.post("/pong/is_matched");
@@ -133,21 +133,23 @@ export default function HomePong() {
 		}});
 	});
 
-
+	socket.on('renderReact', (data: any) => {
+		setRenderReact(renderReact + 1);
+	});
 
 	const acceptInvitation = async (invitation: any) => {
 		await APP.post("/pong/delete_invitation", invitation);
-		// navigate("/pong", {state: {
-		// 	user: invitation.sender_player_login, 
-		// 	opponent: invitation.invited_player_login,
-		// }});
-		navigate("/pong");
+		navigate("/pong", {state: {
+			user: invitation.sender_player_login, 
+			opponent: invitation.invited_player_login,
+		}});
 	}
 
 	const refuseInvitation = async (invitation: any) => {
 		await APP.post("/pong/delete_invitation", invitation);
 		const all_invitations = await APP.post("/pong/get_invitations_pong", currentUser);
 		socket.emit('refusePlay', invitation);
+		setRenderReact(renderReact + 1);
 		setInvitations(all_invitations.data);
 	}
 

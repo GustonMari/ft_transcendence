@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Post, Res } from '@nestjs/common';
+import { Controller, Get, HttpServer, Inject, Post, Res } from '@nestjs/common';
 import { MessageBody } from '@nestjs/websockets';
 import { PrismaService } from '../prisma/prisma.service';
 import { PongService } from './pong.service';
@@ -7,11 +7,13 @@ import { Response } from 'express';
 import { exit } from 'process';
 import { PlayerMatched } from './pong.interface';
 import { InvitationPong, User } from '@prisma/client';
+import { PongGateway } from './gateways/pong.gateway';
 
 @Controller('pong')
 export class PongController {
 	constructor(
-		private readonly pongService: PongService, private readonly prisma: PrismaService 
+		private readonly pongService: PongService, private readonly prisma: PrismaService,
+		private readonly pongGateway: PongGateway/* , @Inject('HttpServer') private readonly httpServer: HttpServer */,
 		){}
 
 		@Post('create_game') // Subscribe to the event 'joinGame'
@@ -144,6 +146,7 @@ export class PongController {
 		async create_invitation_pong(@Res() response: Response ,@MessageBody() info: any): Promise<any> {
 			
 			await this.pongService.createInvitationPong(info.master, info.slave);
+			await this.pongGateway.myserver.emit('renderReact');
 			response.send("invitation created");
 		}
 

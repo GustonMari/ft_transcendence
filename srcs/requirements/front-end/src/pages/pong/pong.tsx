@@ -333,6 +333,8 @@ export function ExecutePong(props: any) {
 				navigate("/game");
 			});
 
+
+
 	return (
 		<div className={Style['container-game']} id="main-window">
 			<div>
