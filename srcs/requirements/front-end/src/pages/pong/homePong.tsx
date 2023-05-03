@@ -30,6 +30,7 @@ export default function HomePong() {
 	const roomContainer = useRef<HTMLDivElement>(null);
 	const [rooms, setRooms] = useState<any>([]);
 	const [invitations, setInvitations] = useState<any>([]);
+	const [waitTrigger, setWaitTrigger] = useState<boolean>(false);
 
 	useEffect(() => {
 		const getRooms = async () => {
@@ -196,8 +197,19 @@ export default function HomePong() {
                                 ))}	
                     </div>
                     <div>
-                        <button className={Style['join-waiting-list']} onClick={() =>{
+
+					{waitTrigger ? 
+					<div className={Style['join-waiting-list']}>
+						<div className={Style['body-waiting-list']}>
+							<div className={Style['play-game']}>
+								Search Game
+							</div>
+						</div>
+					</div> 
+					
+					: <button className={Style['join-waiting-list']} onClick={() =>{
                             enterInWaitingFile();
+							setWaitTrigger(true);
                         } }>
                         <div className={Style['body-waiting-list']} >
                             <span></span>
@@ -208,7 +220,8 @@ export default function HomePong() {
                                 Play Game
                             </div>
                         </div>
-                        </button>
+                        </button>}
+
                     </div>
 
                     <div className={Style['game-list']}>
