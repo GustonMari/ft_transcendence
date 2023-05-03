@@ -11,7 +11,7 @@ import { SubscribeMessage,
 	ConnectedSocket,
 } from '@nestjs/websockets';
 
-import { Get, Injectable, Post, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Injectable, Post, Res, UseGuards } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
 import { PongService } from '../pong.service';
 import { InfoPongRoom, MovePaddle } from '../pong.interface';
@@ -199,4 +199,5 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		await this.pongService.deleteGame(data.game_name);
 		await this.pongService.deleteGameInAllRooms(data.game_name);
 	}
+
 }
