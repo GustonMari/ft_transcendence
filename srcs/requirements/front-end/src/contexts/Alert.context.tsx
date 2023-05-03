@@ -12,7 +12,7 @@ export const AlertProvider = ({children}: any) => {
         setMsg(msg);
         setShow(true);
         setColor(false);
-         setTimeout(() => {
+        setTimeout(() => {
             setShow(false);
         }, 5000);
     }

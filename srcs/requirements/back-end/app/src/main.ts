@@ -13,7 +13,7 @@ async function bootstrap() {
   }));
 
   app.enableCors({
-    origin: ['http://localhost:4200', 'http://localhost:3000'],
+    origin: [`http://${process.env.LOCAL_IP}:4200`, `http://${process.env.LOCAL_IP}:3000`],
     credentials: true,
   });
 

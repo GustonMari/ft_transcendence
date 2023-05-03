@@ -120,7 +120,11 @@ export class AuthService {
         const m = await argon.verify(f.rt, cred.refresh_token);
         if (!m) throw new UnauthorizedException('Invalid token, value mismatch');
 
-        const tokens: Tokens = await this.signTokens(user);
+        const tokens: Tokens = await this.signTokens({
+            id: f.id,
+            login: f.login,
+            email: f.email,
+        });
         await this.userService.updateUser({
             id: user.id,
         },

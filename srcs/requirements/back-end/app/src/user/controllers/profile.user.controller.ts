@@ -6,10 +6,8 @@ import {
 	UseGuards,
 	UploadedFile,
 	UseInterceptors,
-	Get,
-	Param,
 	Res,
-	BadRequestException,
+    Redirect,
 } from '@nestjs/common';
 import { GetMe } from "app/src/auth/decorators";
 import { AccessGuard } from "app/src/auth/guards/access.guard";
@@ -17,7 +15,6 @@ import { UpdateProfileDTO } from "../dtos";
 import { ProfileService } from "../services/profile.user.service";
 import { MulterConfig } from '../middlewares';
 import { FileInterceptor } from '@nestjs/platform-express';
-import * as process from 'process';
 
 @UseGuards(AccessGuard)
 @Controller('user/profile')
@@ -27,7 +24,6 @@ export class ProfileController {
         private readonly ProfileService: ProfileService,
     ) { }
 
-    // TODO: add doc for swagger
     @Patch('me/update')
     async updateMe(
         @Body() update: UpdateProfileDTO,

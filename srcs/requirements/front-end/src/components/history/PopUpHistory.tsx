@@ -79,7 +79,7 @@ export const PopUpHistory  = (props: IPopUpHistoryProps) => {
                                 }}
                                 onClick={() => {setPopUpID(match.user_1); ; props.onClose()}}
                             >
-                                <Avatar alt={match.user_1_username} src={"http://localhost:3000/api/public/picture/" + match.user_1_username}/>
+                                <Avatar alt={match.user_1_username} src={`http://${process.env.REACT_APP_LOCAL_IP}:3000/api/public/picture/` + match.user_1_username}/>
                             </ListItemAvatar>
                             <ListItemText
                                 id={labelId}
@@ -160,7 +160,7 @@ export const PopUpHistory  = (props: IPopUpHistoryProps) => {
                                 }}
                                 onClick={() => {setPopUpID(match.user_2); props.onClose()}}
                             >
-                                <Avatar alt={match.user_1_username} src={"http://localhost:3000/api/public/picture/" + match.user_2_username}/>
+                                <Avatar alt={match.user_1_username} src={`http://${process.env.REACT_APP_LOCAL_IP}:3000/api/public/picture/` + match.user_2_username}/>
                             </ListItemAvatar>
                         </ListItem>
                     );

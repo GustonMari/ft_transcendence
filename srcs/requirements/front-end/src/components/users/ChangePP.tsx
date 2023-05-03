@@ -44,7 +44,7 @@ export const ChangePP = ({
             "
         >
             <img
-                src={"http://localhost:3000/api/public/picture/" + username}
+                src={`http://${process.env.REACT_APP_LOCAL_IP}:3000/api/public/picture/` + username}
                 alt="Profile Avatar"
                 className="
                 w-32

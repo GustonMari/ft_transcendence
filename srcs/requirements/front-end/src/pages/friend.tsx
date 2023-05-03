@@ -85,7 +85,7 @@ export const Friends = () => {
 
     useEffect(() => {
         API.getRelation(
-            "http://localhost:3000/api/relation/list/" + menuItems[menuID].url,
+            `http://${process.env.REACT_APP_LOCAL_IP}:3000/api/relation/list/` + menuItems[menuID].url,
             (res: any) => {
                 setRelations(res);
             }, (err: any) => {
@@ -246,7 +246,7 @@ export const Friends = () => {
                                             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                                             variant={(menuID === 0 && user.state) ? "dot" : "standard"}
                                         >
-                                            <Avatar  alt="jean" src="http://localhost:3000/api/public/picture/mamaurai1"/>
+                                            <Avatar  alt={user.login} src={`http://${process.env.REACT_APP_LOCAL_IP}:3000/api/public/picture/` + user.login}/>
                                         </StyledBadge>
                                     </ListItemAvatar>
                                     <ListItemText

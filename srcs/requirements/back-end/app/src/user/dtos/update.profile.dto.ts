@@ -30,6 +30,12 @@ export class UpdateProfileDTO {
     @IsBoolean()
     public readonly tfa: boolean;
 
+    @IsString()
+    @IsOptional()
+    @Length(0, 30)
+    @IsNotEmpty()
+    public readonly username: string;
+
     // @IsNotEmpty()
     // @IsOptional()
     

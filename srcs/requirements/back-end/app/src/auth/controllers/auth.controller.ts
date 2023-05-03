@@ -2,6 +2,7 @@ import {
     Delete,
     HttpStatus,
     Param,
+    Patch,
     Query,
     Redirect,
     Req,
@@ -145,7 +146,6 @@ export class AuthController {
         @GetCredentials() credentials: Tokens,
         @Res() res: Response
     ) {
-        // console.log("Refresh functions here -> ", user, credentials);
         const {access_token, refresh_token} = await this.authService.refresh(user, credentials);
         res.cookie('access_token', access_token, {
             httpOnly: true,
@@ -155,7 +155,7 @@ export class AuthController {
             httpOnly: true,
             secure: true,
         });
-        res.send({ access_token: access_token });
+        res.send({ access_token: access_token, refresh_token: refresh_token });
     }
 
     /* ------------------------------------------------------------------------------ */
@@ -169,7 +169,7 @@ export class AuthController {
         let url = 'https://api.intra.42.fr/oauth/authorize';
         url += '?client_id=';
         url += process.env.CLIENT_ID;
-        url += '&redirect_uri=http://localhost:3000/api/auth/42/callback';
+        url += `&redirect_uri=http://${process.env.LOCAL_IP}:3000/api/auth/42/callback`;
         url += '&response_type=code';
 
         return ({ url: url });
@@ -205,7 +205,7 @@ export class AuthController {
         });
         if (access_token == undefined || refresh_token == undefined) {
             const qr_url = await this.authService.generateTFA(user.profile.username);
-            res.redirect('http://localhost:4200/authentification?qrcode=' + qr_url + "&username=" + user.profile.username);
+            res.redirect(`http://${process.env.LOCAL_IP}:4200/authentification?qrcode=` + qr_url + "&username=" + user.profile.username);
             return;
         }
         
@@ -217,7 +217,7 @@ export class AuthController {
             httpOnly: true,
             secure: true,
         });
-        res.redirect('http://localhost:4200/game');
+        res.redirect(`http://${process.env.LOCAL_IP}:4200/game`);
     }
 
     /* ------------------------------------------------------------------------------ */

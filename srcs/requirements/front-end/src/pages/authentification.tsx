@@ -4,7 +4,7 @@ import { TFAForm } from "../components/auth/TFAForm";
 
 export const Authentification = () => {
 
-    const [p, setP] = useSearchParams();
+    const [p] = useSearchParams();
 
     return (
     <>
@@ -40,7 +40,6 @@ export const Authentification = () => {
             >
                 {
                 p.get('username') && p.get('qrcode') ? <>
-                    {console.log("tfa is on")}
                     <TFAForm
                         username={p.get('username') as string}
                         qrcode={p.get('qrcode') as string}
@@ -48,7 +47,6 @@ export const Authentification = () => {
                 </>
                 :
                 <>
-                    {console.log("tfa is off")}
                     <AuthForm />
                 </>
                 }

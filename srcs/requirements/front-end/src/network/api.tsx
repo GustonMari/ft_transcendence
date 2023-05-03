@@ -70,29 +70,6 @@ export default class API {
         }
     }
 
-    static async sendFriendRequest(
-        uid: number,
-        successFunc: () => void,
-        errorFunc: (err: any) => void
-    ) {
-        try {
-            await APP.post("/relation/create", {
-                id_target: uid,
-                relation_type: "PENDING",
-
-            });
-            successFunc();
-        } catch (err) {
-            if (axios.isAxiosError(err)) {
-                const error = err as any;
-                errorFunc({
-                    code: error.code,
-                    message: error.response?.data?.message,           
-                });
-            };
-        }
-    }
-
     static async acceptRequest (
         rid: number,
         successFunc: () => void,

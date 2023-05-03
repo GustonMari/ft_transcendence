@@ -1,14 +1,12 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { BsXLg } from "react-icons/bs";
 import { FiSend } from "react-icons/fi";
-import { AiOutlineClockCircle, AiOutlineUserAdd, AiOutlineUsergroupAdd } from "react-icons/ai";
+import { AiOutlineClockCircle, AiOutlineUserAdd } from "react-icons/ai";
 import { ProfilePopUpContext } from "../../contexts/ProfilePopUp.context";
 import s from "../../styles/profile/ProfileComponent.module.css";
 import API from "../../network/api";
 import { AlertContext } from "../../contexts/Alert.context";
 import { UserContext } from "../../contexts/User.context";
 import { IoLogoGameControllerA } from "react-icons/io";
-import { PopUpHistory } from "../history/PopUpHistory";
 import { Box, CircularProgress, CircularProgressProps, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
@@ -84,7 +82,6 @@ export const ProfileComponent = ({setHistory}: any) => {
     const navigate = useNavigate();
 
     const handleLaunchGame = async () => {
-        // TODO: launch game, do we need to create a game before ?
         await APP.post('/pong/create_game', {master: me, slave: user});
         await APP.post('/pong/create_invitation_pong', {master: me.login, slave: user.login});
         setPopUpID(undefined);
@@ -105,17 +102,17 @@ export const ProfileComponent = ({setHistory}: any) => {
     }
 
     const handleAddFriend = (id: number) => {
-        API.sendFriendRequest(
-            id,
-            () => {
-                handleSuccess("Friend request sent");
-            }, (err: any) => {
-                handleError(err.message);
-            }
-        )
+        APP.post("/relation/create", {
+            id_target: id,
+            relation_type: "PENDING",
+
+        }).then(() => {
+            handleSuccess("Friend request sent");
+        }).catch((err) => {
+            handleError(err.message);
+        });
     }
         
-
     useEffect(() => {
         API.getUser(
             popUpID,
@@ -154,7 +151,7 @@ export const ProfileComponent = ({setHistory}: any) => {
         return () => {
             document.removeEventListener("click", handleClickOutside, true);
         }
-    }, [])
+    }, [handleClickOutside])
 
     return (
     <>
@@ -163,7 +160,7 @@ export const ProfileComponent = ({setHistory}: any) => {
                 <div className={s.container}>
                 { user && isFriend !== undefined && <>
                     <div className={s.profile_picture_div}>
-                        <img src={"http://localhost:3000/api/public/picture/" + user?.login }></img>
+                        <img src={`http://${process.env.REACT_APP_LOCAL_IP}:3000/api/public/picture/` + user?.login }></img>
                     </div>
                     <div className={s.profile_bio_div}>
                         {user.state ? <>

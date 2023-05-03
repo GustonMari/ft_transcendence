@@ -1,15 +1,8 @@
-import React, { CSSProperties, useContext, useEffect, useLayoutEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useState } from "react";
-import io, { Socket } from "socket.io-client";
-import axios from "axios";
 //BUG: replace the path of create_socket
-import App from "../../App";
-// import "./pong.css";
 import Style from "./pong.module.css";
-import { Ball } from "./ball";
-import { Paddle } from "./paddle";
-import { PopupWinLose} from "./modalpong";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
 import { IconContext } from "react-icons";
 import Create_socket from "../../network/chat.socket";
@@ -21,12 +14,10 @@ import { NavBar } from "../../components/communs/NavBar";
 
 export default function HomePong() {
 	const [currentUser, setCurrentUser] = useState<any>(null);
-	const [triggerPong, setTriggerPong] = React.useState(0);
-	const [waitingForGame, setWaitingForGame] = React.useState(false);
+	const [waitingForGame, setWaitingForGame] = React.useState(false); // BUG: can we delete this?
 	const navigate = useNavigate();
 	const socket = Create_socket();
 
-	const [trigger, setTrigger] = React.useState<number>(0);
 	const roomContainer = useRef<HTMLDivElement>(null);
 	const [rooms, setRooms] = useState<any>([]);
 	const [invitations, setInvitations] = useState<any>([]);
@@ -76,7 +67,7 @@ export default function HomePong() {
 
 	const addPlayerToList = async (user: User) => {
 		try {
-			const res = await APP.post("/pong/add_player_to_waiting_list", currentUser);
+			await APP.post("/pong/add_player_to_waiting_list", currentUser);
 		}
 		catch (error) {
 			console.error(error);
@@ -134,13 +125,13 @@ export default function HomePong() {
 		setRenderReact(renderReact + 1);
 	});
 
-	const acceptInvitation = async (invitation: any) => {
-		await APP.post("/pong/delete_invitation", invitation);
-		navigate("/pong", {state: {
-			user: invitation.sender_player_login, 
-			opponent: invitation.invited_player_login,
-		}});
-	}
+	// const acceptInvitation = async (invitation: any) => {
+	// 	await APP.post("/pong/delete_invitation", invitation);
+	// 	navigate("/pong", {state: {
+	// 		user: invitation.sender_player_login, 
+	// 		opponent: invitation.invited_player_login,
+	// 	}});
+	// }
 
 	const refuseInvitation = async (invitation: any) => {
 		await APP.post("/pong/delete_invitation", invitation);

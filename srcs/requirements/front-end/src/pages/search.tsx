@@ -14,6 +14,7 @@ import { AlertContext } from "../contexts/Alert.context";
 import { Avatar, Button, IconButton, Input, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
 import { PopUp } from "../components/communs/PopUp";
 import { IUser } from "./friend";
+import { APP } from "../network/app";
 
 export const Result = (props: any) => {
     const [param] = useSearchParams();
@@ -51,14 +52,15 @@ export const Result = (props: any) => {
     }
     
     const handleAddFriend = (id: number) => {
-        API.sendFriendRequest(
-            id,
-            () => {
-                handleSuccess("Friend request sent");
-            }, (err: any) => {
-                handleError(err.message);
-            }
-        )
+        APP.post("/relation/create", {
+            id_target: id,
+            relation_type: "PENDING",
+
+        }).then(() => {
+            handleSuccess("Friend request sent");
+        }).catch((err) => {
+            handleError(err.message);
+        });
     }
 
     const handleBlockUser = (id: number) => {
@@ -191,7 +193,7 @@ export const Result = (props: any) => {
                                 }}
                             >
                                 <ListItemAvatar>
-                                    <Avatar  alt={user.login} src={"http://localhost:3000/api/public/picture/" + user.login}/>
+                                    <Avatar  alt={user.login} src={`http://${process.env.REACT_APP_LOCAL_IP}:3000/api/public/picture/` + user.login}/>
                                 </ListItemAvatar>
                                 <ListItemText
                                     primary={user.login}

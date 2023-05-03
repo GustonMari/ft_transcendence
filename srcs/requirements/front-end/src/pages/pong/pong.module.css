@@ -382,7 +382,7 @@
 	font-weight: bold;
 	width: 4vh;
 	height: 4vh;
-	zoom: 1;
+	/* zoom: 1;  */
 	overflow: hidden; 
 	box-shadow:
 	
@@ -425,7 +425,7 @@
 	width: 4vh;
 	height: 4vh;
 	margin-right: 1vh;
-	zoom: 1;
+	/* zoom: 1; */
 	overflow: hidden; 
 	box-shadow:
 	
@@ -496,7 +496,7 @@
 	left: 50%;
 	transform: translate(-50%, -50%); */
 	font-size: 2vh;
-	zoom: 1;
+	/* zoom: 1; */
 	overflow: hidden; 
 	box-shadow:
 
@@ -1057,5 +1057,5 @@
 
 .li-line {
 	width: 80%;
-	height: %;
+	height: 100%; 
 }

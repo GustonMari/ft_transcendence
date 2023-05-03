@@ -108,7 +108,7 @@ export const NavBar = ({onProfile, profilePic}: any) => {
                             setPopUpID(me.id);
                         }
                     }>
-                        <img className={s.avatar} src={"http://localhost:3000/api/public/picture/" + me.login}/>
+                        <img className={s.avatar} src={`http://${process.env.REACT_APP_LOCAL_IP}:3000/api/public/picture/` + me.login}/>
                         { showSideBar &&
                             <div className={showSideBar ? s.profile_info__active : s.profile_info}>
                                 <p>{me.login.substring(0, 20)}</p>

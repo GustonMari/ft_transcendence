@@ -55,7 +55,7 @@ function IsSenderOrReceiver(props: any)
 					<span className={Style["chat-date"]}> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
 				</div>
 				{/* <PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass={Style["img-message-right"]} current_user={current_user} socket={socket}/> */}
-                <img src={"http://localhost:3000/api/public/picture/" + historyItem.sender_name} className={Style["img-message-right"]} onClick={() => setPopUpID(historyItem.sender_id)}/> 
+                <img src={`http://${process.env.REACT_APP_LOCAL_IP}:3000/api/public/picture/` + historyItem.sender_name} className={Style["img-message-right"]} onClick={() => setPopUpID(historyItem.sender_id)}/> 
 			</div>
 		);
 	else
@@ -63,7 +63,7 @@ function IsSenderOrReceiver(props: any)
 			<div>
 				<div className={Style["wrapper-message"]}>	
 					{/* <PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass={Style["img-message-left"]} current_user={historyItem.sender} socket={socket}/> */}
-                    <img src={"http://localhost:3000/api/public/picture/" + historyItem.sender_name} className={Style["img-message-right"]} onClick={() => setPopUpID(historyItem.sender_id)}/>
+                    <img src={`http://${process.env.REACT_APP_LOCAL_IP}:3000/api/public/picture/` + historyItem.sender_name} className={Style["img-message-right"]} onClick={() => setPopUpID(historyItem.sender_id)}/>
 					<div className={Style["message-sender"]}>
 						{historyItem.sender_name} : {historyItem.current_message}
 						<span className={Style["chat-date"]}> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
@@ -86,7 +86,7 @@ function IsSenderOrReceiver_socket(props: any)
 	 				<span className={Style["chat-date"]}> {dayjs(infomessage.created_at).format("DD MMM YYYY À H:mm")} </span>
 				</div>
 				{/* <PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass={Style["img-message-right"]} current_user={current_user} socket={socket}/> */}
-                <img src={"http://localhost:3000/api/public/picture/" + infomessage.current_user.login} className={Style["img-message-right"]} onClick={() => setPopUpID(infomessage.current_user.id)}/>
+                <img src={`http://${process.env.REACT_APP_LOCAL_IP}:3000/api/public/picture/` + infomessage.current_user.login} className={Style["img-message-right"]} onClick={() => setPopUpID(infomessage.current_user.id)}/>
 			</div>
 		);
 	else
@@ -94,7 +94,7 @@ function IsSenderOrReceiver_socket(props: any)
 			<div>
 				<div className={Style["wrapper-message"]}>	
 					{/* <PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass={Style["img-message-left"]} current_user={infomessage.current_user} socket={socket}/> */}
-                    <img src={"http://localhost:3000/api/public/picture/" + infomessage.current_user.login} className={Style["img-message-right"]} onClick={() => setPopUpID(infomessage.current_user.id)}/>
+                    <img src={`http://${process.env.REACT_APP_LOCAL_IP}:3000/api/public/picture/` + infomessage.current_user.login} className={Style["img-message-right"]} onClick={() => setPopUpID(infomessage.current_user.id)}/>
 					<div className={Style["message-sender"]}>
 						{infomessage.current_user.login} : {infomessage.message}
 						<span className={Style["chat-date"]}> {dayjs(infomessage.created_at).format("DD MMM YYYY À H:mm")} </span>

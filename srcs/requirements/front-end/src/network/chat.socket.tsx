@@ -8,11 +8,11 @@ export default function Create_socket () : Socket {
 
 	// useEffect(() => {
 
-		const new_socket = io("http://localhost:3001", {
+		const new_socket = io(`http://${process.env.REACT_APP_LOCAL_IP}:3001`, {
 			transports : ['websocket', 'polling', 'flashsocket'],
 			withCredentials: true,
 			extraHeaders: {
-				'Access-Control-Allow-Origin': 'http://localhost:3001/',
+				'Access-Control-Allow-Origin': `http://${process.env.REACT_APP_LOCAL_IP}:3001/`,
 				"Access-Control-Allow-Methods": "GET",
 				"Access-Control-Allow-Headers": "my-custom-header",
 				"Access-Control-Allow-Credentials": "true",

@@ -41,6 +41,7 @@ export class UserService {
                 description: data.description,
                 tfa: data.tfa,
                 tfa_secret: data.tfa_secret,
+                login: data.login,
             },
         });
     }
@@ -62,14 +63,17 @@ export class UserService {
     async findUniqueUser(
         opt: FindUserOptions
     ): Promise<User | undefined> {
-        const found = await this.prisma.user.findUnique({
-            where: {
-                login: opt.login,
-                email: opt.email,
-                id: opt.id
-            },
-        });
-        return (found ? found : undefined);
+        if (opt.login || opt.email || opt.id) {
+            const found = await this.prisma.user.findUnique({
+                where: {
+                    login: opt.login,
+                    email: opt.email,
+                    id: opt.id
+                },
+            });
+            return (found ? found : undefined);
+        }
+        return (undefined);
     }
 
 

@@ -23,7 +23,7 @@ ARG DATABASE_URL
 COPY . .
 
 RUN apt-get update -y
-RUN apt-get install -y postgresql-client vim
+RUN apt-get install -y postgresql-client vim net-tools
 
 RUN rm -f ./package.json
 RUN ln -s ./app/package.json ./package.json

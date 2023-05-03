@@ -1,24 +1,17 @@
-import React, { CSSProperties, useContext, useEffect, useLayoutEffect, useRef } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useRef } from "react";
 import { useState } from "react";
-import io, { Socket } from "socket.io-client";
-import axios from "axios";
 //BUG: replace the path of create_socket
-import App from "../../App";
-// import "./pong.css";
 import Style from "./pong.module.css";
 import { Ball } from "./ball";
 import { Paddle } from "./paddle";
 import { PopupWinLose} from "./modalpong";
-import { useLocation, useParams } from "react-router-dom";
-// import { URLSearchParams } from "url";
+import { useLocation } from "react-router-dom";
 import { IconContext } from "react-icons";
 import { BsPlayFill } from "react-icons/bs";
 import { BiPause } from "react-icons/bi";
 import Create_socket from "../../network/chat.socket";
 import { APP } from "../../network/app";
-import { Navigate, useNavigate } from "react-router-dom";
-
-// import kd from "./keydrown";
+import { useNavigate } from "react-router-dom";
 
 
 const PongContext = React.createContext<any>(null);
@@ -29,7 +22,6 @@ export default function Pong() {
 	const [gameName, setGameName] = useState<string>("");
 	const [isSlave, setIsSlave] = useState<boolean>(false);
 	const [isWatcher, setIsWatcher] = useState<boolean>(false);
-	const [userTo, setUserTo] = useState<any>(null);
 	const socket = Create_socket();
 	const location = useLocation();
 
@@ -124,8 +116,7 @@ export default function Pong() {
 
 export function ExecutePong(props: any) {
 	const [ball, setBall] = useState<HTMLDivElement | null>(null);
-	const [limit, setLimit] = useState<DOMRect | undefined>(undefined);
-	const [trigger, setTrigger] = useState<number>(0);
+	const [limit, setLimit] = useState<DOMRect | undefined>(undefined); // BUG can we delete this ?
 	const [leftscore, setLeftScore] = useState<number>(0);
 	const [rightscore, setRightScore] = useState<number>(0);
 	const [changeMap, setChangeMap] = useState<number>(0);
@@ -135,11 +126,10 @@ export function ExecutePong(props: any) {
 	let first: boolean = false;
 	let playerPaddleLeft = new Paddle(document.getElementById("player-paddle-left") as HTMLDivElement);
 	let playerPaddleRight = new Paddle(document.getElementById("player-paddle-right") as HTMLDivElement);
-	let	leftUpPressed : boolean = false;
+	let	leftUpPressed : boolean = false; // BUG can we delete this ?
 	let leftDownPressed : boolean = false;
 	let rightUpPressed : boolean = false;
 	let rightDownPressed : boolean = false;
-	let collision = document.getElementById("collision");
 	const {socket} = useContext(PongContext);
 	const kd					= useRef(require('keydrown'));
 	const navigate = useNavigate();
@@ -227,7 +217,7 @@ export function ExecutePong(props: any) {
 
 			const update = (lastTime: number, pongBall: Ball, playerPaddleLeft: Paddle, playerPaddleRight: Paddle, limit?: DOMRect) => (time: number) => {
 
-				if (lastTime != undefined || lastTime != null) {
+				if (lastTime !== undefined || lastTime !== null) {
 					const delta = time - lastTime;
 					if (first === false) {
 						newLimit = document.getElementById("pong-body")?.getBoundingClientRect();

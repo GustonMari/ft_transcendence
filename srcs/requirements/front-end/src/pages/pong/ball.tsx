@@ -1,6 +1,5 @@
 import { Socket } from "socket.io-client";
 import { Paddle } from "./paddle";
-import { useEffect } from "react";
 
 export class Ball {
 	

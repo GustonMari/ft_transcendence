@@ -45,7 +45,7 @@ export const TFAForm : React.FC<ITFAFormProps> = ({
                 }
             }
         ).then(() => {
-            navigate("/game");
+            navigate("/profile");
             handleSuccess('TFA Code Validated, Welcome Back!')
         }).catch((err) => {
             handleError(err?.message)

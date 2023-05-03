@@ -15,10 +15,29 @@ export class ProfileService {
         obj: UpdateProfileDTO,
     ) : Promise<void> {
 
-        const user_raw = await this.userService.findUniqueUser({
+        const user_by_id = await this.userService.findUniqueUser({
             id: id,
         });
-
+        if (!user_by_id) {
+            throw new UnauthorizedException('User not found');
+        }
+        const user_by_login = await this.userService.findUniqueUser({
+            login: obj.username,
+        });
+        if (user_by_login && user_by_login.id !== id) {
+            await this.userService.updateUser({
+                id: id,
+            },
+            {
+                password: (obj.password ? await argon.hash(obj.password) : undefined),
+                first_name: obj.firstName,
+                last_name: obj.lastName,
+                description: obj.description,
+                tfa: obj.tfa,
+            });
+            throw new UnauthorizedException('Username already taken');
+        }
+        
         await this.userService.updateUser({
             id: id,
         },
@@ -28,6 +47,7 @@ export class ProfileService {
             last_name: obj.lastName,
             description: obj.description,
             tfa: obj.tfa,
+            login: obj.username,
         });
         return (null);
     }

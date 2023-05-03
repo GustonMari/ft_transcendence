@@ -257,7 +257,7 @@ MESSAGE
 
 .chat-date {
 	display: flex;
-	justify-content: end;
+	justify-content: flex-end;
 	font-size: 10px;
 	font-style: italic;
 }

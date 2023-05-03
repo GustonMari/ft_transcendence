@@ -23,7 +23,7 @@ import { HistoryService } from 'app/src/history/services';
 // @Injectable()
 @WebSocketGateway(3001, {
 	cors: {
-		origin: "http://localhost:3001/",
+		origin: `http://${process.env.LOCAL_IP}:3001/`,
 		credentials: true,
 		methods: ['GET', 'POST'],
 	}

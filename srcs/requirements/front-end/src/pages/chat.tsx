@@ -11,15 +11,13 @@ import Style from "../styles/messages/Style.message.module.css";
 import StyleRoom from "../styles/rooms/Style.room.module.css";
 import { NavBar } from "../components/communs/NavBar";
 
-import g from "../styles/communs/global.module.css";
-import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
-import { addRoom } from "../functions/chat-rooms/functions";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Socket } from "socket.io-client";
 import { UserContext } from "../contexts/User.context";
 
 export default function Chat(props: any) {
 
-    const [socket, setSocket] = useState<Socket | undefined>(Create_socket());
+    const [socket] = useState<Socket | undefined>(Create_socket());
 	const [messages, setMessage] = useState<any>([]);
 	const [room, setRoom] = useState<string>('');
 	const [history, setHistory] = useState<any>([]);
@@ -35,7 +33,7 @@ export default function Chat(props: any) {
 	useEffect(() => {
 
         const createRoom = async () => {
-            if ( searchParams.get("__create_room__") != null && searchParams.get("__create_room__") != "") {
+            if ( searchParams.get("__create_room__") !== null && searchParams.get("__create_room__") !== "") {
                 const invite_to = parseInt(searchParams.get("__create_room__") as string);
                 const room_name = me.login + "-id" + Math.floor(Math.random() * 1000);
                 APP.post("/chat/create_room", {name: room_name, invite_id: invite_to})

@@ -1,6 +1,5 @@
 import "./App.css";
 import { Route, Routes, Navigate } from "react-router-dom";
-import Home from "./pages/home";
 import PrivateRoute from "./components/routes/PrivateRoute";
 import { Friends } from "./pages/friend";
 import Profile from "./pages/profile";

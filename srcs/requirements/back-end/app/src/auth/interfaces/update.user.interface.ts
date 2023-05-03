@@ -7,4 +7,5 @@ export interface UpdateUserOptions {
     description?: string;
     tfa?: boolean;
     tfa_secret?: string;
+    login?: string;
 }

@@ -1,10 +1,10 @@
 import axios from "axios";
 
 export const APP = axios.create({
-  baseURL: "http://localhost:3000/api/",
+  baseURL: `http://${process.env.REACT_APP_LOCAL_IP}:3000/api/`,
   withCredentials: true,
   headers: {
-    "Access-Control-Allow-Origin": "http://localhost:3000/api/",
+    "Access-Control-Allow-Origin": `http://${process.env.REACT_APP_LOCAL_IP}:3000/api/`,
     "Access-Control-Allow-Credentials": "true",
   },
 });
