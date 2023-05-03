@@ -145,6 +145,7 @@ export default function HomePong() {
 		await APP.post("/pong/delete_invitation", invitation);
 		const all_invitations = await APP.post("/pong/get_invitations_pong", currentUser);
 		setInvitations(all_invitations.data);
+		//test
 	}
 
 	return (
