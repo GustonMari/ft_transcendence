@@ -180,4 +180,10 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		await this.pongService.resumeGame(data);
 	}
 
+	@SubscribeMessage('refusePlay')
+	async refusePlay(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+		this.myserver.to(data.game_name).emit('refusedToPlay', data);
+		await this.pongService.deleteGame(data.game_name);
+		await this.pongService.deleteGameInAllRooms(data.game_name);
+	}
 }

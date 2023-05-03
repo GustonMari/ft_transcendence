@@ -20,7 +20,7 @@ export class PongService {
 	static waitingList: User[] = [];
 
 	async createInvitationPong(master_str: string, slave_str: string): Promise<void> {
-
+		let new_game_name: string;
 		const master = await this.prisma.user.findUnique({
 			where: {
 				login: master_str,
@@ -36,9 +36,13 @@ export class PongService {
 			console.error("Error: master or slave not found, createInvitationPong failed");
 			return ;
 		}
+		if (slave.login.localeCompare(master.login) < 0)
+			new_game_name = slave.login + "-" + master.login;
+		else
+			new_game_name = master.login + "-" + slave.login;
 		await this.prisma.invitationPong.create({
 			data: {
-				game_name: master.login + " - " + slave.login,
+				game_name: new_game_name,
 				sender_player_id: master.id,
 				sender_player_login: master.login,
 				invited_player_id: slave.id,
@@ -156,7 +160,7 @@ export class PongService {
 			return false;
 		}
 		PongService.allRooms.splice(index, 1);
-		console.log("deleteGameInAllRooms = ", PongService.allRooms, "| ohoh game_name = ", game_name);
+		// console.log("deleteGameInAllRooms = ", PongService.allRooms, "| ohoh game_name = ", game_name);
 		return (true);
 	}
 
@@ -188,7 +192,6 @@ export class PongService {
 	}
 
 	async getGameByGameName(gameName: string): Promise<Game> {
-		console.log("getGameByGameName = ", gameName)
 		if (!gameName)
 			return (null);
 		const game: Game = await this.prisma.game.findUnique({

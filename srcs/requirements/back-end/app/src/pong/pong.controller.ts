@@ -163,10 +163,10 @@ export class PongController {
 
 		@Post('delete_invitation')
 		async delete_invitation(@Res() response: Response ,@MessageBody() info: InvitationPong): Promise<void> {
-			console.log("delete_invitation: info =>>>>>>>>>>> ", info);
 			await this.pongService.deleteOneInvitationPong(info);
 			response.send("deleted");
 		}
+
 
 		@Post('fill_all_rooms')
 		async fill_all_rooms(@Res() response: Response): Promise<void> {

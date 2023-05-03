@@ -30,6 +30,7 @@ export default function HomePong() {
 	const roomContainer = useRef<HTMLDivElement>(null);
 	const [rooms, setRooms] = useState<any>([]);
 	const [invitations, setInvitations] = useState<any>([]);
+	const [renderReact, setRenderReact] = useState<number>(0);
 
 	useEffect(() => {
 		const getRooms = async () => {
@@ -132,6 +133,8 @@ export default function HomePong() {
 		}});
 	});
 
+
+
 	const acceptInvitation = async (invitation: any) => {
 		await APP.post("/pong/delete_invitation", invitation);
 		// navigate("/pong", {state: {
@@ -144,8 +147,8 @@ export default function HomePong() {
 	const refuseInvitation = async (invitation: any) => {
 		await APP.post("/pong/delete_invitation", invitation);
 		const all_invitations = await APP.post("/pong/get_invitations_pong", currentUser);
+		socket.emit('refusePlay', invitation);
 		setInvitations(all_invitations.data);
-		//test
 	}
 
 	return (
