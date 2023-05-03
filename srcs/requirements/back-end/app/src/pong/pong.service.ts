@@ -520,7 +520,7 @@ export class PongService {
 				x: 0.1,
 				y: 0.1
 			},
-			velocity: 0.25,
+			velocity: 0.025,
 			player1_id: info.game.data.master_id,
 			player2_id: info.game.data.slave_id,
 		}
