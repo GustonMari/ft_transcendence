@@ -234,7 +234,9 @@ export default function HomePong() {
                                         <button
                                             type="submit"
                                             className={Style['game-room-image']}
-                                            onClick={() => {}}
+                                            onClick={() => {
+												spectateGame(room);
+											}}
                                             >
                                             <IconContext.Provider value={{className: Style['icon-game-room']}}>
                                                 <FaEye />

@@ -354,6 +354,8 @@ export function ExecutePong(props: any) {
 					</div>
 				</div>
 			</div>
+
+			{isWatcher ? (<></>) : (
 				<div className={Style['container-button-play-stop']}>
 					<div>
 						<button 
@@ -374,6 +376,7 @@ export function ExecutePong(props: any) {
 						</button>
 					</div>
 			</div>
+				)}
 		</div>
 	);
 }
