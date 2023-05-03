@@ -8,13 +8,20 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { ChatSchedulingService } from './services/chat_scheduling.service';
 import { PongController } from '../pong/pong.controller';
 import { PongService } from '../pong/pong.service';
+import { PongGateway } from '../pong/gateways/pong.gateway';
+import { HistoryService } from '../history/services';
+import { UserService } from '../user/services/user.service';
+import { JwtService } from '@nestjs/jwt';
 
 
 @Module({
 	imports: [
 		ScheduleModule.forRoot()
 	],
-	providers: [ChatGateway, ChatService, ChatSchedulingService, PongService],
+	providers: [ChatGateway, 
+				ChatService, 
+				ChatSchedulingService, 
+				PongService],
 	controllers: [ChatController, PongController],
 })
 export class ChatModule {

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Post, Res } from '@nestjs/common';
+import { Controller, Get, HttpServer, Inject, Post, Res } from '@nestjs/common';
 import { MessageBody } from '@nestjs/websockets';
 import { PrismaService } from '../prisma/prisma.service';
 import { PongService } from './pong.service';
@@ -7,12 +7,12 @@ import { Response } from 'express';
 import { exit } from 'process';
 import { PlayerMatched } from './pong.interface';
 import { InvitationPong, User } from '@prisma/client';
-import { Socket } from 'dgram';
+import { PongGateway } from './gateways/pong.gateway';
 
 @Controller('pong')
 export class PongController {
 	constructor(
-		private readonly pongService: PongService, private readonly prisma: PrismaService 
+		private readonly pongService: PongService, private readonly prisma: PrismaService,
 		){}
 
 		@Post('create_game') // Subscribe to the event 'joinGame'
@@ -164,10 +164,10 @@ export class PongController {
 
 		@Post('delete_invitation')
 		async delete_invitation(@Res() response: Response ,@MessageBody() info: InvitationPong): Promise<void> {
-			console.log("delete_invitation: info =>>>>>>>>>>> ", info);
 			await this.pongService.deleteOneInvitationPong(info);
 			response.send("deleted");
 		}
+
 
 		@Post('fill_all_rooms')
 		async fill_all_rooms(@Res() response: Response): Promise<void> {

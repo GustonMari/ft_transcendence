@@ -323,6 +323,11 @@ export function ExecutePong(props: any) {
 					}
 			}, [changeMap])
 
+			socket?.on("refusedToPlay", (data: any) => {
+				navigate("/game");
+			});
+
+
 
 	return (
 		<div className={Style['container-game']} id="main-window">

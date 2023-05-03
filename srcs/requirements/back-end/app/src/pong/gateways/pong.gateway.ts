@@ -11,7 +11,7 @@ import { SubscribeMessage,
 	ConnectedSocket,
 } from '@nestjs/websockets';
 
-import { Get, Post, Res, UseGuards } from '@nestjs/common';
+import { Get, Injectable, Post, Res, UseGuards } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
 import { PongService } from '../pong.service';
 import { InfoPongRoom, MovePaddle } from '../pong.interface';
@@ -20,6 +20,7 @@ import { Game } from '@prisma/client';
 import { exit } from 'process';
 import { HistoryService } from 'app/src/history/services';
 
+// @Injectable()
 @WebSocketGateway(3001, {
 	cors: {
 		origin: "http://localhost:3001/",
@@ -29,16 +30,16 @@ import { HistoryService } from 'app/src/history/services';
 })
 export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 
+	
+		@WebSocketServer() // Create a instance of the server
+		myserver: Server;
 	// waiter: number;
 
 	constructor(private pongService: PongService, private historyService: HistoryService){
 		// console.log("PongGateway");
 		// this.waiter = 0;
-	 }
-
-	@WebSocketServer() // Create a instance of the server
-	myserver: Server;
-
+	}
+	
 	afterInit(server: Server) {
 		// console.log('Initialized!');
 	}
@@ -192,4 +193,10 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		await this.pongService.resumeGame(data);
 	}
 
+	@SubscribeMessage('refusePlay')
+	async refusePlay(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+		this.myserver.to(data.game_name).emit('refusedToPlay', data);
+		await this.pongService.deleteGame(data.game_name);
+		await this.pongService.deleteGameInAllRooms(data.game_name);
+	}
 }
