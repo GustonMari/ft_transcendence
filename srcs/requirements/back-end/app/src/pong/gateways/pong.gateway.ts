@@ -81,24 +81,19 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	@SubscribeMessage('updateGame')
 	async updateGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
 		let ret = await this.pongService.updateGame(data);
+		// if (data.isMaster && ret && (ret.leftScore >= 11 || ret.rightScore >= 11)) {
 		if (data.isMaster && ret && (ret.leftScore >= 1 || ret.rightScore >= 1)) {
 			//TODO: need to change to emit to all in a room, how to get game name ??
-			// console.log('game stopped');
 			const game = await this.pongService.getGame(data.gameName);
 			await this.historyService.addGame(await this.pongService.formatGameForAddGame(game));
 			await this.pongService.reset(game);
 			await this.pongService.resetScore(data.gameName);
-			// socket.emit('GameUpdated', ret);
-			
 			this.myserver.to(data.gameName).emit('GameUpdated', ret);
-			// socket.to(data.gameName).emit('GameUpdated', ret);
 			this.myserver.to(data.gameName).emit('GameFinished', ret);
 			await this.pongService.PauseGame(data.gameName);
-			// socket.emit('GameFinished', ret);
+			console.log("GameFinished : waitinglist = ", PongService.waitingList);
 		} else {
-			// this.myserver.to(data.gameName).emit('GameUpdated', ret);
 			socket.join(data.gameName);
-			// socket.emit('GameUpdated', ret);
 			if (data.isMaster)
 				this.myserver.to(data.gameName).emit('GameUpdated', ret);
 		}

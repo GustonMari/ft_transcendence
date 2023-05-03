@@ -220,7 +220,7 @@ ALTER TABLE "messages" ADD CONSTRAINT "messages_room_id_fkey" FOREIGN KEY ("room
 ALTER TABLE "UserInGame" ADD CONSTRAINT "UserInGame_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UserInGame" ADD CONSTRAINT "UserInGame_game_id_fkey" FOREIGN KEY ("game_id") REFERENCES "games"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "UserInGame" ADD CONSTRAINT "UserInGame_game_id_fkey" FOREIGN KEY ("game_id") REFERENCES "games"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "invitationpong" ADD CONSTRAINT "invitationpong_sender_player_id_fkey" FOREIGN KEY ("sender_player_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

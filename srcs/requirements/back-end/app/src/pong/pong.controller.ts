@@ -47,16 +47,16 @@ export class PongController {
 			response.send(games);
 		}
 
-		@Post('set_game_over')
-		async set_game_over(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
-			await this.pongService.setGameOver(info);
-		}
+		// @Post('set_game_over')
+		// async set_game_over(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+		// 	await this.pongService.setGameOver(info);
+		// }
 
-		@Post('is_game_over')
-		async is_game_over(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
-			const game = await this.pongService.isGameOver(info);
-			response.send(game);
-		}
+		// @Post('is_game_over')
+		// async is_game_over(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
+		// 	const game = await this.pongService.isGameOver(info);
+		// 	response.send(game);
+		// }
 
 		@Post('get_game')
 		// async get_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
@@ -155,8 +155,9 @@ export class PongController {
 
 		@Post('delete_game')
 		async delete_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
-			console.log("delete_game: info = ", info.game_name);	
-			await this.pongService.deleteGame(info.game_name);
+			console.log("delete_game: info = ", info.gameName);
+			await this.pongService.deleteGame(info.gameName);
+			await this.pongService.deleteGameInAllRooms(info.gameName);
 			response.send("deleted");
 		}
 

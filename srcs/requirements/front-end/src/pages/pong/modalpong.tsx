@@ -21,7 +21,7 @@ export function PopupWinLose(props : any) {
 	// 	navigate("/homepong");
 	// };
 
-	const handleClose = () => {
+	const handleClose = async () => {
 		setShow(false)
 		setPopupWinLose({winlose: false, winlosemessage: ""});
 		navigate("/game");

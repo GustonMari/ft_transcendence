@@ -272,41 +272,43 @@ export function ExecutePong(props: any) {
 						window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight));
 			  }
 			}, [ball]);
-			socket.on('GameFinished', async (data: any) => {
-				let msg_tmp = '';
-						
-				if (isMaster && data.leftScore >= 1)
-				{
-					msg_tmp = 'You won'
-				}
-				else if (!isWatcher && !isMaster && data.rightScore >= 1)
-				{
-					msg_tmp = 'You won!';
-				}
-				else if (isMaster && data.rightScore >= 1)
-				{
-					msg_tmp = 'You lose :(';
-				}
-				else if (!isWatcher &&  !isMaster && data.leftScore >= 1)
-				{
-					msg_tmp = 'You lose :(';
-				}
-				else if (isWatcher)
-				{
-					navigate("/game");
-				}
-				if (!isWatcher)
-				{
-					setPopupWinLose({popup: true, winlosemessage: msg_tmp});
-					await APP.post("/pong/set_game_over", {
-						game_name: gameName
-					});
-					const is_game_over = await APP.post("/pong/is_game_over", {
-						game_name: gameName
-					});
-					// setTrigger(trigger += 1);
-				}
-			})
+
+			useEffect(() => {
+				socket.on('GameFinished', async (data: any) => {
+					let msg_tmp = '';
+					if (isMaster) {
+						console.log("Master, go delete game bitch");
+						await APP.post("/pong/delete_game", {gameName: gameName});
+					}
+					if (isMaster && data.leftScore >= 11)
+						msg_tmp = 'You won'
+					else if (!isWatcher && !isMaster && data.rightScore >= 11)
+						msg_tmp = 'You won!';
+					else if (isMaster && data.rightScore >= 11)
+						msg_tmp = 'You lose :(';
+					else if (!isWatcher &&  !isMaster && data.leftScore >= 11)
+						msg_tmp = 'You lose :(';
+					else if (isWatcher)
+						navigate("/game");
+					if (!isWatcher)
+						setPopupWinLose({popup: true, winlosemessage: msg_tmp});
+
+					// if (!isWatcher)
+					// {
+					// 	setPopupWinLose({popup: true, winlosemessage: msg_tmp});
+					// 	await APP.post("/pong/set_game_over", {
+					// 		game_name: gameName
+					// 	});
+					// 	const is_game_over = await APP.post("/pong/is_game_over", {
+					// 		game_name: gameName
+					// 	});
+					// 	// setTrigger(trigger += 1);
+					// }
+				})
+			return () => {
+				socket.off('GameFinished');
+			}
+		},[socket]);
 
 			const click = (map: number) => {
 				setChangeMap(map);
