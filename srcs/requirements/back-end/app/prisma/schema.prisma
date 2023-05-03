@@ -163,7 +163,7 @@ model UserInGame {
 
 	user User @relation(fields: [user_id], references: [id])
 	user_id Int
-	game Game @relation(fields: [game_id], references: [id])
+	game Game @relation(fields: [game_id], references: [id], onDelete: Cascade)
 	game_id Int
 
 	// master Game? @relation("master")

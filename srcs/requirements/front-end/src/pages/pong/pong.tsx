@@ -275,19 +275,19 @@ export function ExecutePong(props: any) {
 			socket.on('GameFinished', async (data: any) => {
 				let msg_tmp = '';
 						
-				if (isMaster && data.leftScore >= 11)
+				if (isMaster && data.leftScore >= 1)
 				{
 					msg_tmp = 'You won'
 				}
-				else if (!isWatcher && !isMaster && data.rightScore >= 11)
+				else if (!isWatcher && !isMaster && data.rightScore >= 1)
 				{
 					msg_tmp = 'You won!';
 				}
-				else if (isMaster && data.rightScore >= 11)
+				else if (isMaster && data.rightScore >= 1)
 				{
 					msg_tmp = 'You lose :(';
 				}
-				else if (!isWatcher &&  !isMaster && data.leftScore >= 11)
+				else if (!isWatcher &&  !isMaster && data.leftScore >= 1)
 				{
 					msg_tmp = 'You lose :(';
 				}

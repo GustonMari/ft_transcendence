@@ -324,7 +324,7 @@ export class PongService {
 		// console.log("updateGame : gameName = ", data.gameName, " | game = ", game);
 		if (game && game.PausePlay == false)
 			return ({x: game.x, y: game.y, leftScore: game.leftScore, rightScore: game.rightScore, paddleLeftY: game.back_paddle_left.y, paddleRightY: game.back_paddle_right.y});
-		if (game.leftScore >= 11 || game.rightScore >= 11)
+		if (game.leftScore >= 1 || game.rightScore >= 1)
 		{
 			// game.defineWinnerLooser();   
 			this.restartGame(game);
