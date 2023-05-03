@@ -242,10 +242,7 @@ export function ExecutePong(props: any) {
 					});
 					DownHandler()
 					UpHandler();
-					window.addEventListener('resize', () => {
-						newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
-						// console.log('resize');
-					});
+
 				}
 				let ret_timeout = setTimeout(() => {
 						lastTime = time;
@@ -255,7 +252,39 @@ export function ExecutePong(props: any) {
 				
 			};
 
+			window.addEventListener('resize', () => {
+				newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
+				// console.log('resize');
+			});
+
+			// const update = (lastTime: number,pongBall: Ball, playerPaddleLeft: Paddle, playerPaddleRight: Paddle, limit?: DOMRect) => {
+			// 	const updateFrame = (time: number) => {
+			// 		const delta = time - lastTime;
+			// 		if (first === false) {
+			// 			newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
+			// 			first = true;
+			// 		}
+			// 		if (newLimit /* && !isWatcher */) {
+			// 			pongBall.update(delta, playerPaddleLeft, playerPaddleRight, gameName, isMaster);
+			// 		}
+			// 		kd.current.run(function () {
+			// 			kd.current.tick();
+			// 		});
+			// 		DownHandler();
+			// 		UpHandler();
+			// 		window.addEventListener('resize', () => {
+			// 			newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
+			// 			// console.log('resize');
+			// 		});
+			// 		lastTime = time;
+			// 		window.requestAnimationFrame(updateFrame);
+			// 	};
 			
+			// 	return () => {
+			// 		lastTime = performance.now();
+			// 		window.requestAnimationFrame(updateFrame);
+			// 	};
+			// };
 			
 			useEffect(() => {
 				if (ball && socket) {
@@ -271,6 +300,10 @@ export function ExecutePong(props: any) {
 					let lastTime: number = 0;
 						window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight));
 			  }
+				return () => {
+					console.log('workkkkkkkkkkkkkkkkkkkkkk')
+					socket.off('GameUpdated');
+				}
 			}, [ball]);
 
 			useEffect(() => {

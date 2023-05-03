@@ -390,7 +390,7 @@ export class PongService {
 						game.velocity += 0.0001 * data.delta;
 					
 					game.vector.x *= -1;
-					game.x += 3;
+					game.x += 1.5;
 				}
 				else if (await this.isCollision(game.back_ball, game.back_paddle_right))
 				{
@@ -398,7 +398,7 @@ export class PongService {
 					if (game.velocity < 0.080)
 						game.velocity += 0.0001 * data.delta;
 					game.vector.x *= -1;
-					game.x -= 3;
+					game.x -= 1.5;
 				}
 			}
 			await this.sideColision(game.back_ball, game.back_limit, game);
@@ -520,7 +520,7 @@ export class PongService {
 				x: 0.1,
 				y: 0.1
 			},
-			velocity: 0.25,
+			velocity: 0.025,
 			player1_id: info.game.data.master_id,
 			player2_id: info.game.data.slave_id,
 		}

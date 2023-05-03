@@ -65,6 +65,7 @@ export class Ball {
 
 	update(delta: number, playerPaddleLeft: Paddle, playerPaddleRight: Paddle, gameName: string, isMaster: boolean) {
 		this.socket.emit('updateGame', {delta: delta, gameName: gameName, isMaster: isMaster});
+		this.socket.off('updateGame');
 		// this.socket?.on('GameUpdated', (data: any) => {
 		// 	this.x = data.x;
 		// 	this.y = data.y;

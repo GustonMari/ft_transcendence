@@ -11,12 +11,12 @@ import { SubscribeMessage,
 	ConnectedSocket,
 } from '@nestjs/websockets';
 
-import { Get, Injectable, Post, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Injectable, Post, Res, UseGuards } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
 import { PongService } from '../pong.service';
 import { InfoPongRoom, MovePaddle } from '../pong.interface';
 import { Response} from 'express';
-import { Game } from '@prisma/client';
+import { Game, InvitationPong } from '@prisma/client';
 import { exit } from 'process';
 import { HistoryService } from 'app/src/history/services';
 
@@ -57,30 +57,30 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 
 	// @Post('InitGame')
-	@SubscribeMessage('beginGame')
-	async initGame(/* @Res() response: Response , */ @MessageBody() info: any, @ConnectedSocket() socket: Socket): Promise<void> {
-	}
+	// @SubscribeMessage('beginGame')
+	// async initGame(/* @Res() response: Response , */ @MessageBody() info: any, @ConnectedSocket() socket: Socket): Promise<void> {
+	// }
 
-	@SubscribeMessage('defineBall')
-	async defineBall(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-		// console.log("defineBall");
-	}
+	// @SubscribeMessage('defineBall')
+	// async defineBall(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+	// 	// console.log("defineBall");
+	// }
 
-	@SubscribeMessage('defineLimit')
-	async defineLimit(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-		// console.log("defineLimit", );
-	}
+	// @SubscribeMessage('defineLimit')
+	// async defineLimit(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+	// 	// console.log("defineLimit", );
+	// }
 
-	@SubscribeMessage('resetGame')
-	async resetGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-		// console.log("resetGame");
-		const all = await this.pongService.getGame(data.gameName);
+	// @SubscribeMessage('resetGame')
+	// async resetGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+	// 	// console.log("resetGame");
+	// 	const all = await this.pongService.getGame(data.gameName);
 
-		socket.emit('resetGame', {x: all.x, y: all.y, vector: all.vector, velocity: all.velocity});
-	}
+	// 	socket.emit('resetGame', {x: all.x, y: all.y, vector: all.vector, velocity: all.velocity});
+	// }
 
 	@SubscribeMessage('updateGame')
-	async updateGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+	async updateGame(@MessageBody() data: {delta: number, gameName: string, isMaster: boolean}, @ConnectedSocket() socket: Socket): Promise<void> {
 		let ret = await this.pongService.updateGame(data);
 		// if (data.isMaster && ret && (ret.leftScore >= 11 || ret.rightScore >= 11)) {
 		if (data.isMaster && ret && (ret.leftScore >= 1 || ret.rightScore >= 1)) {
@@ -102,7 +102,7 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 
 	@SubscribeMessage('playGame')
-	async playGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+	async playGame(@MessageBody() data: {gameName: string}, @ConnectedSocket() socket: Socket): Promise<void> {
 		// console.log("playGame");
 		await this.pongService.playGame(data.gameName);
 	}
@@ -142,13 +142,13 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 
 
-	@SubscribeMessage('leaveGame')
-	async leaveGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-		await socket.leave(data.gameName);
-	}
+	// @SubscribeMessage('leaveGame')
+	// async leaveGame(@MessageBody() data: {gameName: string}, @ConnectedSocket() socket: Socket): Promise<void> {
+	// 	await socket.leave(data.gameName);
+	// }
 
 	@SubscribeMessage('allLeaveGame')
-	async allLeaveGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+	async allLeaveGame(@MessageBody() data: {gameName: string}, @ConnectedSocket() socket: Socket): Promise<void> {
 		this.myserver.socketsLeave(data.gameName);
 	}
 
@@ -165,7 +165,7 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 
 	@SubscribeMessage('joinWaitingRoom')
-	async createWaitingRoom(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+	async createWaitingRoom(@MessageBody() data: string | null, @ConnectedSocket() socket: Socket): Promise<void> {
 		console.log("joinWaitingRoom");
 		await socket.join("waitingRoom");
 		if ((await this.myserver.in("waitingRoom").fetchSockets()).length == 2) {
@@ -176,27 +176,28 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		}
 	}
 
-	@SubscribeMessage('disconnectWaitingRoom')
-	async disconnectWaitingRoom(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-		// console.log("disconnectWaitingRoom");
-		this.myserver.socketsLeave("waitingRoom");
-	}
+	// @SubscribeMessage('disconnectWaitingRoom')
+	// async disconnectWaitingRoom(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+	// 	// console.log("disconnectWaitingRoom");
+	// 	this.myserver.socketsLeave("waitingRoom");
+	// }
 
 
 	@SubscribeMessage('pauseGame')
-	async pauseGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+	async pauseGame(@MessageBody() data: string, @ConnectedSocket() socket: Socket): Promise<void> {
 		await this.pongService.PauseGame(data);
 	}
 
 	@SubscribeMessage('resumeGame')
-	async resumeGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+	async resumeGame(@MessageBody() data: string, @ConnectedSocket() socket: Socket): Promise<void> {
 		await this.pongService.resumeGame(data);
 	}
 
 	@SubscribeMessage('refusePlay')
-	async refusePlay(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+	async refusePlay(@MessageBody() data: InvitationPong, @ConnectedSocket() socket: Socket): Promise<void> {
 		this.myserver.to(data.game_name).emit('refusedToPlay', data);
 		await this.pongService.deleteGame(data.game_name);
 		await this.pongService.deleteGameInAllRooms(data.game_name);
 	}
+
 }

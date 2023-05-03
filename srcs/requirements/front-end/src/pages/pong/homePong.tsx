@@ -98,7 +98,7 @@ export default function HomePong() {
 			if (!is_match)
 			{
 				//put message waiting
-				socket?.emit("joinWaitingRoom");
+				socket?.emit("joinWaitingRoom", null);
 				setWaitingForGame(true);
 			}
 			else
