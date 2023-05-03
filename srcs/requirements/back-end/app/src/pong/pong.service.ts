@@ -540,6 +540,20 @@ export class PongService {
 		PongService.waitingList.push(info);
 	}
 
+	async removePlayerFromWaitingList(info: User) : Promise<void> {
+		console.log("BEFORE removePlayerFromWaitingList ---> PongService.waitingList = ", PongService.waitingList);
+		console.log("BLABLABAL info = ", info)
+		for (const player of PongService.waitingList)
+		{
+			if (player.id === info.id)
+			{
+				const index = PongService.waitingList.indexOf(player);
+				PongService.waitingList.splice(index, 1);
+			}
+		}
+		console.log("AFTER addPlayerToWaitingList ---> PongService.waitingList = ", PongService.waitingList);
+	}
+
 	async isPlayerIsInWaitingList(info: User) : Promise<boolean> {
 		for (const player of PongService.waitingList)
 		{

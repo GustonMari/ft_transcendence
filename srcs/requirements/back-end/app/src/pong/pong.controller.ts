@@ -107,6 +107,12 @@ export class PongController {
 			response.send("added");
 		}
 
+		@Post('remove_player_from_waiting_list')
+		async remove_player_from_waiting_list(@Res() response: Response ,@MessageBody() info: User): Promise<void> {
+			await this.pongService.removePlayerFromWaitingList(info);
+			response.send("removed");
+		}
+
 		@Post('is_player_in_waiting_list')
 		async is_player_in_waiting_list(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
 			const bool = await this.pongService.isPlayerIsInWaitingList(info);

@@ -176,6 +176,12 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		}
 	}
 
+	@SubscribeMessage('leaveWaitingRoom')
+	async leaveWaitingRoom(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+		console.log("leaveWaitingRoom");
+		await socket.leave("waitingRoom");
+	}
+
 	@SubscribeMessage('disconnectWaitingRoom')
 	async disconnectWaitingRoom(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
 		// console.log("disconnectWaitingRoom");

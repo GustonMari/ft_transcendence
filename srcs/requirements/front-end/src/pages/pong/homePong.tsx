@@ -87,16 +87,19 @@ export default function HomePong() {
 		const in_game = await APP.post("/pong/is_player_is_in_game", currentUser);
 		if (in_game.data === true)
 		{
+			console.log("player is in game");
 			navigate("/pong", {state: {
 			}});
 		}
 		const res = await APP.post("/pong/is_player_in_waiting_list", currentUser);
 		if (res.data === false)
 		{
+			console.log("player is not in waiting list, added")
 			await addPlayerToList(currentUser);
 			const is_match = await isMatched();
 			if (!is_match)
 			{
+				console.log("not matched");
 				//put message waiting
 				socket?.emit("joinWaitingRoom");
 				setWaitingForGame(true);
@@ -108,6 +111,13 @@ export default function HomePong() {
 				socket?.emit("joinWaitingRoom", is_match);
 			}
 		}
+	}
+
+	const leaveWaitingFile = async () => {
+		await APP.post("/pong/remove_player_from_waiting_list", currentUser);
+		socket?.emit("leaveWaitingRoom");
+		setWaitingForGame(false);
+		setWaitTrigger(false);
 	}
 
 	const spectateGame = async (room: any) => {
@@ -206,7 +216,7 @@ export default function HomePong() {
 
 					{waitTrigger ? 
 					<button className={Style['join-waiting-search']} onClick={() =>{
-						
+						leaveWaitingFile();
 					} }>
 						<div className={Style['body-waiting-search']}>
 							<div className={Style['play-search']}>
