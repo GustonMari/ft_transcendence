@@ -114,8 +114,8 @@ export default function HomePong() {
 	}
 
 	const leaveWaitingFile = async () => {
-		await APP.post("/pong/remove_player_from_waiting_list", currentUser);
 		socket?.emit("leaveWaitingRoom");
+		await APP.post("/pong/remove_player_from_waiting_list", currentUser);
 		setWaitingForGame(false);
 		setWaitTrigger(false);
 	}

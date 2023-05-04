@@ -16,9 +16,7 @@ export class PongController {
 		){}
 
 		@Post('create_game') // Subscribe to the event 'joinGame'
-		// async create_game(@Res() response: Response ,@MessageBody() info: {master: User, slave: User}): Promise<void> {
 		async create_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
-		// exit(1);
 		await this.pongService.createGame(info.master, info.slave);
 		response.send("Created game");
 
@@ -48,27 +46,10 @@ export class PongController {
 			response.send(games);
 		}
 
-		// @Post('set_game_over')
-		// async set_game_over(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
-		// 	await this.pongService.setGameOver(info);
-		// }
-
-		// @Post('is_game_over')
-		// async is_game_over(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
-		// 	const game = await this.pongService.isGameOver(info);
-		// 	response.send(game);
-		// }
-
 		@Post('get_game')
-		// async get_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
 		async get_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
 
-			// console.log('inside NTMMMMMMMMMM', info)
-			console.log(": info = ", info.game_name);
-			// const game = await this.pongService.getGameByGameName(info.game_name.data);
 			const game = await this.pongService.getGameByGameName(info.game_name);
-
-			// exit(1);
 			response.send(game);
 		}
 
@@ -80,25 +61,15 @@ export class PongController {
 
 		@Post('is_matched')
 		async is_matched(@Res() response: Response): Promise<void> {
-			// console.log("burger king");
 			const bool = await this.pongService.IsPlayerMatched();
 			if (bool === true)
 			{
-				// console.log("MATCHED");
-				// send les players
-				// console.log("waiting list = ", await this.pongService.getWaitingList());
 				response.send(await this.pongService.getWaitingList());
-				// response.send("salut");
-
 				// vider la list
 				// await this.pongService.clearWaitingList();
 			}
 			else
-			{
-				//send null
 				response.send(null);
-				// console.log("NOT MATCHED");
-			}
 		}
 
 		@Post('add_player_to_waiting_list')
@@ -130,22 +101,6 @@ export class PongController {
 			await this.pongService.clearWaitingList();
 			response.send("cleared");
 		}
-
-		// @Post('pause_game')
-		// async pause_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
-		// 	// const game = await this.pongService.getGameName(info.login);
-		// 	// await this.pongService.PauseGame(game.data.game_name);
-		// 	await this.pongService.PauseGame(info);
-		// 	response.send("paused");
-		// }
-
-		// @Post('resume_game')
-		// async resume_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
-		// 	// const game = await this.pongService.getGameName(info.login);
-		// 	// await this.pongService.resumeGame(game.data.game_name);
-		// 	await this.pongService.resumeGame(info);
-		// 	response.send("resumed");
-		// }
 
 		@Post('create_invitation_pong')
 		async create_invitation_pong(@Res() response: Response ,@MessageBody() info: any): Promise<any> {
@@ -180,8 +135,5 @@ export class PongController {
 			await this.pongService.fillAllRooms();
 			response.send("filled");
 		}
-
-		// @Post('leave_game_room')
-		// async leave_game_room(@Res() response: Response ,@MessageBody() info: any, @Socket socket): Promise<void> {
 
 }
