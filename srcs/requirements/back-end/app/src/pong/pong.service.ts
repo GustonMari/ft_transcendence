@@ -7,6 +7,8 @@ import { Socket, Server } from 'socket.io';
 import { InfoPongRoom } from './pong.interface';
 import { AddGameDTO } from '../history/dtos';
 
+const VELOCITY_MAX = 0.080;
+const VELOCITY_ACCEL = 0.0003;
 
 @Injectable()
 export class PongService {
@@ -370,14 +372,14 @@ export class PongService {
 			// game.velocity += 0.00001 * data.delta;
 			await this.calculateBallLimmit(game);
 			if(game.back_ball.top && game.back_ball.top <= (game.back_limit.top + 1)) {
-				if (game.velocity < 0.080)
-					game.velocity += 0.0001 * data.delta;
+				if (game.velocity < VELOCITY_MAX)
+					game.velocity += VELOCITY_ACCEL * data.delta;
 				game.vector.y *= -1;
 			}
 			else if ( game.back_ball.bottom >= (game.back_limit.bottom - 1))
 			{
-				if (game.velocity < 0.080)
-					game.velocity += 0.0001 * data.delta;
+				if (game.velocity < VELOCITY_MAX)
+					game.velocity += VELOCITY_ACCEL * data.delta;
 	
 				game.vector.y *= -1;
 			}
@@ -386,8 +388,8 @@ export class PongService {
 				if (await this.isCollision(game.back_ball, game.back_paddle_left))
 				{
 					console.log('collision-------------------------------')
-					if (game.velocity < 0.080)
-						game.velocity += 0.0001 * data.delta;
+					if (game.velocity < VELOCITY_MAX)
+						game.velocity += VELOCITY_ACCEL * data.delta;
 					
 					game.vector.x *= -1;
 					game.x += 1.5;
@@ -395,8 +397,8 @@ export class PongService {
 				else if (await this.isCollision(game.back_ball, game.back_paddle_right))
 				{
 					console.log('collision-------------------------------')
-					if (game.velocity < 0.080)
-						game.velocity += 0.0001 * data.delta;
+					if (game.velocity < VELOCITY_MAX)
+						game.velocity += VELOCITY_ACCEL * data.delta;
 					game.vector.x *= -1;
 					game.x -= 1.5;
 				}
