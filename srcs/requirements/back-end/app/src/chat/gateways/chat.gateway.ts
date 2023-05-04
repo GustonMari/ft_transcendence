@@ -178,6 +178,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			const sockets = this.myserver.sockets.sockets;
 			const client_socket_id = await this.chatService.getSocketIdByUserId(id_user_to);
 			const client_socket = sockets.get(client_socket_id);
+			client_socket.leave(data.room_name);
 			client_socket.emit('renderReact', 'renderReact');
 		}
 	}

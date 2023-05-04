@@ -497,4 +497,5 @@ export class ChatService {
 		})
 		return user.socket_id;
 	}
+
 }
