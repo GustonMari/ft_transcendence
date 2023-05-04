@@ -39,7 +39,7 @@
 	width: 100vw; */
 
 
-	background-image: url('./../../../public/pong/background_pong.png');
+	/* background-image: url('./../../asserts/pong/background_pong.png'); */
 	/* background-image: var(--background-image-main); */
 	background-repeat: no-repeat;
 	background-size: cover;

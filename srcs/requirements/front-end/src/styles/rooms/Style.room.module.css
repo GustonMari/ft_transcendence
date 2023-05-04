@@ -66,6 +66,7 @@ LEFT
 	padding: 10px !important;
 	font-family: 'Roboto', sans-serif !important;
 	transition: background-color  0.3s !important;
+    width: 100%;
 }
 
 .line-room-button:hover {

@@ -53,8 +53,8 @@ export async function AuthorizeUser(props : any) : Promise<void>
 
 export function ShortedName(name : string) : string
 {
-	if (name.length > 10)
-		return (name.slice(0, 10) + "...");
+	if (name.length > 17)
+		return (name.slice(0, 17) + "...");
 	return (name);
 }
 
