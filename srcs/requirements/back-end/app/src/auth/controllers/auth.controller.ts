@@ -68,12 +68,12 @@ export class AuthController {
         const { access_token, refresh_token } = await this.authService.register(dto);
         Logger.log(dto.login + ' is registered');
         res.cookie('access_token', access_token, {
-            httpOnly: true,
-            secure: true,
+            httpOnly: (process.env.LOCAL_IP === "localhost" ? true : false),
+            secure: (process.env.LOCAL_IP === "localhost" ? true : false),
         });
         res.cookie('refresh_token', refresh_token, {
-            httpOnly: true,
-            secure: true,
+            httpOnly: (process.env.LOCAL_IP === "localhost" ? true : false),
+            secure: (process.env.LOCAL_IP === "localhost" ? true : false),
         });
         res.send({ access_token: access_token });
     }
@@ -102,12 +102,12 @@ export class AuthController {
 
         Logger.log(dto.login + ' is logged in');
         res.cookie('access_token', access_token, {
-            httpOnly: true,
-            secure: true,
+            httpOnly: (process.env.LOCAL_IP === "localhost" ? true : false),
+            secure: (process.env.LOCAL_IP === "localhost" ? true : false),
         });
         res.cookie('refresh_token', refresh_token, {
-            httpOnly: true,
-            secure: true,
+            httpOnly: (process.env.LOCAL_IP === "localhost" ? true : false),
+            secure: (process.env.LOCAL_IP === "localhost" ? true : false),
         });
         res.send({ access_token: access_token });
     }
@@ -148,12 +148,12 @@ export class AuthController {
     ) {
         const {access_token, refresh_token} = await this.authService.refresh(user, credentials);
         res.cookie('access_token', access_token, {
-            httpOnly: true,
-            secure: true,
+            httpOnly: (process.env.LOCAL_IP === "localhost" ? true : false),
+            secure: (process.env.LOCAL_IP === "localhost" ? true : false),
         });
         res.cookie('refresh_token', refresh_token, {
-            httpOnly: true,
-            secure: true,
+            httpOnly: (process.env.LOCAL_IP === "localhost" ? true : false),
+            secure: (process.env.LOCAL_IP === "localhost" ? true : false),
         });
         res.send({ access_token: access_token, refresh_token: refresh_token });
     }
@@ -210,12 +210,12 @@ export class AuthController {
         }
         
         res.cookie('access_token', access_token, {
-            httpOnly: true,
-            secure: true,
+            httpOnly: (process.env.LOCAL_IP === "localhost" ? true : false),
+            secure: (process.env.LOCAL_IP === "localhost" ? true : false),
         });
         res.cookie('refresh_token', refresh_token, {
-            httpOnly: true,
-            secure: true,
+            httpOnly: (process.env.LOCAL_IP === "localhost" ? true : false),
+            secure: (process.env.LOCAL_IP === "localhost" ? true : false),
         });
         res.redirect(`http://${process.env.LOCAL_IP}:4200/game`);
     }
@@ -230,12 +230,12 @@ export class AuthController {
     ) { 
         const {access_token, refresh_token} = await this.authService.validationTFA(token, username);
         res.cookie('access_token', access_token, {
-            httpOnly: true,
-            secure: true,
+            httpOnly: (process.env.LOCAL_IP === "localhost" ? true : false),
+            secure: (process.env.LOCAL_IP === "localhost" ? true : false),
         });
         res.cookie('refresh_token', refresh_token, {
-            httpOnly: true,
-            secure: true,
+            httpOnly: (process.env.LOCAL_IP === "localhost" ? true : false),
+            secure: (process.env.LOCAL_IP === "localhost" ? true : false),
         });
         res.send();
     }

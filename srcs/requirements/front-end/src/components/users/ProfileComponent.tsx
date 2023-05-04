@@ -82,8 +82,14 @@ export const ProfileComponent = ({setHistory}: any) => {
     const navigate = useNavigate();
 
     const handleLaunchGame = async () => {
-        await APP.post('/pong/create_game', {master: me, slave: user});
-        await APP.post('/pong/create_invitation_pong', {master: me.login, slave: user.login});
+        await APP.post('/pong/create_game', {master: me, slave: user})
+        .catch((err) => {
+            handleError("Error while creating game");
+        });
+        await APP.post('/pong/create_invitation_pong', {master: me.login, slave: user.login})
+        .catch((err) => {
+            handleError("Error while inviting user");
+        });
         setPopUpID(undefined);
         navigate("/pong", {state: {
             user: me.login, 

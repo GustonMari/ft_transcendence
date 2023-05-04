@@ -1,11 +1,10 @@
 ## TODO 
 
-- [x] create avatar component
-- [x] fix the CSS for hidden components
-- [x] check inputs for authentication in react
-- [x] fix the overflow error in welcome.tsx
-- [ ] fix the CSS for NavBar to be responsive + if I have the time, rework the Navbar in TailwindCSS
-- [ ] Set JWT secret in .env
+- x] - Check if the password is correct in profile
+- [] - Check with two browsers
+- [] - Remove BUG comments
+- [] - catch all exceptions throw by back
+
 
 ---
 

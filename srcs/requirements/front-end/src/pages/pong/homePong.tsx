@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { useState } from "react";
 //BUG: replace the path of create_socket
 import Style from "./pong.module.css";
@@ -10,6 +10,7 @@ import { APP } from "../../network/app";
 import { User } from "../../dtos/chat.dto";
 import { BsCheck, BsX } from "react-icons/bs";
 import { NavBar } from "../../components/communs/NavBar";
+import { AlertContext } from "../../contexts/Alert.context";
 
 
 export default function HomePong() {
@@ -24,10 +25,12 @@ export default function HomePong() {
 	const [waitTrigger, setWaitTrigger] = useState<boolean>(false);
 	const [renderReact, setRenderReact] = useState<number>(0);
 
+    const {handleError}: any = useContext(AlertContext);
+
 	useEffect(() => {
 		const getRooms = async () => {
 			try {
-				const all_games = await APP.post("/pong/get_games_rooms")
+				const all_games = await APP.post("/pong/get_games_rooms");
 				console.log("all_games = ", all_games.data);
 				setRooms(all_games.data);
 				console.log("all_games = ", all_games.data);

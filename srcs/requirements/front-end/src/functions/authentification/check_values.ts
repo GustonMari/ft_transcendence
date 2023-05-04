@@ -14,7 +14,7 @@ function _check_email(email: string): void {
     }
   }
 
-  function _check_password(password: string): void {
+export  function check_password(password: string): void {
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]+$/;
     if (password.length < 8 || password.length > 50 || !regex.test(password)) {
       throw new Error("Le mot de passe doit comporter entre 8 et 50 caractères, au moins une lettre minuscule, une lettre majuscule et un chiffre.");
@@ -36,11 +36,11 @@ export function check_form({
 }): void {
     if (type === 'login') {
         _check_username(username);
-        _check_password(password);
+        check_password(password);
     } else if (type === 'register') {
         _check_username(username);
         _check_email(email);
-        _check_password(password);
+        check_password(password);
         if (password !== passwordConfirm) {
             throw new Error('Passwords do not match');
         }

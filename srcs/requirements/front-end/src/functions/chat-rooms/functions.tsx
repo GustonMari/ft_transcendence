@@ -11,7 +11,7 @@ import Style from "../../styles/messages/Style.message.module.css";
 */
 
 export async function checkIsPassword(value: string) {
-	const res = await APP.post("/chat/is_room_has_password", {room_name: value});
+	const res = await APP.post("/chat/is_room_has_password", {room_name: value})
 	return res.data;
 }
 

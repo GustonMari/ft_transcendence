@@ -7,6 +7,7 @@ import { TextareForm } from "../auth/TextareaForm";
 import { AlertContext } from "../../contexts/Alert.context";
 import { APP } from "../../network/app";
 import { ChangePP } from "../users/ChangePP";
+import { check_form, check_password } from "../../functions/authentification/check_values";
 
 export const UpdateProfileForm = () => {
 
@@ -14,19 +15,27 @@ export const UpdateProfileForm = () => {
     const { me }: any = useContext(UserContext);
     const { handleError, handleSuccess }: any = useContext(AlertContext);
 
-    /* -- Refs -- */
+    /* -- Refs & States -- */
     const [firstName, setFirstName] = useState<string>(me.first_name);
     const [lastName, setLastName] = useState<string>(me.last_name);
     const [username, setUsername] = useState<string>(me.login);
-    const password = useRef<string>("");
-    const passwordConfirm = useRef<string>("");
     const [tfa, setTFA] = useState<boolean>(me.tfa);
     const [description, setDescription] = useState<string>(me.description);
+    const password = useRef<string>("");
+    const passwordConfirm = useRef<string>("");
 
     const handleSubmit = (event: any) => {
         event.preventDefault();
         if (password.current !== passwordConfirm.current) {
             handleError("Password doesn't match with confirm password.")
+            return;
+        }
+
+        try {
+            if (password.current !== "")
+                check_password(password.current);
+        } catch (err: Error | any) {
+            handleError(err?.message);
             return;
         }
 
