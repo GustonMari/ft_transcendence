@@ -4,37 +4,23 @@ import StyleUtils from './Style.utils.module.css';
 import { Navigate, useNavigate } from "react-router-dom";
 import { APP } from "../../network/app";
 
-
-
-
 export function PopupWinLose(props : any) {
-	const { popupwinlose, setPopupWinLose, isMaster, socket, gameName} = props;
+	const { popupwinlose, setPopupWinLose, isMaster, socket, gameName, play, setPlay} = props;
 	const [show, setShow] = useState(true);
 	const navigate = useNavigate();
-
-	// const handleClose = async () => {
-	// 	setShow(false)
-	// 	setPopupWinLose({winlose: false, winlosemessage: ""});
-	// 	await APP.post("/pong/delete_game", {
-	// 		game_name: gameName
-	// 	});
-	// 	navigate("/homepong");
-	// };
 
 	const handleClose = async () => {
 		setShow(false)
 		setPopupWinLose({winlose: false, winlosemessage: ""});
-		// if (isMaster) {
-			console.log("Master, go delete game bitch");
-			await APP.post("/pong/delete_game", {gameName: gameName});
-		// }
-		// navigate("/game");
+		console.log("Master, go delete game bitch");
+		await APP.post("/pong/delete_game", {gameName: gameName});
 		console.log("in handleclose");
 		socket?.emit("navigate_to_game", gameName);
 	};
 
-	function RestartGame()
+	async function RestartGame()
 	{
+		socket.emit("joinWaitingReplay", gameName);
 		socket?.emit('playGame', gameName);
 		setShow(false)
 		setPopupWinLose({winlose: false, winlosemessage: ""});

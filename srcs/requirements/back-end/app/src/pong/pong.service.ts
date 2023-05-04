@@ -160,7 +160,6 @@ export class PongService {
 			return false;
 		}
 		PongService.allRooms.splice(index, 1);
-		// console.log("deleteGameInAllRooms = ", PongService.allRooms, "| ohoh game_name = ", game_name);
 		return (true);
 	}
 
@@ -321,10 +320,9 @@ export class PongService {
 	{
 		// this.PausePlay = true;
 		const game = await this.getGame(current_game_name);
+		if (!game)
+			return;
 		
-		
-		//TODO: comment ou quoi faire lorsqu'un joueur accepte ou non de jouer
-		//TODO: vraiment changer ce systeme lorsquon aurra les queues
 		if (game.waiter == 1) // ici on mets 1 car le deuxieme joueur est le second waiter
 		{
 			game.PausePlay = true;
@@ -333,7 +331,6 @@ export class PongService {
 		{
 			game.waiter++;
 		}
-		//TODO: faire le systeme de queue, ou l'on passe au jour suivant si il y a un joueur qui veut jouer
 	}
 
 
@@ -354,7 +351,6 @@ export class PongService {
 				paddleLeftY: ((100 * 27.5) / 55),
 				paddleRightY: ((100 * 27.5) / 55),
 			});
-		// console.log("updateGame : gameName = ", data.gameName, " | game = ", game);
 		if (game && game.PausePlay == false)
 			return ({x: game.x, y: game.y, leftScore: game.leftScore, rightScore: game.rightScore, paddleLeftY: game.back_paddle_left.y, paddleRightY: game.back_paddle_right.y});
 		// if (game.leftScore >= 11 || game.rightScore >= 11)
@@ -540,24 +536,34 @@ export class PongService {
 		PongService.waitingList.push(info);
 	}
 
+	async removePlayerFromWaitingList(info: User) : Promise<void> {
+		for (const player of PongService.waitingList)
+		{
+			if (player.id === info.id)
+			{
+				const index = PongService.waitingList.indexOf(player);
+				PongService.waitingList.splice(index, 1);
+			}
+		}
+	}
+
 	async isPlayerIsInWaitingList(info: User) : Promise<boolean> {
 		for (const player of PongService.waitingList)
 		{
 			if (player.id === info.id)
 				return true;
 		}
+		console.log('player not in waiting list')
 		return false;
 	}
 
 	async isPlayerIsInGame(info: User) : Promise<boolean> {
-		console.log("isPlayerIsInGame : PongService.allRooms = ", PongService.allRooms)
 		for (const player of PongService.allRooms)
 		{
 			console.log("finding player...")
 			if (player.player1_id === info.id || player.player2_id === info.id)
 				return true;
 		}
-		console.log('player not in game')
 		return false;
 	}
 
