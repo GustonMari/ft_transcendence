@@ -4,7 +4,6 @@ import PrivateRoute from "./components/routes/PrivateRoute";
 import { Friends } from "./pages/friend";
 import Profile from "./pages/profile";
 import { Result } from "./pages/search";
-import { NotFound } from "./errors/NotFound";
 import WrapContext from "./contexts/wrap.context";
 import { AlertProvider } from "./contexts/Alert.context";
 import { Welcome } from "./pages/welcome";
@@ -108,7 +107,9 @@ function App() {
             }
           />
 
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={
+            <Navigate to="/game" />
+          }/>
         </Routes>
       </AlertProvider>
     </div>

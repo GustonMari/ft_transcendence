@@ -1,5 +1,4 @@
-import axios, { AxiosError, AxiosInstance } from "axios";
-import { RegisterOptions, SignInOptions } from "../interfaces";
+import axios from "axios";
 import { ApiError } from "../interfaces/error.interface";
 import {APP} from "./app";
 
