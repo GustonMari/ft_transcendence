@@ -44,9 +44,37 @@ export function GetMessagesByRoom(handle_history: any, room_name: string)
 
 function IsSenderOrReceiver(props: any)
 {
-	let {historyItem, current_user, socket, setPopUpID} = props;
+	let {historyItem, current_user, socket, setPopUpID} = props.props;
+	let is_user_bloqued = useRef(false);
+	const [loading, setLoading] = useState<boolean>(false);
 
-
+	console.log("IS SENDER OR RECEIVER  historyItem = ", historyItem, "current_user = ", current_user);
+	useEffect(() => {
+				const blocked = async () => {
+					if (historyItem)
+					{
+						const res = await APP.post("/chat/is_user_blocked", {
+								user_id_target: historyItem.sender_id,
+						});
+						is_user_bloqued.current = res.data;
+						setLoading(true);
+					}
+				}
+		blocked();
+	},[]);
+	if (loading == false)
+		return (
+			<>
+			</>
+		)
+	
+	console.log("SHOW HISTORYhistoryItem", historyItem);
+	if (is_user_bloqued.current == true)
+		return (
+			<>
+			</>
+		);
+	else {
 	if(historyItem.sender_id == current_user.id)
 		return (
 			<div className={Style['wrapper-message']}>
@@ -72,6 +100,7 @@ function IsSenderOrReceiver(props: any)
 				</div>
 			</div>
 	);
+		}
 }
 
 
@@ -148,7 +177,9 @@ export function DisplayMessagesByRoom(props: any) {
 	  <div ref={messagesContainer} className={Style['print-message']}>
 		{!history ? "" : history.map((historyItem: HistoryDto, index: number) => (
 		  <div key={index}>
-			{ IsSenderOrReceiver({historyItem, current_user, socket, setPopUpID}) }
+			{/* { IsSenderOrReceiver({historyItem, current_user, socket, setPopUpID}) } */}
+			<IsSenderOrReceiver props={{historyItem, current_user, socket, setPopUpID}}/>
+
 		  </div>
 		))}
 		{infomessage.map((infomessage: any, index: number) => (

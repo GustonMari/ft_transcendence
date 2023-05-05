@@ -207,8 +207,8 @@ export const Friends = () => {
                                                 <IconButton
                                                     onClick={(e: any) => createConfirmPopUp(
                                                         e,
-                                                        "Remove friend",
-                                                        "Do you want to remove " + user.login + " from your friend list ?",
+                                                        "Block friend",
+                                                        "Do you want to block " + user.login,
                                                         () => handleBlockUser(user.id),
                                                     )}
                                                 >

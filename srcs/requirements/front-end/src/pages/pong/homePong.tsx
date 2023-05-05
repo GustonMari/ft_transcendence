@@ -24,6 +24,7 @@ export default function HomePong() {
 	const [triggerPong, setTriggerPong] = React.useState(0);
 	const [waitingForGame, setWaitingForGame] = React.useState(false);
 	const navigate = useNavigate();
+	//TODO changer ce mode de creation de socket
 	const socket = Create_socket();
 
 	const [trigger, setTrigger] = React.useState<number>(0);
