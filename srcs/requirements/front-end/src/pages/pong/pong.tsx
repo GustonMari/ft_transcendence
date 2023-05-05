@@ -119,14 +119,13 @@ export default function Pong() {
 
 export function ExecutePong(props: any) {
 	const [ball, setBall] = useState<HTMLDivElement | null>(null);
-	const [limit, setLimit] = useState<DOMRect | undefined>(undefined);
-	const [trigger, setTrigger] = useState<number>(0);
 	const [leftscore, setLeftScore] = useState<number>(0);
 	const [rightscore, setRightScore] = useState<number>(0);
 	const [changeMap, setChangeMap] = useState<number>(0);
 	const [popupwinlose ,setPopupWinLose] = useState<{popup: boolean, winlosemessage: string}>({popup: false, winlosemessage: ""});
 	let {isMaster, gameName, isWatcher/* , rooms */} = props;
-	let newLimit: DOMRect | undefined;
+	// let newLimit: DOMRect | undefined;
+	let newLimit = useRef<DOMRect | undefined>(undefined);
 	let first: boolean = false;
 	let playerPaddleLeft = new Paddle(document.getElementById("player-paddle-left") as HTMLDivElement);
 	let playerPaddleRight = new Paddle(document.getElementById("player-paddle-right") as HTMLDivElement);
@@ -134,13 +133,13 @@ export function ExecutePong(props: any) {
 	let leftDownPressed : boolean = false;
 	let rightUpPressed : boolean = false;
 	let rightDownPressed : boolean = false;
-	let collision = document.getElementById("collision");
 	const {socket} = useContext(PongContext);
 	const kd					= useRef(require('keydrown'));
 	const navigate = useNavigate();
 
 
-	let pongBall: Ball; 
+	// let pongBall: Ball; 
+	const pongBall = useRef<Ball | null>(null);
 
 
 
@@ -154,8 +153,7 @@ export function ExecutePong(props: any) {
 		rect = divElement?.getBoundingClientRect();
 		
 		if (ballElement && rect) {
-			setLimit(rect);
-			newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
+			newLimit.current = document.getElementById("pong-body")?.getBoundingClientRect();
 			setBall(ballElement);
 		}
 	}, []);
@@ -164,12 +162,13 @@ export function ExecutePong(props: any) {
 			
 			if (kd.current.UP.isDown() && !isWatcher) {
 			rightUpPressed = true;
+			console.log("rightUpPressed");
 			if (isMaster) {
-				if (newLimit && playerPaddleLeft) {
+				if (newLimit.current && playerPaddleLeft) {
 					socket.emit('updatePaddleLeft', {paddle: 'up', gameName: gameName});
 				}
 			} else if (!isWatcher) {
-				if (newLimit && playerPaddleRight) {
+				if (newLimit.current && playerPaddleRight) {
 					socket.emit('updatePaddleRight', {paddle: 'up', gameName: gameName});
 				}
 			}
@@ -179,11 +178,11 @@ export function ExecutePong(props: any) {
 			if (kd.current.DOWN.isDown()) {
 				rightDownPressed = true;
 				if (isMaster) {
-					if (newLimit && playerPaddleLeft) {
+					if (newLimit.current && playerPaddleLeft) {
 						socket.emit('updatePaddleLeft', {paddle: 'down', gameName: gameName});
 					}
 				} else if (!isMaster && !isWatcher) {
-					if (newLimit && playerPaddleRight) {
+					if (newLimit.current && playerPaddleRight) {
 						socket.emit('updatePaddleRight', {paddle: 'down', gameName: gameName});
 					}
 				}
@@ -222,13 +221,13 @@ export function ExecutePong(props: any) {
 
 			const update = (lastTime: number, pongBall: Ball, playerPaddleLeft: Paddle, playerPaddleRight: Paddle, limit?: DOMRect) => (time: number) => {
 
-				if (lastTime != undefined || lastTime != null) {
+				if (lastTime !== undefined || lastTime !== null) {
 					const delta = time - lastTime;
 					if (first === false) {
-						newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
+						newLimit.current = document.getElementById("pong-body")?.getBoundingClientRect();
 						first = true;
 					}
-					if (newLimit /* && !isWatcher */)
+					if (newLimit.current /* && !isWatcher */)
 					{
 						pongBall.update(delta, playerPaddleLeft, playerPaddleRight, gameName, isMaster);
 					}
@@ -241,14 +240,14 @@ export function ExecutePong(props: any) {
 				}
 				let ret_timeout = setTimeout(() => {
 						lastTime = time;
-						window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight, newLimit));
+						window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight, newLimit.current));
 						clearTimeout(ret_timeout);
 				}, 1);
 				
 			};
 
 			window.addEventListener('resize', () => {
-				newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
+				newLimit.current = document.getElementById("pong-body")?.getBoundingClientRect();
 				// console.log('resize');
 			});
 
@@ -283,17 +282,19 @@ export function ExecutePong(props: any) {
 			
 			useEffect(() => {
 				if (ball && socket) {
-					pongBall = new Ball(ball, setLeftScore, setRightScore, socket);
+					pongBall.current = new Ball(ball, setLeftScore, setRightScore, socket);
 					socket?.on('GameUpdated', (data: any) => {
-						pongBall.x = data.x;
-						pongBall.y = data.y;
-						pongBall.setLeftScore(data.leftScore);
-						pongBall.setRightScore(data.rightScore);
-						playerPaddleLeft.position = data.paddleLeftY;
-						playerPaddleRight.position = data.paddleRightY;
-					});
+							if (pongBall.current) {
+								pongBall.current.x = data.x;
+								pongBall.current.y = data.y;
+								pongBall.current.setLeftScore(data.leftScore);
+								pongBall.current.setRightScore(data.rightScore);
+							}
+							playerPaddleLeft.position = data.paddleLeftY;
+							playerPaddleRight.position = data.paddleRightY;
+						});
 					let lastTime: number = 0;
-						window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight));
+						window.requestAnimationFrame(update(lastTime, pongBall.current, playerPaddleLeft, playerPaddleRight));
 			  }
 				return () => {
 					console.log('workkkkkkkkkkkkkkkkkkkkkk')
