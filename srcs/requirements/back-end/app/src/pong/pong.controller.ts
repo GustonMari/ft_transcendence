@@ -8,7 +8,7 @@ import { exit } from 'process';
 import { PlayerMatched } from './pong.interface';
 import { Game, InvitationPong, User } from '@prisma/client';
 import { PongGateway } from './gateways/pong.gateway';
-import { CreateGameDTO, GameDTO, GetGameDTO } from './dtos/PongController.dto';
+import { CreateGameDTO, GameDTO, GetGameDTO, IsUserDTO, UserDTO } from './dtos/PongController.dto';
 import { UserRO } from '../user/ros/user.full.ro';
 import { plainToClass } from 'class-transformer';
 
@@ -28,19 +28,19 @@ export class PongController {
 	}
 
 		@Post('is_user_master')
-		async is_user_master(@Res() response: Response ,@MessageBody() info: UserRO): Promise<void> {
+		async is_user_master(@Res() response: Response ,@MessageBody() info: IsUserDTO): Promise<void> {
 			const master = await this.pongService.isUserMaster(info.login);
 			response.send(master);
 		}
 
 		@Post('is_user_slave')
-		async is_user_slave(@Res() response: Response ,@MessageBody() info: UserRO): Promise<void> {
+		async is_user_slave(@Res() response: Response ,@MessageBody() info: IsUserDTO): Promise<void> {
 			const slave = await this.pongService.isUserSlave(info.login);
 			response.send(slave);
 		}
 		
 		@Post('get_game_name')
-		async get_game_name(@Res() response: Response ,@MessageBody() info: UserRO): Promise<void> {
+		async get_game_name(@Res() response: Response ,@MessageBody() info: IsUserDTO): Promise<void> {
 			const game_name = await this.pongService.getGameName(info.login);
 			response.send(game_name);
 		}
@@ -105,13 +105,13 @@ export class PongController {
 		}
 
 		@Post('add_player_to_waiting_list')
-		async add_player_to_waiting_list(@Res() response: Response ,@MessageBody() info: User): Promise<void> {
+		async add_player_to_waiting_list(@Res() response: Response ,@MessageBody() info: UserDTO): Promise<void> {
 			await this.pongService.addPlayerToWaitingList(info);
 			response.send("added");
 		}
 
 		@Post('is_player_in_waiting_list')
-		async is_player_in_waiting_list(@Res() response: Response ,@MessageBody() info: User): Promise<void> {
+		async is_player_in_waiting_list(@Res() response: Response ,@MessageBody() info: UserDTO): Promise<void> {
 			const bool = await this.pongService.isPlayerIsInWaitingList(info);
 			response.send(bool);
 		}

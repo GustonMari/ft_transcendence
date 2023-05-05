@@ -56,11 +56,14 @@ export default function Pong() {
 				const { game_name_param } = location.state;
 				game_name = game_name_param;
 			}
+			console.log('game_name =======>', game_name)
 			let game = await APP.post('/pong/get_game', {game_name: game_name})
 			if (is_master.data) {
 				setIsMaster(true);
 				setIsSlave(false);
-				await APP.post('/pong/init_game', {game: game});
+				console.log("game info send to the back", typeof(game.data.eated_at));
+				await APP.post('/pong/init_game', game.data);
+				// await APP.post('/pong/init_game', {game: game.data});
 			} else {
 				setIsMaster(false);
 				
