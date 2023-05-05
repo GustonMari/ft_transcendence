@@ -11,6 +11,7 @@ import { BiPause } from "react-icons/bi";
 import Create_socket from "../../network/chat.socket";
 import { APP } from "../../network/app";
 import { useNavigate } from "react-router-dom";
+import { Socket } from "socket.io-client";
 
 // import kd from "./keydrown";
 
@@ -23,7 +24,8 @@ export default function Pong() {
 	const [gameName, setGameName] = useState<string>("");
 	const [isSlave, setIsSlave] = useState<boolean>(false);
 	const [isWatcher, setIsWatcher] = useState<boolean>(false);
-	const socket = Create_socket();
+	// const socket = Create_socket();
+	const [socket, setSocket] = useState<Socket | undefined>(Create_socket());
 	const location = useLocation();
 
 	useLayoutEffect(() => {
@@ -44,16 +46,24 @@ export default function Pong() {
 					login: res.data.login,
 				});
 				game_name = game_name.data;
+				console.log('fuckkkkk this', game_name, 'res.data.login=', res.data.login);
 			}
 			else {
 				const { game_name_param } = location.state;
 				game_name = game_name_param;
 			}
+			console.log('putain', game_name, ' return get me =', res.data, 'is_master=', is_master, ' is slave = ', is_slave);
+			// if (game_name === undefined)
+			// {
+			// 	game_name = await APP.post("/pong/get_game_name", {
+			// 		login: res.data.login,
+			// 	});
+			// 	game_name = game_name.data;
+			// }
 			let game = await APP.post('/pong/get_game', {game_name: game_name})
 			if (is_master.data) {
 				setIsMaster(true);
 				setIsSlave(false);
-				console.log("game info send to the back", typeof(game.data.eated_at));
 				await APP.post('/pong/init_game', game.data);
 				// await APP.post('/pong/init_game', {game: game.data});
 			} else {

@@ -85,8 +85,14 @@ export default function HomePong() {
 
 	const enterInWaitingFile = async () => {
 		const in_game = await APP.post("/pong/is_player_is_in_game", currentUser);
+		console.log('in_game.data = ', in_game.data)
 		if (in_game.data === true)
 		{
+			setWaitingForGame(false);
+			const clearWait = async () => {
+				await APP.post("/pong/clear_waiting_list");
+			}
+			clearWait();
 			navigate("/pong", {state: {
 			}});
 		}

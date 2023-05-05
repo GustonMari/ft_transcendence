@@ -168,7 +168,8 @@ export class PongService {
 		if (index === -1) {
 			return false;
 		}
-		PongService.allRooms.splice(index, 1);
+		PongService.allRooms = PongService.allRooms.splice(index, 1);
+		console.log("MDRRRRR = ", PongService.allRooms);
 		// console.log("deleteGameInAllRooms = ", PongService.allRooms, "| ohoh game_name = ", game_name);
 		return (true);
 	}
@@ -559,7 +560,6 @@ export class PongService {
 	}
 
 	async isPlayerIsInGame(info: UserDTO) : Promise<boolean> {
-		console.log("isPlayerIsInGame : PongService.allRooms = ", PongService.allRooms)
 		for (const player of PongService.allRooms)
 		{
 			console.log("finding player...")

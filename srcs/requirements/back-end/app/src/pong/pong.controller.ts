@@ -42,6 +42,7 @@ export class PongController {
 		@Post('get_game_name')
 		async get_game_name(@Res() response: Response ,@MessageBody() info: IsUserDTO): Promise<void> {
 			const game_name = await this.pongService.getGameName(info.login);
+
 			response.send(game_name);
 		}
 
