@@ -8,12 +8,16 @@ import { Response } from 'express';
 import { MessageBody } from '@nestjs/websockets';
 import { ApiOperation } from '@nestjs/swagger';
 import { ChatDTO, CreatePrivateRoomDTO } from '../dtos';
+// import { RelationService } from 'app/src/relation/services';
+import { RelationController } from 'app/src/relation/controllers';
 
 @UseGuards(AccessGuard)
 @Controller('chat')
 export class ChatController {
 	constructor (
-		private readonly chatService: ChatService, private readonly prismaservice: PrismaService 
+		private readonly chatService: ChatService,
+		private readonly prismaservice: PrismaService,
+		private readonly RelationController: RelationController,
 	){}
 
 	@Get('get_user_rooms')
@@ -91,4 +95,16 @@ export class ChatController {
             throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+	@Post('is_user_blocked')
+	async get_relations(@Res() response: Response,@MessageBody() info: any ,@GetMe("id") id: number,): Promise<void> {
+		const relations = await this.RelationController.getRelationForUser("blocked", id);
+		if (!relations)
+			response.send(false);
+		const ret = relations.find(relation => relation.state === 'BLOCKED' && relation.from_id === id && relation.to_id === info.user_id_target);
+		if (ret && ret.from_id === id)
+			response.send(true);
+		else
+			response.send(false);
+	}
 }
