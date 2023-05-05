@@ -158,6 +158,8 @@ export class PongService {
 		return (true);
 	}
 
+
+	//TODO: big problem here, need to find a way to delete the game in allRooms
 	async deleteGameInAllRooms(game_name: string): Promise<boolean> {
 		if (!game_name)
 			return (false);
