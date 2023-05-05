@@ -211,6 +211,7 @@ li {
 
 
 /* For WebKit browsers */
+
 ::-webkit-scrollbar {
 	width: 10px;
 	display: none;
@@ -229,7 +230,6 @@ li {
 	background-color: rgb(39,6,47);
   }
   
-  /* For Internet Explorer and Edge */
   ::-ms-scrollbar {
 	width: 10px;
   }

@@ -138,6 +138,7 @@ export function DisplayMessagesByRoom(props: any) {
 
 	useEffect(() => {
 		if (messagesContainer.current) {
+			console.log("SCROOLLLL pouet")
 		  messagesContainer.current.scrollTop = messagesContainer.current.scrollHeight;
 		}
 	  }, [infomessage, history]);
