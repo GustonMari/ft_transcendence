@@ -6,6 +6,7 @@ import { exit } from 'process';
 import { Socket, Server } from 'socket.io';
 import { InfoPongRoom } from './pong.interface';
 import { AddGameDTO } from '../history/dtos';
+import { UserDTO } from './dtos';
 
 
 @Injectable()
@@ -17,7 +18,7 @@ export class PongService {
 	 }
 
 	static allRooms: InfoPongRoom[] = [];
-	static waitingList: User[] = [];
+	static waitingList: UserDTO[] = [];
 
 	async createInvitationPong(master_str: string, slave_str: string): Promise<void> {
 		let new_game_name: string;
@@ -68,6 +69,14 @@ export class PongService {
 		return (invitations);
 	}
 
+	async findInvitationPongByGameName(game_name: string): Promise<InvitationPong> {
+		const invitation =  await this.prisma.invitationPong.findUnique({
+			where: {
+				game_name: game_name,
+			}
+		});
+		return (invitation);
+	}
 	async deleteOneInvitationPong(invitation: InvitationPong): Promise<void> {
 		await this.prisma.invitationPong.delete({
 			where: {
@@ -91,7 +100,7 @@ export class PongService {
 
 
 
-	async createGame(master: User, slave: User): Promise<boolean> {
+	async createGame(master: UserDTO, slave: UserDTO): Promise<boolean> {
 		let new_game_name = "";
 		if (!slave || !master)
 			return (false);
@@ -149,6 +158,8 @@ export class PongService {
 		return (true);
 	}
 
+
+	//TODO: big problem here, need to find a way to delete the game in allRooms
 	async deleteGameInAllRooms(game_name: string): Promise<boolean> {
 		if (!game_name)
 			return (false);
@@ -159,7 +170,9 @@ export class PongService {
 		if (index === -1) {
 			return false;
 		}
-		PongService.allRooms.splice(index, 1);
+		PongService.allRooms = PongService.allRooms.splice(index, 1);
+		console.log("MDRRRRR = ", PongService.allRooms);
+		// console.log("deleteGameInAllRooms = ", PongService.allRooms, "| ohoh game_name = ", game_name);
 		return (true);
 	}
 
@@ -511,14 +524,14 @@ export class PongService {
 			back_paddle_left: { left: 100 / 90, right: (100 * 3) / 90, top: (100 * 21.5) / 55, bottom: (100 * 33.5) / 55, x: (100 * 2) / 90, y: (100 * 27.5) / 55 },
 			back_paddle_right: { left: (87 * 100) / 90, right: (89 * 100) / 90, top: (100 * 21.5) / 55, bottom: (100 * 33.5) / 55, x: ((100 * 88) / 90), y: (100 * 27.5) / 55 },
 			waiter: 0,
-			game_name: info.game.data.name,
+			game_name: info.name,
 			vector: {
 				x: 0.1,
 				y: 0.1
 			},
 			velocity: 0.025,
-			player1_id: info.game.data.master_id,
-			player2_id: info.game.data.slave_id,
+			player1_id: info.master_id,
+			player2_id: info.slave_id,
 		}
 		PongService.allRooms.push(newGame);
 		await this.reset(await this.getGame(newGame.game_name));
@@ -532,7 +545,7 @@ export class PongService {
 	}
 
 
-	async addPlayerToWaitingList(info: User) : Promise<any> {
+	async addPlayerToWaitingList(info: UserDTO) : Promise<any> {
 		PongService.waitingList.push(info);
 	}
 
@@ -547,7 +560,7 @@ export class PongService {
 		}
 	}
 
-	async isPlayerIsInWaitingList(info: User) : Promise<boolean> {
+	async isPlayerIsInWaitingList(info: UserDTO) : Promise<boolean> {
 		for (const player of PongService.waitingList)
 		{
 			if (player.id === info.id)
@@ -557,7 +570,7 @@ export class PongService {
 		return false;
 	}
 
-	async isPlayerIsInGame(info: User) : Promise<boolean> {
+	async isPlayerIsInGame(info: UserDTO) : Promise<boolean> {
 		for (const player of PongService.allRooms)
 		{
 			console.log("finding player...")
@@ -591,5 +604,7 @@ export class PongService {
 		}
 		return (ret);
 	}
+
+
 
 }

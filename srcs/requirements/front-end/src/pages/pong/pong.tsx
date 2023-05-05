@@ -1,22 +1,17 @@
 import React, { CSSProperties, useContext, useEffect, useLayoutEffect, useRef } from "react";
 import { useState } from "react";
-import io, { Socket } from "socket.io-client";
-import axios from "axios";
-//BUG: replace the path of create_socket
-import App from "../../App";
-// import "./pong.css";
 import Style from "./pong.module.css";
 import { Ball } from "./ball";
 import { Paddle } from "./paddle";
 import { PopupWinLose} from "./modalpong";
-import { useLocation, useParams } from "react-router-dom";
-// import { URLSearchParams } from "url";
+import { useLocation} from "react-router-dom";
 import { IconContext } from "react-icons";
 import { BsPlayFill } from "react-icons/bs";
 import { BiPause } from "react-icons/bi";
 import Create_socket from "../../network/chat.socket";
 import { APP } from "../../network/app";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Socket } from "socket.io-client";
 
 // import kd from "./keydrown";
 
@@ -29,8 +24,8 @@ export default function Pong() {
 	const [gameName, setGameName] = useState<string>("");
 	const [isSlave, setIsSlave] = useState<boolean>(false);
 	const [isWatcher, setIsWatcher] = useState<boolean>(false);
-	const [userTo, setUserTo] = useState<any>(null);
-	const socket = Create_socket();
+	// const socket = Create_socket();
+	const [socket, setSocket] = useState<Socket | undefined>(Create_socket());
 	const location = useLocation();
 
 	useLayoutEffect(() => {
@@ -52,17 +47,27 @@ export default function Pong() {
 				});
 				game_name = game_name.data;
 
-				socket.emit("joinWaitingReplay", game_name);
+				socket?.emit("joinWaitingReplay", game_name);
+				console.log('fuckkkkk this', game_name, 'res.data.login=', res.data.login);
 			}
 			else {
 				const { game_name_param } = location.state;
 				game_name = game_name_param;
 			}
+			console.log('putain', game_name, ' return get me =', res.data, 'is_master=', is_master, ' is slave = ', is_slave);
+			// if (game_name === undefined)
+			// {
+			// 	game_name = await APP.post("/pong/get_game_name", {
+			// 		login: res.data.login,
+			// 	});
+			// 	game_name = game_name.data;
+			// }
 			let game = await APP.post('/pong/get_game', {game_name: game_name})
 			if (is_master.data) {
 				setIsMaster(true);
 				setIsSlave(false);
-				await APP.post('/pong/init_game', {game: game});
+				await APP.post('/pong/init_game', game.data);
+				// await APP.post('/pong/init_game', {game: game.data});
 			} else {
 				setIsMaster(false);
 				
@@ -125,14 +130,13 @@ export default function Pong() {
 
 export function ExecutePong(props: any) {
 	const [ball, setBall] = useState<HTMLDivElement | null>(null);
-	const [limit, setLimit] = useState<DOMRect | undefined>(undefined);
-	const [trigger, setTrigger] = useState<number>(0);
 	const [leftscore, setLeftScore] = useState<number>(0);
 	const [rightscore, setRightScore] = useState<number>(0);
 	const [changeMap, setChangeMap] = useState<number>(0);
 	const [popupwinlose ,setPopupWinLose] = useState<{popup: boolean, winlosemessage: string}>({popup: false, winlosemessage: ""});
 	let {isMaster, gameName, isWatcher/* , rooms */} = props;
-	let newLimit: DOMRect | undefined;
+	// let newLimit: DOMRect | undefined;
+	let newLimit = useRef<DOMRect | undefined>(undefined);
 	let first: boolean = false;
 	let playerPaddleLeft = new Paddle(document.getElementById("player-paddle-left") as HTMLDivElement);
 	let playerPaddleRight = new Paddle(document.getElementById("player-paddle-right") as HTMLDivElement);
@@ -140,14 +144,16 @@ export function ExecutePong(props: any) {
 	let leftDownPressed : boolean = false;
 	let rightUpPressed : boolean = false;
 	let rightDownPressed : boolean = false;
-	let collision = document.getElementById("collision");
 	const {socket} = useContext(PongContext);
 	const kd					= useRef(require('keydrown'));
 	const navigate = useNavigate();
-	let pongBall: Ball;
+	// let pongBall: Ball;
 
 	const [play, setPlay] = useState<number>(0);
 	const [refresh, setRefresh] = useState<number>(0);
+
+	// let pongBall: Ball; 
+	const pongBall = useRef<Ball | null>(null);
 
 
 
@@ -161,52 +167,52 @@ export function ExecutePong(props: any) {
 		rect = divElement?.getBoundingClientRect();
 		
 		if (ballElement && rect) {
-			setLimit(rect);
-			newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
+			newLimit.current = document.getElementById("pong-body")?.getBoundingClientRect();
 			setBall(ballElement);
 		}
 	}, []);
 		
-	const DownHandler = async () => {
-		
-		if (kd.current.UP.isDown() && !isWatcher) {
-		rightUpPressed = true;
-		if (isMaster) {
-			if (newLimit && playerPaddleLeft) {
-				socket.emit('updatePaddleLeft', {paddle: 'up', gameName: gameName});
-			}
-		} else if (!isWatcher) {
-			if (newLimit && playerPaddleRight) {
-				socket.emit('updatePaddleRight', {paddle: 'up', gameName: gameName});
-			}
-		}
-		} else {
-			rightUpPressed = false;
-		}
-		if (kd.current.DOWN.isDown()) {
-			rightDownPressed = true;
+		const DownHandler = async () => {
+			
+			if (kd.current.UP.isDown() && !isWatcher) {
+			rightUpPressed = true;
+			console.log("rightUpPressed");
 			if (isMaster) {
-				if (newLimit && playerPaddleLeft) {
-					socket.emit('updatePaddleLeft', {paddle: 'down', gameName: gameName});
+				if (newLimit.current && playerPaddleLeft) {
+					socket.emit('updatePaddleLeft', {paddle: 'up', gameName: gameName});
 				}
-			} else if (!isMaster && !isWatcher) {
-				if (newLimit && playerPaddleRight) {
-					socket.emit('updatePaddleRight', {paddle: 'down', gameName: gameName});
+			} else if (!isWatcher) {
+				if (newLimit.current && playerPaddleRight) {
+					socket.emit('updatePaddleRight', {paddle: 'up', gameName: gameName});
 				}
 			}
-		} else {
-			rightDownPressed = false;
-		}
-		if (kd.current.W.isDown()) {
-			leftUpPressed = true;
-		} else {
-			leftUpPressed = false;
-		}
-		if (kd.current.S.isDown()) {
-			leftDownPressed = true;
-		} else {
-			leftDownPressed = false;
-		}
+			} else {
+				rightUpPressed = false;
+			}
+			if (kd.current.DOWN.isDown()) {
+				rightDownPressed = true;
+				if (isMaster) {
+					if (newLimit.current && playerPaddleLeft) {
+						socket.emit('updatePaddleLeft', {paddle: 'down', gameName: gameName});
+					}
+				} else if (!isMaster && !isWatcher) {
+					if (newLimit.current && playerPaddleRight) {
+						socket.emit('updatePaddleRight', {paddle: 'down', gameName: gameName});
+					}
+				}
+			} else {
+				rightDownPressed = false;
+			}
+			if (kd.current.W.isDown()) {
+				leftUpPressed = true;
+			} else {
+				leftUpPressed = false;
+			}
+			if (kd.current.S.isDown()) {
+				leftDownPressed = true;
+			} else {
+				leftDownPressed = false;
+			}
 	}
 
 	const UpHandler = async ()  => {
@@ -227,35 +233,34 @@ export function ExecutePong(props: any) {
 		}
 	}
 
-	const update = (lastTime: number, pongBall: Ball, playerPaddleLeft: Paddle, playerPaddleRight: Paddle, limit?: DOMRect) => (time: number) => {
+			const update = (lastTime: number, pongBall: Ball, playerPaddleLeft: Paddle, playerPaddleRight: Paddle, limit?: DOMRect) => (time: number) => {
 
-		if (lastTime != undefined || lastTime != null) {
-			const delta = time - lastTime;
-			if (first === false) {
-				newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
-				first = true;
-			}
-			if (newLimit /* && !isWatcher */)
-			{
-				pongBall.update(delta, playerPaddleLeft, playerPaddleRight, gameName, isMaster);
-			}
-			kd.current.run(function () {
-				kd.current.tick();
-			});
-			DownHandler()
-			UpHandler();
-			window.addEventListener('resize', () => {
-				newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
-				// console.log('resize');
-			});
-		}
-		let ret_timeout = setTimeout(() => {
-				lastTime = time;
-				window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight, newLimit));
-				clearTimeout(ret_timeout);
-		}, 1);
-		
-	};
+				if (lastTime !== undefined || lastTime !== null) {
+					const delta = time - lastTime;
+					if (first === false) {
+						newLimit.current = document.getElementById("pong-body")?.getBoundingClientRect();
+						first = true;
+					}
+					if (newLimit.current /* && !isWatcher */)
+					{
+						pongBall.update(delta, playerPaddleLeft, playerPaddleRight, gameName, isMaster);
+					}
+					kd.current.run(function () {
+						kd.current.tick();
+					});
+					DownHandler()
+					UpHandler();
+
+				}
+				let ret_timeout = setTimeout(() => {
+						lastTime = time;
+						window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight, newLimit.current));
+						clearTimeout(ret_timeout);
+				}, 1);
+				
+			};
+
+
 
 	const pressPlay = async () => {
 		socket.emit('resumeGame', gameName);
@@ -269,19 +274,25 @@ export function ExecutePong(props: any) {
 			
 	useEffect(() => {
 		if (ball && socket) {
-			pongBall = new Ball(ball, setLeftScore, setRightScore, socket);
+			pongBall.current = new Ball(ball, setLeftScore, setRightScore, socket);
 			socket?.on('GameUpdated', (data: any) => {
-				pongBall.x = data.x;
-				pongBall.y = data.y;
-				pongBall.setLeftScore(data.leftScore);
-				pongBall.setRightScore(data.rightScore);
-				playerPaddleLeft.position = data.paddleLeftY;
-				playerPaddleRight.position = data.paddleRightY;
-			});
+					if (pongBall.current) {
+						pongBall.current.x = data.x;
+						pongBall.current.y = data.y;
+						pongBall.current.setLeftScore(data.leftScore);
+						pongBall.current.setRightScore(data.rightScore);
+					}
+					playerPaddleLeft.position = data.paddleLeftY;
+					playerPaddleRight.position = data.paddleRightY;
+				});
 			let lastTime: number = 0;
-				window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight));
+				window.requestAnimationFrame(update(lastTime, pongBall.current, playerPaddleLeft, playerPaddleRight));
+	  }
+		return () => {
+			console.log('workkkkkkkkkkkkkkkkkkkkkk')
+			socket.off('GameUpdated');
 		}
-	}, [ball]);
+	}, [ball/* , playerPaddleLeft, playerPaddleRight, socket, update */]);
 
 	useEffect(() => {
 		socket.on('GameFinished', async (data: any) => {
@@ -310,7 +321,7 @@ export function ExecutePong(props: any) {
 		return () => {
 			socket.off('GameFinished');
 		}
-	},[socket]);
+	},[socket/* , isMaster, isWatcher, navigate */]);
 
 	const click = (map: number) => {
 		setChangeMap(map);

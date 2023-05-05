@@ -126,6 +126,8 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 	@SubscribeMessage('allLeaveGame')
 	async allLeaveGame(@MessageBody() data: {gameName: string}, @ConnectedSocket() socket: Socket): Promise<void> {
+		if (!data || data.gameName === undefined || data.gameName === null)
+			return ;
 		this.myserver.socketsLeave(data.gameName);
 	}
 
