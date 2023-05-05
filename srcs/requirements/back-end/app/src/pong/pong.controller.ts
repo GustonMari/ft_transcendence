@@ -8,6 +8,9 @@ import { exit } from 'process';
 import { PlayerMatched } from './pong.interface';
 import { Game, InvitationPong, User } from '@prisma/client';
 import { PongGateway } from './gateways/pong.gateway';
+import { CreateGameDTO, GameDTO, GetGameDTO } from './dtos/PongController.dto';
+import { UserRO } from '../user/ros/user.full.ro';
+import { plainToClass } from 'class-transformer';
 
 @Controller('pong')
 export class PongController {
@@ -17,7 +20,7 @@ export class PongController {
 
 		@Post('create_game') // Subscribe to the event 'joinGame'
 		// async create_game(@Res() response: Response ,@MessageBody() info: {master: User, slave: User}): Promise<void> {
-		async create_game(@Res() response: Response ,@MessageBody() info: {master: User, slave: User}): Promise<void> {
+		async create_game(@Res() response: Response ,@MessageBody() info: CreateGameDTO): Promise<void> {
 		// exit(1);
 		await this.pongService.createGame(info.master, info.slave);
 		response.send("Created game");
@@ -25,19 +28,19 @@ export class PongController {
 	}
 
 		@Post('is_user_master')
-		async is_user_master(@Res() response: Response ,@MessageBody() info: User): Promise<void> {
+		async is_user_master(@Res() response: Response ,@MessageBody() info: UserRO): Promise<void> {
 			const master = await this.pongService.isUserMaster(info.login);
 			response.send(master);
 		}
 
 		@Post('is_user_slave')
-		async is_user_slave(@Res() response: Response ,@MessageBody() info: User): Promise<void> {
+		async is_user_slave(@Res() response: Response ,@MessageBody() info: UserRO): Promise<void> {
 			const slave = await this.pongService.isUserSlave(info.login);
 			response.send(slave);
 		}
 		
 		@Post('get_game_name')
-		async get_game_name(@Res() response: Response ,@MessageBody() info: User): Promise<void> {
+		async get_game_name(@Res() response: Response ,@MessageBody() info: UserRO): Promise<void> {
 			const game_name = await this.pongService.getGameName(info.login);
 			response.send(game_name);
 		}
@@ -61,7 +64,7 @@ export class PongController {
 
 		@Post('get_game')
 		// async get_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
-		async get_game(@Res() response: Response ,@MessageBody() info: {game_name: string}): Promise<void> {
+		async get_game(@Res() response: Response ,@MessageBody() info: GetGameDTO): Promise<void> {
 
 			// console.log('inside NTMMMMMMMMMM', info)
 			console.log(": info = ", info.game_name);
@@ -73,7 +76,7 @@ export class PongController {
 		}
 
 		@Post('init_game')
-		async init_game(@Res() response: Response ,@MessageBody() info: Game): Promise<void> {
+		async init_game(@Res() response: Response ,@MessageBody() info: GameDTO): Promise<void> {
 			const game = await this.pongService.initGame(info);
 			response.send(game);
 		}
