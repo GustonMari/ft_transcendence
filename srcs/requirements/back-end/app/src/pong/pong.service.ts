@@ -69,6 +69,14 @@ export class PongService {
 		return (invitations);
 	}
 
+	async findInvitationPongByGameName(game_name: string): Promise<InvitationPong> {
+		const invitation =  await this.prisma.invitationPong.findUnique({
+			where: {
+				game_name: game_name,
+			}
+		});
+		return (invitation);
+	}
 	async deleteOneInvitationPong(invitation: InvitationPong): Promise<void> {
 		await this.prisma.invitationPong.delete({
 			where: {
@@ -586,5 +594,7 @@ export class PongService {
 		}
 		return (ret);
 	}
+
+
 
 }

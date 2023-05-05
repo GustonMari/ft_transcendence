@@ -1,22 +1,16 @@
 import React, { CSSProperties, useContext, useEffect, useLayoutEffect, useRef } from "react";
 import { useState } from "react";
-import io, { Socket } from "socket.io-client";
-import axios from "axios";
-//BUG: replace the path of create_socket
-import App from "../../App";
-// import "./pong.css";
 import Style from "./pong.module.css";
 import { Ball } from "./ball";
 import { Paddle } from "./paddle";
 import { PopupWinLose} from "./modalpong";
-import { useLocation, useParams } from "react-router-dom";
-// import { URLSearchParams } from "url";
+import { useLocation} from "react-router-dom";
 import { IconContext } from "react-icons";
 import { BsPlayFill } from "react-icons/bs";
 import { BiPause } from "react-icons/bi";
 import Create_socket from "../../network/chat.socket";
 import { APP } from "../../network/app";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // import kd from "./keydrown";
 
@@ -29,7 +23,6 @@ export default function Pong() {
 	const [gameName, setGameName] = useState<string>("");
 	const [isSlave, setIsSlave] = useState<boolean>(false);
 	const [isWatcher, setIsWatcher] = useState<boolean>(false);
-	const [userTo, setUserTo] = useState<any>(null);
 	const socket = Create_socket();
 	const location = useLocation();
 
@@ -56,7 +49,6 @@ export default function Pong() {
 				const { game_name_param } = location.state;
 				game_name = game_name_param;
 			}
-			console.log('game_name =======>', game_name)
 			let game = await APP.post('/pong/get_game', {game_name: game_name})
 			if (is_master.data) {
 				setIsMaster(true);

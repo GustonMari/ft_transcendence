@@ -180,11 +180,11 @@ export class InvitationPongDTO {
 	@IsNumber()
 	id: number;
 
-	@IsNotEmpty()
+	@IsOptional()
 	@IsDate()
 	created_at: Date
 	
-	@IsNotEmpty()
+	@IsOptional()
 	@IsDate()
 	updated_at: Date
 
