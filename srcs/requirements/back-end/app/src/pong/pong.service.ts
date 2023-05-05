@@ -170,7 +170,9 @@ export class PongService {
 		if (index === -1) {
 			return false;
 		}
-		PongService.allRooms = PongService.allRooms.splice(index, 1);
+		console.log("NONONONO index = ", index)
+		console.log("NONONONO allRooms[index] = ", PongService.allRooms[index])
+		PongService.allRooms.splice(index, 1);
 		console.log("MDRRRRR = ", PongService.allRooms);
 		// console.log("deleteGameInAllRooms = ", PongService.allRooms, "| ohoh game_name = ", game_name);
 		return (true);
@@ -566,17 +568,24 @@ export class PongService {
 			if (player.id === info.id)
 				return true;
 		}
-		console.log('player not in waiting list')
 		return false;
 	}
 
 	async isPlayerIsInGame(info: UserDTO) : Promise<boolean> {
-		for (const player of PongService.allRooms)
-		{
-			console.log("finding player...")
-			if (player.player1_id === info.id || player.player2_id === info.id)
-				return true;
-		}
+		const res = await this.prisma.game.findMany({
+			where: {
+				OR: [
+					{
+						master_id: info.id,
+					},
+					{
+						slave_id: info.id,
+					}
+				]
+			}
+		})
+		if (res.length > 0)
+			return true;
 		return false;
 	}
 

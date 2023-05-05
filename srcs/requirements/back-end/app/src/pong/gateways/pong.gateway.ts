@@ -51,8 +51,16 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 
 	handleDisconnect(client: Socket) {
-		// console.log('disconnect');
 		// console.log('DISCONNECTED : socket = ', client.data);
+		const rooms = Object.keys(client.rooms);
+
+		// Remove the client from all rooms it has joined
+		rooms.forEach(room => {
+		if (room !== client.id) {
+			client.leave(room);
+			console.log(`Client ${client.id} left room ${room}`);
+		}
+		});
 		client.disconnect();
 	}
 

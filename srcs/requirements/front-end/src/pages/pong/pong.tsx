@@ -55,13 +55,13 @@ export default function Pong() {
 				game_name = game_name_param;
 			}
 			console.log('putain', game_name, ' return get me =', res.data, 'is_master=', is_master, ' is slave = ', is_slave);
-			// if (game_name === undefined)
-			// {
-			// 	game_name = await APP.post("/pong/get_game_name", {
-			// 		login: res.data.login,
-			// 	});
-			// 	game_name = game_name.data;
-			// }
+			if (game_name === undefined)
+			{
+				game_name = await APP.post("/pong/get_game_name", {
+					login: res.data.login,
+				});
+				game_name = game_name.data;
+			}
 			let game = await APP.post('/pong/get_game', {game_name: game_name})
 			if (is_master.data) {
 				setIsMaster(true);
