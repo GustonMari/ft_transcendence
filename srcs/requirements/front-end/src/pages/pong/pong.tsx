@@ -300,7 +300,7 @@ export function ExecutePong(props: any) {
 					console.log('workkkkkkkkkkkkkkkkkkkkkk')
 					socket.off('GameUpdated');
 				}
-			}, [ball]);
+			}, [ball/* , playerPaddleLeft, playerPaddleRight, socket, update */]);
 
 			useEffect(() => {
 				socket.on('GameFinished', async (data: any) => {
@@ -331,7 +331,7 @@ export function ExecutePong(props: any) {
 			return () => {
 				socket.off('GameFinished');
 			}
-		},[socket]);
+		},[socket/* , isMaster, isWatcher, navigate */]);
 
 			const click = (map: number) => {
 				setChangeMap(map);
