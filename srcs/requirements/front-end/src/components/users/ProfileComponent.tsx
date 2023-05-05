@@ -2,6 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { BsXLg } from "react-icons/bs";
 import { FiSend } from "react-icons/fi";
 import { AiOutlineClockCircle, AiOutlineUserAdd, AiOutlineUsergroupAdd } from "react-icons/ai";
+import { MdBlock } from "react-icons/md";
 import { ProfilePopUpContext } from "../../contexts/ProfilePopUp.context";
 import s from "../../styles/profile/ProfileComponent.module.css";
 import API from "../../network/api";
@@ -114,6 +115,17 @@ export const ProfileComponent = ({setHistory}: any) => {
             }
         )
     }
+
+    const handleBlockUser = (id: number) => {
+        API.blockUser(
+            id,
+            () => {
+                handleSuccess("User blocked");
+            }, (err: any) => {
+                handleError(err.message);
+            }
+        )
+    }
         
 
     useEffect(() => {
@@ -221,6 +233,11 @@ export const ProfileComponent = ({setHistory}: any) => {
                                 onClick={() => handleLaunchGame()}
                             >
                                 <IoLogoGameControllerA/>
+                            </button>
+                            <button
+                                onClick={() => handleBlockUser(user?.id)}
+                            >
+                                <MdBlock/>
                             </button>
                         </>
                         :
