@@ -8,7 +8,7 @@ import { exit } from 'process';
 import { PlayerMatched } from './pong.interface';
 import { Game, InvitationPong, User } from '@prisma/client';
 import { PongGateway } from './gateways/pong.gateway';
-import { CreateGameDTO, GameDTO, GetGameDTO, IsUserDTO, UserDTO } from './dtos/PongController.dto';
+import { CreateGameDTO, CreateInvitationPongDTO, DeleteGameDTO, GameDTO, GetGameDTO, InvitationPongDTO, IsUserDTO, UserDTO } from './dtos/PongController.dto';
 import { UserRO } from '../user/ros/user.full.ro';
 import { plainToClass } from 'class-transformer';
 
@@ -117,7 +117,7 @@ export class PongController {
 		}
 
 		@Post('is_player_is_in_game')
-		async is_player_is_in_game(@Res() response: Response ,@MessageBody() info: User): Promise<void> {
+		async is_player_is_in_game(@Res() response: Response ,@MessageBody() info: UserDTO): Promise<void> {
 			const bool = await this.pongService.isPlayerIsInGame(info);
 			response.send(bool);
 		}
@@ -145,20 +145,20 @@ export class PongController {
 		// }
 
 		@Post('create_invitation_pong')
-		async create_invitation_pong(@Res() response: Response ,@MessageBody() info: {master: string, slave: string}): Promise<any> {
+		async create_invitation_pong(@Res() response: Response ,@MessageBody() info: CreateInvitationPongDTO): Promise<any> {
 			
 			await this.pongService.createInvitationPong(info.master, info.slave);
 			response.send("invitation created");
 		}
 
 		@Post('get_invitations_pong')
-		async get_invitations_pong(@Res() response: Response ,@MessageBody() info: User): Promise<any> {
+		async get_invitations_pong(@Res() response: Response ,@MessageBody() info: UserDTO): Promise<any> {
 			const invitations = await this.pongService.getInvitationsPong(info.login);
 			response.send(invitations);
 		}
 
 		@Post('delete_game')
-		async delete_game(@Res() response: Response ,@MessageBody() info: {gameName: string}): Promise<void> {
+		async delete_game(@Res() response: Response ,@MessageBody() info: DeleteGameDTO): Promise<void> {
 			console.log("delete_game: info = ", info.gameName);
 			await this.pongService.deleteGame(info.gameName);
 			await this.pongService.deleteGameInAllRooms(info.gameName);
@@ -166,7 +166,7 @@ export class PongController {
 		}
 
 		@Post('delete_invitation')
-		async delete_invitation(@Res() response: Response ,@MessageBody() info: InvitationPong): Promise<void> {
+		async delete_invitation(@Res() response: Response ,@MessageBody() info: InvitationPongDTO): Promise<void> {
 			await this.pongService.deleteOneInvitationPong(info);
 			response.send("deleted");
 		}

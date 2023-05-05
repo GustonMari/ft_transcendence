@@ -155,3 +155,56 @@ export class IsUserDTO {
 	@IsString()
 	login: string;
 }
+
+export class CreateInvitationPongDTO {
+	
+	@IsNotEmpty()
+	@IsString()
+	master: string;
+
+	@IsNotEmpty()
+	@IsString()
+	slave: string;
+}
+
+export class DeleteGameDTO {
+
+	@IsNotEmpty()
+	@IsString()
+	gameName: string;
+}
+
+export class InvitationPongDTO {
+
+	@IsNotEmpty()
+	@IsNumber()
+	id: number;
+
+	@IsNotEmpty()
+	@IsDate()
+	created_at: Date
+	
+	@IsNotEmpty()
+	@IsDate()
+	updated_at: Date
+
+	@IsNotEmpty()
+	@IsNumber()
+	sender_player_id: number
+
+	@IsNotEmpty()
+	@IsString()
+	sender_player_login: string
+
+	@IsNotEmpty()
+	@IsNumber()
+	invited_player_id: number
+
+	@IsNotEmpty()
+	@IsString()
+	invited_player_login: string
+
+	@IsNotEmpty()
+	@IsString()
+	game_name: string
+}
