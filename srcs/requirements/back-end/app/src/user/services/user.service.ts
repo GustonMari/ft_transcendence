@@ -1,7 +1,4 @@
-import { Relation } from '@prisma/client';
-/* eslint-disable prettier/prettier */
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 import {
     CreateUserOptions,
@@ -19,7 +16,6 @@ const LOSE_XP = 5;
 export class UserService {
     constructor(
         private readonly prisma: PrismaService,
-        private readonly jwtService: JwtService
     ) { }
 
     async updateUser(

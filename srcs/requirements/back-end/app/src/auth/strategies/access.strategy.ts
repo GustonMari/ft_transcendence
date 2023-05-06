@@ -29,9 +29,9 @@ export class AccessStrategy extends PassportStrategy(Strategy, 'access') {
     @TransformPlainToInstance(UserRO, {
         excludeExtraneousValues: true,
     })
-    async validate(payload: RegisterDTO): Promise<UserRO> {
+    async validate(payload: any): Promise<UserRO> {
         const user_raw = await this.userService.findUniqueUser({
-            login: payload.login,
+            id: payload.id,
         });
         if (!user_raw) throw new UnauthorizedException("Invalid credentials");
         return user_raw;
