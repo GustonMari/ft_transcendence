@@ -12,17 +12,25 @@ import { PongGateway } from '../pong/gateways/pong.gateway';
 import { HistoryService } from '../history/services';
 import { UserService } from '../user/services/user.service';
 import { JwtService } from '@nestjs/jwt';
+import { RelationController } from '../relation/controllers';
+import { RelationService } from '../relation/services';
+import { RelationModule } from '../relation/relation.module';
 
 
 @Module({
 	imports: [
-		ScheduleModule.forRoot()
+		ScheduleModule.forRoot(),
+		RelationModule,
 	],
 	providers: [ChatGateway, 
 				ChatService, 
 				ChatSchedulingService, 
-				PongService],
-	controllers: [ChatController, PongController],
+				PongService,
+				RelationService,
+				RelationController
+
+				],
+	controllers: [ChatController, PongController/* , RelationController */],
 })
 export class ChatModule {
 	

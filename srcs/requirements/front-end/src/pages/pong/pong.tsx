@@ -1,17 +1,17 @@
 import React, { useContext, useEffect, useLayoutEffect, useRef } from "react";
 import { useState } from "react";
-//BUG: replace the path of create_socket
 import Style from "./pong.module.css";
 import { Ball } from "./ball";
 import { Paddle } from "./paddle";
 import { PopupWinLose} from "./modalpong";
-import { useLocation } from "react-router-dom";
+import { useLocation} from "react-router-dom";
 import { IconContext } from "react-icons";
 import { BsPlayFill } from "react-icons/bs";
 import { BiPause } from "react-icons/bi";
 import Create_socket from "../../network/chat.socket";
 import { APP } from "../../network/app";
 import { useNavigate } from "react-router-dom";
+import { Socket } from "socket.io-client";
 
 
 const GAME_LIMIT = 1000;
@@ -24,7 +24,7 @@ export default function Pong() {
 	const [gameName, setGameName] = useState<string>("");
 	const [isSlave, setIsSlave] = useState<boolean>(false);
 	const [isWatcher, setIsWatcher] = useState<boolean>(false);
-	const socket = Create_socket();
+	const [socket, setSocket] = useState<Socket | undefined>(Create_socket());
 	const location = useLocation();
 
 	useLayoutEffect(() => {
@@ -45,16 +45,28 @@ export default function Pong() {
 					login: res.data.login,
 				});
 				game_name = game_name.data;
+
+				socket?.emit("joinWaitingReplay", game_name);
+				console.log('fuckkkkk this', game_name, 'res.data.login=', res.data.login);
 			}
 			else {
 				const { game_name_param } = location.state;
 				game_name = game_name_param;
 			}
+			console.log('putain', game_name, ' return get me =', res.data, 'is_master=', is_master, ' is slave = ', is_slave);
+			if (game_name === undefined)
+			{
+				game_name = await APP.post("/pong/get_game_name", {
+					login: res.data.login,
+				});
+				game_name = game_name.data;
+			}
 			let game = await APP.post('/pong/get_game', {game_name: game_name})
 			if (is_master.data) {
 				setIsMaster(true);
 				setIsSlave(false);
-				await APP.post('/pong/init_game', {game: game});
+				await APP.post('/pong/init_game', game.data);
+				// await APP.post('/pong/init_game', {game: game.data});
 			} else {
 				setIsMaster(false);
 				
@@ -68,7 +80,6 @@ export default function Pong() {
 			setGameName(game_name);
 
 				setReady(true); // set ready state to true after data has been fetched
-				// setTrigger(trigger + 1);
 		} catch (error) {
 			console.error(error);
 		}
@@ -118,13 +129,13 @@ export default function Pong() {
 
 export function ExecutePong(props: any) {
 	const [ball, setBall] = useState<HTMLDivElement | null>(null);
-	const [limit, setLimit] = useState<DOMRect | undefined>(undefined); // BUG can we delete this ?
 	const [leftscore, setLeftScore] = useState<number>(0);
 	const [rightscore, setRightScore] = useState<number>(0);
 	const [changeMap, setChangeMap] = useState<number>(1);
 	const [popupwinlose ,setPopupWinLose] = useState<{popup: boolean, winlosemessage: string}>({popup: false, winlosemessage: ""});
 	let {isMaster, gameName, isWatcher/* , rooms */} = props;
-	let newLimit: DOMRect | undefined;
+	// let newLimit: DOMRect | undefined;
+	let newLimit = useRef<DOMRect | undefined>(undefined);
 	let first: boolean = false;
 	let playerPaddleLeft = new Paddle(document.getElementById("player-paddle-left") as HTMLDivElement);
 	let playerPaddleRight = new Paddle(document.getElementById("player-paddle-right") as HTMLDivElement);
@@ -135,9 +146,13 @@ export function ExecutePong(props: any) {
 	const {socket} = useContext(PongContext);
 	const kd					= useRef(require('keydrown'));
 	const navigate = useNavigate();
+	// let pongBall: Ball;
 
+	const [play, setPlay] = useState<number>(0);
+	const [refresh, setRefresh] = useState<number>(0);
 
-	let pongBall: Ball; 
+	// let pongBall: Ball; 
+	const pongBall = useRef<Ball | null>(null);
 
 
 
@@ -151,8 +166,7 @@ export function ExecutePong(props: any) {
 		rect = divElement?.getBoundingClientRect();
 		
 		if (ballElement && rect) {
-			setLimit(rect);
-			newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
+			newLimit.current = document.getElementById("pong-body")?.getBoundingClientRect();
 			setBall(ballElement);
 		}
 	}, []);
@@ -161,12 +175,13 @@ export function ExecutePong(props: any) {
 			
 			if (kd.current.UP.isDown() && !isWatcher) {
 			rightUpPressed = true;
+			console.log("rightUpPressed");
 			if (isMaster) {
-				if (newLimit && playerPaddleLeft) {
+				if (newLimit.current && playerPaddleLeft) {
 					socket.emit('updatePaddleLeft', {paddle: 'up', gameName: gameName});
 				}
 			} else if (!isWatcher) {
-				if (newLimit && playerPaddleRight) {
+				if (newLimit.current && playerPaddleRight) {
 					socket.emit('updatePaddleRight', {paddle: 'up', gameName: gameName});
 				}
 			}
@@ -176,11 +191,11 @@ export function ExecutePong(props: any) {
 			if (kd.current.DOWN.isDown()) {
 				rightDownPressed = true;
 				if (isMaster) {
-					if (newLimit && playerPaddleLeft) {
+					if (newLimit.current && playerPaddleLeft) {
 						socket.emit('updatePaddleLeft', {paddle: 'down', gameName: gameName});
 					}
 				} else if (!isMaster && !isWatcher) {
-					if (newLimit && playerPaddleRight) {
+					if (newLimit.current && playerPaddleRight) {
 						socket.emit('updatePaddleRight', {paddle: 'down', gameName: gameName});
 					}
 				}
@@ -222,10 +237,10 @@ export function ExecutePong(props: any) {
 				if (lastTime !== undefined || lastTime !== null) {
 					const delta = time - lastTime;
 					if (first === false) {
-						newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
+						newLimit.current = document.getElementById("pong-body")?.getBoundingClientRect();
 						first = true;
 					}
-					if (newLimit /* && !isWatcher */)
+					if (newLimit.current /* && !isWatcher */)
 					{
 						pongBall.update(delta, playerPaddleLeft, playerPaddleRight, gameName, isMaster);
 					}
@@ -238,129 +253,104 @@ export function ExecutePong(props: any) {
 				}
 				let ret_timeout = setTimeout(() => {
 						lastTime = time;
-						window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight, newLimit));
+						window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight, newLimit.current));
 						clearTimeout(ret_timeout);
 				}, 1);
 				
 			};
 
-			window.addEventListener('resize', () => {
-				newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
-				// console.log('resize');
-			});
 
-			// const update = (lastTime: number,pongBall: Ball, playerPaddleLeft: Paddle, playerPaddleRight: Paddle, limit?: DOMRect) => {
-			// 	const updateFrame = (time: number) => {
-			// 		const delta = time - lastTime;
-			// 		if (first === false) {
-			// 			newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
-			// 			first = true;
-			// 		}
-			// 		if (newLimit /* && !isWatcher */) {
-			// 			pongBall.update(delta, playerPaddleLeft, playerPaddleRight, gameName, isMaster);
-			// 		}
-			// 		kd.current.run(function () {
-			// 			kd.current.tick();
-			// 		});
-			// 		DownHandler();
-			// 		UpHandler();
-			// 		window.addEventListener('resize', () => {
-			// 			newLimit = document.getElementById("pong-body")?.getBoundingClientRect();
-			// 			// console.log('resize');
-			// 		});
-			// 		lastTime = time;
-			// 		window.requestAnimationFrame(updateFrame);
-			// 	};
+
+	const pressPlay = async () => {
+		socket.emit('resumeGame', gameName);
+	}
+		
+	const pressPause = async () => {
+		socket.emit('pauseGame', gameName);
+	}
+
 			
-			// 	return () => {
-			// 		lastTime = performance.now();
-			// 		window.requestAnimationFrame(updateFrame);
-			// 	};
-			// };
 			
-			useEffect(() => {
-				if (ball && socket) {
-					pongBall = new Ball(ball, setLeftScore, setRightScore, socket);
-					socket?.on('GameUpdated', (data: any) => {
-						pongBall.x = data.x;
-						pongBall.y = data.y;
-						pongBall.setLeftScore(data.leftScore);
-						pongBall.setRightScore(data.rightScore);
-						playerPaddleLeft.position = data.paddleLeftY;
-						playerPaddleRight.position = data.paddleRightY;
-					});
-					let lastTime: number = 0;
-						window.requestAnimationFrame(update(lastTime, pongBall, playerPaddleLeft, playerPaddleRight));
-			  }
-				return () => {
-					console.log('workkkkkkkkkkkkkkkkkkkkkk')
-					socket.off('GameUpdated');
-				}
-			}, [ball]);
-
-			useEffect(() => {
-				socket.on('GameFinished', async (data: any) => {
-					let msg_tmp = '';
-					// if (isMaster) {
-					// 	console.log("Master, go delete game bitch");
-					// 	await APP.post("/pong/delete_game", {gameName: gameName});
-					// }
-					if (isMaster && data.leftScore >= GAME_LIMIT)
-						msg_tmp = 'You won'
-					else if (!isWatcher && !isMaster && data.rightScore >= GAME_LIMIT)
-						msg_tmp = 'You won!';
-					else if (isMaster && data.rightScore >= GAME_LIMIT)
-						msg_tmp = 'You lose :(';
-					else if (!isWatcher &&  !isMaster && data.leftScore >= GAME_LIMIT)
-						msg_tmp = 'You lose :(';
-					else if (isWatcher)
-						navigate("/game");
-					if (!isWatcher)
-						setPopupWinLose({popup: true, winlosemessage: msg_tmp});
-				})
-				socket.on('navigate_to_game', async (data: any) => {
-					console.log("front navigate_to_game");
-					if (isMaster)
-						socket?.emit("allLeaveGame");
-					navigate("/game");
-				})
-			return () => {
-				socket.off('GameFinished');
-			}
-		},[socket]);
-
-			const click = (map: number) => {
-				setChangeMap(map);
-			}
-
-			useEffect(() => {
-				const map_background = document.getElementById("main-window");
-				const pong_game = document.getElementById("pong-body");
-				if (map_background && pong_game && changeMap === 1) {
-                        pong_game.style.backgroundColor = 'black';
-                        map_background.style.backgroundImage = `url(${process.env.PUBLIC_URL + '/pong/background_pong.png'})`;
-                        document.documentElement.style.setProperty('--color-paddle', 'red');
-					} else if (map_background && pong_game && changeMap === 2) {
-						pong_game.style.backgroundColor = '#59f7f785';
-                        map_background.style.backgroundImage = `url(${process.env.PUBLIC_URL + '/pong/background_pong_2.png'})`;
-						document.documentElement.style.setProperty('--color-paddle', '#f09');
-					} else if (map_background && pong_game && changeMap === 3) {
-						pong_game.style.backgroundColor = 'rgba(238, 130, 238, 0.5)';
-                        map_background.style.backgroundImage = `url(${process.env.PUBLIC_URL + '/pong/homepong_background_1.jpg'})`;
-						document.documentElement.style.setProperty('--color-paddle', '#0ff');
+	useEffect(() => {
+		if (ball && socket) {
+			pongBall.current = new Ball(ball, setLeftScore, setRightScore, socket);
+			socket?.on('GameUpdated', (data: any) => {
+					if (pongBall.current) {
+						pongBall.current.x = data.x;
+						pongBall.current.y = data.y;
+						pongBall.current.setLeftScore(data.leftScore);
+						pongBall.current.setRightScore(data.rightScore);
 					}
-			}, [changeMap])
+					playerPaddleLeft.position = data.paddleLeftY;
+					playerPaddleRight.position = data.paddleRightY;
+				});
+			let lastTime: number = 0;
+				window.requestAnimationFrame(update(lastTime, pongBall.current, playerPaddleLeft, playerPaddleRight));
+	  }
+		return () => {
+			console.log('workkkkkkkkkkkkkkkkkkkkkk')
+			socket.off('GameUpdated');
+		}
+	}, [ball/* , playerPaddleLeft, playerPaddleRight, socket, update */]);
 
-			socket?.on("refusedToPlay", (data: any) => {
+	useEffect(() => {
+		socket.on('GameFinished', async (data: any) => {
+			socket.emit("leaveWaitingReplay", gameName);
+			let msg_tmp = '';
+			if (isMaster && data.leftScore >= 1)
+				msg_tmp = 'You won'
+			else if (!isWatcher && !isMaster && data.rightScore >= 1)
+				msg_tmp = 'You won!';
+			else if (isMaster && data.rightScore >= 1)
+				msg_tmp = 'You lose :(';
+			else if (!isWatcher &&  !isMaster && data.leftScore >= 1)
+				msg_tmp = 'You lose :(';
+			else if (isWatcher)
 				navigate("/game");
-			});
+			if (!isWatcher)
+				setPopupWinLose({popup: true, winlosemessage: msg_tmp});
+		})
+		socket.on('navigate_to_game', async (data: any) => {
+			console.log("front navigate_to_game");
+			if (isMaster)
+				socket?.emit("allLeaveGame", gameName);
+			socket.emit("leaveWaitingReplay", gameName);
+			navigate("/game");
+		})
+		return () => {
+			socket.off('GameFinished');
+		}
+	},[socket/* , isMaster, isWatcher, navigate */]);
+
+	const click = (map: number) => {
+		setChangeMap(map);
+	}
+
+		useEffect(() => {
+			const map_background = document.getElementById("main-window");
+			const pong_game = document.getElementById("pong-body");
+			if (map_background && pong_game && changeMap === 1) {
+						pong_game.style.backgroundColor = 'black';
+						document.documentElement.style.setProperty('--color-paddle', 'red');
+				} else if (map_background && pong_game && changeMap === 2) {
+					pong_game.style.backgroundColor = '#59f7f785';
+					document.documentElement.style.setProperty('--color-paddle', '#f09');
+				} else if (map_background && pong_game && changeMap === 3) {
+					pong_game.style.backgroundColor = 'rgba(238, 130, 238, 0.5)';
+					document.documentElement.style.setProperty('--color-paddle', '#0ff');
+				}
+		}, [changeMap])
+
+		socket?.on("refusedToPlay", (data: any) => {
+			navigate("/game");
+		});
 
 
 
 	return (
 		<div className={Style['container-game']} id="main-window">
 			<div>
-				{popupwinlose.popup ? (<PopupWinLose popupwinlose={popupwinlose} setPopupWinLose={setPopupWinLose} isMaster={isMaster} socket={socket} gameName={gameName}/> ) : (<></>)}
+				{popupwinlose.popup ? (<PopupWinLose popupwinlose={popupwinlose} setPopupWinLose={setPopupWinLose} isMaster={isMaster} socket={socket} gameName={gameName} play={play} setPlay={setPlay}/> ) : (<></>)}
 			</div>
 			 <div className={Style['container-button-map']}>
 				<button className={Style['button-map']} onClick={() => click(1)}>
@@ -393,7 +383,10 @@ export function ExecutePong(props: any) {
 					<div>
 						<button 
 							className={Style['button-play']} 
-							onClick={() => {socket.emit('resumeGame', gameName)}}>
+							onClick={() => {
+								// play ? "" : socket.emit('resumeGame', gameName)
+								pressPlay();
+								}}>
 								<IconContext.Provider value={{className: Style['icon-center']}}>
 									<BsPlayFill />
 								</IconContext.Provider>
@@ -402,7 +395,10 @@ export function ExecutePong(props: any) {
 					<div>
 						<button 
 							className={Style['button-pause']} 
-							onClick={() => {socket.emit('pauseGame', gameName)}}>
+							onClick={() => {
+								pressPause();
+								// play ? "" : socket.emit('pauseGame', gameName)
+								}}>
 								<IconContext.Provider value={{className: Style['icon-center']}}>
 									<BiPause className="icon-center"/>
 								</IconContext.Provider>

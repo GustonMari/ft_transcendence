@@ -6,6 +6,7 @@ import { exit } from 'process';
 import { Socket, Server } from 'socket.io';
 import { InfoPongRoom } from './pong.interface';
 import { AddGameDTO } from '../history/dtos';
+import { UserDTO } from './dtos';
 
 const VELOCITY_MAX = 0.080;
 const VELOCITY_ACCEL = 0.0003;
@@ -19,7 +20,7 @@ export class PongService {
 	 }
 
 	static allRooms: InfoPongRoom[] = [];
-	static waitingList: User[] = [];
+	static waitingList: UserDTO[] = [];
 
 	async createInvitationPong(master_str: string, slave_str: string): Promise<void> {
 		let new_game_name: string;
@@ -70,6 +71,14 @@ export class PongService {
 		return (invitations);
 	}
 
+	async findInvitationPongByGameName(game_name: string): Promise<InvitationPong> {
+		const invitation =  await this.prisma.invitationPong.findUnique({
+			where: {
+				game_name: game_name,
+			}
+		});
+		return (invitation);
+	}
 	async deleteOneInvitationPong(invitation: InvitationPong): Promise<void> {
 		await this.prisma.invitationPong.delete({
 			where: {
@@ -93,7 +102,7 @@ export class PongService {
 
 
 
-	async createGame(master: User, slave: User): Promise<boolean> {
+	async createGame(master: UserDTO, slave: UserDTO): Promise<boolean> {
 		let new_game_name = "";
 		if (!slave || !master)
 			return (false);
@@ -151,6 +160,8 @@ export class PongService {
 		return (true);
 	}
 
+
+	//TODO: big problem here, need to find a way to delete the game in allRooms
 	async deleteGameInAllRooms(game_name: string): Promise<boolean> {
 		if (!game_name)
 			return (false);
@@ -161,7 +172,10 @@ export class PongService {
 		if (index === -1) {
 			return false;
 		}
+		console.log("NONONONO index = ", index)
+		console.log("NONONONO allRooms[index] = ", PongService.allRooms[index])
 		PongService.allRooms.splice(index, 1);
+		console.log("MDRRRRR = ", PongService.allRooms);
 		// console.log("deleteGameInAllRooms = ", PongService.allRooms, "| ohoh game_name = ", game_name);
 		return (true);
 	}
@@ -323,10 +337,9 @@ export class PongService {
 	{
 		// this.PausePlay = true;
 		const game = await this.getGame(current_game_name);
+		if (!game)
+			return;
 		
-		
-		//TODO: comment ou quoi faire lorsqu'un joueur accepte ou non de jouer
-		//TODO: vraiment changer ce systeme lorsquon aurra les queues
 		if (game.waiter == 1) // ici on mets 1 car le deuxieme joueur est le second waiter
 		{
 			game.PausePlay = true;
@@ -335,7 +348,6 @@ export class PongService {
 		{
 			game.waiter++;
 		}
-		//TODO: faire le systeme de queue, ou l'on passe au jour suivant si il y a un joueur qui veut jouer
 	}
 
 
@@ -356,7 +368,6 @@ export class PongService {
 				paddleLeftY: ((100 * 27.5) / 55),
 				paddleRightY: ((100 * 27.5) / 55),
 			});
-		// console.log("updateGame : gameName = ", data.gameName, " | game = ", game);
 		if (game && game.PausePlay == false)
 			return ({x: game.x, y: game.y, leftScore: game.leftScore, rightScore: game.rightScore, paddleLeftY: game.back_paddle_left.y, paddleRightY: game.back_paddle_right.y});
 		// if (game.leftScore >= 11 || game.rightScore >= 11)
@@ -517,14 +528,14 @@ export class PongService {
 			back_paddle_left: { left: 100 / 90, right: (100 * 3) / 90, top: (100 * 21.5) / 55, bottom: (100 * 33.5) / 55, x: (100 * 2) / 90, y: (100 * 27.5) / 55 },
 			back_paddle_right: { left: (87 * 100) / 90, right: (89 * 100) / 90, top: (100 * 21.5) / 55, bottom: (100 * 33.5) / 55, x: ((100 * 88) / 90), y: (100 * 27.5) / 55 },
 			waiter: 0,
-			game_name: info.game.data.name,
+			game_name: info.name,
 			vector: {
 				x: 0.1,
 				y: 0.1
 			},
 			velocity: 0.025,
-			player1_id: info.game.data.master_id,
-			player2_id: info.game.data.slave_id,
+			player1_id: info.master_id,
+			player2_id: info.slave_id,
 		}
 		PongService.allRooms.push(newGame);
 		await this.reset(await this.getGame(newGame.game_name));
@@ -538,11 +549,22 @@ export class PongService {
 	}
 
 
-	async addPlayerToWaitingList(info: User) : Promise<any> {
+	async addPlayerToWaitingList(info: UserDTO) : Promise<any> {
 		PongService.waitingList.push(info);
 	}
 
-	async isPlayerIsInWaitingList(info: User) : Promise<boolean> {
+	async removePlayerFromWaitingList(info: User) : Promise<void> {
+		for (const player of PongService.waitingList)
+		{
+			if (player.id === info.id)
+			{
+				const index = PongService.waitingList.indexOf(player);
+				PongService.waitingList.splice(index, 1);
+			}
+		}
+	}
+
+	async isPlayerIsInWaitingList(info: UserDTO) : Promise<boolean> {
 		for (const player of PongService.waitingList)
 		{
 			if (player.id === info.id)
@@ -551,15 +573,21 @@ export class PongService {
 		return false;
 	}
 
-	async isPlayerIsInGame(info: User) : Promise<boolean> {
-		console.log("isPlayerIsInGame : PongService.allRooms = ", PongService.allRooms)
-		for (const player of PongService.allRooms)
-		{
-			console.log("finding player...")
-			if (player.player1_id === info.id || player.player2_id === info.id)
-				return true;
-		}
-		console.log('player not in game')
+	async isPlayerIsInGame(info: UserDTO) : Promise<boolean> {
+		const res = await this.prisma.game.findMany({
+			where: {
+				OR: [
+					{
+						master_id: info.id,
+					},
+					{
+						slave_id: info.id,
+					}
+				]
+			}
+		})
+		if (res.length > 0)
+			return true;
 		return false;
 	}
 
@@ -587,5 +615,7 @@ export class PongService {
 		}
 		return (ret);
 	}
+
+
 
 }

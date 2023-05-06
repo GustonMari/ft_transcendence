@@ -51,8 +51,16 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 
 	handleDisconnect(client: Socket) {
-		// console.log('disconnect');
 		// console.log('DISCONNECTED : socket = ', client.data);
+		const rooms = Object.keys(client.rooms);
+
+		// Remove the client from all rooms it has joined
+		rooms.forEach(room => {
+		if (room !== client.id) {
+			client.leave(room);
+			console.log(`Client ${client.id} left room ${room}`);
+		}
+		});
 		client.disconnect();
 	}
 
@@ -102,41 +110,18 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 
 	@SubscribeMessage('playGame')
-	async playGame(@MessageBody() data: {gameName: string}, @ConnectedSocket() socket: Socket): Promise<void> {
-		// console.log("playGame");
+	async playGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
 		await this.pongService.playGame(data.gameName);
 	}
-
-
-	// @SubscribeMessage('playGame')
-	// async playGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-	// 	console.log("playGame");
-
-	// 	//TODO: comment ou quoi faire lorsqu'un joueur accepte ou non de jouer
-	// 	//TODO: vraiment changer ce systeme lorsquon aurra les queues
-	// 	if (this.waiter == 1) // ici on mets 1 car le deuxieme joueur est le second waiter
-	// 	{
-	// 		console.log("2 waiters are ready");
-	// 		this.waiter = 0;
-	// 		await this.pongService.playGame(data.gameName);
-	// 	}	else
-	// 	{
-	// 		console.log("1 waiter is ready");
-	// 		this.waiter++;
-	// 	}
-	// 	//TODO: faire le systeme de queue, ou l'on passe au jour suivant si il y a un joueur qui veut jouer
-	// }
 	
 	@SubscribeMessage('updatePaddleLeft')
 	async updatePaddleLeft(@MessageBody() data: MovePaddle, @ConnectedSocket() socket: Socket): Promise<void> {
-		// console.log("updatePaddleLeft")
 		if (await this.pongService.isGamePaused(data.gameName))
 			await this.pongService.movePaddeLeft(data.paddle, data.gameName);
 	}
 
 	@SubscribeMessage('updatePaddleRight')
 	async updatePaddleRight(@MessageBody() data: MovePaddle, @ConnectedSocket() socket: Socket): Promise<void> {
-		// console.log("updatePaddleRight");
 		if (await this.pongService.isGamePaused(data.gameName))
 			await this.pongService.movePaddeRight(data.paddle, data.gameName);
 	}
@@ -149,48 +134,73 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 	@SubscribeMessage('allLeaveGame')
 	async allLeaveGame(@MessageBody() data: {gameName: string}, @ConnectedSocket() socket: Socket): Promise<void> {
+		if (!data || data.gameName === undefined || data.gameName === null)
+			return ;
 		this.myserver.socketsLeave(data.gameName);
 	}
 
 	@SubscribeMessage('changeGame')
 	async changeGame(@MessageBody() data: string, @ConnectedSocket() socket: Socket): Promise<void> {
-		console.log("changeGame data = ", data)
 		await socket.join(data);
 	}
 
 	@SubscribeMessage('navigate_to_game')
 	async navigate_to_game(@MessageBody() data: string, @ConnectedSocket() socket: Socket): Promise<void> {
-		console.log("navigate_to_game data = ", data);
 		this.myserver.to(data).emit('navigate_to_game', data);
 	}
 
 	@SubscribeMessage('joinWaitingRoom')
-	async createWaitingRoom(@MessageBody() data: string | null, @ConnectedSocket() socket: Socket): Promise<void> {
-		console.log("joinWaitingRoom");
+	async createWaitingRoom(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
 		await socket.join("waitingRoom");
 		if ((await this.myserver.in("waitingRoom").fetchSockets()).length == 2) {
-			console.log("2 players in waiting room")
 			await this.pongService.createGame(PongService.waitingList[0] , PongService.waitingList[1]);
 			this.myserver.to("waitingRoom").emit('startGame', {is_match: data});
 			this.myserver.socketsLeave("waitingRoom");
 		}
 	}
 
-	// @SubscribeMessage('disconnectWaitingRoom')
-	// async disconnectWaitingRoom(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-	// 	// console.log("disconnectWaitingRoom");
-	// 	this.myserver.socketsLeave("waitingRoom");
-	// }
+	@SubscribeMessage('leaveWaitingRoom')
+	async leaveWaitingRoom(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+		this.myserver.socketsLeave("waitingRoom");
+	}
+
+	@SubscribeMessage('disconnectWaitingRoom')
+	async disconnectWaitingRoom(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+		// console.log("disconnectWaitingRoom");
+		this.myserver.socketsLeave("waitingRoom");
+	}
+	@SubscribeMessage('joinWaitingReplay')
+	async joinWaitingReplay(@MessageBody() data: string, @ConnectedSocket() socket: Socket): Promise<void> {
+		console.log("joinWaitingReplay data --> ", data);
+		const room_name = "waitingReplay_" + data;
+		await socket.join(room_name);
+	}
+
+	@SubscribeMessage('leaveWaitingReplay')
+	async leaveWaitingReplay(@MessageBody() data: string, @ConnectedSocket() socket: Socket): Promise<void> {
+		console.log("leaveWaitingReplay data --> ", data);
+		const room_name = "waitingReplay_" + data;
+		this.myserver.socketsLeave(room_name);
+	}
+
 
 
 	@SubscribeMessage('pauseGame')
-	async pauseGame(@MessageBody() data: string, @ConnectedSocket() socket: Socket): Promise<void> {
-		await this.pongService.PauseGame(data);
+	async pauseGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+		console.log("pauseGame data --> ", data)
+		const room_name = "waitingReplay_" + data;
+		console.log("pauseGame socket = ", (await this.myserver.in(room_name).fetchSockets()).length);
+		if ((await this.myserver.in(room_name).fetchSockets()).length >= 2)
+			await this.pongService.PauseGame(data);
 	}
 
 	@SubscribeMessage('resumeGame')
-	async resumeGame(@MessageBody() data: string, @ConnectedSocket() socket: Socket): Promise<void> {
-		await this.pongService.resumeGame(data);
+	async resumeGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
+		console.log("resumeGame data --> ", data)
+		const room_name = "waitingReplay_" + data;
+		console.log("resumeGame socket = ", (await this.myserver.in(room_name).fetchSockets()).length);
+		if ((await this.myserver.in(room_name).fetchSockets()).length >= 2)
+			await this.pongService.resumeGame(data);
 	}
 
 	@SubscribeMessage('refusePlay')

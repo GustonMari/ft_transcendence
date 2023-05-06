@@ -1,6 +1,6 @@
 import { BiSearch } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
-import { MdOutlineRemoveCircleOutline } from "react-icons/md";
+import { MdBlock, MdOutlineRemoveCircleOutline } from "react-icons/md";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 
 import g from "./../styles/communs/global.module.css";
@@ -181,7 +181,7 @@ export const Result = (props: any) => {
                                             "Do you want to block " + user.login + " ?",
                                             () => handleBlockUser(user.id)
                                         )}>
-                                            <MdOutlineRemoveCircleOutline/>
+                                            <MdBlock/>
                                         </IconButton>
                                     </>                    
                                 }

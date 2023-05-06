@@ -17,6 +17,7 @@ export default function HomePong() {
 	const [currentUser, setCurrentUser] = useState<any>(null);
 	const [waitingForGame, setWaitingForGame] = React.useState(false); // BUG: can we delete this?
 	const navigate = useNavigate();
+	//TODO changer ce mode de creation de socket
 	const socket = Create_socket();
 
 	const roomContainer = useRef<HTMLDivElement>(null);
@@ -79,18 +80,26 @@ export default function HomePong() {
 
 	const enterInWaitingFile = async () => {
 		const in_game = await APP.post("/pong/is_player_is_in_game", currentUser);
+		console.log('in_game.data = ', in_game.data)
 		if (in_game.data === true)
 		{
+			setWaitingForGame(false);
+			const clearWait = async () => {
+				await APP.post("/pong/clear_waiting_list");
+			}
+			clearWait();
 			navigate("/pong", {state: {
 			}});
 		}
 		const res = await APP.post("/pong/is_player_in_waiting_list", currentUser);
 		if (res.data === false)
 		{
+			console.log("player is not in waiting list, added")
 			await addPlayerToList(currentUser);
 			const is_match = await isMatched();
 			if (!is_match)
 			{
+				console.log("not matched");
 				//put message waiting
 				socket?.emit("joinWaitingRoom", null);
 				setWaitingForGame(true);
@@ -102,6 +111,13 @@ export default function HomePong() {
 				socket?.emit("joinWaitingRoom", is_match);
 			}
 		}
+	}
+
+	const leaveWaitingFile = async () => {
+		socket?.emit("leaveWaitingRoom");
+		await APP.post("/pong/remove_player_from_waiting_list", currentUser);
+		setWaitingForGame(false);
+		setWaitTrigger(false);
 	}
 
 	const spectateGame = async (room: any) => {
@@ -200,7 +216,7 @@ export default function HomePong() {
 
 					{waitTrigger ? 
 					<button className={Style['join-waiting-search']} onClick={() =>{
-						
+						leaveWaitingFile();
 					} }>
 						<div className={Style['body-waiting-search']}>
 							<div className={Style['play-search']}>

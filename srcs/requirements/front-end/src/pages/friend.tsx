@@ -8,7 +8,7 @@ import { NavBar } from "../components/communs/NavBar"
 import g from "../styles/communs/global.module.css"
 import { ProfilePopUpContext } from "../contexts/ProfilePopUp.context"
 import { CgProfile } from "react-icons/cg"
-import { MdOutlineRemoveCircleOutline } from "react-icons/md";
+import { MdBlock, MdOutlineRemoveCircleOutline } from "react-icons/md";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { RiDeleteBin5Line } from "react-icons/ri"
 import { PopUp } from "../components/communs/PopUp"
@@ -148,6 +148,17 @@ export const Friends = () => {
         }});
     }
 
+    const handleBlockUser = (id: number) => {
+        API.blockUser(
+            id,
+            () => {
+                handleSuccess("User blocked");
+            }, (err: any) => {
+                handleError(err.message);
+            }
+        )
+    }
+
     return (
         <div className={g.background + " flex flex-col w-full md:flex-row"}>
             <NavBar/>
@@ -198,6 +209,16 @@ export const Friends = () => {
                                                     )}
                                                 >
                                                     <MdOutlineRemoveCircleOutline/>
+                                                </IconButton>
+                                                <IconButton
+                                                    onClick={(e: any) => createConfirmPopUp(
+                                                        e,
+                                                        "Block friend",
+                                                        "Do you want to block " + user.login,
+                                                        () => handleBlockUser(user.id),
+                                                    )}
+                                                >
+                                                <MdBlock/>
                                                 </IconButton>
                                                 <IconButton
                                                     onClick={(e: any) => launchGame(e, user)}
