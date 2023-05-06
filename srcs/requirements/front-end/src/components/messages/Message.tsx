@@ -1,4 +1,4 @@
-import React, { ReactNode, useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { HistoryDto, InfoMessage } from "../../dtos/chat.dto";
 import { APP } from "../../network/app";
 import Style from "../../styles/messages/Style.message.module.css";
@@ -44,37 +44,9 @@ export function GetMessagesByRoom(handle_history: any, room_name: string)
 
 function IsSenderOrReceiver(props: any)
 {
-	let {historyItem, current_user, socket, setPopUpID} = props.props;
-	let is_user_bloqued = useRef(false);
-	const [loading, setLoading] = useState<boolean>(false);
+	let {historyItem, current_user, socket, setPopUpID} = props;
 
-	console.log("IS SENDER OR RECEIVER  historyItem = ", historyItem, "current_user = ", current_user);
-	useEffect(() => {
-				const blocked = async () => {
-					if (historyItem)
-					{
-						const res = await APP.post("/chat/is_user_blocked", {
-								user_id_target: historyItem.sender_id,
-						});
-						is_user_bloqued.current = res.data;
-						setLoading(true);
-					}
-				}
-		blocked();
-	},[]);
-	if (loading == false)
-		return (
-			<>
-			</>
-		)
-	
-	console.log("SHOW HISTORYhistoryItem", historyItem);
-	if (is_user_bloqued.current == true)
-		return (
-			<>
-			</>
-		);
-	else {
+
 	if(historyItem.sender_id == current_user.id)
 		return (
 			<div className={Style['wrapper-message']}>
@@ -83,7 +55,7 @@ function IsSenderOrReceiver(props: any)
 					<span className={Style["chat-date"]}> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
 				</div>
 				{/* <PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass={Style["img-message-right"]} current_user={current_user} socket={socket}/> */}
-                <img src={`http://${process.env.REACT_APP_LOCAL_IP}:3000/api/public/picture/` + historyItem.sender_name} className={Style["img-message-right"]} onClick={() => setPopUpID(historyItem.sender_id)}/> 
+                <img src={"http://localhost:3000/api/public/picture/" + historyItem.sender_name} className={Style["img-message-right"]} onClick={() => setPopUpID(historyItem.sender_id)}/> 
 			</div>
 		);
 	else
@@ -91,7 +63,7 @@ function IsSenderOrReceiver(props: any)
 			<div>
 				<div className={Style["wrapper-message"]}>	
 					{/* <PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass={Style["img-message-left"]} current_user={historyItem.sender} socket={socket}/> */}
-                    <img src={`http://${process.env.REACT_APP_LOCAL_IP}:3000/api/public/picture/` + historyItem.sender_name} className={Style["img-message-right"]} onClick={() => setPopUpID(historyItem.sender_id)}/>
+                    <img src={"http://localhost:3000/api/public/picture/" + historyItem.sender_name} className={Style["img-message-right"]} onClick={() => setPopUpID(historyItem.sender_id)}/>
 					<div className={Style["message-sender"]}>
 						{historyItem.sender_name} : {historyItem.current_message}
 						<span className={Style["chat-date"]}> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
@@ -100,63 +72,36 @@ function IsSenderOrReceiver(props: any)
 				</div>
 			</div>
 	);
-		}
 }
 
-
-/* async */ function IsSenderOrReceiver_socket(props: any)
+function IsSenderOrReceiver_socket(props: any)
 {
-	let {infomessage, current_user, socket, setPopUpID} = props.props;
+	let {infomessage, current_user, socket, setPopUpID} = props;
 
-	let is_user_bloqued = useRef(false);
-	const [loading, setLoading] = useState<boolean>(false);
-
-	useEffect(() => {
-				const blocked = async () => {
-					const res = await APP.post("/chat/is_user_blocked", {
-							user_id_target: infomessage.current_user.id,
-					});
-					is_user_bloqued.current = res.data;
-					setLoading(true);
-				}
-		blocked();
-	},[]);
-	if (loading == false)
+	if (infomessage.current_user.id == current_user.id)
 		return (
-			<>
-			</>
-		)
-	if (is_user_bloqued.current == true)
-		return (
-			<>
-			</>
-		);
-	else {
-		if (infomessage.current_user.id == current_user.id)
-			return (
-				<div className={Style['wrapper-message']}>
-					<div className={Style["message-receiver"]}>
-							{infomessage.current_user.login} : {infomessage.message}
-							<span className={Style["chat-date"]}> {dayjs(infomessage.created_at).format("DD MMM YYYY À H:mm")} </span>
-					</div>
-					{/* <PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass={Style["img-message-right"]} current_user={current_user} socket={socket}/> */}
-					<img src={`http://${process.env.REACT_APP_LOCAL_IP}:3000/api/public/picture/` + infomessage.current_user.login} className={Style["img-message-right"]} onClick={() => setPopUpID(infomessage.current_user.id)}/>
+			<div className={Style['wrapper-message']}>
+				<div className={Style["message-receiver"]}>
+		 			{infomessage.current_user.login} : {infomessage.message}
+	 				<span className={Style["chat-date"]}> {dayjs(infomessage.created_at).format("DD MMM YYYY À H:mm")} </span>
 				</div>
-			);
-		else
-			return (
-				<div>
-					<div className={Style["wrapper-message"]}>	
-						{/* <PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass={Style["img-message-left"]} current_user={infomessage.current_user} socket={socket}/> */}
-						<img src={`http://${process.env.REACT_APP_LOCAL_IP}:3000/api/public/picture/` + infomessage.current_user.login} className={Style["img-message-right"]} onClick={() => setPopUpID(infomessage.current_user.id)}/>
-						<div className={Style["message-sender"]}>
-							{infomessage.current_user.login} : {infomessage.message}
-							<span className={Style["chat-date"]}> {dayjs(infomessage.created_at).format("DD MMM YYYY À H:mm")} </span>
-						</div>
+				{/* <PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass={Style["img-message-right"]} current_user={current_user} socket={socket}/> */}
+                <img src={"http://localhost:3000/api/public/picture/" + infomessage.current_user.login} className={Style["img-message-right"]} onClick={() => setPopUpID(infomessage.current_user.id)}/>
+			</div>
+		);
+	else
+		return (
+			<div>
+				<div className={Style["wrapper-message"]}>	
+					{/* <PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass={Style["img-message-left"]} current_user={infomessage.current_user} socket={socket}/> */}
+                    <img src={"http://localhost:3000/api/public/picture/" + infomessage.current_user.login} className={Style["img-message-right"]} onClick={() => setPopUpID(infomessage.current_user.id)}/>
+					<div className={Style["message-sender"]}>
+						{infomessage.current_user.login} : {infomessage.message}
+						<span className={Style["chat-date"]}> {dayjs(infomessage.created_at).format("DD MMM YYYY À H:mm")} </span>
 					</div>
 				</div>
-		);
-	}
+			</div>
+	);
 }
 
 export function DisplayMessagesByRoom(props: any) {
@@ -167,7 +112,6 @@ export function DisplayMessagesByRoom(props: any) {
 
 	useEffect(() => {
 		if (messagesContainer.current) {
-			console.log("SCROOLLLL pouet")
 		  messagesContainer.current.scrollTop = messagesContainer.current.scrollHeight;
 		}
 	  }, [infomessage, history]);
@@ -177,15 +121,12 @@ export function DisplayMessagesByRoom(props: any) {
 	  <div ref={messagesContainer} className={Style['print-message']}>
 		{!history ? "" : history.map((historyItem: HistoryDto, index: number) => (
 		  <div key={index}>
-			{/* { IsSenderOrReceiver({historyItem, current_user, socket, setPopUpID}) } */}
-			<IsSenderOrReceiver props={{historyItem, current_user, socket, setPopUpID}}/>
-
+			{ IsSenderOrReceiver({historyItem, current_user, socket, setPopUpID}) }
 		  </div>
 		))}
 		{infomessage.map((infomessage: any, index: number) => (
 			<div key={index}>
-				<IsSenderOrReceiver_socket props={{infomessage, current_user, socket, setPopUpID}}/>
-				{/* {IsSenderOrReceiver_socket({ infomessage, current_user, socket, setPopUpID })}  */}
+				{IsSenderOrReceiver_socket({infomessage, current_user, socket, setPopUpID})}
 				</div>
 		))}
 	  </div>

@@ -47,7 +47,6 @@
 						<li key={room.id}>
 							<span className={StyleRoom["line-room"]}>
 								<div className={StyleRoom['split']}>
-									<img className={StyleRoom['line-room-img']} src="" alt="" />
 									<button className={StyleRoom['line-room-button']} onClick={() => {
 										
 										const is_ban = async () => {

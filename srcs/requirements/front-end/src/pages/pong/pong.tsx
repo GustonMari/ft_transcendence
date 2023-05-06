@@ -326,24 +326,27 @@ export function ExecutePong(props: any) {
 		setChangeMap(map);
 	}
 
-		useEffect(() => {
-			const map_background = document.getElementById("main-window");
-			const pong_game = document.getElementById("pong-body");
-			if (map_background && pong_game && changeMap === 1) {
-						pong_game.style.backgroundColor = 'black';
-						document.documentElement.style.setProperty('--color-paddle', 'red');
-				} else if (map_background && pong_game && changeMap === 2) {
-					pong_game.style.backgroundColor = '#59f7f785';
-					document.documentElement.style.setProperty('--color-paddle', '#f09');
-				} else if (map_background && pong_game && changeMap === 3) {
-					pong_game.style.backgroundColor = 'rgba(238, 130, 238, 0.5)';
-					document.documentElement.style.setProperty('--color-paddle', '#0ff');
-				}
-		}, [changeMap])
+    useEffect(() => {
+        const map_background = document.getElementById("main-window");
+        const pong_game = document.getElementById("pong-body");
+        if (map_background && pong_game && changeMap === 1) {
+                pong_game.style.backgroundColor = 'black';
+                map_background.style.backgroundImage = `url(${process.env.PUBLIC_URL + '/pong/background_pong.png'})`;
+                document.documentElement.style.setProperty('--color-paddle', 'red');
+            } else if (map_background && pong_game && changeMap === 2) {
+                pong_game.style.backgroundColor = '#59f7f785';
+                map_background.style.backgroundImage = `url(${process.env.PUBLIC_URL + '/pong/background_pong_2.png'})`;
+                document.documentElement.style.setProperty('--color-paddle', '#f09');
+            } else if (map_background && pong_game && changeMap === 3) {
+                pong_game.style.backgroundColor = 'rgba(238, 130, 238, 0.5)';
+                map_background.style.backgroundImage = `url(${process.env.PUBLIC_URL + '/pong/homepong_background_1.jpg'})`;
+                document.documentElement.style.setProperty('--color-paddle', '#0ff');
+            }
+    }, [changeMap])
 
-		socket?.on("refusedToPlay", (data: any) => {
-			navigate("/game");
-		});
+    socket?.on("refusedToPlay", (data: any) => {
+        navigate("/game");
+    });
 
 
 
