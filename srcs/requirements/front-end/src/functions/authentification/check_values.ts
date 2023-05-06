@@ -2,7 +2,7 @@ const g_emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 function _check_username(username: string): void {
     const regex = /^[a-zA-Z0-9_-]{3,16}$/;
-    if (!regex.test(username) || username.length < 9 || username.length > 20) {
+    if (!regex.test(username) || username.length > 40) {
       throw new Error("invalid username");
     }
 }

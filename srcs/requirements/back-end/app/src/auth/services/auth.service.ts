@@ -7,14 +7,14 @@ import {
     NotFoundException,
     Logger
 } from '@nestjs/common';
-import { RegisterDTO } from '../dtos/register.dto';
 import { JwtService } from '@nestjs/jwt';
 import LoginDTO from './../dtos/login.dto';
 import TokenPayloadRO from '../ros/token_payload.ro';
 import { plainToClass } from 'class-transformer';
 import { Tokens } from '../interfaces';
-import * as argon from 'argon2';
+import { Response } from 'express';
 
+import * as argon from 'argon2';
 import * as crypto from 'crypto';
 import * as speakeasy from 'speakeasy';
 import { AT_EXPIRATION, RT_EXPIRATION } from '../data';
@@ -25,114 +25,6 @@ export class AuthService {
         private readonly userService: UserService,
         private readonly jwtService: JwtService,
     ) { }
-
-    async register(
-        dto: RegisterDTO
-    ): Promise<Tokens> {
-        if (dto.login.length < 9) throw new UnauthorizedException('Username is too short');
-        if (
-            await this.userService.findUniqueUser({
-                email: dto.email
-            })
-            ||
-            await this.userService.findUniqueUser({
-                login: dto.login
-            })
-        ) throw new UnauthorizedException('User already exists');
-
-        const user_raw = await this.userService.createUser({
-            login: dto.login,
-            email: dto.email,
-            password: await argon.hash(dto.password),
-        });
-        const user_token: TokenPayloadRO = plainToClass(
-            TokenPayloadRO,
-            user_raw,
-            {
-                excludeExtraneousValues: true
-            });
-        const tokens: Tokens = await this.signTokens(user_token);
-        await this.userService.updateUser({
-            id: user_raw.id,
-        },
-            {
-                rt: await argon.hash(tokens.refresh_token),
-            });
-        this.userService.setUserOnline(user_raw.id, true);
-        return (tokens);
-    }
-
-    async login(
-        dto: LoginDTO
-    ): Promise<Tokens> {
-        const user_raw = await this.userService.findUniqueUser({
-            login: dto.login,
-        });
-        if (!user_raw) throw new UnauthorizedException('Invalid login');
-
-        const passwordMatch = await argon.verify(user_raw.password, dto.password);
-        if (!passwordMatch) throw new UnauthorizedException('Invalid password');
-
-        if (user_raw.tfa === true) {
-            const url = await this.generateTFA(user_raw.login);
-            return ({
-                access_token: url,
-                refresh_token: undefined,
-            });
-        }
-
-        const user_token: TokenPayloadRO = plainToClass(
-            TokenPayloadRO,
-            user_raw,
-            {
-                excludeExtraneousValues: true
-            });
-        const tokens: Tokens = await this.signTokens(user_token);
-        await this.userService.updateUser({
-            id: user_raw.id,
-        },
-            {
-                rt: await argon.hash(tokens.refresh_token),
-            });
-        this.userService.setUserOnline(user_raw.id, true);
-        return (tokens);
-    }
-
-    async logout(
-        id: number,
-    ): Promise<void> {
-        console.log(id);
-        await this.userService.setUserOnline(id, false);
-    }
-
-    async refresh(
-        user: UserRO,
-        cred: Tokens,
-    ): Promise<Tokens> {
-
-        if (!cred.refresh_token) throw new UnauthorizedException('Invalid token');
-
-        const f = await this.userService.findUniqueUser({
-            id: user.id,
-        })
-        if (!f) throw new NotFoundException('User not found');
-
-        const m = await argon.verify(f.rt, cred.refresh_token);
-        if (!m) throw new UnauthorizedException('Invalid token, value mismatch');
-
-        const tokens: Tokens = await this.signTokens({
-            id: f.id,
-            login: f.login,
-            email: f.email,
-        });
-        await this.userService.updateUser({
-            id: user.id,
-        },
-            {
-                rt: await argon.hash(tokens.refresh_token),
-            });
-        return (tokens);
-    }
 
     async signTokens(
         user: TokenPayloadRO
@@ -155,64 +47,7 @@ export class AuthService {
             refresh_token: rt,
         });
     }
-
-    async callback(
-        profile: ProfileField
-    ): Promise<Tokens> {
-
-        console.log(profile);
-
-        let r = crypto.randomBytes(50).toString('hex');
-        let found = (await this.userService.findUniqueUser({
-                            email: profile.email
-                        })
-                        ||
-                        await this.userService.findUniqueUser({
-                            login: profile.username
-        }))
-        if (found && found.tfa === true) {
-            // turn on tfa_pending
-            return ({
-                access_token: undefined,
-                refresh_token: undefined
-            });
-        }
-
-        if (!found) {
-            found = await this.userService.createUser({
-                login: profile.username,
-                email: profile.email,
-                password: await argon.hash(r),
-            });
-        }
-
-        const user_token: TokenPayloadRO = plainToClass(
-            TokenPayloadRO,
-            found,
-            {
-                excludeExtraneousValues: true
-            });
-        const tokens: Tokens = await this.signTokens(user_token);
-        await this.userService.updateUser({
-                id: found.id,
-            },
-            {
-                rt: await argon.hash(tokens.refresh_token),
-                avatar_url: profile.avatar,
-                first_name: profile.first_name,
-                last_name: profile.last_name,
-            }
-        );
-        this.userService.setUserOnline(found.id, true);
-
-        Logger.log(profile.username + ' is registered');
-
-        return ({
-            access_token: tokens.access_token,
-            refresh_token: tokens.refresh_token,
-        })
-    }
-
+    
     async generateTFA (
         username: string
     ) {
@@ -230,42 +65,44 @@ export class AuthService {
         return (url);
     }
 
-    async validationTFA (
-        code: string,
-        username: string
-    ) {
-        const user = await this.userService.findUniqueUser({
-            login: username,
-        });
-        if (!user) throw new NotFoundException('User not found');
-
+    async TFAVerify (
+        secret: string,
+        code: string
+    ) : Promise<boolean>{
         const verified = speakeasy.totp.verify({
-            secret: user.tfa_secret,
+            secret: secret,
             encoding: 'base32',
             token: code,
         });
-        if (!verified) throw new UnauthorizedException('Invalid code');
-
-        await this.userService.updateUser(
-            {
-                login: username,
-            },
-            {
-                tfa_secret: '',
-            }
-        );
-
-        const user_token: TokenPayloadRO = plainToClass(
-            TokenPayloadRO,
-            user,
-            {
-                excludeExtraneousValues: true
-            });
-        const tokens: Tokens = await this.signTokens(user_token);
-        return ({
-            access_token: tokens.access_token,
-            refresh_token: tokens.refresh_token,
-        })
+        if (!verified) return (false);
+        return (true);
     }
 
+
+    async setCookies (
+        access_token: string,
+        refresh_token: string,
+        res: Response
+    ) {
+        res.cookie('access_token', access_token, {
+            httpOnly: (process.env.LOCAL_IP === "localhost" ? true : false),
+            secure: (process.env.LOCAL_IP === "localhost" ? true : false),
+        });
+        res.cookie('refresh_token', refresh_token, {
+            httpOnly: (process.env.LOCAL_IP === "localhost" ? true : false),
+            secure: (process.env.LOCAL_IP === "localhost" ? true : false),
+        });
+    }
+
+    async saveRefreshToken (
+        id: number,
+        refresh_token: string
+    ) {
+        await this.userService.updateUser({
+            id: id,
+        },
+        {
+            rt: await argon.hash(refresh_token),
+        });
+    }
 }

@@ -30,6 +30,7 @@ CREATE TABLE "chat_request" (
 -- CreateTable
 CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
+    "forty_two_id" INTEGER DEFAULT 0,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "login" TEXT NOT NULL,
@@ -157,13 +158,13 @@ CREATE UNIQUE INDEX "chat_request_id_key" ON "chat_request"("id");
 CREATE UNIQUE INDEX "users_id_key" ON "users"("id");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "users_forty_two_id_key" ON "users"("forty_two_id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "users_login_key" ON "users"("login");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_socket_id_key" ON "users"("socket_id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "game_history_id_key" ON "game_history"("id");

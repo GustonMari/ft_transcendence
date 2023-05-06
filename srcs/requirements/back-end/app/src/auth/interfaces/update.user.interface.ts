@@ -8,4 +8,5 @@ export interface UpdateUserOptions {
     tfa?: boolean;
     tfa_secret?: string;
     login?: string;
+    ft_id?: number;
 }

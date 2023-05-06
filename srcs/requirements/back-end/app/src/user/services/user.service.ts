@@ -25,7 +25,6 @@ export class UserService {
         await this.prisma.user.update({
             where: {
                 login: opt.login,
-                email: opt.email,
                 id: opt.id
             },
             data: {
@@ -50,6 +49,7 @@ export class UserService {
                 login: opt.login,
                 email: opt.email,
                 password: opt.password,
+                forty_two_id: opt.ft_id,
             },
         });
         return user;
@@ -59,11 +59,10 @@ export class UserService {
     async findUniqueUser(
         opt: FindUserOptions
     ): Promise<User | undefined> {
-        if (opt.login || opt.email || opt.id) {
+        if (opt.login || opt.id) {
             const found = await this.prisma.user.findUnique({
                 where: {
                     login: opt.login,
-                    email: opt.email,
                     id: opt.id
                 },
             });
@@ -75,22 +74,36 @@ export class UserService {
 
     async getUserWithId(
         id: number
-    ): Promise<User> {
+    ): Promise<User | undefined> {
 
         const u: User = await this.findUniqueUser({
             id: id,
         });
-        if (!u) { throw new NotFoundException('user not found'); }
+        if (!u) return (undefined)
         return (u);
     }
 
     async getUserWithUsername(
         login: string
-    ): Promise<User> {
+    ): Promise<User | undefined> {
         const u: User = await this.findUniqueUser({
             login: login,
         });
-        if (!u) { throw new NotFoundException('user not found'); }
+        if (!u) return (undefined)
+        return (u);
+    }
+
+    async getUserWithFortyTwo (
+        ft_id: number,
+    ) : Promise<User> {
+        const u: User = await this.prisma.user.findUnique({
+            where: {
+                forty_two_id: ft_id,
+            }
+        });
+        if (!u) {
+            throw new NotFoundException('user not found');
+        }
         return (u);
     }
 

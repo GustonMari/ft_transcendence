@@ -43,6 +43,7 @@ model Chat_Relation {
 
 model User {
     id         Int      @id @unique @default(autoincrement())
+    forty_two_id Int? @unique @default(0)
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
     login      String   @unique
@@ -50,7 +51,7 @@ model User {
     first_name String?
     last_name  String?
     avatar_url String?  @default("/storage/default/user.jpg")
-    email      String   @unique
+    email      String   
     state      Boolean  @default(false)
     description String? @db.VarChar(200)
 

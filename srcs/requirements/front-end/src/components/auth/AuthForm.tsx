@@ -57,6 +57,7 @@ export const AuthForm = () => {
                 login: username.current,
                 password: password.current,
             }).then((res: any) => {
+                console.log(res.data.url);
                 if (res.data?.url) {
                     navigate('/' + res.data.url);
                 } else {
