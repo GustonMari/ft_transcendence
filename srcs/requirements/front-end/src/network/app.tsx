@@ -36,15 +36,14 @@ APP.interceptors.response.use(
                             console.log(originalConfig);
                             return APP(originalConfig);
                         } else {
-                            return Promise.reject("You are not authorized");
+                            throw new Error("You are not authorized");
                         }
                     } catch (_error) {        
-                        return Promise.reject("You are not authorized");
+                        throw new Error("You are not authorized");
                     }
       }
     }
     
-    console.log("salut");
-    return Promise.reject(err.response?.data?.message || "An error occured, please try again later.");
+    throw new Error(err.response?.data?.message || "An error occured, please try again later.");
   }
 );

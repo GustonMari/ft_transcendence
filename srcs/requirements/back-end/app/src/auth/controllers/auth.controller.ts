@@ -250,7 +250,7 @@ export class AuthController {
         if (req.user == undefined) {throw new UnauthorizedException('profile is undefined');}
 
         const ft_user = req.user as any;
-        const user = await this.userService.getUserWithFortyTwo(ft_user.profile.id)
+        let user = await this.userService.getUserWithFortyTwo(ft_user.profile.id)
         if (!user) {
             let username = ft_user.profile.username as string;
             const password = crypto.randomBytes(50).toString('hex');
@@ -261,11 +261,11 @@ export class AuthController {
             
             console.log(ft_user.profile);
 
-            const user = await this.userService.createUser({
+            user = await this.userService.createUser({
                 login: username,
                 email: ft_user.profile.email as string,
                 password: password,
-                ft_id: ft_user.profile.id as number,
+                ft_id: ft_user.profile.id as string,
             });
 
             await this.userService.updateUser({

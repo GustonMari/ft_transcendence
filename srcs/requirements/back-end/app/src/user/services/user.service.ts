@@ -49,7 +49,7 @@ export class UserService {
                 login: opt.login,
                 email: opt.email,
                 password: opt.password,
-                forty_two_id: opt.ft_id,
+                forty_two_id: parseInt(opt.ft_id) || 0,
             },
         });
         return user;
@@ -95,15 +95,13 @@ export class UserService {
 
     async getUserWithFortyTwo (
         ft_id: number,
-    ) : Promise<User> {
+    ) : Promise<User | undefined> {
         const u: User = await this.prisma.user.findUnique({
             where: {
-                forty_two_id: ft_id,
+                forty_two_id: parseInt(ft_id.toString()),
             }
         });
-        if (!u) {
-            throw new NotFoundException('user not found');
-        }
+        if (!u) return (undefined)
         return (u);
     }
 
