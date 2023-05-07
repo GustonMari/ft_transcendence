@@ -3,14 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gmary <gmary@student.42.fr>                +#+  +:+       +#+         #
+#    By: mamaurai <mamaurai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/02 10:42:00 by mamaurai          #+#    #+#              #
-#    Updated: 2023/04/27 15:51:06 by gmary            ###   ########.fr        #
+#    Updated: 2023/05/07 14:52:02 by mamaurai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# Only three modes are available: development and production 
+# Only two modes are availables: development and production 
 MODE = development
 
 ifeq ($(MODE), development)
@@ -45,6 +45,9 @@ up:		up-back
 up-back:
 		@${DOCKER_COMPOSE} --env-file ${DOCKER_ENV_FILE} -f ${DOCKER_COMPOSE_FILE} up --build -d
 
+up-front:
+		@${DOCKER_COMPOSE} --env-file ${DOCKER_ENV_FILE} -f ${DOCKER_COMPOSE_FILE} up --build
+		
 stop:	
 		@${DOCKER_COMPOSE} --env-file ${DOCKER_ENV_FILE} -f ${DOCKER_COMPOSE_FILE} stop
 
@@ -61,8 +64,6 @@ status:
 endif
 
 ifeq ($(MODE),$(filter $(MODE),development))
-up-front:
-		@${DOCKER_COMPOSE} --env-file ${DOCKER_ENV_FILE} -f ${DOCKER_COMPOSE_FILE} up --build
 
 in-front:
 		@${DOCKER_EXEC} ${FRONT_NAME} ${SCRIPT_TO_RUN}
