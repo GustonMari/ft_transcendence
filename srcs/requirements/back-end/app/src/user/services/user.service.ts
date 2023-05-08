@@ -96,7 +96,7 @@ export class UserService {
     async getUserWithFortyTwo (
         ft_id: number,
     ) : Promise<User | undefined> {
-        const u: User = await this.prisma.user.findUnique({
+        const u: User = await this.prisma.user.findFirst({
             where: {
                 forty_two_id: parseInt(ft_id.toString()),
             }
