@@ -51,6 +51,7 @@ export function InputRoom(props: any) {
 	}
 
 	let handleAddRoom = async () => {
+        if (value === "") return ;
 		if (await checkIsPassword(value))
 			handleShow(); 
 		else {
@@ -100,7 +101,7 @@ export function InputRoom(props: any) {
 
 	return (
 	<div className={StyleRoom['input-room']}>
-		<input className={StyleRoom['borderbox-room']} onChange={(e) => setValue(e.target.value)} onKeyDown={handleKeyDown} placeholder="define your room..." value={value} />
+		<input className={StyleRoom['borderbox-room']} onChange={(e) => setValue(e.target.value)} onKeyDown={handleKeyDown} placeholder="define your room..." value={value} required/>
 		{handleRoomActions()}
 		<Modal show={show} onHide={handleClose} id={id}>
 			<Modal.Header closeButton>

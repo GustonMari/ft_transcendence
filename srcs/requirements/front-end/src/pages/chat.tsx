@@ -60,10 +60,12 @@ export default function Chat(props: any) {
 	}, [me]);
 	
 	const send = (value: string) => {
+        if (room === "") return ;
 		socket?.emit("message", {room: room, message: value, current_user: me});
 	}
 
 	const define_room = async (room: string) => {
+        if (room === "") return ;
         await socket?.emit("joinRoom", { room_name: room, id_user: me.id} );
 		setRoom(room);
 	}

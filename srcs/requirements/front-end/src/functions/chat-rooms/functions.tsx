@@ -11,11 +11,13 @@ import Style from "../../styles/messages/Style.message.module.css";
 */
 
 export async function checkIsPassword(value: string) {
+    if (value === "") return ;
 	const res = await APP.post("/chat/is_room_has_password", {room_name: value})
 	return res.data;
 }
 
 export async function checkPassword(value: string, password: string) {
+    if (value === "") return ;
 	const res = await APP.post("/chat/verify_room_password", {room_name: value, password: password});
 	return res.data;
 }
