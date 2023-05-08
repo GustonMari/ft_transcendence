@@ -121,7 +121,7 @@ export default function Chat(props: any) {
                         />
                     </div>
                     <div className={Style["message-box"]}>
-                        <DisplayMessagesByRoom current_user={me} socket={socket} history={history} infomessage={messages} room={room} handle_history={history_listener}/>
+                        <DisplayMessagesByRoom current_user={me} history={history} infomessage={messages} />
                         <MessageInput send={send}/>
                     </div>
                     <div className={Style["menu-chat"]}>

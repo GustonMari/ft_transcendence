@@ -1,12 +1,10 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { HistoryDto, InfoMessage } from "../../dtos/chat.dto";
+import React, { useContext, useEffect, useRef } from "react";
+import { HistoryDto } from "../../dtos/chat.dto";
 import { APP } from "../../network/app";
 import Style from "../../styles/messages/Style.message.module.css";
 import dayjs from "dayjs";
 import 'dayjs/locale/fr';
-import { Button, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { ProgressBar } from "../../functions/chat-rooms/functions";
 import { ProfilePopUpContext } from "../../contexts/ProfilePopUp.context";
 
 dayjs.locale('fr'); // set locale to French
@@ -15,7 +13,7 @@ dayjs.locale('fr'); // set locale to French
 export default function Messages(props: any) {
 
 	//! faire interface pour les props
-	let {messages, room, socket} = props;
+	let {messages, room } = props;
 
 	return (
 	<div>
@@ -44,10 +42,10 @@ export function GetMessagesByRoom(handle_history: any, room_name: string)
 
 function IsSenderOrReceiver(props: any)
 {
-	let {historyItem, current_user, socket, setPopUpID} = props;
+	let {historyItem, current_user, setPopUpID} = props;
 
 
-	if(historyItem.sender_id == current_user.id)
+	if(historyItem.sender_id === current_user.id)
 		return (
 			<div className={Style['wrapper-message']}>
 				<div className={Style["message-receiver"]}>
@@ -55,7 +53,7 @@ function IsSenderOrReceiver(props: any)
 					<span className={Style["chat-date"]}> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
 				</div>
 				{/* <PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass={Style["img-message-right"]} current_user={current_user} socket={socket}/> */}
-                <img src={"http://localhost:3000/api/public/picture/" + historyItem.sender_name} className={Style["img-message-right"]} onClick={() => setPopUpID(historyItem.sender_id)}/> 
+                <img src={"http://localhost:3000/api/public/picture/" + historyItem.sender_name} alt="" className={Style["img-message-right"]} onClick={() => setPopUpID(historyItem.sender_id)}/> 
 			</div>
 		);
 	else
@@ -63,7 +61,7 @@ function IsSenderOrReceiver(props: any)
 			<div>
 				<div className={Style["wrapper-message"]}>	
 					{/* <PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass={Style["img-message-left"]} current_user={historyItem.sender} socket={socket}/> */}
-                    <img src={"http://localhost:3000/api/public/picture/" + historyItem.sender_name} className={Style["img-message-right"]} onClick={() => setPopUpID(historyItem.sender_id)}/>
+                    <img src={"http://localhost:3000/api/public/picture/" + historyItem.sender_name} alt="" className={Style["img-message-right"]} onClick={() => setPopUpID(historyItem.sender_id)}/>
 					<div className={Style["message-sender"]}>
 						{historyItem.sender_name} : {historyItem.current_message}
 						<span className={Style["chat-date"]}> {dayjs(historyItem.created_at).format("DD MMM YYYY À H:mm")} </span>
@@ -76,9 +74,9 @@ function IsSenderOrReceiver(props: any)
 
 function IsSenderOrReceiver_socket(props: any)
 {
-	let {infomessage, current_user, socket, setPopUpID} = props;
+	let {infomessage, current_user, setPopUpID} = props;
 
-	if (infomessage.current_user.id == current_user.id)
+	if (infomessage.current_user.id === current_user.id)
 		return (
 			<div className={Style['wrapper-message']}>
 				<div className={Style["message-receiver"]}>
@@ -86,7 +84,7 @@ function IsSenderOrReceiver_socket(props: any)
 	 				<span className={Style["chat-date"]}> {dayjs(infomessage.created_at).format("DD MMM YYYY À H:mm")} </span>
 				</div>
 				{/* <PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass={Style["img-message-right"]} current_user={current_user} socket={socket}/> */}
-                <img src={"http://localhost:3000/api/public/picture/" + infomessage.current_user.login} className={Style["img-message-right"]} onClick={() => setPopUpID(infomessage.current_user.id)}/>
+                <img src={"http://localhost:3000/api/public/picture/" + infomessage.current_user.login} alt="" className={Style["img-message-right"]} onClick={() => setPopUpID(infomessage.current_user.id)}/>
 			</div>
 		);
 	else
@@ -94,7 +92,7 @@ function IsSenderOrReceiver_socket(props: any)
 			<div>
 				<div className={Style["wrapper-message"]}>	
 					{/* <PopupImage imageSrc="https://cutt.ly/v8wcluh" classPass={Style["img-message-left"]} current_user={infomessage.current_user} socket={socket}/> */}
-                    <img src={"http://localhost:3000/api/public/picture/" + infomessage.current_user.login} className={Style["img-message-right"]} onClick={() => setPopUpID(infomessage.current_user.id)}/>
+                    <img src={"http://localhost:3000/api/public/picture/" + infomessage.current_user.login} alt="" className={Style["img-message-right"]} onClick={() => setPopUpID(infomessage.current_user.id)}/>
 					<div className={Style["message-sender"]}>
 						{infomessage.current_user.login} : {infomessage.message}
 						<span className={Style["chat-date"]}> {dayjs(infomessage.created_at).format("DD MMM YYYY À H:mm")} </span>
@@ -105,7 +103,7 @@ function IsSenderOrReceiver_socket(props: any)
 }
 
 export function DisplayMessagesByRoom(props: any) {
-	let { current_user, socket, history, infomessage, room, handle_history} = props;
+	let { current_user, history, infomessage } = props;
 
 	const messagesContainer = useRef<HTMLDivElement>(null);
     const {setPopUpID} = useContext<any>(ProfilePopUpContext);
@@ -121,12 +119,12 @@ export function DisplayMessagesByRoom(props: any) {
 	  <div ref={messagesContainer} className={Style['print-message']}>
 		{!history ? "" : history.map((historyItem: HistoryDto, index: number) => (
 		  <div key={index}>
-			{ IsSenderOrReceiver({historyItem, current_user, socket, setPopUpID}) }
+			{ IsSenderOrReceiver({historyItem, current_user, setPopUpID}) }
 		  </div>
 		))}
 		{infomessage.map((infomessage: any, index: number) => (
 			<div key={index}>
-				{IsSenderOrReceiver_socket({infomessage, current_user, socket, setPopUpID})}
+				{IsSenderOrReceiver_socket({infomessage, current_user, setPopUpID})}
 				</div>
 		))}
 	  </div>
