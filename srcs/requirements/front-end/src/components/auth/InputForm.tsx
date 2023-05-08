@@ -48,7 +48,7 @@ export const InputForm : React.FC<IInputFormProps> = ({
                 maxLength={maxLength}
                 placeholder=" "
                 readOnly={readonly}
-                value={value ? value : undefined}
+                value={value}
             />
             <label
                 className="

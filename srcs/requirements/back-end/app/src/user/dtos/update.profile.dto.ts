@@ -5,15 +5,13 @@ import {IsBoolean, IsNotEmpty, IsOptional, IsString, Length} from "class-validat
 export class UpdateProfileDTO {
 
     @IsString()
-    @IsNotEmpty()
     @IsOptional()
-    @Length(1, 30)
+    @Length(0, 30)
     public readonly firstName: string;
 
     @IsString()
-    @IsNotEmpty()
     @IsOptional()
-    @Length(1, 30)
+    @Length(0, 30)
     public readonly lastName: string;
 
     @IsString()

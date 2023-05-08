@@ -34,14 +34,19 @@ export const Result = (props: any) => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        if (!oriSearch) {
+            if (oriSearch === "") {
+                handleError("Please enter a username to search");
+            }
+            return;
+        }
         API.searchUser(
             oriSearch,
             (u: any) => {
-                console.log(u);
                 setApiRes(u);
             },
             (err: any) => {
-                console.log(err);
+                handleError(err?.message || "Cannot search user, please try again later");
             }
         );
     }, [oriSearch]);
