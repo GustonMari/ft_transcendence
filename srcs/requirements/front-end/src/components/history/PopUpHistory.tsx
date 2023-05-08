@@ -1,8 +1,6 @@
 import { Theme } from "@emotion/react";
-import { Avatar, Dialog, Divider, List, ListItem, ListItemAvatar, ListItemText, SxProps, createTheme } from "@mui/material";
+import { Avatar, Dialog, Divider, List, ListItem, ListItemAvatar, ListItemText, SxProps } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
-import { RxCross1 } from "react-icons/rx";
 import { ProfilePopUpContext } from "../../contexts/ProfilePopUp.context";
 import API from "../../network/api";
 import { AlertContext } from "../../contexts/Alert.context";

@@ -1,13 +1,4 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
-import io, { Socket } from "socket.io-client";
-import MessageInput from "../messages/Message";
-import Messages, { DisplayMessagesByRoom, GetMessagesByRoom } from "../messages/Message";
-import Create_socket from "../../network/chat.socket";
-import {RoomForm} from "../rooms/RoomForm";
-import { APP } from "../../network/app";
-import App from "../../App";
-import { HistoryDto, InfoMessage } from "../../dtos/chat.dto";
+import React from "react";
 import Style from "../../styles/messages/Style.message.module.css";
 
 
@@ -17,18 +8,18 @@ export function ParameterChat(props: any)
 
 	return (
 		<>
-			<SetAdmin define_room={define_room} current_room={current_room} current_user={current_user} socket={socket}/>
-			<BanUser define_room={define_room} current_room={current_room} current_user={current_user} socket={socket}/>
-			<KickUser define_room={define_room} current_room={current_room} current_user={current_user} socket={socket}/>
+			<SetAdmin current_room={current_room} current_user={current_user} socket={socket}/>
+			<BanUser  current_room={current_room} current_user={current_user} socket={socket}/>
+			<KickUser current_room={current_room} current_user={current_user} socket={socket}/>
 			{/* <UnbanUser define_room={define_room} current_user={current_user} socket={socket}/> */}
-			<MuteUser define_room={define_room} current_room={current_room} current_user={current_user} socket={socket}/>
+			<MuteUser  current_room={current_room} current_user={current_user} socket={socket}/>
 		</>
 	);
 }
 
 export function SetAdmin(props : any)
 {
-	let { define_room, current_room, current_user, socket  } = props;
+	let { current_room, current_user, socket  } = props;
 	const [value, setValue] = React.useState("");
 
 	function emitAndClear() {
@@ -56,7 +47,7 @@ export function SetAdmin(props : any)
 
 export function KickUser(props: any)
 {
-	let { define_room, current_room, current_user, socket  } = props;
+	let { current_room, current_user, socket  } = props;
 	const [value, setValue] = React.useState("");
 
 	function emitAndClear() {
@@ -77,7 +68,7 @@ export function KickUser(props: any)
 
 export function BanUser(props : any)
 {
-	let { define_room, current_room, current_user, socket  } = props;
+	let { current_room, current_user, socket  } = props;
 	const [value, setValue] = React.useState("");
 	const [date_value, setDate] = React.useState("");
 
@@ -101,7 +92,7 @@ export function BanUser(props : any)
 
 export function MuteUser(props: any)
 {
-	let { define_room, current_room, current_user, socket  } = props;
+	let { current_room, current_user, socket  } = props;
 	const [value, setValue] = React.useState("");
 	const [date_value, setDate] = React.useState("");
 

@@ -7,7 +7,7 @@ import { TextareForm } from "../auth/TextareaForm";
 import { AlertContext } from "../../contexts/Alert.context";
 import { APP } from "../../network/app";
 import { ChangePP } from "../users/ChangePP";
-import { check_form, check_password } from "../../functions/authentification/check_values";
+import { check_password } from "../../functions/authentification/check_values";
 
 export const UpdateProfileForm = () => {
 
