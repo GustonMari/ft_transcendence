@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 //BUG: replace the path of create_socket
 import Style from "./pong.module.css";
@@ -10,12 +10,12 @@ import { APP } from "../../network/app";
 import { User } from "../../dtos/chat.dto";
 import { BsCheck, BsX } from "react-icons/bs";
 import { NavBar } from "../../components/communs/NavBar";
-import { AlertContext } from "../../contexts/Alert.context";
+// import { AlertContext } from "../../contexts/Alert.context";
 
 
 export default function HomePong() {
 	const [currentUser, setCurrentUser] = useState<any>(null);
-	const [waitingForGame, setWaitingForGame] = React.useState(false); // BUG: can we delete this?
+	// const [waitingForGame, setWaitingForGame] = React.useState(false); // BUG: can we delete this?
 	const navigate = useNavigate();
 	//TODO changer ce mode de creation de socket
 	const socket = Create_socket();
@@ -26,15 +26,13 @@ export default function HomePong() {
 	const [waitTrigger, setWaitTrigger] = useState<boolean>(false);
 	const [renderReact, setRenderReact] = useState<number>(0);
 
-    const {handleError}: any = useContext(AlertContext);
+    // const {handleError}: any = useContext(AlertContext);
 
 	useEffect(() => {
 		const getRooms = async () => {
 			try {
 				const all_games = await APP.post("/pong/get_games_rooms");
-				console.log("all_games = ", all_games.data);
 				setRooms(all_games.data);
-				console.log("all_games = ", all_games.data);
 
 				if (roomContainer.current) {
 					roomContainer.current.scrollTop = roomContainer.current.scrollHeight;
@@ -63,7 +61,6 @@ export default function HomePong() {
 
 	const isMatched = async (): Promise<any> => {
 		const ret = await APP.post("/pong/is_matched");
-		console.log("isMatched = ", ret.data);
 		if (ret.data != null)
 			return ret.data;
 		return null;
@@ -80,10 +77,9 @@ export default function HomePong() {
 
 	const enterInWaitingFile = async () => {
 		const in_game = await APP.post("/pong/is_player_is_in_game", currentUser);
-		console.log('in_game.data = ', in_game.data)
 		if (in_game.data === true)
 		{
-			setWaitingForGame(false);
+			// setWaitingForGame(false);
 			const clearWait = async () => {
 				await APP.post("/pong/clear_waiting_list");
 			}
@@ -94,20 +90,17 @@ export default function HomePong() {
 		const res = await APP.post("/pong/is_player_in_waiting_list", currentUser);
 		if (res.data === false)
 		{
-			console.log("player is not in waiting list, added")
 			await addPlayerToList(currentUser);
 			const is_match = await isMatched();
 			if (!is_match)
 			{
-				console.log("not matched");
 				//put message waiting
 				socket?.emit("joinWaitingRoom", null);
-				setWaitingForGame(true);
+				// setWaitingForGame(true);
 			}
 			else
 			{
-				console.log("enterInWaitingFile : is_match = ", is_match);
-				setWaitingForGame(false);
+				// setWaitingForGame(false);
 				socket?.emit("joinWaitingRoom", is_match);
 			}
 		}
@@ -116,7 +109,7 @@ export default function HomePong() {
 	const leaveWaitingFile = async () => {
 		socket?.emit("leaveWaitingRoom");
 		await APP.post("/pong/remove_player_from_waiting_list", currentUser);
-		setWaitingForGame(false);
+		// setWaitingForGame(false);
 		setWaitTrigger(false);
 	}
 
@@ -130,8 +123,7 @@ export default function HomePong() {
 	}
 
 	socket?.on("startGame", (data: any) => {
-		console.log("starting the game")
-		setWaitingForGame(false);
+		// setWaitingForGame(false);
 			const clearWait = async () => {
 				await APP.post("/pong/clear_waiting_list");
 			}
@@ -153,7 +145,7 @@ export default function HomePong() {
 	// }
 
 	const refuseInvitation = async (invitation: any) => {
-		await APP.post("/pong/delete_invitation", invitation);
+		await APP.post("/pong/delete_invitation", { id: invitation.id });
 		const all_invitations = await APP.post("/pong/get_invitations_pong", currentUser);
 		socket.emit('refusePlay', invitation);
 		setRenderReact(renderReact + 1);

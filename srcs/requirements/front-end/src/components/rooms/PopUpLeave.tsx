@@ -1,12 +1,6 @@
-import { APP } from "../../network/app";
 import StyleRoom from "../../styles/rooms/Style.room.module.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Button from 'react-bootstrap/Button';
-import { Modal } from 'react-bootstrap';
-import Form from 'react-bootstrap/Form';
-import { shakeIt } from '../../functions/chat-rooms/functions';
-import { addRoom, checkIsPassword, checkPassword } from '../../functions/chat-rooms/functions';
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Popup from "reactjs-popup";
 import {TbDoorExit} from 'react-icons/tb';
 import { SlBan, SlCheck } from "react-icons/sl";

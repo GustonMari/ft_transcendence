@@ -9,7 +9,7 @@ import { AddGameDTO } from '../history/dtos';
 import { UserDTO } from './dtos';
 
 const VELOCITY_MAX = 0.080;
-const VELOCITY_ACCEL = 0.0003;
+const VELOCITY_ACCEL = 0.0001;
 
 @Injectable()
 export class PongService {
@@ -79,11 +79,11 @@ export class PongService {
 		});
 		return (invitation);
 	}
-	async deleteOneInvitationPong(invitation: InvitationPong): Promise<void> {
+	async deleteOneInvitationPong(invitation: number): Promise<void> {
 		await this.prisma.invitationPong.delete({
 			where: {
 				// game_name: invitation.game_name,
-				id: invitation.id,
+				id: invitation,
 			}
 		});
 	}
@@ -451,6 +451,7 @@ export class PongService {
 			game.vector = { x: Math.cos(heading), y: Math.sin(heading) };
 		}
 		//initial velocity
+		console.log('reset', game.velocity);
 		game.velocity = .025;
 		// game.velocity = .080;
 	}

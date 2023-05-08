@@ -7,8 +7,11 @@ export default function MessageInput({send}: {send: (value: string) => void}) {
 	const [value, setValue] = React.useState("");
 	
 	function sendAndClear() {
-		send(value);
-		setValue("");
+		if (value !== "")
+		{
+			send(value);
+			setValue("");
+		}
 	}
 
 	function handleKeyDown(event: any) {

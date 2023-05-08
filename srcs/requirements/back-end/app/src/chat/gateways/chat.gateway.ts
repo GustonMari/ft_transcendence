@@ -60,7 +60,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 
 	handleDisconnect(client: Socket) {
-		console.log('Client disconnected');
+		// console.log('Client disconnected');
 	}
 
 	@SubscribeMessage('addsocket')
@@ -162,6 +162,11 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			const ban_date = new Date();
 			ban_date.setTime(ban_date.getTime() + data.ban_till * 60000);
 			await this.chatService.banUser(data.room_name, data.id_user_from, id_user_to, ban_date);
+			// fix gus ?? le user ne recoit plus les direct message
+			const sockets = this.myserver.sockets.sockets;
+			const client_socket_id = await this.chatService.getSocketIdByUserId(id_user_to);
+			const client_socket = sockets.get(client_socket_id);
+			client_socket.leave(data.room_name);
 		}
 	}
 
@@ -186,6 +191,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	@SubscribeMessage('unbanUser')
 	async handleUnbanUser(@MessageBody() data: InfoRoomTo): Promise<void> {
 
+		console.log('unbanUserrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr')
 		if (await this.chatService.isAdmin(data.room_name, data.id_user_from)) {
 			const id_user_to = await this.chatService.getIdUser(data.login_user_to);
 			await this.chatService.unbanUser(data.room_name, data.id_user_from, id_user_to);
