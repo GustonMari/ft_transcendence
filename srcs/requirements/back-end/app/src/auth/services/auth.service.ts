@@ -1,16 +1,9 @@
-import { ProfileField } from './../interfaces/profileField.interface';
-import { UserRO } from './../../user/ros/user.full.ro';
 import { UserService } from './../../user/services/user.service';
 import {
     Injectable,
-    UnauthorizedException,
-    NotFoundException,
-    Logger
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import LoginDTO from './../dtos/login.dto';
 import TokenPayloadRO from '../ros/token_payload.ro';
-import { plainToClass } from 'class-transformer';
 import { Tokens } from '../interfaces';
 import { Response } from 'express';
 
@@ -87,10 +80,14 @@ export class AuthService {
         res.cookie('access_token', access_token, {
             httpOnly: (process.env.LOCAL_IP === "localhost" ? true : false),
             secure: (process.env.LOCAL_IP === "localhost" ? true : false),
+            sameSite: 'none',
+            expires: new Date(Date.now() + (5 *  24 * 3600 * 1000)),
         });
         res.cookie('refresh_token', refresh_token, {
             httpOnly: (process.env.LOCAL_IP === "localhost" ? true : false),
             secure: (process.env.LOCAL_IP === "localhost" ? true : false),
+            sameSite: 'none',
+            expires: new Date(Date.now() + (5 *  24 * 3600 * 1000)),
         });
     }
 
