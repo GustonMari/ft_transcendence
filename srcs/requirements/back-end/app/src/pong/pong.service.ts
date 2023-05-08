@@ -381,6 +381,7 @@ export class PongService {
 				if (game.velocity < VELOCITY_MAX)
 					game.velocity += VELOCITY_ACCEL * data.delta;
 				game.vector.y *= -1;
+				game.y += 1.5;
 			}
 			else if ( game.back_ball.bottom >= (game.back_limit.bottom - 1))
 			{
@@ -388,6 +389,7 @@ export class PongService {
 					game.velocity += VELOCITY_ACCEL * data.delta;
 	
 				game.vector.y *= -1;
+				game.y -= 1.5;
 			}
 			else
 			{
