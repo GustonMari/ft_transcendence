@@ -7,7 +7,7 @@ import { GetMe } from '../../auth/decorators';
 import { Response } from 'express';
 import { MessageBody } from '@nestjs/websockets';
 import { ApiOperation } from '@nestjs/swagger';
-import { ChatDTO, CreatePrivateRoomDTO } from '../dtos';
+import { ChatDTO, CreatePrivateRoomDTO, InfoBlocked } from '../dtos';
 // import { RelationService } from 'app/src/relation/services';
 import { RelationController } from 'app/src/relation/controllers';
 
@@ -97,10 +97,13 @@ export class ChatController {
     }
 
 	@Post('is_user_blocked')
-	async get_relations(@Res() response: Response,@MessageBody() info: any ,@GetMe("id") id: number,): Promise<void> {
+	async get_relations(@Res() response: Response,@MessageBody() info: InfoBlocked ,@GetMe("id") id: number,): Promise<void> {
+	// async get_relations(@Res() response: Response,@MessageBody() info: any ,@GetMe("id") id: number,): Promise<void> {
+		console.log("info", info);
 		const relations = await this.RelationController.getRelationForUser("blocked", id);
 		if (!relations)
 			response.send(false);
+		// const ret = relations.find(relation => relation.state === 'BLOCKED' && relation.from_id === id && relation.to_id === info.user_id_target);
 		const ret = relations.find(relation => relation.state === 'BLOCKED' && relation.from_id === id && relation.to_id === info.user_id_target);
 		if (ret && ret.from_id === id)
 			response.send(true);
