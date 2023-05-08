@@ -73,6 +73,7 @@ export function InputRoom(props: any) {
 	});
 
 	let handleAddPrivateRoom = async () => {
+        if (value === "") return;
 
 		const login = value;
 		const user = await APP.post("/chat/is_user_exists", {login: login});
