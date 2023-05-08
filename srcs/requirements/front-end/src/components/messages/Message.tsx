@@ -30,8 +30,11 @@ export function GetMessagesByRoom(handle_history: any, room_name: string)
 {
 		const getMessagesByRoom = async () => {
 			try {
+				if (room_name !== undefined && room_name !== null && room_name !== "")
+				{
 					const res = await APP.post("/chat/get_messages_by_room", {room_name: room_name});
 					await handle_history(res.data);
+				}
 			} catch (error) {
 				console.error(error);
 			}
