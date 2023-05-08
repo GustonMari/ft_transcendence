@@ -208,3 +208,11 @@ export class InvitationPongDTO {
 	@IsString()
 	game_name: string
 }
+
+export class DeleteInvitationPongDTO {
+
+	@IsNotEmpty()
+	@IsNumber()
+	id: number;
+
+}

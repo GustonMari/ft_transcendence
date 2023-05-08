@@ -8,7 +8,7 @@ import { exit } from 'process';
 import { PlayerMatched } from './pong.interface';
 import { Game, InvitationPong, User } from '@prisma/client';
 import { PongGateway } from './gateways/pong.gateway';
-import { CreateGameDTO, CreateInvitationPongDTO, DeleteGameDTO, GameDTO, GetGameDTO, InvitationPongDTO, IsUserDTO, UserDTO } from './dtos/PongController.dto';
+import { CreateGameDTO, CreateInvitationPongDTO, DeleteGameDTO, DeleteInvitationPongDTO, GameDTO, GetGameDTO, InvitationPongDTO, IsUserDTO, UserDTO } from './dtos/PongController.dto';
 import { UserRO } from '../user/ros/user.full.ro';
 import { plainToClass } from 'class-transformer';
 
@@ -127,15 +127,15 @@ export class PongController {
 			console.log("delete_game: info = ", info.gameName);
 			const invitation = await this.pongService.findInvitationPongByGameName(info.gameName);
 			if (invitation)
-				await this.pongService.deleteOneInvitationPong(invitation);
+				await this.pongService.deleteOneInvitationPong(invitation.id);
 			await this.pongService.deleteGame(info.gameName);
 			await this.pongService.deleteGameInAllRooms(info.gameName);
 			response.send("deleted");
 		}
 
 		@Post('delete_invitation')
-		async delete_invitation(@Res() response: Response ,@MessageBody() info: InvitationPongDTO): Promise<void> {
-			await this.pongService.deleteOneInvitationPong(info);
+		async delete_invitation(@Res() response: Response ,@MessageBody() info: DeleteInvitationPongDTO): Promise<void> {
+			await this.pongService.deleteOneInvitationPong(info.id);
 			response.send("deleted");
 		}
 

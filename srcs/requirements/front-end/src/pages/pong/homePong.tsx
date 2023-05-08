@@ -145,7 +145,7 @@ export default function HomePong() {
 	// }
 
 	const refuseInvitation = async (invitation: any) => {
-		await APP.post("/pong/delete_invitation", invitation);
+		await APP.post("/pong/delete_invitation", { id: invitation.id });
 		const all_invitations = await APP.post("/pong/get_invitations_pong", currentUser);
 		socket.emit('refusePlay', invitation);
 		setRenderReact(renderReact + 1);

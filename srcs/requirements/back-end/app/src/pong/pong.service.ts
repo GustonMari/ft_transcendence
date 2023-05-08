@@ -79,11 +79,11 @@ export class PongService {
 		});
 		return (invitation);
 	}
-	async deleteOneInvitationPong(invitation: InvitationPong): Promise<void> {
+	async deleteOneInvitationPong(invitation: number): Promise<void> {
 		await this.prisma.invitationPong.delete({
 			where: {
 				// game_name: invitation.game_name,
-				id: invitation.id,
+				id: invitation,
 			}
 		});
 	}
