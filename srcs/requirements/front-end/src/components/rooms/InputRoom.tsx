@@ -6,7 +6,7 @@ import { Modal } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import { shakeIt } from '../../functions/chat-rooms/functions';
 import { addRoom, checkIsPassword, checkPassword } from '../../functions/chat-rooms/functions';
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { IoEnter } from 'react-icons/io5';
 import { RiMailLockLine } from 'react-icons/ri';
 
@@ -14,6 +14,7 @@ export function InputRoom(props: any) {
 	let	{define_room, current_room, current_user, socket, handle_history, setMessage, render_react, setRoom, GetMessagesByRoom} = props;
 	const id = `shaking-${current_room.name}-input`;
 	const id_private = `shaking-${current_room.name}-input-private`;
+	const id_public = `shaking-${current_room.name}-input-public`;
 	const [value, setValue] = useState("");
 	const [password, setPassword] = useState("");
 	const [show, setShow] = useState(false);
@@ -51,13 +52,19 @@ export function InputRoom(props: any) {
 	}
 
 	let handleAddRoom = async () => {
-        if (value === "") return ;
-		if (await checkIsPassword(value))
-			handleShow(); 
+		if (!value.includes("-"))
+		{
+			if (await checkIsPassword(value))
+				handleShow(); 
+			else {
+				addRoom(setMessage, define_room, socket, current_user, value, setValue, handle_history, render_react);
+				setValue("");
+			}
+		}
 		else {
-			addRoom(setMessage, define_room, socket, current_user, value, setValue, handle_history, render_react);
-            setValue("");
-        }
+			setValue("");
+			shakeIt("shake", (`${current_room.name}-input-public`));
+		}
 	}
 
 	socket?.on('joinPrivateRoom', async (data: any) => {
@@ -69,7 +76,15 @@ export function InputRoom(props: any) {
 
 		const login = value;
 		const user = await APP.post("/chat/is_user_exists", {login: login});
-		if (user.data) {
+		const user_id = (await APP.post("/chat/get_user_id_by_login", {login: login})).data;
+		let is_blocked = false;
+		let im_blocked = false;
+		if (user.data && current_user.login !== login)
+		{
+			is_blocked = (await APP.post("/chat/is_user_blocked", {user_id_target: user_id})).data;
+			im_blocked = (await APP.post("/chat/am_i_blocked", {user_id_target: user_id})).data;
+		}
+		if (user.data && !is_blocked && !im_blocked && current_user.login !== login) {
 			let privateRoomName = "";
 			if (login.localeCompare(current_user.login) < 0)
 				privateRoomName = login + "-" + current_user.login;
@@ -87,12 +102,10 @@ export function InputRoom(props: any) {
 	const handleRoomActions = () => {
 		return (
 			<>
-				<Button className={StyleRoom['input-room-button']}  onClick={handleAddRoom}>
-				{/* <img className={StyleRoom['icon-enter-room']} src="./enter-room.png" alt="create room" /> */}
+				<Button className={StyleRoom['input-room-button']} id={id_public} onClick={handleAddRoom}>
 				<IoEnter title="Create new room"/>
 				</Button>
 				<Button className={StyleRoom['input-room-button']} id={id_private} onClick={handleAddPrivateRoom}>
-					{/* <img className={StyleRoom['icon-enter-room']} src="./private-message.png" alt="create room" /> */}
 					<RiMailLockLine title="Send private message"/>
 				</Button>
 			</>

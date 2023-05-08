@@ -65,7 +65,6 @@ export default function Pong() {
 				setIsMaster(true);
 				setIsSlave(false);
 				await APP.post('/pong/init_game', game.data);
-				// await APP.post('/pong/init_game', {game: game.data});
 			} else {
 				setIsMaster(false);
 				
@@ -98,7 +97,7 @@ export default function Pong() {
 		<>
 		  {socket && (
 			<PongContext.Provider value={{ socket }}>
-			  <ExecutePong isMaster={isMaster} gameName={gameName} isWatcher={isWatcher} /* rooms={rooms} *//>
+			  <ExecutePong isMaster={isMaster} gameName={gameName} isWatcher={isWatcher}/>
 			</PongContext.Provider>
 		  )}
 		</>
@@ -108,7 +107,7 @@ export default function Pong() {
 		<>
 		  {socket && (
 			<PongContext.Provider value={{ socket }}>
-			  <ExecutePong isMaster={isMaster} gameName={gameName} isWatcher={isWatcher} /* rooms={rooms} *//>
+			  <ExecutePong isMaster={isMaster} gameName={gameName} isWatcher={isWatcher}/>
 			</PongContext.Provider>
 		  )}
 		</>
@@ -118,7 +117,7 @@ export default function Pong() {
 			<>
 			  {socket && (
 				<PongContext.Provider value={{ socket }}>
-				  <ExecutePong isMaster={isMaster} gameName={gameName} isWatcher={isWatcher} /* rooms={rooms} *//>
+				  <ExecutePong isMaster={isMaster} gameName={gameName} isWatcher={isWatcher}/>
 				</PongContext.Provider>
 			  )}
 			</>
@@ -140,7 +139,7 @@ export function ExecutePong(props: any) {
 	let playerPaddleLeft = new Paddle(document.getElementById("player-paddle-left") as HTMLDivElement);
 	let playerPaddleRight = new Paddle(document.getElementById("player-paddle-right") as HTMLDivElement);
 	// eslint-disable-next-line
-	let	leftUpPressed : boolean = false; // BUG can we delete this ?
+	let	leftUpPressed : boolean = false;
 	// eslint-disable-next-line
 	let leftDownPressed : boolean = false;
 	// eslint-disable-next-line

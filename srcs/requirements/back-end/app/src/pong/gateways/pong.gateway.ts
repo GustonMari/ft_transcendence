@@ -33,64 +33,33 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	
 		@WebSocketServer() // Create a instance of the server
 		myserver: Server;
-	// waiter: number;
 
 	constructor(private pongService: PongService, private historyService: HistoryService){
-		// console.log("PongGateway");
-		// this.waiter = 0;
 	}
 	
 	afterInit(server: Server) {
-		// console.log('Initialized!');
 	}
 
 	handleConnection(client: Socket, ...args: any[]) {
-		// console.log('connected');
 		client.emit('connected');
 		client.join('all');
 	}
 
 	handleDisconnect(client: Socket) {
-		// console.log('DISCONNECTED : socket = ', client.data);
 		const rooms = Object.keys(client.rooms);
 
 		// Remove the client from all rooms it has joined
 		rooms.forEach(room => {
 		if (room !== client.id) {
 			client.leave(room);
-			console.log(`Client ${client.id} left room ${room}`);
 		}
 		});
 		client.disconnect();
 	}
 
-	// @Post('InitGame')
-	// @SubscribeMessage('beginGame')
-	// async initGame(/* @Res() response: Response , */ @MessageBody() info: any, @ConnectedSocket() socket: Socket): Promise<void> {
-	// }
-
-	// @SubscribeMessage('defineBall')
-	// async defineBall(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-	// 	// console.log("defineBall");
-	// }
-
-	// @SubscribeMessage('defineLimit')
-	// async defineLimit(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-	// 	// console.log("defineLimit", );
-	// }
-
-	// @SubscribeMessage('resetGame')
-	// async resetGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-	// 	// console.log("resetGame");
-	// 	const all = await this.pongService.getGame(data.gameName);
-
-	// 	socket.emit('resetGame', {x: all.x, y: all.y, vector: all.vector, velocity: all.velocity});
-	// }
-
 	@SubscribeMessage('updateGame')
 	async updateGame(@MessageBody() data: {delta: number, gameName: string, isMaster: boolean}, @ConnectedSocket() socket: Socket): Promise<void> {
 		let ret = await this.pongService.updateGame(data);
-		// if (data.isMaster && ret && (ret.leftScore >= 11 || ret.rightScore >= 11)) {
 		if (data.isMaster && ret && (ret.leftScore >= 1 || ret.rightScore >= 1)) {
 			//TODO: need to change to emit to all in a room, how to get game name ??
 			const game = await this.pongService.getGame(data.gameName);
@@ -100,7 +69,6 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			this.myserver.to(data.gameName).emit('GameUpdated', ret);
 			this.myserver.to(data.gameName).emit('GameFinished', ret);
 			await this.pongService.PauseGame(data.gameName);
-			console.log("GameFinished : waitinglist = ", PongService.waitingList);
 		} else {
 			socket.join(data.gameName);
 			if (data.isMaster)
@@ -125,12 +93,6 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		if (await this.pongService.isGamePaused(data.gameName))
 			await this.pongService.movePaddeRight(data.paddle, data.gameName);
 	}
-
-
-	// @SubscribeMessage('leaveGame')
-	// async leaveGame(@MessageBody() data: {gameName: string}, @ConnectedSocket() socket: Socket): Promise<void> {
-	// 	await socket.leave(data.gameName);
-	// }
 
 	@SubscribeMessage('allLeaveGame')
 	async allLeaveGame(@MessageBody() data: {gameName: string}, @ConnectedSocket() socket: Socket): Promise<void> {
@@ -166,19 +128,16 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 	@SubscribeMessage('disconnectWaitingRoom')
 	async disconnectWaitingRoom(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-		// console.log("disconnectWaitingRoom");
 		this.myserver.socketsLeave("waitingRoom");
 	}
 	@SubscribeMessage('joinWaitingReplay')
 	async joinWaitingReplay(@MessageBody() data: string, @ConnectedSocket() socket: Socket): Promise<void> {
-		console.log("joinWaitingReplay data --> ", data);
 		const room_name = "waitingReplay_" + data;
 		await socket.join(room_name);
 	}
 
 	@SubscribeMessage('leaveWaitingReplay')
 	async leaveWaitingReplay(@MessageBody() data: string, @ConnectedSocket() socket: Socket): Promise<void> {
-		console.log("leaveWaitingReplay data --> ", data);
 		const room_name = "waitingReplay_" + data;
 		this.myserver.socketsLeave(room_name);
 	}
@@ -187,18 +146,14 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 	@SubscribeMessage('pauseGame')
 	async pauseGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-		console.log("pauseGame data --> ", data)
 		const room_name = "waitingReplay_" + data;
-		console.log("pauseGame socket = ", (await this.myserver.in(room_name).fetchSockets()).length);
 		if ((await this.myserver.in(room_name).fetchSockets()).length >= 2)
 			await this.pongService.PauseGame(data);
 	}
 
 	@SubscribeMessage('resumeGame')
 	async resumeGame(@MessageBody() data: any, @ConnectedSocket() socket: Socket): Promise<void> {
-		console.log("resumeGame data --> ", data)
 		const room_name = "waitingReplay_" + data;
-		console.log("resumeGame socket = ", (await this.myserver.in(room_name).fetchSockets()).length);
 		if ((await this.myserver.in(room_name).fetchSockets()).length >= 2)
 			await this.pongService.resumeGame(data);
 	}

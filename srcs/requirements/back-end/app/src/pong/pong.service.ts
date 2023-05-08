@@ -165,18 +165,13 @@ export class PongService {
 	async deleteGameInAllRooms(game_name: string): Promise<boolean> {
 		if (!game_name)
 			return (false);
-		// PongService.allRooms = PongService.allRooms.filter(currentRoom => currentRoom.game_name === game_name);
 		const index = PongService.allRooms.findIndex(
 			(currentRoom) => currentRoom.game_name === game_name
 		);
 		if (index === -1) {
 			return false;
 		}
-		console.log("NONONONO index = ", index)
-		console.log("NONONONO allRooms[index] = ", PongService.allRooms[index])
 		PongService.allRooms.splice(index, 1);
-		console.log("MDRRRRR = ", PongService.allRooms);
-		// console.log("deleteGameInAllRooms = ", PongService.allRooms, "| ohoh game_name = ", game_name);
 		return (true);
 	}
 
@@ -386,6 +381,7 @@ export class PongService {
 				if (game.velocity < VELOCITY_MAX)
 					game.velocity += VELOCITY_ACCEL * data.delta;
 				game.vector.y *= -1;
+				game.y += 1.5;
 			}
 			else if ( game.back_ball.bottom >= (game.back_limit.bottom - 1))
 			{
@@ -393,12 +389,12 @@ export class PongService {
 					game.velocity += VELOCITY_ACCEL * data.delta;
 	
 				game.vector.y *= -1;
+				game.y -= 1.5;
 			}
 			else
 			{
 				if (await this.isCollision(game.back_ball, game.back_paddle_left))
 				{
-					console.log('collision-------------------------------')
 					if (game.velocity < VELOCITY_MAX)
 						game.velocity += VELOCITY_ACCEL * data.delta;
 					
@@ -407,7 +403,6 @@ export class PongService {
 				}
 				else if (await this.isCollision(game.back_ball, game.back_paddle_right))
 				{
-					console.log('collision-------------------------------')
 					if (game.velocity < VELOCITY_MAX)
 						game.velocity += VELOCITY_ACCEL * data.delta;
 					game.vector.x *= -1;
@@ -451,7 +446,6 @@ export class PongService {
 			game.vector = { x: Math.cos(heading), y: Math.sin(heading) };
 		}
 		//initial velocity
-		console.log('reset', game.velocity);
 		game.velocity = .025;
 		// game.velocity = .080;
 	}
@@ -513,7 +507,6 @@ export class PongService {
 	}
 
 	async initGame(info: any) : Promise<void> {
-		console.log('game inited')
 		const newGame: InfoPongRoom = {
 			PausePlay: false,
 			x: 50,

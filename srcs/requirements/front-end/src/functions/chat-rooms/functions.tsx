@@ -23,6 +23,7 @@ export async function checkPassword(value: string, password: string) {
 }
 
 export async function addRoom(setMessage: any, define_room: any, socket: Socket, current_user: any, value: string, setValue: any, handle_history: any, render_react: any) {
+	
 	setMessage([]);
 	define_room(value);
 	socket?.emit("message", {room: value, message: `${current_user.login} has join the room ${value}`});
@@ -34,7 +35,6 @@ export async function addRoom(setMessage: any, define_room: any, socket: Socket,
 
 export function shakeIt(shake_name: string, room_name: string) {
 	const modal = document.getElementById(`shaking-${room_name}`);
-	console.log("modal", modal);
 	if (modal) {
 		modal.classList.add(Style.shake);
 		setTimeout(() => {

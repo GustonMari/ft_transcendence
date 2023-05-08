@@ -80,28 +80,24 @@ export default function HomePong() {
 		if (in_game.data === true)
 		{
 			// setWaitingForGame(false);
-			const clearWait = async () => {
-				await APP.post("/pong/clear_waiting_list");
-			}
-			clearWait();
+			// const clearWait = async () => {
+			// 	await APP.post("/pong/clear_waiting_list");
+			// }
+			// clearWait();
 			navigate("/pong", {state: {
 			}});
 		}
-		const res = await APP.post("/pong/is_player_in_waiting_list", currentUser);
-		if (res.data === false)
+		else 
 		{
-			await addPlayerToList(currentUser);
-			const is_match = await isMatched();
-			if (!is_match)
+			const res = await APP.post("/pong/is_player_in_waiting_list", currentUser);
+			if (res.data === false)
 			{
-				//put message waiting
-				socket?.emit("joinWaitingRoom", null);
-				// setWaitingForGame(true);
-			}
-			else
-			{
-				// setWaitingForGame(false);
-				socket?.emit("joinWaitingRoom", is_match);
+				await addPlayerToList(currentUser);
+				const is_match = await isMatched();
+				if (!is_match)
+					socket?.emit("joinWaitingRoom", null);
+				else
+					socket?.emit("joinWaitingRoom", is_match);
 			}
 		}
 	}
@@ -109,13 +105,10 @@ export default function HomePong() {
 	const leaveWaitingFile = async () => {
 		socket?.emit("leaveWaitingRoom");
 		await APP.post("/pong/remove_player_from_waiting_list", currentUser);
-		// setWaitingForGame(false);
 		setWaitTrigger(false);
 	}
 
 	const spectateGame = async (room: any) => {
-		console.log("spectateGame : room = ", room);
-		console.log("socket = ", socket);
 		socket?.emit("changeGame", room.name);
 		navigate("/pong", {state: {
 			game_name_param: room.name,
@@ -123,7 +116,6 @@ export default function HomePong() {
 	}
 
 	socket?.on("startGame", (data: any) => {
-		// setWaitingForGame(false);
 			const clearWait = async () => {
 				await APP.post("/pong/clear_waiting_list");
 			}
@@ -135,14 +127,6 @@ export default function HomePong() {
 	socket.on('renderReact', (data: any) => {
 		setRenderReact(renderReact + 1);
 	});
-
-	// const acceptInvitation = async (invitation: any) => {
-	// 	await APP.post("/pong/delete_invitation", invitation);
-	// 	navigate("/pong", {state: {
-	// 		user: invitation.sender_player_login, 
-	// 		opponent: invitation.invited_player_login,
-	// 	}});
-	// }
 
 	const refuseInvitation = async (invitation: any) => {
 		await APP.post("/pong/delete_invitation", { id: invitation.id });
@@ -158,13 +142,6 @@ export default function HomePong() {
             <div className={Style['homepong']}>
                 <h1 className={Style['homepong-title']}>LOBBY</h1>
                 <div className={Style['homepong-container']}>
-
-                    {/* <button className={Style['join-waiting-list']} onClick={() =>{
-                        enterInWaitingFile();
-                    } }
-                    >Join Waiting List
-
-                    </button> */}
                     <div className={Style['game-list']}>
                             <h1 className={Style['game-title']}>Invitation list</h1>
                                 {invitations.map((invitation : any) =>(
@@ -172,7 +149,6 @@ export default function HomePong() {
                                     <div className={Style['line-game-room']}>
                                         <div className={Style['room-game-name']}>{invitation.sender_player_login} invited you</div>
                                         <button
-                                            // type="submit"
                                             className={Style['game-room-image']}
                                             onClick={() => {
                                                 APP.post("/pong/delete_invitation", invitation);
@@ -180,7 +156,6 @@ export default function HomePong() {
                                                     user: invitation.sender_player_login, 
                                                     opponent: invitation.invited_player_login,
                                                 }});
-                                                // navigate("/pong");
                                             }}
                                             >
                                             <IconContext.Provider value={{className: Style['icon-game-room']}}>
@@ -217,7 +192,6 @@ export default function HomePong() {
 							<div className={Style['resize-animation']}>
 								<div className={Style['lds-roller']}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
 							</div>
-							{/* <div className={Style['lds-dual-ring']}></div> */}
 						</div>
 					</button> 
 					
@@ -239,7 +213,6 @@ export default function HomePong() {
                     </div>
 
                     <div className={Style['game-list']}>
-                        {/* <div className="center-line"> */}
                             <h1 className={Style['game-title']}>Game list</h1>
                                 {rooms.map((room : any) =>(
                                     <li key={room.id} className={Style["li-line"]}>
@@ -260,12 +233,8 @@ export default function HomePong() {
                                     </div>
                                 </li>
                                 ))}	
-                        {/* </div> */}
                     </div>
                 </div>
-                    {/* <div>
-                        {waitingForGame ? (<p>Waiting for a game</p>) : ""}
-                    </div> */}
             </div>
 		</div>
 		

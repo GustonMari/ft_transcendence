@@ -25,3 +25,9 @@ export class ChatDTO {
     @Length(1, 50)
     password: string;
 }
+
+export class InfoBlocked {
+    @IsOptional()
+    @IsNumber()
+    user_id_target: number;
+}
