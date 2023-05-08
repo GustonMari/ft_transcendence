@@ -21,6 +21,7 @@ export async function checkPassword(value: string, password: string) {
 }
 
 export async function addRoom(setMessage: any, define_room: any, socket: Socket, current_user: any, value: string, setValue: any, handle_history: any, render_react: any) {
+	
 	setMessage([]);
 	define_room(value);
 	socket?.emit("message", {room: value, message: `${current_user.login} has join the room ${value}`});
