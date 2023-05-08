@@ -60,7 +60,6 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 
 	handleDisconnect(client: Socket) {
-		// console.log('Client disconnected');
 	}
 
 	@SubscribeMessage('addsocket')
@@ -101,14 +100,11 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	@SubscribeMessage('joinRoom')
 	async handleJoinRoom(@MessageBody() data: InfoRoom, @ConnectedSocket() socket: Socket): Promise<void> {
 		
-        console.log('Starting join room' + data.id_user);
 		const roomExists = await this.chatService.roomExists(data.room_name);
 		if (roomExists) {
-            console.log('Room already exists');
 			await this.chatService.joinChatRoom(data.room_name, data.id_user);
 		}
 		else {
-            console.log('Room does not exists');
 			await this.chatService.createChatRoom(data.room_name, data.id_user);
 			await this.chatService.setAdmin(data.room_name, data.id_user);
 		}
@@ -191,7 +187,6 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	@SubscribeMessage('unbanUser')
 	async handleUnbanUser(@MessageBody() data: InfoRoomTo): Promise<void> {
 
-		console.log('unbanUserrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr')
 		if (await this.chatService.isAdmin(data.room_name, data.id_user_from)) {
 			const id_user_to = await this.chatService.getIdUser(data.login_user_to);
 			await this.chatService.unbanUser(data.room_name, data.id_user_from, id_user_to);
@@ -241,9 +236,6 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		const sockets = this.myserver.sockets.sockets;
 		const client_socket_id = await this.chatService.getSocketIdByUserId(data.sender_invite.id);
 		const client_socket = sockets.get(client_socket_id);
-		// console.log('client socket ===============', client_socket_id, "           all sockets ===============", sockets);
-		// if (client_socket === undefined || client_socket === null)
-		// 	console.log('client socket undefined');
 		client_socket.emit('redirect_to_pong', {user_to: data.currentUser}); 
 	}
 }

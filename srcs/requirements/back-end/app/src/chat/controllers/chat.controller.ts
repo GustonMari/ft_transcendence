@@ -98,7 +98,6 @@ export class ChatController {
 
 	@Post('is_user_blocked')
 	async is_user_blocked(@Res() response: Response,@MessageBody() info: InfoBlocked ,@GetMe("id") id: number,): Promise<void> {
-		console.log("info", info);
 		const relations = await this.RelationController.getRelationForUser("blocked", id);
 		if (!relations)
 			response.send(false);

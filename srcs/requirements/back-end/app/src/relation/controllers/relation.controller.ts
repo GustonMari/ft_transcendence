@@ -137,7 +137,6 @@ export class RelationController {
         @GetMe('id') id: number,
     ) {
         const relations = await this.relationService.findRelationByOneUserID(id) as any;
-        console.log("RELATION DANS GETRELATION = ", relations);
         const filtered = relations.filter((relation) => {
             if (type === "friend") {
                 return relation.state === "FRIEND";
@@ -149,7 +148,6 @@ export class RelationController {
                 return relation.state === "BLOCKED" && relation.from_id === id;
             }
         });
-        console.log("FILTERED = ", filtered);
         return (
             filtered.map((relation) => {
                 return {
@@ -176,7 +174,6 @@ export class RelationController {
         @GetMe('id') id: number,
     ) {
         const relations = await this.relationService.findRelationByOneUserID(id) as any;
-        // console.log("RELATION DANS GETRELATION = ", relations);
         return (
             relations
         );

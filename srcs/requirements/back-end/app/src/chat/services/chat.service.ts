@@ -18,9 +18,7 @@ export class ChatService {
 		}
 
 		const room_exist = await this.prisma.room.findUnique({ where: { name: room_name } });
-		console.log('room_name', room_name, " | room_exist", room_exist)
 		if (room_exist) {
-			console.log('room already exist broooooooooooooooo')
 			return ;
 		}
 		else {
@@ -82,9 +80,6 @@ export class ChatService {
 		//on cherche si la room existe deja sinon on la creer
 		const room_exist = await this.prisma.room.findUnique({ where: { name: room_name} });
 		if (!room_exist) {
-			//! or maybe trhow something
-			console.log("on est dans joinChatRoom la room nexiste pas on createChatRoom(", room_name, ", ", user_id);
-
 			await this.createChatRoom(room_name, user_id);
 		}
 		else {

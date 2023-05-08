@@ -19,9 +19,7 @@ export class PongController {
 		){}
 
 		@Post('create_game') // Subscribe to the event 'joinGame'
-		// async create_game(@Res() response: Response ,@MessageBody() info: {master: User, slave: User}): Promise<void> {
 		async create_game(@Res() response: Response ,@MessageBody() info: CreateGameDTO): Promise<void> {
-		// exit(1);
 		await this.pongService.createGame(info.master, info.slave);
 		response.send("Created game");
 
@@ -53,7 +51,6 @@ export class PongController {
 		}
 
 		@Post('get_game')
-		// async get_game(@Res() response: Response ,@MessageBody() info: any): Promise<void> {
 		async get_game(@Res() response: Response ,@MessageBody() info: GetGameDTO): Promise<void> {
 
 			const game = await this.pongService.getGameByGameName(info.game_name);
@@ -70,11 +67,7 @@ export class PongController {
 		async is_matched(@Res() response: Response): Promise<void> {
 			const bool = await this.pongService.IsPlayerMatched();
 			if (bool === true)
-			{
 				response.send(await this.pongService.getWaitingList());
-				// vider la list
-				// await this.pongService.clearWaitingList();
-			}
 			else
 				response.send(null);
 		}
@@ -124,7 +117,6 @@ export class PongController {
 
 		@Post('delete_game')
 		async delete_game(@Res() response: Response ,@MessageBody() info: DeleteGameDTO): Promise<void> {
-			console.log("delete_game: info = ", info.gameName);
 			const invitation = await this.pongService.findInvitationPongByGameName(info.gameName);
 			if (invitation)
 				await this.pongService.deleteOneInvitationPong(invitation.id);
