@@ -5,13 +5,13 @@ import Button from 'react-bootstrap/Button';
 import { Modal } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import { shakeIt } from '../../functions/chat-rooms/functions';
-import { addRoom, checkIsPassword, checkPassword } from '../../functions/chat-rooms/functions';
+// import { addRoom, checkIsPassword, checkPassword } from '../../functions/chat-rooms/functions';
 import { useState } from "react";
 import React from "react";
 import { AiFillLock } from 'react-icons/ai';
 
 export function PopupPassword(props: any) {
-	let { setMessage, socket, room, current_user, render_react } = props;
+	let { room, current_user } = props;
 
 	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
@@ -28,7 +28,7 @@ export function PopupPassword(props: any) {
 
 	const  handleSetPassword = async (password: string) => {
 		setShow(false);
-		const res = await APP.post("/chat/set_room_password", {room_name: room.name, user_id: current_user.id, password: password});
+		await APP.post("/chat/set_room_password", {room_name: room.name, user_id: current_user.id, password: password});
 	}
 
 	function handleKeyDown(event: any) {

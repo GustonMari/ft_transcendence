@@ -1,11 +1,11 @@
 	// @typescript-eslint/no-unused-expressions
 
-	import { useState, useEffect, useRef, Key } from 'react';
+	import { useState, useEffect, useRef } from 'react';
 	import { APP } from "../../network/app";
 	import StyleRoom from "../../styles/rooms/Style.room.module.css";
 	import { GetMessagesByRoom } from '../messages/Message';
 	import 'bootstrap/dist/css/bootstrap.min.css';
-	import { AuthorizeUser, shakeIt, ShortedName } from '../../functions/chat-rooms/functions';
+	import { AuthorizeUser, ShortedName } from '../../functions/chat-rooms/functions';
 	import { InputRoom } from './InputRoom';
 	import { PopupDelete } from './PopUpDelete';
 	import {PopupLeave} from './PopUpLeave';
@@ -66,7 +66,7 @@
 								<div className={StyleRoom['split']}>
 									<PopupLeave setMessage={setMessage} socket={socket} room={room} current_user={current_user} render_react={render_react} GetMessagesByRoom={GetMessagesByRoom} handle_history={handle_history}></PopupLeave>
 									<PopupDelete setMessage={setMessage} socket={socket} room={room} current_user={current_user} render_react={render_react} GetMessagesByRoom={GetMessagesByRoom} handle_history={handle_history}></PopupDelete>
-									<PopupPassword setMessage={setMessage} socket={socket} room={room} current_user={current_user} render_react={render_react}></PopupPassword>
+									<PopupPassword room={room} current_user={current_user} ></PopupPassword>
 								</div>
 							</span>
 						</li>
