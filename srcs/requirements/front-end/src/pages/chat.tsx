@@ -1,12 +1,12 @@
 import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import MessageInput from "../components/messages/MessageInput";
-import { DisplayMessagesByRoom, GetMessagesByRoom } from "../components/messages/Message";
+import { DisplayMessagesByRoom } from "../components/messages/Message";
 import Create_socket from "../network/chat.socket";
 import {RoomForm} from "../components/rooms/RoomForm";
 import { APP } from "../network/app";
 import { ParameterChat } from "../components/chat/ParameterChat";
-import { HistoryDto, InfoMessage } from "../dtos/chat.dto";
+import { HistoryDto/* , InfoMessage  */} from "../dtos/chat.dto";
 import Style from "../styles/messages/Style.message.module.css";
 import StyleRoom from "../styles/rooms/Style.room.module.css";
 import { NavBar } from "../components/communs/NavBar";
@@ -69,7 +69,7 @@ export default function Chat(props: any) {
 	}
 
 	const message_listener = (infomessage: any) => {
-		if (messages == undefined || messages == null)
+		if (messages === undefined || messages === null)
 			setMessage(infomessage);
 		setMessage([...messages, infomessage]);
 	}

@@ -32,8 +32,11 @@ export function SetAdmin(props : any)
 	const [value, setValue] = React.useState("");
 
 	function emitAndClear() {
-		socket?.emit("setAdmin", { room_name: current_room, id_user_from: current_user.id, login_user_to: value});
-		setValue("");
+		if (value !== "")
+		{
+			socket?.emit("setAdmin", { room_name: current_room, id_user_from: current_user.id, login_user_to: value});
+			setValue("");
+		}
 	}
 
 	function handleKeyDown(event: any) {
@@ -57,9 +60,11 @@ export function KickUser(props: any)
 	const [value, setValue] = React.useState("");
 
 	function emitAndClear() {
-		socket?.emit("kickUser", { room_name: current_room, id_user_from: current_user.id, login_user_to: value});
-
-		setValue("");
+		if (value !== "")
+		{
+			socket?.emit("kickUser", { room_name: current_room, id_user_from: current_user.id, login_user_to: value});
+			setValue("");
+		}
 	}
 
 	return (
@@ -77,9 +82,12 @@ export function BanUser(props : any)
 	const [date_value, setDate] = React.useState("");
 
 	function emitAndClear() {
-		socket?.emit("banUser", { room_name: current_room, id_user_from: current_user.id, login_user_to: value, ban_till: date_value});
-		setDate("");
-		setValue("");
+		if (date_value !== "" || value !== "")
+		{
+			socket?.emit("banUser", { room_name: current_room, id_user_from: current_user.id, login_user_to: value, ban_till: date_value});
+			setDate("");
+			setValue("");
+		}
 	}
 
 	return (
@@ -99,9 +107,12 @@ export function MuteUser(props: any)
 
 
 	function emitAndClear() {
-		socket?.emit("muteUser", { room_name: current_room, id_user_from: current_user.id, login_user_to: value, mute_till: date_value});
-		setDate("");
-		setValue("");
+		if (date_value !== "" || value !== "")
+		{
+			socket?.emit("muteUser", { room_name: current_room, id_user_from: current_user.id, login_user_to: value, mute_till: date_value});
+			setDate("");
+			setValue("");
+		}
 	}
 
 	return (
