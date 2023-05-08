@@ -190,7 +190,7 @@ export const Friends = () => {
                 >
                     { relations && relations.map((item: any, id: number) => {
                         const user : IUser = item.user;
-                        console.log("test" + user);
+                        // console.log("test" + user);
                         return (
                             <div key={id}>
                                 <ListItem
