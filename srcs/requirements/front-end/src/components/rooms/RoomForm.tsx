@@ -24,7 +24,6 @@
 					const res = await APP.get("/chat/get_user_rooms");
 					setRooms(res.data);
 					if (roomContainer.current) {
-						console.log("SCROOLLLL")
 						roomContainer.current.scrollTop = roomContainer.current.scrollHeight;
 					}
 				} catch (error) {

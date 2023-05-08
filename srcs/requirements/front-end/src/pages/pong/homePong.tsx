@@ -32,9 +32,7 @@ export default function HomePong() {
 		const getRooms = async () => {
 			try {
 				const all_games = await APP.post("/pong/get_games_rooms");
-				console.log("all_games = ", all_games.data);
 				setRooms(all_games.data);
-				console.log("all_games = ", all_games.data);
 
 				if (roomContainer.current) {
 					roomContainer.current.scrollTop = roomContainer.current.scrollHeight;
@@ -63,7 +61,6 @@ export default function HomePong() {
 
 	const isMatched = async (): Promise<any> => {
 		const ret = await APP.post("/pong/is_matched");
-		console.log("isMatched = ", ret.data);
 		if (ret.data != null)
 			return ret.data;
 		return null;
@@ -80,7 +77,6 @@ export default function HomePong() {
 
 	const enterInWaitingFile = async () => {
 		const in_game = await APP.post("/pong/is_player_is_in_game", currentUser);
-		console.log('in_game.data = ', in_game.data)
 		if (in_game.data === true)
 		{
 			// setWaitingForGame(false);
@@ -94,19 +90,16 @@ export default function HomePong() {
 		const res = await APP.post("/pong/is_player_in_waiting_list", currentUser);
 		if (res.data === false)
 		{
-			console.log("player is not in waiting list, added")
 			await addPlayerToList(currentUser);
 			const is_match = await isMatched();
 			if (!is_match)
 			{
-				console.log("not matched");
 				//put message waiting
 				socket?.emit("joinWaitingRoom", null);
 				// setWaitingForGame(true);
 			}
 			else
 			{
-				console.log("enterInWaitingFile : is_match = ", is_match);
 				// setWaitingForGame(false);
 				socket?.emit("joinWaitingRoom", is_match);
 			}
@@ -130,7 +123,6 @@ export default function HomePong() {
 	}
 
 	socket?.on("startGame", (data: any) => {
-		console.log("starting the game")
 		// setWaitingForGame(false);
 			const clearWait = async () => {
 				await APP.post("/pong/clear_waiting_list");

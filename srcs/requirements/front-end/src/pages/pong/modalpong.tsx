@@ -12,9 +12,7 @@ export function PopupWinLose(props : any) {
 	const handleClose = async () => {
 		setShow(false)
 		setPopupWinLose({winlose: false, winlosemessage: ""});
-		console.log("Master, go delete game bitch");
 		await APP.post("/pong/delete_game", {gameName: gameName});
-		console.log("in handleclose");
 		socket?.emit("navigate_to_game", gameName);
 	};
 

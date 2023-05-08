@@ -48,13 +48,11 @@ export default function Pong() {
 				game_name = game_name.data;
 
 				socket?.emit("joinWaitingReplay", game_name);
-				console.log('fuckkkkk this', game_name, 'res.data.login=', res.data.login);
 			}
 			else {
 				const { game_name_param } = location.state;
 				game_name = game_name_param;
 			}
-			console.log('putain', game_name, ' return get me =', res.data, 'is_master=', is_master, ' is slave = ', is_slave);
 			if (game_name === undefined)
 			{
 				game_name = await APP.post("/pong/get_game_name", {
@@ -181,7 +179,6 @@ export function ExecutePong(props: any) {
 			
 			if (kd.current.UP.isDown() && !isWatcher) {
 			rightUpPressed = true;
-			console.log("rightUpPressed");
 			if (isMaster) {
 				if (newLimit.current && playerPaddleLeft) {
 					socket.emit('updatePaddleLeft', {paddle: 'up', gameName: gameName});
@@ -294,7 +291,6 @@ export function ExecutePong(props: any) {
 				window.requestAnimationFrame(update(lastTime, pongBall.current, playerPaddleLeft, playerPaddleRight));
 	  }
 		return () => {
-			console.log('workkkkkkkkkkkkkkkkkkkkkk')
 			socket.off('GameUpdated');
 		}
 		// eslint-disable-next-line
@@ -318,7 +314,6 @@ export function ExecutePong(props: any) {
 				setPopupWinLose({popup: true, winlosemessage: msg_tmp});
 		})
 		socket.on('navigate_to_game', async (data: any) => {
-			console.log("front navigate_to_game");
 			if (isMaster)
 				socket?.emit("allLeaveGame", gameName);
 			socket.emit("leaveWaitingReplay", gameName);

@@ -12,7 +12,7 @@ export class Ball {
 
 	constructor(BallElem: any, setLeftScore: any, setRightScore: any, socket: Socket)
 	{
-		console.log('constructor ball');
+		// console.log('constructor ball');
 		socket.emit('defineBall');
 		this.BallElem = BallElem;
 		this.socket = socket;
