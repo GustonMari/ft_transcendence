@@ -245,12 +245,12 @@ export class ChatService {
 
 	async getIdUser(user_login: string): Promise<number> {
 		const user = await this.prisma.user.findUnique({ where: { login: user_login } });
-		// const user = await this.prisma.user.findUnique({ where: { id: 1}});
 		if (!user) {
 		  return -1;
 		}
 		return user.id;
 	  }
+
 
 	async banUser(room_name: string, user_id: number, user_to_ban: number, ban_date: Date): Promise<boolean> {
 		const room_exist = await this.prisma.room.findUnique({ where: { name: room_name } });

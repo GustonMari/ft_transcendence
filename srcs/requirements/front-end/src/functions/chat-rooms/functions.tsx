@@ -32,7 +32,6 @@ export async function addRoom(setMessage: any, define_room: any, socket: Socket,
 
 export function shakeIt(shake_name: string, room_name: string) {
 	const modal = document.getElementById(`shaking-${room_name}`);
-	console.log("modal", modal);
 	if (modal) {
 		modal.classList.add(Style.shake);
 		setTimeout(() => {

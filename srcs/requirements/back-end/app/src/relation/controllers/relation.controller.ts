@@ -176,7 +176,7 @@ export class RelationController {
         @GetMe('id') id: number,
     ) {
         const relations = await this.relationService.findRelationByOneUserID(id) as any;
-        console.log("RELATION DANS GETRELATION = ", relations);
+        // console.log("RELATION DANS GETRELATION = ", relations);
         return (
             relations
         );

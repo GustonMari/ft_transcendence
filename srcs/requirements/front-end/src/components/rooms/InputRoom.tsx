@@ -6,7 +6,7 @@ import { Modal } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import { shakeIt } from '../../functions/chat-rooms/functions';
 import { addRoom, checkIsPassword, checkPassword } from '../../functions/chat-rooms/functions';
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { IoEnter } from 'react-icons/io5';
 import { RiMailLockLine } from 'react-icons/ri';
 
@@ -68,7 +68,15 @@ export function InputRoom(props: any) {
 
 		const login = value;
 		const user = await APP.post("/chat/is_user_exists", {login: login});
-		if (user.data) {
+		const user_id = (await APP.post("/chat/get_user_id_by_login", {login: login})).data;
+		let is_blocked = false;
+		let im_blocked = false;
+		if (user.data && current_user.login !== login)
+		{
+			is_blocked = (await APP.post("/chat/is_user_blocked", {user_id_target: user_id})).data;
+			im_blocked = (await APP.post("/chat/am_i_blocked", {user_id_target: user_id})).data;
+		}
+		if (user.data && !is_blocked && !im_blocked && current_user.login !== login) {
 			let privateRoomName = "";
 			if (login.localeCompare(current_user.login) < 0)
 				privateRoomName = login + "-" + current_user.login;

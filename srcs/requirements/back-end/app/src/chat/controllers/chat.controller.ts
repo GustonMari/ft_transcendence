@@ -97,17 +97,34 @@ export class ChatController {
     }
 
 	@Post('is_user_blocked')
-	async get_relations(@Res() response: Response,@MessageBody() info: InfoBlocked ,@GetMe("id") id: number,): Promise<void> {
-	// async get_relations(@Res() response: Response,@MessageBody() info: any ,@GetMe("id") id: number,): Promise<void> {
+	async is_user_blocked(@Res() response: Response,@MessageBody() info: InfoBlocked ,@GetMe("id") id: number,): Promise<void> {
 		console.log("info", info);
 		const relations = await this.RelationController.getRelationForUser("blocked", id);
 		if (!relations)
 			response.send(false);
-		// const ret = relations.find(relation => relation.state === 'BLOCKED' && relation.from_id === id && relation.to_id === info.user_id_target);
 		const ret = relations.find(relation => relation.state === 'BLOCKED' && relation.from_id === id && relation.to_id === info.user_id_target);
 		if (ret && ret.from_id === id)
 			response.send(true);
 		else
 			response.send(false);
 	}
+
+	@Post('am_i_blocked')
+	async am_i_blocked(@Res() response: Response,@MessageBody() info: InfoBlocked ,@GetMe("id") id: number,): Promise<void> {
+		const relations = await this.RelationController.getRelationForUser("blocked", info.user_id_target);
+		if (!relations)
+			response.send(false);
+			const ret = relations.find(relation => relation.state === 'BLOCKED' && relation.from_id === info.user_id_target && relation.to_id === id);
+		if (ret && ret.to_id === id)
+			response.send(true);
+		else
+			response.send(false);
+	}
+
+	@Post('get_user_id_by_login')
+	async get_user_id_by_login(@Res() response: Response ,@MessageBody() info: ChatDTO): Promise<void> {
+		const user = await this.chatService.getIdUser(info.login);
+		response.send(user.toString());
+	}
+
 }
