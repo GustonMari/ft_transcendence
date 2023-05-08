@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { Socket } from "socket.io-client";
 
 
-const GAME_LIMIT = 1000;
+// const GAME_LIMIT = 1000;
 
 const PongContext = React.createContext<any>(null);
 export default function Pong() {
@@ -24,6 +24,7 @@ export default function Pong() {
 	const [gameName, setGameName] = useState<string>("");
 	const [isSlave, setIsSlave] = useState<boolean>(false);
 	const [isWatcher, setIsWatcher] = useState<boolean>(false);
+		// eslint-disable-next-line
 	const [socket, setSocket] = useState<Socket | undefined>(Create_socket());
 	const location = useLocation();
 
@@ -85,6 +86,7 @@ export default function Pong() {
 		}
 	};
 		getUsers();
+		// eslint-disable-next-line
 	}, []);
 
 	if (!ready) {
@@ -139,17 +141,21 @@ export function ExecutePong(props: any) {
 	let first: boolean = false;
 	let playerPaddleLeft = new Paddle(document.getElementById("player-paddle-left") as HTMLDivElement);
 	let playerPaddleRight = new Paddle(document.getElementById("player-paddle-right") as HTMLDivElement);
+	// eslint-disable-next-line
 	let	leftUpPressed : boolean = false; // BUG can we delete this ?
+	// eslint-disable-next-line
 	let leftDownPressed : boolean = false;
+	// eslint-disable-next-line
 	let rightUpPressed : boolean = false;
+	// eslint-disable-next-line
 	let rightDownPressed : boolean = false;
 	const {socket} = useContext(PongContext);
 	const kd					= useRef(require('keydrown'));
 	const navigate = useNavigate();
 	// let pongBall: Ball;
 
-	const [play, setPlay] = useState<number>(0);
-	const [refresh, setRefresh] = useState<number>(0);
+	// const [play, setPlay] = useState<number>(0);
+	// const [refresh, setRefresh] = useState<number>(0);
 
 	// let pongBall: Ball; 
 	const pongBall = useRef<Ball | null>(null);
@@ -291,6 +297,7 @@ export function ExecutePong(props: any) {
 			console.log('workkkkkkkkkkkkkkkkkkkkkk')
 			socket.off('GameUpdated');
 		}
+		// eslint-disable-next-line
 	}, [ball/* , playerPaddleLeft, playerPaddleRight, socket, update */]);
 
 	useEffect(() => {
@@ -320,6 +327,7 @@ export function ExecutePong(props: any) {
 		return () => {
 			socket.off('GameFinished');
 		}
+		// eslint-disable-next-line
 	},[socket/* , isMaster, isWatcher, navigate */]);
 
 	const click = (map: number) => {
@@ -353,7 +361,7 @@ export function ExecutePong(props: any) {
 	return (
 		<div className={Style['container-game']} id="main-window">
 			<div>
-				{popupwinlose.popup ? (<PopupWinLose popupwinlose={popupwinlose} setPopupWinLose={setPopupWinLose} isMaster={isMaster} socket={socket} gameName={gameName} play={play} setPlay={setPlay}/> ) : (<></>)}
+				{popupwinlose.popup ? (<PopupWinLose popupwinlose={popupwinlose} setPopupWinLose={setPopupWinLose} socket={socket} gameName={gameName} /> ) : (<></>)}
 			</div>
 			 <div className={Style['container-button-map']}>
 				<button className={Style['button-map']} onClick={() => click(1)}>

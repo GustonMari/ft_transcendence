@@ -2,12 +2,12 @@ import { Button, Modal } from 'react-bootstrap';
 import { useState } from "react";
 import StyleUtils from './Style.utils.module.css';
 import { APP } from "../../network/app";
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 export function PopupWinLose(props : any) {
-	const { popupwinlose, setPopupWinLose, isMaster, socket, gameName, play, setPlay} = props;
+	const { popupwinlose, setPopupWinLose, socket, gameName} = props;
 	const [show, setShow] = useState(true);
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 
 	const handleClose = async () => {
 		setShow(false)
