@@ -18,6 +18,7 @@ export function PopupWinLose(props : any) {
 
 	async function RestartGame()
 	{
+		await APP.post("/pong/reset_game", {gameName: gameName}); 
 		socket.emit("joinWaitingReplay", gameName);
 		socket?.emit('playGame', gameName);
 		setShow(false)

@@ -432,7 +432,7 @@ export class PongService {
 		game.rightScore = 0;
 	}
 
-	async reset(game: InfoPongRoom): Promise<void>
+	async 	reset(game: InfoPongRoom): Promise<void>
 	{
 		game.x = 50;
 		game.y = 50;
@@ -449,6 +449,39 @@ export class PongService {
 		game.velocity = .025;
 		// game.velocity = .080;
 	}
+
+	async 	resetGame(game: InfoPongRoom): Promise<void>
+	{
+		game.x = 50;
+		game.y = 50;
+		game.vector = { x: 0.1, y: 0.1};
+		game.back_paddle_left.left = 100 / 90;
+		game.back_paddle_left.right = (100 * 3) / 90;
+		game.back_paddle_left.top = (100 * 21.5) / 55;
+		game.back_paddle_left.bottom = (100 * 33.5) / 55;
+		game.back_paddle_left.x = (100 * 2) / 90;
+		game.back_paddle_left.y = (100 * 27.5) / 55;
+
+		game.back_paddle_right.left = (87 * 100) / 90;
+		game.back_paddle_right.right = (89 * 100) / 90;
+		game.back_paddle_right.top = (100 * 21.5) / 55;
+		game.back_paddle_right.bottom = (100 * 33.5) / 55;
+		game.back_paddle_right.x = ((100 * 88) / 90);
+		game.back_paddle_right.y = (100 * 27.5) / 55;
+		
+
+		// make random direction, but not too much up or down
+		while (Math.abs(game.vector.x) <= .2 || Math.abs(game.vector.x) >= .9)
+		{
+			//generate a random number between 0 and 2PI (360 degrees)
+			const heading = Math.random() * 2 * Math.PI;
+			game.vector = { x: Math.cos(heading), y: Math.sin(heading) };
+		}
+		//initial velocity
+		game.velocity = .025;
+		// game.velocity = .080;
+	}
+
 
 	async incrLeftScore(game: InfoPongRoom) {
 		game.leftScore++;

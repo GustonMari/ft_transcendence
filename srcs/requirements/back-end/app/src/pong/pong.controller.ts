@@ -5,7 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { PongService } from './pong.service';
 import { Response } from 'express';
 import { exit } from 'process';
-import { PlayerMatched } from './pong.interface';
+import { InfoPongRoom, PlayerMatched } from './pong.interface';
 import { Game, InvitationPong, User } from '@prisma/client';
 import { PongGateway } from './gateways/pong.gateway';
 import { CreateGameDTO, CreateInvitationPongDTO, DeleteGameDTO, DeleteInvitationPongDTO, GameDTO, GetGameDTO, InvitationPongDTO, IsUserDTO, UserDTO } from './dtos/PongController.dto';
@@ -137,5 +137,15 @@ export class PongController {
 			await this.pongService.fillAllRooms();
 			response.send("filled");
 		}
+
+		@Post('reset_game')
+		async reset_game(@Res() response: Response ,@MessageBody() info: DeleteGameDTO): Promise<void> {
+			const game : InfoPongRoom = await this.pongService.getGame(info.gameName);
+			console.log("BEFORE : RESETGAME = game", game)
+			await this.pongService.resetGame(game);
+			console.log("AFTER : RESETGAME = game", game)
+			response.send("reseted");
+		}
+
 
 }
