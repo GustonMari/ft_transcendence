@@ -113,6 +113,7 @@ MESSAGE
 	flex-direction: column;
 	/* outline: solid red; */
   /* background: rgba(39, 6, 47, 0.358); */
+  justify-content: end;
 
 	
 }

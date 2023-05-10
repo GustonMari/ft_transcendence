@@ -16,24 +16,24 @@ export const UpdateProfileForm = () => {
     const { handleError, handleSuccess }: any = useContext(AlertContext);
 
     /* -- Refs & States -- */
-    const [firstName, setFirstName] = useState<string>(me.first_name);
-    const [lastName, setLastName] = useState<string>(me.last_name);
-    const [username, setUsername] = useState<string>(me.login);
-    const [tfa, setTFA] = useState<boolean>(me.tfa);
-    const [description, setDescription] = useState<string>(me.description);
-    const password = useRef<string>("");
-    const passwordConfirm = useRef<string>("");
+    const [firstName, setFirstName] = useState<string>(me.first_name || "");
+    const [lastName, setLastName] = useState<string>(me.last_name || "");
+    const [username, setUsername] = useState<string>(me.login || "");
+    const [tfa, setTFA] = useState<boolean>(me.tfa || true);
+    const [description, setDescription] = useState<string>(me.description || "");
+    const [password, setPassword] = useState<string>("");
+    const [passwordConfirm, setPasswordConfirm] = useState<string>("");
 
     const handleSubmit = (event: any) => {
         event.preventDefault();
-        if (password.current !== passwordConfirm.current) {
+        if (password !== passwordConfirm) {
             handleError("Password doesn't match with confirm password.")
             return;
         }
 
         try {
-            if (password.current !== "")
-                check_password(password.current);
+            if (password !== "")
+                check_password(password);
         } catch (err: Error | any) {
             handleError(err?.message);
             return;
@@ -44,7 +44,7 @@ export const UpdateProfileForm = () => {
             {
                 firstName: firstName,
                 lastName: lastName,
-                password: password.current,
+                password: password,
                 description: description,
                 tfa: tfa,
                 username: username,
@@ -114,17 +114,17 @@ export const UpdateProfileForm = () => {
                         id="password-form"
                         label="Password"
                         type="password"
-                        onChange={(event) => password.current = event.target.value}
+                        onChange={(event) => setPassword(event.target.value)}
                         readonly={false}
-                        value={undefined}
+                        value={password}
                 />
                 <InputForm
                         id="password-confirm-form"
                         label="Confirm Password"
                         type="password"
-                        onChange={(event) => passwordConfirm.current = event.target.value}
+                        onChange={(event) => setPasswordConfirm(event.target.value)}
                         readonly={false}
-                        value={undefined}
+                        value={passwordConfirm}
                 />
                 <TextareForm
                     id="description-form"
