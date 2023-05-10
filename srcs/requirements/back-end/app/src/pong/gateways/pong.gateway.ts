@@ -109,6 +109,7 @@ export class PongGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	@SubscribeMessage('navigate_to_game')
 	async navigate_to_game(@MessageBody() data: string, @ConnectedSocket() socket: Socket): Promise<void> {
 		this.myserver.to(data).emit('navigate_to_game', data);
+		this.myserver.in(data).disconnectSockets(true);
 	}
 
 	@SubscribeMessage('joinWaitingRoom')
