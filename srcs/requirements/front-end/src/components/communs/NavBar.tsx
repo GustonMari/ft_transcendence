@@ -2,7 +2,6 @@ import {useContext, useState} from "react";
 import {BiGroup, BiHome, BiLogOut, BiMessage, BiSearch, BiUser,} from "react-icons/bi";
 import {FaBars} from "react-icons/fa";
 
-import s from "../../styles/nav/NavBar.module.css";
 import API from "../../network/api";
 import {useNavigate} from "react-router-dom";
 import {UserContext} from "../../contexts/User.context";
